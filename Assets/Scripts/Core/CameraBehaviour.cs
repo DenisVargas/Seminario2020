@@ -6,12 +6,12 @@ public class CameraBehaviour : MonoBehaviour
 {
     Transform OperativeCamera;
 
-    [SerializeField] public Transform Target;
-    [SerializeField] public bool freeCamera = false;
+    [SerializeField] public Transform Target = null;
+    [SerializeField] public bool freeCamera = true;
 
-    [SerializeField] float zoomVelocity;
-    [SerializeField] float panBorderThickness;
-    [SerializeField] Vector2 panLimits;
+    //[SerializeField] float zoomVelocity = 10f;
+    [SerializeField] float mousePanBorderThickness = 10f;
+    [SerializeField] Vector2 panLimits = new Vector2(10f,10f);
 
     //Velocidades
     [SerializeField] float panSpeed = 20f;
@@ -22,8 +22,6 @@ public class CameraBehaviour : MonoBehaviour
     //float zoomSpeed;
     //float zoomDist;
 
-
-    // Start is called before the first frame update
     void Awake()
     {
         //ZoomMax = new Vector3(operativeCamera.transform.localPosition.x, operativeCamera.transform.localPosition.y, operativeCamera.transform.localPosition.z);
@@ -36,27 +34,25 @@ public class CameraBehaviour : MonoBehaviour
     void Update()
     {
         if (Input.GetKey(KeyCode.Space))
-            freeCamera = true;
-        if (Input.GetKeyUp(KeyCode.Space))
             freeCamera = false;
+        if (Input.GetKeyUp(KeyCode.Space))
+            freeCamera = true;
 
         #region Movimiento
 
         if (freeCamera)
         {
             // Input en Y
-            if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - panBorderThickness)
-                transform.position += transform.forward * zoomVelocity * Time.deltaTime;
-
-            if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= panBorderThickness)
-                transform.position += -transform.forward * zoomVelocity * Time.deltaTime;
+            if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - mousePanBorderThickness)
+                transform.position += transform.forward * panSpeed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= mousePanBorderThickness)
+                transform.position += -transform.forward * panSpeed * Time.deltaTime;
 
             // Input en X
-            if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - panBorderThickness)
-                transform.position += transform.right * zoomVelocity * Time.deltaTime;
-
-            if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= panBorderThickness)
-                transform.position -= transform.right * zoomVelocity * Time.deltaTime;
+            if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - mousePanBorderThickness)
+                transform.position += transform.right * panSpeed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= mousePanBorderThickness)
+                transform.position -= transform.right * panSpeed * Time.deltaTime;
             //La z es mi valor forward, mientras que mi x es mi right.
             var xpos = transform.position.x;
             xpos = Mathf.Clamp(xpos, -panLimits.x, panLimits.x);

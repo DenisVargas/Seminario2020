@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Este script va a ser reworkeado en el tiempo para convertirse en un custom Controler funcionando con una
+  grilla de nodos, para reemplazar el actual Navmesh.
+*/
 public class Controller : MonoBehaviour
 {
     public float moveSpeed = 6;

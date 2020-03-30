@@ -7,7 +7,7 @@ using UnityEditor;
 public class CameraBehaviourEditor : Editor
 {
     CameraBehaviour ins;
-    bool EditLimitsOn = false;
+    //bool EditLimitsOn = false;
     int selected = 0;
 
     //Distance Slider Editor.
@@ -54,42 +54,43 @@ public class CameraBehaviourEditor : Editor
 
 
         EditorGUILayout.LabelField("Velocities", BoldText);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("zoomVelocity"));
+        //EditorGUILayout.PropertyField(serializedObject.FindProperty("zoomVelocity"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("panSpeed"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("rotationSpeed"));
 
         EditorGUILayout.LabelField("Limits and Borders", BoldText);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("panBorderThickness"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("panBorderThickness"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("mousePanBorderThickness"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("panLimits"));
         EditorGUILayout.Space();
 
         serializedObject.ApplyModifiedProperties();
-        EditorGUILayout.Space();
 
-        if (!EditLimitsOn)
-        {
-            if (GUILayout.Button("Edit Camera Pan Limits"))
-            {
-                ActiveEditorTracker.sharedTracker.isLocked = true;
-                Debug.Log("Funciona el botón.");
-                ActiveEditorTracker.sharedTracker.ForceRebuild();
-                EditLimitsOn = true;
-            }
-        }
-        else
-        {
-            GUI.color = Color.green;
-            if (GUILayout.Button("Exit Edit Camera pan Limits"))
-            {
-                Selection.activeGameObject = ins.gameObject;
-                ActiveEditorTracker.sharedTracker.isLocked = false;
-                ActiveEditorTracker.sharedTracker.ForceRebuild();
-                EditLimitsOn = false;
-            }
-        }
+        //TODO: Encuentra una forma de hacer la edición de los límites, personalizados.
+        //EditorGUILayout.Space();
+        //if (!EditLimitsOn)
+        //{
+        //    if (GUILayout.Button("Edit Camera Pan Limits"))
+        //    {
+        //        ActiveEditorTracker.sharedTracker.isLocked = true;
+        //        Debug.Log("Funciona el botón.");
+        //        ActiveEditorTracker.sharedTracker.ForceRebuild();
+        //        EditLimitsOn = true;
+        //    }
+        //}
+        //else
+        //{
+        //    GUI.color = Color.green;
+        //    if (GUILayout.Button("Exit Edit Camera pan Limits"))
+        //    {
+        //        Selection.activeGameObject = ins.gameObject;
+        //        ActiveEditorTracker.sharedTracker.isLocked = false;
+        //        ActiveEditorTracker.sharedTracker.ForceRebuild();
+        //        EditLimitsOn = false;
+        //    }
+        //}
 
-        DrawCameraDistanceEditor();
+        //TODO: Una manera de editar la inclinación y el zoom de la cámara de forma mas intuitiva.
+        //DrawCameraDistanceEditor();
     }
 
     private void DrawCameraDistanceEditor()

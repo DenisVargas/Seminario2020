@@ -19,8 +19,8 @@ public class DinamicArray<T> : IDinamicArray<T>, IEnumerable<T>
 
 	public T this[int index]
 	{
-		get{return array[index];}
-		set{array[index] = value;}
+		get => array[index];
+		set => array[index] = value;
 	}
 
 	public void Add(T element)
@@ -52,14 +52,24 @@ public class DinamicArray<T> : IDinamicArray<T>, IEnumerable<T>
 	/// <param name="index">Índice del nuevo elemento.</param>
 	public void Insert(T element, int index)
 	{
-		Count++;
-		T[] newArray = array.Length < Count ? new T[array.Length] : new T[array.Length * 2];
-		for (int i = 0; i < array.Length; i++)
+        Count = index < Count ? (index + 1) : (Count + 1);
+        T[] newArray = array.Length > Count ? new T[array.Length] : new T[Count * 2];
+
+        for (int i = 0; i < newArray.Length; i++)
 		{
-			if (array[i] == null) continue;
-			if (i == index) newArray[i] = element;
-			else if (i > index) newArray[i] = array[i - 1];
-			else newArray[i] = array[i];
+            if(i == index) newArray[i] = element;
+            else
+            if (i < array.Length)
+            {
+                if (array[i] == null) continue;
+                if (i < index) newArray[i] = array[i];
+                if (i > index) newArray[i] = array[i - 1];
+            }
+            else
+            {
+                if (i < index) continue;
+                if (i > index) break;
+            }
 		}
 		array = newArray;
 	}
@@ -88,7 +98,8 @@ public class DinamicArray<T> : IDinamicArray<T>, IEnumerable<T>
 	}
 
 	/// <summary>
-	/// Devuelve el índice del valor dado si este existe en el array.
+	/// Devuelve el índice del primer valor encontrado que coincida con el parámetro, si este existe en el Array.
+    /// Retorna -1 si no se encontró ninguna coincidencia.
 	/// </summary>
 	/// <returns>Índice del valor dado.</returns>
 	public int IndexOf(T element)
@@ -101,7 +112,7 @@ public class DinamicArray<T> : IDinamicArray<T>, IEnumerable<T>
 	}
 
 	/// <summary>
-	/// Remueve el primer valor que coincida con el valor indicado.
+	/// Remueve el primer valor que coincida con el parámetro dado.
 	/// </summary>
 	/// <param name="element">Valor a eliminar.</param>
 	public void Remove(T element)
@@ -125,14 +136,17 @@ public class DinamicArray<T> : IDinamicArray<T>, IEnumerable<T>
 	/// <param name="index">Indice del elemento a eliminar.</param>
 	public void RemoveAt(int index)
 	{
-		if (index >= 0 && index < Count)
-		{
-			Count--;
-			T[] newArray = new T[array.Length];
-			for (int i = 0; i < Count; i++)
-				newArray[i] = i < index ? array[i] : array[i + 1];
-			array = newArray;
-		}
+        if (index >= 0 && index < Count)
+        {
+            Count--;
+            T[] newArray = new T[array.Length];
+            for (int i = 0; i < Count; i++)
+                newArray[i] = i < index ? array[i] : array[i + 1];
+            array = newArray;
+        }
+        else
+            throw new System.IndexOutOfRangeException(
+                index < 0 ? "El Índice dado es Inválido\nNo se aceptan valores negativos" : "El Índice dado es Inválido\nEl Índice está por fuera de los límites del Array");
 	}
 
 	public IEnumerator<T> GetEnumerator()

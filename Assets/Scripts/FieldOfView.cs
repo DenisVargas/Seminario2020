@@ -19,10 +19,10 @@ public class FieldOfView : MonoBehaviour
     public List<Transform> visibleTargets = new List<Transform>();
 
     [Header("Visualization Paramaters")]
-    public MeshFilter viewMeshFilter;
-    public float MeshResolution;
-    public int EdgeResolveIterations;
-    public float EdgeDstTreshold;
+    [SerializeField] MeshFilter viewMeshFilter;
+    [SerializeField] float _meshResolution;
+    [SerializeField] float _edgeDstTreshold;
+    [SerializeField] int _edgeResolveIterations;
 
     Mesh viewMesh;
 
@@ -87,7 +87,7 @@ public class FieldOfView : MonoBehaviour
 
     void DrawFieldOfView()
     {
-        int stepCount = Mathf.RoundToInt(ViewAngle * MeshResolution);
+        int stepCount = Mathf.RoundToInt(ViewAngle * _meshResolution);
         float stepAngleSize = ViewAngle / stepCount;
         List<Vector3> viewpoints = new List<Vector3>();
         ViewCastInfo OldViewCast = new ViewCastInfo();
@@ -100,7 +100,7 @@ public class FieldOfView : MonoBehaviour
 
             if (i > 0)
             {
-                bool edgeDstTresholdExceeded = Mathf.Abs(OldViewCast.dst - newViewCast.dst) > EdgeDstTreshold;
+                bool edgeDstTresholdExceeded = Mathf.Abs(OldViewCast.dst - newViewCast.dst) > _edgeDstTreshold;
                 if (OldViewCast.hit != newViewCast.hit || (OldViewCast.hit && newViewCast.hit && edgeDstTresholdExceeded))
                 {
                     //Encuentro el borde.
@@ -175,12 +175,12 @@ public class FieldOfView : MonoBehaviour
         Vector3 minPoint = Vector3.zero;
         Vector3 maxPoint = Vector3.zero;
 
-        for (int i = 0; i < EdgeResolveIterations; i++)
+        for (int i = 0; i < _edgeResolveIterations; i++)
         {
-            float angle = (minAngle + maxAngle / 2);
+            float angle = (minAngle + maxAngle) / 2;
             ViewCastInfo newViewCast = viewCast(angle);
 
-            bool edgeDstTresholdExceeded = Mathf.Abs(minViewCast.dst - newViewCast.dst) > EdgeDstTreshold;
+            bool edgeDstTresholdExceeded = Mathf.Abs(minViewCast.dst - newViewCast.dst) > _edgeDstTreshold;
             if (newViewCast.hit == minViewCast.hit && !edgeDstTresholdExceeded)
             {
                 minAngle = angle;

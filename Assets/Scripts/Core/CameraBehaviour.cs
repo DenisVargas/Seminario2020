@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class CameraBehaviour : MonoBehaviour
 
     //[SerializeField] float zoomVelocity = 10f;
     [SerializeField] float mousePanBorderThickness = 10f;
-    [SerializeField] Vector2 panLimits = new Vector2(10f,10f);
+    [SerializeField] Vector3 navigationLimits = new Vector3(10f, 0f,10f);
 
     //Velocidades
     [SerializeField] float panSpeed = 20f;
@@ -28,10 +29,11 @@ public class CameraBehaviour : MonoBehaviour
         //var BNormal = operativeCamera.transform.forward;
         //ZoomMin = ZoomMax + BNormal * ZoomDist;
         OperativeCamera = Camera.main.transform;
+        Target = FindObjectOfType<NMA_Controller>().transform;
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (Input.GetKey(KeyCode.Space))
             freeCamera = false;
@@ -42,24 +44,22 @@ public class CameraBehaviour : MonoBehaviour
 
         if (freeCamera)
         {
+            Vector3 inputPos = Vector3.zero;
+
             // Input en Y
             if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - mousePanBorderThickness)
-                transform.position += transform.forward * panSpeed * Time.deltaTime;
+                inputPos += transform.forward;
             if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= mousePanBorderThickness)
-                transform.position += -transform.forward * panSpeed * Time.deltaTime;
+                inputPos += -transform.forward;
 
             // Input en X
             if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - mousePanBorderThickness)
-                transform.position += transform.right * panSpeed * Time.deltaTime;
+                inputPos += transform.right;
             if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= mousePanBorderThickness)
-                transform.position -= transform.right * panSpeed * Time.deltaTime;
-            //La z es mi valor forward, mientras que mi x es mi right.
-            var xpos = transform.position.x;
-            xpos = Mathf.Clamp(xpos, -panLimits.x, panLimits.x);
-            var zPos = transform.position.z;
-            zPos = Mathf.Clamp(zPos, -panLimits.y, panLimits.y);
+                inputPos += -transform.right;
 
-            transform.position = new Vector3(xpos, transform.position.y, zPos);
+            inputPos *= panSpeed * Time.deltaTime;
+            transform.position = ClampToPanLimits(transform.position + inputPos, navigationLimits);
         }
         else
         {
@@ -68,16 +68,12 @@ public class CameraBehaviour : MonoBehaviour
             //else if (MainGameControl.LastObjectSelected)
             //    targetLock = MainGameControl.LastObjectSelected.transform.position;
 
-            var xpos = Target.position.x;
-            xpos = Mathf.Clamp(xpos, -panLimits.x, panLimits.x);
-            var zPos = Target.position.z;
-            zPos = Mathf.Clamp(zPos, -panLimits.y, panLimits.y);
-            transform.position = new Vector3(xpos, transform.position.y, zPos);
+            transform.position = ClampToPanLimits(Target.position, navigationLimits);
         }
         #endregion
 
         #region Rotacion
-        if (Input.GetKey("e"))
+        if (Input.GetKey(KeyCode.E))
         {
             //Usamos quaterniones, pero traducidos con eulerAngles, de otro modo es imposible trabajar las rotaciones con vectores tridimencionales.
             Quaternion A = transform.rotation; //Valor por defecto.
@@ -87,7 +83,7 @@ public class CameraBehaviour : MonoBehaviour
 
         }
 
-        if (Input.GetKey("q"))
+        if (Input.GetKey(KeyCode.Q))
         {
             Quaternion A = transform.rotation;
             Quaternion B = transform.rotation;
@@ -96,9 +92,9 @@ public class CameraBehaviour : MonoBehaviour
         }
         #endregion
 
-        /*
         #region Zoom
 
+        /*
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll > 0)
         {
@@ -108,8 +104,26 @@ public class CameraBehaviour : MonoBehaviour
         {
             operativeCamera.transform.localPosition = Vector3.Lerp(operativeCamera.transform.localPosition, ZoomMax, (zoomSpeed * 100f * Time.deltaTime) / 100f);
         }
+        */
 
         #endregion
-        */
+    }
+
+    private Vector3 ClampToPanLimits(Vector3 position, Vector3 panLimits)
+    {
+        //La z es mi valor forward, mientras que mi x es mi right.
+        return new Vector3(Mathf.Clamp(position.x, -panLimits.x, panLimits.x),
+                           Mathf.Clamp(position.y, -panLimits.y, panLimits.y),
+                           Mathf.Clamp(position.z, -panLimits.z, panLimits.z));
+    }
+
+
+    /// <summary>
+    /// Centra la cámara en una posición específica.
+    /// </summary>
+    /// <param name="targetPosition"></param>
+    public void CenterCameraToTarget(Vector3 targetPosition)
+    {
+        transform.position = ClampToPanLimits(targetPosition, navigationLimits);
     }
 }

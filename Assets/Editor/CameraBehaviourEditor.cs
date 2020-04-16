@@ -19,6 +19,7 @@ public class CameraBehaviourEditor : Editor
     private void OnEnable()
     {
         ins = target as CameraBehaviour;
+        ins.freeCamera = true;
     }
 
     public override void OnInspectorGUI()
@@ -43,13 +44,20 @@ public class CameraBehaviourEditor : Editor
             default:
                 break;
         }
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("Target"));
-        if (GUILayout.Button("Pick First Player Controller in Scene"))
-        {
-            var finded = GameObject.Find("Player");
-            if (!finded) Debug.LogError("Player has not been found");
-            else ins.Target = finded.transform;
-        }
+
+        //EditorGUILayout.PropertyField(serializedObject.FindProperty("Target"));
+
+        //ins.Target = (Transform)EditorGUILayout.ObjectField(ins.Target, typeof(Transform), true);
+        //if (GUILayout.Button("Pick First Player Controller in Scene"))
+        //{
+        //    var finded = GameObject.Find("Player");
+        //    if (!finded) Debug.LogError("Player has not been found");
+        //    else
+        //    {
+        //        ins.Target = finded.transform;
+        //        serializedObject.ApplyModifiedProperties();
+        //    }
+        //}
         EditorGUILayout.Space();
 
 
@@ -60,7 +68,7 @@ public class CameraBehaviourEditor : Editor
 
         EditorGUILayout.LabelField("Limits and Borders", BoldText);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mousePanBorderThickness"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("panLimits"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("navigationLimits"));
         EditorGUILayout.Space();
 
         serializedObject.ApplyModifiedProperties();

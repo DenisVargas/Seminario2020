@@ -12,9 +12,11 @@ public class WorldObject : MonoBehaviour, IInteractable
 
     public List<OperationOptions> suportedOperations = new List<OperationOptions>();
 
+    public Vector3 position { get => transform.position; }
+
     public void Operate(int opID, params object[] optionalParams)
     {
-        throw new System.NotImplementedException();
+        Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
     }
 
     private void Awake()

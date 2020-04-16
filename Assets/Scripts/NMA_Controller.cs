@@ -9,6 +9,10 @@ public class NMA_Controller : MonoBehaviour
     [SerializeField] LayerMask mouseDetectionMask = ~0;
     [SerializeField] int maxMouseRayDistance = 200;
     [SerializeField] Transform MouseDebug = null;
+    [SerializeField] Transform targetDebug = null;
+    [SerializeField] float _interactionMaxDistance = 0.1f;
+
+    Queue<IQueryComand> comandos = new Queue<IQueryComand>();
 
     Camera _viewCamera = null;
     NavMeshAgent _agent = null;
@@ -29,6 +33,8 @@ public class NMA_Controller : MonoBehaviour
                                                                       _viewCamera.transform.position.y));
         MouseDebug.position = wMousePos;
 
+        bool mod1 = Input.GetKey(KeyCode.LeftShift);
+
         //Asigno la posición como target a nuestro navMeshAgent.
         if (Input.GetMouseButton(1))
         {
@@ -41,21 +47,72 @@ public class NMA_Controller : MonoBehaviour
             {
                 //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
                 _canvasController.DisplayCommandMenu(Input.mousePosition, _mouseContext.firstInteractionObject.GetSuportedOperations(), _mouseContext.firstInteractionObject, ExecuteOperation);
-               
             }
             else
             {
-                transform.LookAt(wMousePos + Vector3.up * transform.position.y);
-                _agent.destination = wMousePos;
+                if (!mod1) comandos.Clear();
+
+                IQueryComand moveCommand = new cmd_Move(wMousePos, MoveToTarget, () => { return _agent.remainingDistance == 0; } );
+                comandos.Enqueue(moveCommand);
             }
+        }
+
+
+        if (comandos.Count > 0)
+        {
+            IQueryComand current = comandos.Peek();
+            current.Update();
+
+            if (current.completed)
+                comandos.Dequeue();
         }
     }
 
+    /// <summary>
+    /// Callback que se llama cuando seleccionamos una acción a realizar sobre un objeto interactuable desde el panel de comandos.
+    /// </summary>
+    /// <param name="operation">La operación que queremos realizar</param>
+    /// <param name="target">El objetivo de dicha operación</param>
     public void ExecuteOperation(OperationOptions operation, IInteractable target)
     {
         //Aqui tenemos una referencia a un target y una operación que quiero ejectar sobre él.
         //(¿Necesito moverme hacia el objetivo primero?) - Opcionalmente me muevo hasta la ubicación del objeto.
         print(string.Format("Ejecuto la operación {0} sobre {1}", operation.ToString(), target));
+
+        //Chequeo si estoy lo suficientemente cerca para activar el comando.
+        if (Vector3.Distance(transform.position, target.position) > _interactionMaxDistance)
+        {
+            Vector3 vectorToPlayer = target.position - transform.position;
+            Vector3 stopingPosition = target.position -  (vectorToPlayer.normalized * _interactionMaxDistance);
+            targetDebug.position = stopingPosition;
+
+            IQueryComand closeDistance = new cmd_Move(stopingPosition, MoveToTarget, () => { return _agent.remainingDistance == 0; });
+            comandos.Enqueue(closeDistance);
+        }
+
+        //añado el comando correspondiente a la query.
+        switch (operation)
+        {
+            case OperationOptions.Take:
+                break;
+            case OperationOptions.Ignite:
+                break;
+            case OperationOptions.Activate:
+                IQueryComand activateCommand = new cmd_Activate(operation, target);
+                comandos.Enqueue(activateCommand);
+                break;
+            case OperationOptions.Equip:
+                break;
+            default:
+                break;
+        }
+    }
+
+    //Movimiento
+    public void MoveToTarget(Vector3 dst)
+    {
+        transform.LookAt(dst.YComponent(0));
+        _agent.destination = dst;
     }
 
     struct MouseContext
@@ -100,5 +157,12 @@ public class NMA_Controller : MonoBehaviour
         }
 
         return _context;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
+        Gizmos.DrawWireSphere(transform.position, _interactionMaxDistance);
     }
 }

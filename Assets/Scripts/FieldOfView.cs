@@ -8,23 +8,23 @@ public class FieldOfView : MonoBehaviour
     #region State
 
     [Header("Field of view Radius and Angle.")]
-    public float viewRadius;
+    public float viewRadius = 10f;
     [Range(0, 360)]
-    public float ViewAngle;
+    public float ViewAngle  = 360f;
 
     [Header("Visibility Masks")]
-    public LayerMask targetMask;
-    public LayerMask ObstacleMask;
+    public LayerMask targetMask    = ~0;
+    public LayerMask ObstacleMask  = ~0;
     [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
 
     [Header("Visualization Paramaters")]
-    [SerializeField] MeshFilter viewMeshFilter;
-    [SerializeField] float _meshResolution;
-    [SerializeField] float _edgeDstTreshold;
-    [SerializeField] int _edgeResolveIterations;
+    [SerializeField] MeshFilter viewMeshFilter   = null;
+    [SerializeField] float _meshResolution       = 1f;
+    [SerializeField] float _edgeDstTreshold      = 0.5f;
+    [SerializeField] int _edgeResolveIterations  = 4;
 
-    Mesh viewMesh;
+    Mesh viewMesh = null;
 
     #endregion
     //==================================== Unity Methods ================================================

@@ -7,16 +7,17 @@ using UnityEngine;
 public class cmd_Move : IQueryComand
 {
     public Action<Vector3> _moveFunction = delegate { };
-    public Func<bool> _checkCondition = delegate { return false; };
+    public Func<Vector3, bool> _checkCondition = delegate { return false; };
+    public Action _dispose = delegate { };
 
     Vector3 _targetPosition = Vector3.zero;
-    Transform origin = null;
 
-    public cmd_Move(Vector3 targetPosition, Action<Vector3> moveFunction, Func<bool> checkCondition)
+    public cmd_Move(Vector3 targetPosition, Action<Vector3> moveFunction, Func<Vector3, bool> checkCondition, Action dispose)
     {
         _targetPosition = targetPosition;
         _moveFunction = moveFunction;
         _checkCondition = checkCondition;
+        _dispose = dispose;
     }
 
     public bool completed { get; private set; } = false;
@@ -28,10 +29,13 @@ public class cmd_Move : IQueryComand
 
     public void Update()
     {
+        completed = _checkCondition(_targetPosition);
         _moveFunction(_targetPosition);
 
-        completed = _checkCondition();
-        MonoBehaviour.print(string.Format("move comand Executing, state {0}", completed));
+        MonoBehaviour.print(string.Format("move comand Executing, status {0}", completed ? "Completed" : "On Going"));
+
+        if (completed)
+            _dispose();
     }
 
 }

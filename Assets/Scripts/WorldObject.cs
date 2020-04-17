@@ -14,7 +14,7 @@ public class WorldObject : MonoBehaviour, IInteractable
 
     public Vector3 position { get => transform.position; }
 
-    public void Operate(int opID, params object[] optionalParams)
+    public void Operate(OperationOptions operation, params object[] optionalParams)
     {
         Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
     }

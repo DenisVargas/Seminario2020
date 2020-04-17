@@ -11,6 +11,7 @@ public class NMA_Controller : MonoBehaviour
     [SerializeField] Transform MouseDebug = null;
     [SerializeField] Transform targetDebug = null;
     [SerializeField] float _interactionMaxDistance = 0.1f;
+    [SerializeField] float _movementTreshold = 0.18f;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
 
@@ -31,12 +32,13 @@ public class NMA_Controller : MonoBehaviour
         Vector3 wMousePos = _viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
                                                                       Input.mousePosition.y,
                                                                       _viewCamera.transform.position.y));
-        MouseDebug.position = wMousePos;
+        if (MouseDebug != null)
+            MouseDebug.position = wMousePos;
 
         bool mod1 = Input.GetKey(KeyCode.LeftShift);
 
         //Asigno la posición como target a nuestro navMeshAgent.
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
         {
             //Hacer un raycast y fijarme si hay un objeto que se interactuable.
             MouseContext _mouseContext = m_GetMouseContextDetection();
@@ -46,13 +48,29 @@ public class NMA_Controller : MonoBehaviour
             if (_mouseContext.interactuableHitted)
             {
                 //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
-                _canvasController.DisplayCommandMenu(Input.mousePosition, _mouseContext.firstInteractionObject.GetSuportedOperations(), _mouseContext.firstInteractionObject, ExecuteOperation);
+                _canvasController.DisplayCommandMenu
+                (
+                    Input.mousePosition,
+                    _mouseContext.firstInteractionObject.GetSuportedOperations(),
+                    _mouseContext.firstInteractionObject,
+                    ExecuteOperation
+                 );
             }
             else
             {
                 if (!mod1) comandos.Clear();
 
-                IQueryComand moveCommand = new cmd_Move(wMousePos, MoveToTarget, () => { return _agent.remainingDistance == 0; } );
+                IQueryComand moveCommand = new cmd_Move
+                (   wMousePos,
+                    MoveToTarget, 
+                    (targetPos) => 
+                    {
+                        //print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
+                        float dst = Vector3.Distance(transform.position, targetPos);
+                        return dst <= _movementTreshold;
+                    },
+                    disposeCommand
+                );
                 comandos.Enqueue(moveCommand);
             }
         }
@@ -62,9 +80,6 @@ public class NMA_Controller : MonoBehaviour
         {
             IQueryComand current = comandos.Peek();
             current.Update();
-
-            if (current.completed)
-                comandos.Dequeue();
         }
     }
 
@@ -84,10 +99,24 @@ public class NMA_Controller : MonoBehaviour
         {
             Vector3 vectorToPlayer = target.position - transform.position;
             Vector3 stopingPosition = target.position -  (vectorToPlayer.normalized * _interactionMaxDistance);
-            targetDebug.position = stopingPosition;
 
-            IQueryComand closeDistance = new cmd_Move(stopingPosition, MoveToTarget, () => { return _agent.remainingDistance == 0; });
+            if (targetDebug != null)
+                targetDebug.position = stopingPosition;
+
+            IQueryComand closeDistance = new cmd_Move
+            (
+                stopingPosition, 
+                MoveToTarget, 
+                (targetPos) => 
+                {
+                    print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
+                    float dst = Vector3.Distance(transform.position, targetPos);
+                    return dst <= _movementTreshold;
+                },
+                disposeCommand
+            );
             comandos.Enqueue(closeDistance);
+            print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
         }
 
         //añado el comando correspondiente a la query.
@@ -98,8 +127,10 @@ public class NMA_Controller : MonoBehaviour
             case OperationOptions.Ignite:
                 break;
             case OperationOptions.Activate:
-                IQueryComand activateCommand = new cmd_Activate(operation, target);
+                IQueryComand activateCommand = new cmd_Activate(operation, target, disposeCommand);
                 comandos.Enqueue(activateCommand);
+
+                print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
                 break;
             case OperationOptions.Equip:
                 break;
@@ -113,6 +144,16 @@ public class NMA_Controller : MonoBehaviour
     {
         transform.LookAt(dst.YComponent(0));
         _agent.destination = dst;
+    }
+
+    void disposeCommand()
+    {
+        comandos.Dequeue();
+        if (comandos.Count > 0)
+        {
+            var next = comandos.Peek();
+            print(string.Format("Comando Finalizado\nSiguiente comando es {0}", next));
+        }
     }
 
     struct MouseContext

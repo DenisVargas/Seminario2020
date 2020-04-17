@@ -16,5 +16,5 @@ public interface IInteractable
     Vector3 position { get; }
 
     List<OperationOptions> GetSuportedOperations();
-    void Operate(int opID, params object[] optionalParams);
+    void Operate(OperationOptions selectedOperation, params object[] optionalParams);
 }

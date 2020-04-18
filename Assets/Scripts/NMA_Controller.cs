@@ -109,7 +109,7 @@ public class NMA_Controller : MonoBehaviour
                 MoveToTarget, 
                 (targetPos) => 
                 {
-                    print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
+                    //print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
                     float dst = Vector3.Distance(transform.position, targetPos);
                     return dst <= _movementTreshold;
                 },

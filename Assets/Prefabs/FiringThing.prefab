@@ -63,7 +63,7 @@ MonoBehaviour:
   fireParticle: {fileID: 5536304171323602293}
   fire: {fileID: 5678542836886627602}
   suportedInteractions: 02000000
-  _delay: 0.8
+  _delay: 0.3
   _fireTime: 5
   _affectedRadius: 1.5
   _interactionRadius: 3
@@ -73,7 +73,6 @@ MonoBehaviour:
   toIgniteObjects: []
   _col: {fileID: 206088919360502986}
   _damageArea: {fileID: 206088919451261382}
-  radius: 1.52
 --- !u!1 &206088919451261376
 GameObject:
   m_ObjectHideFlags: 0

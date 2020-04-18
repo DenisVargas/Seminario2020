@@ -61,6 +61,11 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         }
     }
 
+    public void Kill()
+    {
+        gameObject.SetActive(false);
+    }
+
     IEnumerator DelayedOtherIgnition(float Delay)
     {
         //Llamo la función Ignite a todos los de la lista de ignición con los que overlapeo.
@@ -101,7 +106,11 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
 
     public void Operate(OperationOptions operation, params object[] optionalParams)
     {
-        if (operation == OperationOptions.Activate) Ignite(_delay);
+        if (operation == OperationOptions.Activate)
+        {
+            print("Me activo CTM");
+            Ignite(_delay);
+        }
     }
 
     private void OnMouseEnter()

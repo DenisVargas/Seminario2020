@@ -19,6 +19,9 @@ public class NMA_Controller : MonoBehaviour
     NavMeshAgent _agent = null;
     CanvasController _canvasController = null;
 
+    Vector3 _currentTargetPos;
+    float forwardLerpTime;
+
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -75,6 +78,9 @@ public class NMA_Controller : MonoBehaviour
             }
         }
 
+        if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
+            UpdateForward();
+
 
         if (comandos.Count > 0)
         {
@@ -110,7 +116,7 @@ public class NMA_Controller : MonoBehaviour
                 (targetPos) => 
                 {
                     //print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
-                    float dst = Vector3.Distance(transform.position, targetPos);
+                    float dst = Vector3.Distance(transform.position.YComponent(0), targetPos.YComponent(0));
                     return dst <= _movementTreshold;
                 },
                 disposeCommand
@@ -142,8 +148,26 @@ public class NMA_Controller : MonoBehaviour
     //Movimiento
     public void MoveToTarget(Vector3 dst)
     {
-        transform.LookAt(dst.YComponent(0));
+        if (_currentTargetPos != dst)
+        {
+            forwardLerpTime = 0;
+            _currentTargetPos = dst;
+        }
+
         _agent.destination = dst;
+    }
+
+    public void UpdateForward()
+    {
+        //transform.LookAt(dst.YComponent(0)); //Esto funciona, pero realiza un comportamiento extraño que es indeseable ya que tiene en cuenta las 3 dimensiones.
+        Vector3 _TargetForward = (_currentTargetPos.YComponent(0) - transform.position.YComponent(0)).normalized;
+
+        //chequeamos el tiempo del lerp. (Aquí podriamos hacer que el lerp dependa de un tiempo target)
+        //Ejemplo: que lerpee siempre en 0.5 seg o 2 seg.
+        float time = Mathf.Clamp(forwardLerpTime + Time.deltaTime, 0f, 1f);
+
+        //Lerpeamos y Aplicamos. Slerp para que la rotacion sea suave.
+        transform.forward = Vector3.Slerp(transform.forward, _TargetForward, time);
     }
 
     void disposeCommand()

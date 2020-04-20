@@ -1,18 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using IA.StateMachine.Generic;
 using UnityEngine.AI;
+using IA.StateMachine.Generic;
 using IA.LineOfSight;
+using core.DamageSystem;
 
-public class Baboso : MonoBehaviour, IDamageable
+public enum DamageType
+{
+    e_fire,
+    cutting,
+    blunt,
+    piercing
+}
+
+public struct Damage
+{
+    public DamageType type;
+    public float Ammount;
+    public float criticalMultiplier;
+    public bool instaKill;
+}
+
+[System.Serializable]
+public struct DamageModifier
+{
+    public DamageType type;
+    public float percentual;
+}
+
+public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage>
 {
     [Header("Stats")]
     [SerializeField] float _health = 10;
     [SerializeField] float _attackRange;
 
+    [SerializeField] DamageModifier[] weaknesses;  //Aumentan el daño multiplicandolo x un porcentaje.
+    [SerializeField] DamageModifier[] resistances; //reducen el daño x el un porcentaje.
+
     [Header("Aditional Options")]
     [SerializeField] bool startPatrolling = false;
+    [SerializeField] float _burnTime = 3f;
+
+    float _remainingBurnTime = 0f;
 
     [Header("References")]
     [SerializeField]
@@ -21,6 +51,7 @@ public class Baboso : MonoBehaviour, IDamageable
     [SerializeField] int _toStopPositions;
     [SerializeField] float stopTime;
 
+    BabosoState _currentState;
     BabosoState _previousState;
     BabosoState _nextState;
 
@@ -35,12 +66,17 @@ public class Baboso : MonoBehaviour, IDamageable
         burning,
         dead
     }
-    GenericFSM<BabosoState> state = null; 
+    GenericFSM<BabosoState> state = null;
     #endregion
 
     NavMeshAgent _agent;
     Animator     _anims;
     LineOfSightComponent _sight;
+    Trail _trail;
+
+    DamageDealer _hurtbox;
+    HitBox _hitbox;
+    Damage _damageState = new Damage();
 
     [SerializeField] Transform _target;
     private Vector3   _targetLocation;
@@ -53,7 +89,7 @@ public class Baboso : MonoBehaviour, IDamageable
     [SerializeField] Color attackRangeColor;
 #endif
 
-    public float health
+    float health
     {
         get => _health;
         set
@@ -72,6 +108,8 @@ public class Baboso : MonoBehaviour, IDamageable
         //Seteo todas las referencias a los componentes.
         _agent = GetComponent<NavMeshAgent>();
         _sight = GetComponent<LineOfSightComponent>();
+        _trail = GetComponentInChildren<Trail>();
+        _hurtbox = GetComponentInChildren<DamageDealer>();
 
         //State Machine
         var dead = new State<BabosoState>("Dead");
@@ -117,6 +155,7 @@ public class Baboso : MonoBehaviour, IDamageable
 
         dead.OnEnter += (x) => 
         {
+            _currentState = BabosoState.dead;
             //Seteo animación.
             //Apago componentes que no hagan falta.
             gameObject.SetActive(false);
@@ -124,16 +163,22 @@ public class Baboso : MonoBehaviour, IDamageable
         //dead.OnUpdate += () => { };
         dead.OnExit += (x) => { };
 
-        idle.OnEnter += (x) => 
+        idle.OnEnter += (previousState) => 
         {
+            _currentState = BabosoState.idle;
             //Seteo animacion
-            print("Estoy quieto");
+            print(string.Format("{0}: Entró al estado Idle", gameObject.name));
         };
         idle.OnUpdate += () => { };
-        idle.OnExit += (x) => { };
+        idle.OnExit += (nextState) => 
+        {
+            print(string.Format("{0}: Salió del estado Idle", gameObject.name));
+        };
 
         patroll.OnEnter += (x) => 
         {
+            _currentState = BabosoState.patroll;
+
             //Obtengo un target Point para moverme.
             _targetLocation = patrolPoints.getNextPosition();
             _stoping = false;
@@ -172,7 +217,7 @@ public class Baboso : MonoBehaviour, IDamageable
         };
         patroll.OnExit += (x) => { };
 
-        pursue.OnEnter += (x) => { };
+        pursue.OnEnter += (x) => { _currentState = BabosoState.pursue; };
         pursue.OnUpdate += () => 
         {
             //Vector3 direction = (_target.position - transform.position).normalized;
@@ -188,6 +233,7 @@ public class Baboso : MonoBehaviour, IDamageable
 
         attack.OnEnter += (previousState) =>
         {
+            _currentState = BabosoState.attack;
             //Detengo la marcha.
             _agent.isStopped = true;
             Debug.LogWarning("Attack On Enter");
@@ -203,22 +249,37 @@ public class Baboso : MonoBehaviour, IDamageable
 
         burning.OnEnter += (previousState) =>
         {
+            _currentState = BabosoState.burning;
             //Prendemos la animación de quemado.
 
             //En propósitos de debug.
             var matColor = GetComponentInChildren<MeshRenderer>().material;
             matColor.color = Color.red;
+            _remainingBurnTime = _burnTime;
+
+            //Dejamos de emitir baba.
+            _trail.Emit = false;
+
+            //Nos detenemos y reseteamos el camino.
+            _agent.ResetPath();
         };
-        //burning.OnUpdate += () => 
-        //{
-        //    //Esto se maneja x animación.
-        //};
+        burning.OnUpdate += () =>
+        {
+            //Esto se maneja x animación.
+            if (_remainingBurnTime > 0)
+                _remainingBurnTime -= Time.deltaTime;
+            else
+                state.Feed(BabosoState.dead);
+        };
         //burning.OnExit += (previousState) =>
         //{
         //    //Cuando se termina el tiempo de la animación saltamos a dead.
         //};
 
-        think.OnEnter += (x) => { };
+        think.OnEnter += (x) => 
+        {
+            _currentState = BabosoState.think;
+        };
         think.OnUpdate += () => 
         {
             //Tomo desiciones... pero cuales?
@@ -247,5 +308,32 @@ public class Baboso : MonoBehaviour, IDamageable
         Gizmos.color = attackRangeColor;
         Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _attackRange);
+    }
+
+    public void Hit(Damage damage)
+    {
+        Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
+
+        //Si me alcanza el daño de fuego.
+        if (damage.instaKill && damage.type == DamageType.e_fire)
+        {
+            if (_currentState != BabosoState.burning)
+                state.Feed(BabosoState.burning);
+            return;
+        }
+
+        if (damage.instaKill)
+        {
+            if (_currentState != BabosoState.dead)
+                health = 0;
+            return;
+        }
+
+        health -= damage.Ammount;
+    }
+
+    public Damage getDamageState()
+    {
+        return _damageState;
     }
 }

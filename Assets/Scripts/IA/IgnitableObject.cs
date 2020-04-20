@@ -1,69 +1,101 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using core.DamageSystem;
+using System;
 
 [RequireComponent(typeof(Collider))]
-public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
+public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObject, IAgressor<Damage>
 {
+    public Action registerInUpdateList_Callback = delegate { };
+    public Action removeFromUpdateList_Callback = delegate { };
     [SerializeField] GameObject fireParticle = null;
-    [SerializeField] ParticleSystem fire = null;
     [SerializeField] List<OperationOptions> suportedInteractions = new List<OperationOptions>();
 
-    [SerializeField]
-    [Tooltip("Cuanto tiempo pasará antes de que el fuego se expanda a nodos subyacentes.")]
-    float _delay = 0.8f;
-
+    [Tooltip("Cuanto tiempo estará activo mientras ")]
+    public float nonActive_LifeTime = 5f;
     [Tooltip("Cuanto tiempo estará prendido el fuego.")]
-    [SerializeField] float _fireTime = 5f;
+    public float Active_FireTime = 5f;
+    [HideInInspector]
+    public float ExplansionDelayTime = 0.8f;
+
+    [SerializeField] float lifeTime = 0;
+
+    [SerializeField] float _damagePerSecond = 5f;
     [SerializeField] float _affectedRadius = 2;
-    [SerializeField] float _interactionRadius = 3;
+    [SerializeField] float _interactionRadius = 3; //Esto tiene que ser dada al player para evitar que reciba daño del fuego.
     [SerializeField]LayerMask efectTargets = ~0;
 
     public List<IIgnitableObject> toIgnite = new List<IIgnitableObject>();
+
+    //Debug inspectorList.
     public List<GameObject> toIgniteObjects = new List<GameObject>();
 
     [SerializeField] Collider _col = null;
-    [SerializeField] Collider _damageArea = null;
-    
-    public bool IsIgniteable { get; private set; } = (true);
+    [SerializeField] HitBox _hitBox = null;
+
+    public bool Burning { get; private set; } = (false);
     public Vector3 position => transform.position;
 
-    //private void Start()
-    //{
-    //    checkSurroundingIgnitionObjects();
-    //}
+    public bool IsActive => gameObject.activeSelf;
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateLifeTime(float deltaTime)
     {
-
-    }
-
-    public void Ignite(float delayTime = 0)
-    {
-        if (IsIgniteable)
+        lifeTime -= deltaTime;
+        if (lifeTime <= 0)
         {
-            Debug.LogWarning(gameObject.name + " IS IGNITED");
-
-            //Desactivo mi collider. Ya no soy interactuable.
-            _col.enabled = false;
-            //Activo el área de daño.
-            _damageArea.gameObject.SetActive(true);
-            //Activo la particula del fueguín.
-            //fire.gameObject.SetActive(true);
-            fireParticle.SetActive(true);
-
-            checkSurroundingIgnitionObjects();
-            StartCoroutine(DelayedOtherIgnition(delayTime));
-
-            IsIgniteable = false;
+            Dispose();
         }
     }
 
-    public void Kill()
+    public void ResetCurrentLifeTime()
+    {
+        lifeTime = nonActive_LifeTime;
+    }
+
+    //Para retornar un objeto pooleable al pool del que se originó, utiliza Dispose();
+
+    /// <summary>
+    /// Callback que se llama cuando cuando el poolObject es activado.
+    /// </summary>
+    public override void Enable()
+    {
+        //Nos activamos.
+        gameObject.SetActive(true);
+
+        //Nos registramos en la lista de Updateo.
+        registerInUpdateList_Callback();
+    }
+    /// <summary>
+    /// Callback que se llama cuando cuando el poolObject es desactivado.
+    /// </summary>
+    public override void Disable()
     {
         gameObject.SetActive(false);
+
+        //Nos removemos del sistema de updateo.
+        removeFromUpdateList_Callback();
+    }
+
+
+    public void Ignite(float delayTime = 0)
+    {
+        if (!Burning)
+        {
+            //print(gameObject.name + " IS IGNITED");
+            //Desactivo mi collider. Ya no soy interactuable.
+            _col.enabled = false;
+            //Activo el área de daño.
+            _hitBox.active = true;
+            //Activo la particula del fueguín.
+            fireParticle.SetActive(true);
+
+            StartCoroutine(DelayedOtherIgnition(delayTime));
+            StartCoroutine(extinguish(Active_FireTime));
+
+            Burning = true;
+            lifeTime = Active_FireTime;
+        }
     }
 
     IEnumerator DelayedOtherIgnition(float Delay)
@@ -73,9 +105,18 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         checkSurroundingIgnitionObjects();
         foreach (var item in toIgnite)
         {
-            if (item.IsIgniteable)
+            if (!item.Burning)
                 item.Ignite(Delay);
         }
+        toIgnite.Clear();
+    }
+
+    IEnumerator extinguish(float time)
+    {
+        //Aquí en vez de apagar el gameObject de una, deberíamos ir por partes.
+
+        yield return new WaitForSeconds(time);
+        Dispose();
     }
 
     void checkSurroundingIgnitionObjects()
@@ -86,7 +127,7 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         for (int i = 0; i < cols.Length; i++)
         {
             var igniteable = cols[i].GetComponent<IIgnitableObject>();
-            if (igniteable != null && !toIgnite.Contains(igniteable))
+            if (igniteable != null && !toIgnite.Contains(igniteable) && igniteable.IsActive)
             {
                 //lo añado a una lista a ignitar.
                 toIgnite.Add(igniteable);
@@ -107,26 +148,35 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
     public void Operate(OperationOptions operation, params object[] optionalParams)
     {
         if (operation == OperationOptions.Activate)
-        {
-            print("Me activo CTM");
-            Ignite(_delay);
-        }
+            Ignite(ExplansionDelayTime);
     }
 
     private void OnMouseEnter()
     {
         //Feedback de interacción.
     }
-
     private void OnMouseExit()
     {
         //Feedback de interacción.
     }
 
+    public Damage getDamageState()
+    {
+        return new Damage()
+        {
+            type = DamageType.e_fire,
+            Ammount = _damagePerSecond,
+            criticalMultiplier = 2,
+            instaKill = true
+        };
+    }
+
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _affectedRadius);
     }
+#endif
 }

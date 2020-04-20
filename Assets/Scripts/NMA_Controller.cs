@@ -98,7 +98,7 @@ public class NMA_Controller : MonoBehaviour
     {
         //Aqui tenemos una referencia a un target y una operación que quiero ejectar sobre él.
         //(¿Necesito moverme hacia el objetivo primero?) - Opcionalmente me muevo hasta la ubicación del objeto.
-        print(string.Format("Ejecuto la operación {0} sobre {1}", operation.ToString(), target));
+        //print(string.Format("Ejecuto la operación {0} sobre {1}", operation.ToString(), target));
 
         //Chequeo si estoy lo suficientemente cerca para activar el comando.
         if (Vector3.Distance(transform.position, target.position) > _interactionMaxDistance)
@@ -122,7 +122,7 @@ public class NMA_Controller : MonoBehaviour
                 disposeCommand
             );
             comandos.Enqueue(closeDistance);
-            print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
+            //print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
         }
 
         //añado el comando correspondiente a la query.
@@ -172,11 +172,11 @@ public class NMA_Controller : MonoBehaviour
 
     void disposeCommand()
     {
-        comandos.Dequeue();
+        var _currentC = comandos.Dequeue();
         if (comandos.Count > 0)
         {
             var next = comandos.Peek();
-            print(string.Format("Comando Finalizado\nSiguiente comando es {0}", next));
+            print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
         }
     }
 

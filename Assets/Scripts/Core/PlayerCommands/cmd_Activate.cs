@@ -23,7 +23,7 @@ public class cmd_Activate : IQueryComand
         //Ejecuto el comando.
         target.Operate(operation);
         _dispose();
-        MonoBehaviour.print("COMANDO ACTIVAR");
+        //MonoBehaviour.print("COMANDO ACTIVAR");
     }
 
     public void setUp()

@@ -4908,14 +4908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 613f318e52976314798969aacc59db02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaknesses:
-  - type: 0
-    percentual: 50
-  - type: 2
-    percentual: 60
-  resistances:
-  - type: 1
-    percentual: 50
 --- !u!1 &856897688428168663
 GameObject:
   m_ObjectHideFlags: 0
@@ -4925,7 +4917,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 856897688428168661}
-  - component: {fileID: 856897688428168660}
   - component: {fileID: 635854710}
   m_Layer: 0
   m_Name: LiquidTrail
@@ -4949,20 +4940,6 @@ Transform:
   m_Father: {fileID: 856897688738227766}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &856897688428168660
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856897688428168663}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 1.2
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.024457276, z: 0}
 --- !u!114 &635854710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4975,12 +4952,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d20f6aaa108a748a625d93b6a0cb82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignitionSystemPrefab: {fileID: 206088919360503028, guid: 705c5073aec01c04fb84ee42dee48421,
-    type: 3}
-  _trail: {fileID: 856897687836876930}
-  spawnDistance: 1.2
-  maxLifeTime: 8
   Emit: 1
+  _ignitionSystemPrefab: {fileID: 0}
+  _fireTrailParent: {fileID: 0}
+  _spawnDistance: 1
+  _max_nonActiveLifeTime: 10
+  _max_ActiveLifeTime: 5
 --- !u!1 &856897688738227760
 GameObject:
   m_ObjectHideFlags: 0
@@ -5077,7 +5054,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 10
   _attackRange: 2
+  weaknesses: []
+  resistances: []
   startPatrolling: 1
+  _burnTime: 3
   targetPosition: {x: 0, y: 0, z: 0}
   patrolPoints: {fileID: 0}
   _toStopPositions: 0

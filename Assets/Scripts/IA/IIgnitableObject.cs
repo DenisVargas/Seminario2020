@@ -2,7 +2,8 @@
 
 public interface IIgnitableObject
 {
-    bool IsIgniteable { get; }
+    bool Burning { get; }
+    bool IsActive { get; }
     GameObject gameObject { get; }
 
     void Ignite(float delayTime);

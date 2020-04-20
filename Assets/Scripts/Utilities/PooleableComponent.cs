@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using Utility.ObjectPools;
 
-public class PooleableComponent : MonoBehaviour, IPoolObject
+public class PooleableComponent : MonoBehaviour, IPoolObject<PooleableComponent>
 {
-    public Pool<IPoolObject> pool;
+    public Pool<PooleableComponent> pool;
 
     /// <summary>
     /// LLama a esta función en vez de Destroy(GameObject);

@@ -5,7 +5,7 @@ using System;
 
 public class ObjectPoolTest
 {
-    public class instantiatonTest : IPoolObject
+    public class instantiatonTest : IPoolObject<instantiatonTest>
     {
         int value = 0;
         public bool enabled = false;

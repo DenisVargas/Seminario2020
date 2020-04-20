@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Utility.ObjectPools
 {
-    public interface IPoolObject
+    public interface IPoolObject<poolType>
     {
         /// <summary>
         /// Usamos esta función para devolver nuestro objeto a su correspondiente Pool.
@@ -20,10 +20,10 @@ namespace Utility.ObjectPools
         void Disable();
     }
 
-    public class Pool<T> where T : IPoolObject
+    public class Pool<T> where T : IPoolObject<T>
     {
-        Queue<IPoolObject> pool = new Queue<IPoolObject>();
-        public Func<IPoolObject> FactoryMethod = delegate { return default; };
+        Queue<IPoolObject<T>> pool = new Queue<IPoolObject<T>>();
+        public Func<IPoolObject<T>> FactoryMethod = delegate { return default; };
 
         public int Count { get => pool.Count; }
         public bool IsDinamic { get; set; } = false;
@@ -33,7 +33,7 @@ namespace Utility.ObjectPools
             this.IsDinamic = IsDinamic;
         }
 
-        public void Populate(int initialCount, Func<IPoolObject> FactoryMethod)
+        public void Populate(int initialCount, Func<IPoolObject<T>> FactoryMethod)
         {
             this.FactoryMethod = FactoryMethod;
 

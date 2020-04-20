@@ -2,61 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DamageType
+namespace core.DamageSystem
 {
-    e_fire,
-    cutting,
-    blunt,
-    piercing
-}
-
-public struct Damage
-{
-    public DamageType type;
-    public float Ammount;
-    public float criticalMultiplier;
-    public bool instaKill;
-}
-
-public interface IDamageable
-{
-    float health { get; set; }
-}
-
-[System.Serializable]
-public struct DamageModifier
-{
-    public DamageType type;
-    public float percentual;
-}
-
-//Calculo de daño y manejo del Collider.
-//Aqui podremos setear debilidades.
-
-[RequireComponent(typeof(Collider))]
-public class DamageDealer : MonoBehaviour
-{
-    [SerializeField] IDamageable _body;
-
-    [SerializeField] DamageModifier[] weaknesses;  //Aumentan el daño multiplicandolo x un porcentaje.
-    [SerializeField] DamageModifier[] resistances; //reducen el daño x el un porcentaje.
-
-    Collider    _col;
-
-    private void Awake()
+    public interface IDamageable<Input>
     {
-        _col = GetComponent<Collider>();
-        _body = GetComponentInParent<IDamageable>();
+        GameObject gameObject { get; }
+        void Hit(Input damage);
     }
 
-    public void GetDamage(Damage damage)
+    //Esto es un componente que actua como Hurtbox
+    //Hurtboxes solo colisionan con Hitboxes, y son Triggers.
+    //Aqui podremos setear debilidades.
+
+    [RequireComponent(typeof(Collider))]
+    public class DamageDealer : MonoBehaviour
     {
-        if (damage.instaKill)
+        [SerializeField] IDamageable<Damage> _body;
+        public bool DetectIncomingDamage
         {
-            _body.health = 0;
-            return;
+            get => _col.enabled;
+            set => _col.enabled = value;
+        }
+        Collider    _col;
+
+        private void Awake()
+        {
+            _col = GetComponent<Collider>();
+            _col.isTrigger = true;
+            _body = GetComponentInParent<IDamageable<Damage>>();
         }
 
-        _body.health -= damage.Ammount;
+        public void GetDamage(Damage damage)
+        {
+            Debug.LogWarning(string.Format("{0} ha recibido un HIT", _body.gameObject.name));
+            _body.Hit(damage);
+        }
     }
 }
+

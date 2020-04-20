@@ -32,7 +32,7 @@ public class cmd_Move : IQueryComand
         completed = _checkCondition(_targetPosition);
         _moveFunction(_targetPosition);
 
-        MonoBehaviour.print(string.Format("move comand Executing, status {0}", completed ? "Completed" : "On Going"));
+        //MonoBehaviour.print(string.Format("move comand Executing, status {0}", completed ? "Completed" : "On Going"));
 
         if (completed)
             _dispose();

@@ -32,6 +32,7 @@ public class Baboso : MonoBehaviour, IDamageable
         pursue,
         attack,
         think,
+        burning,
         dead
     }
     GenericFSM<BabosoState> state = null; 
@@ -78,27 +79,40 @@ public class Baboso : MonoBehaviour, IDamageable
         var patroll = new State<BabosoState>("Patroll");
         var pursue = new State<BabosoState>("Pursue");
         var attack = new State<BabosoState>("Attack");
+        var burning = new State<BabosoState>("Burning");
         var think = new State<BabosoState>("Think");
 
         #region Transiciones
         idle.AddTransition(BabosoState.dead, dead)
+            .AddTransition(BabosoState.burning, burning)
             .AddTransition(BabosoState.think, think);
 
         patroll.AddTransition(BabosoState.pursue, pursue)
+               .AddTransition(BabosoState.burning, burning)
                .AddTransition(BabosoState.think, think)
                .AddTransition(BabosoState.dead, dead);
 
         pursue.AddTransition(BabosoState.think, think)
               .AddTransition(BabosoState.attack, attack)
+              .AddTransition(BabosoState.burning, burning)
               .AddTransition(BabosoState.dead, dead);
 
         attack.AddTransition(BabosoState.dead, dead)
+              .AddTransition(BabosoState.burning, burning)
               .AddTransition(BabosoState.think, think);
+
+        burning.AddTransition(BabosoState.think, think)
+               .AddTransition(BabosoState.dead, dead);
 
         think.AddTransition(BabosoState.dead, dead)
              .AddTransition(BabosoState.idle, idle)
+             .AddTransition(BabosoState.burning, burning)
              .AddTransition(BabosoState.patroll, patroll)
              .AddTransition(BabosoState.pursue, pursue);
+
+        //Esto es cuando se resetea, si estamos utilizando un pool de enemigos.
+        dead.AddTransition(BabosoState.idle, idle)
+            .AddTransition(BabosoState.patroll, patroll);
         #endregion
 
         dead.OnEnter += (x) => 
@@ -186,6 +200,23 @@ public class Baboso : MonoBehaviour, IDamageable
         {
             Debug.LogWarning("Attack On Exit");
         };
+
+        burning.OnEnter += (previousState) =>
+        {
+            //Prendemos la animación de quemado.
+
+            //En propósitos de debug.
+            var matColor = GetComponentInChildren<MeshRenderer>().material;
+            matColor.color = Color.red;
+        };
+        //burning.OnUpdate += () => 
+        //{
+        //    //Esto se maneja x animación.
+        //};
+        //burning.OnExit += (previousState) =>
+        //{
+        //    //Cuando se termina el tiempo de la animación saltamos a dead.
+        //};
 
         think.OnEnter += (x) => { };
         think.OnUpdate += () => 

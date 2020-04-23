@@ -28,7 +28,9 @@ public class Controller : MonoBehaviour
         Vector3 wMousePos = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, viewCamera.transform.position.y));
         MouseDebug.position = wMousePos;
 
-        transform.LookAt(wMousePos + Vector3.up * transform.position.y);
+        //transform.LookAt(wMousePos + Vector3.up * transform.position.y);
+        //transform.forward = (wMousePos.YComponent(0) - transform.position.YComponent(0)).normalized;
+        //Debug.Log(transform.forward);
         velocity = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized * moveSpeed;
     }
 

@@ -5,7 +5,7 @@ using core.DamageSystem;
 using System;
 
 [RequireComponent(typeof(Collider))]
-public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObject, IAgressor<Damage>
+public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObject, IAgressor<Damage, HitResult>
 {
     public Action registerInUpdateList_Callback = delegate { };
     public Action removeFromUpdateList_Callback = delegate { };
@@ -171,6 +171,11 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
         };
     }
 
+    public void HitStatus(HitResult result)
+    {
+        //No hago nada en particular porque soy una trampa wii.
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
@@ -178,5 +183,6 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _affectedRadius);
     }
+
 #endif
 }

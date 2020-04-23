@@ -29,7 +29,7 @@ public struct DamageModifier
     public float percentual;
 }
 
-public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage>
+public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitResult>
 {
     [Header("Stats")]
     [SerializeField] float _health = 10;
@@ -335,5 +335,10 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage>
     public Damage getDamageState()
     {
         return _damageState;
+    }
+
+    public void HitStatus(HitResult result)
+    {
+        //Cuando conecta un hit... no hago nada en particular.
     }
 }

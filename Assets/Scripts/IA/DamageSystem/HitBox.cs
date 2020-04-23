@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace core.DamageSystem
 {
-    public interface IAgressor<Input>
+    public interface IAgressor<Input, Feedback>
     {
         GameObject gameObject { get; }
         Input getDamageState();
+        void HitStatus(Feedback result);
     }
 
     [RequireComponent(typeof(Collider))]
@@ -24,13 +25,13 @@ namespace core.DamageSystem
             set => _col.enabled = value;
         }
 
-        IAgressor<Damage> _body;
+        IAgressor<Damage, HitResult> _body;
         [SerializeField] Collider _col;
         float _detectionTime;
 
         private void Awake()
         {
-            _body = GetComponentInParent<IAgressor<Damage>>();
+            _body = GetComponentInParent<IAgressor<Damage, HitResult>>();
             _col = GetComponent<Collider>();
             _col.isTrigger = true;
         }

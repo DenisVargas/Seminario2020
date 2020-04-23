@@ -8,7 +8,8 @@ public enum OperationOptions : int
     Take = 0,
     Ignite,
     Activate,
-    Equip
+    Equip,
+    TrowRock
 }
 
 public interface IInteractable

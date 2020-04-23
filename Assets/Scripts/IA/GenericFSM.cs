@@ -36,7 +36,7 @@ namespace IA.StateMachine.Generic
 #if (UNITY_EDITOR)
             else
             {
-                UnityEngine.Debug.LogWarning("No transitions found");
+                UnityEngine.Debug.LogWarning(string.Format("No transitions for input: \"{0}\" where found", input.ToString()));
             }
 #endif
         }

@@ -130,6 +130,6 @@ MonoBehaviour:
   Target: {fileID: 0}
   freeCamera: 1
   mousePanBorderThickness: 20
-  navigationLimits: {x: 10, y: 0, z: 10}
+  navigationLimits: {x: 100, y: 0, z: 100}
   panSpeed: 20
   rotationSpeed: 20

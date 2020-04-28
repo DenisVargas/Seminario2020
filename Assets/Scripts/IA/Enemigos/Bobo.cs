@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using IA.StateMachine.Generic;
 using IA.LineOfSight;
-using core.DamageSystem;
+using Core.DamageSystem;
 
 public struct HitResult
 {

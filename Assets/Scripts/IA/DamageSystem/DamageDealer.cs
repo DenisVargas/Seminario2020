@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace core.DamageSystem
+namespace Core.DamageSystem
 {
     public interface IDamageable<Input>
     {

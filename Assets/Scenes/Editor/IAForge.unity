@@ -1375,7 +1375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &337371358763049418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,6 +1403,8 @@ MonoBehaviour:
   _wanderMaxDistance: 5
   _minWanderTime: 2
   _maxWanderTime: 10
+  _currentState: 0
+  _chainState: 0
   DEBUG_WanderStateRanges: 0
   DEBUG_WanderRange_Min_GIZMOCOLOR: {r: 1, g: 0, b: 0.96923065, a: 1}
   DEBUG_WanderRange_Max_GIZMOCOLOR: {r: 1, g: 0.12839004, b: 0, a: 1}

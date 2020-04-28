@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using core.DamageSystem;
+using Core.DamageSystem;
 using System;
 
 [RequireComponent(typeof(Collider))]

@@ -18,7 +18,7 @@ public class Jail : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var myhitedObject = collision as IDestructible;
+        var myhitedObject = collision.collider.GetComponent<IDestructible>();
 
         if (myhitedObject != null)
         {

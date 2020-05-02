@@ -64,18 +64,18 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     [SerializeField] float _rageMode_Duration = 10f;
     [SerializeField] float _rageMode_TargetDetectionRange = 5;
 
-    private bool _rageMode;
-    private float _rageModeTime;
+    private bool _rageMode      = false;
+    private float _rageModeTime = 0f;
 
     //--------------------------------- Wander State ----------------------------------------
 
     [Header("Wander State")]
-    [SerializeField] float _wanderMaxDistance;
-    [SerializeField] float _wanderMinDistance;
-    [SerializeField] float _minWanderTime;
-    [SerializeField] float _maxWanderTime;
+    [SerializeField] float _wanderMinDistance = 2f;
+    [SerializeField] float _wanderMaxDistance = 10f;
+    [SerializeField] float _minWanderTime     = 2f;
+    [SerializeField] float _maxWanderTime     = 10f;
 
-    private float _wanderingTime;
+    private float _wanderingTime = 0f;
 
     //-------------------------------- State Machine -----------------------------------------
 
@@ -92,8 +92,8 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     }
 
     private GenericFSM<BoboState> state = null;
-    private BoboState _currentState;
-    private BoboState _chainState;
+    [SerializeField] BoboState _currentState;
+    [SerializeField] BoboState _chainState;
 
     private Damage _currentDamageState = new Damage() { Ammount = 10 };
     //Dictionary<DamageType, List<DamageAcumulation>> DamageStack = new Dictionary<DamageType, List<DamageAcumulation>>();
@@ -134,6 +134,8 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
 
         _health = _maxHealth;
 
+        _targetTransform = FindObjectOfType<NMA_Controller>().gameObject.transform;
+
         #region Estados
         var idle = new State<BoboState>("Idle");
         var wander = new State<BoboState>("Wander");
@@ -142,11 +144,12 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
         var pursue = new State<BoboState>("Pursue");
         var think = new State<BoboState>("Think");
         var attack = new State<BoboState>("Attack");
-        var dead = new State<BoboState>("Dead"); 
+        var dead = new State<BoboState>("Dead");
         #endregion
 
         #region Transiciones.
         idle.AddTransition(BoboState.dead, dead)
+            .AddTransition(BoboState.pursue, pursue)
             .AddTransition(BoboState.think, think);
 
         wander.AddTransition(BoboState.dead, dead)
@@ -179,7 +182,13 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
         #region Eventos
         idle.OnEnter += (x) =>
         {
-            print(string.Format("{0} ha entrado al estado {1}", gameObject.name, state.current.StateName));
+            if (state != null)
+            {
+                if (state.current != null)
+                    print(string.Format("{0} ha entrado al estado {1}", gameObject.name, state.current.StateName));
+                else
+                    print(string.Format("{0} ha iniciado en el estado Idle", gameObject.name));
+            }
             //Reproduzco la animacion correspondiente.
         };
         //idle.OnUpdate += ()=> {};
@@ -360,6 +369,12 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     void Update()
     {
         state.Update();
+
+        //Si veo al enemigo pero no lo estoy persiguiendo, entonces...
+        if (_sight.IsInSight(_targetTransform) && _currentState != BoboState.pursue)
+        {
+            state.Feed(BoboState.pursue);
+        }
     }
     
     //=================================== Private Memeber Funcs =============================
@@ -498,7 +513,6 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     }
 
     //=============================== DEBUG =================================================
-
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

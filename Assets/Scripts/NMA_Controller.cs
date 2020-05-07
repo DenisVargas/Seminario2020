@@ -32,11 +32,7 @@ public class NMA_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 wMousePos = _viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
-                                                                      Input.mousePosition.y,
-                                                                      _viewCamera.transform.position.y));
-        if (MouseDebug != null)
-            MouseDebug.position = wMousePos;
+        print("Command Count:" + comandos.Count);
 
         bool mod1 = Input.GetKey(KeyCode.LeftShift);
 
@@ -63,13 +59,17 @@ public class NMA_Controller : MonoBehaviour
             {
                 if (!mod1) comandos.Clear();
 
+                print(_mouseContext.hitPosition);
+
                 IQueryComand moveCommand = new cmd_Move
-                (   wMousePos,
+                (
+                    _mouseContext.hitPosition,
                     MoveToTarget, 
                     (targetPos) => 
                     {
                         //print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
                         float dst = Vector3.Distance(transform.position, targetPos);
+                        print(targetPos);
                         return dst <= _movementTreshold;
                     },
                     disposeCommand
@@ -101,7 +101,7 @@ public class NMA_Controller : MonoBehaviour
         //print(string.Format("Ejecuto la operación {0} sobre {1}", operation.ToString(), target));
 
         //Chequeo si estoy lo suficientemente cerca para activar el comando.
-        if (Vector3.Distance(transform.position, target.position) > _interactionMaxDistance)
+        if (Vector3.Distance(transform.position, target.position) > _movementTreshold)
         {
             Vector3 vectorToPlayer = target.position - transform.position;
             Vector3 stopingPosition = target.position -  (vectorToPlayer.normalized * _interactionMaxDistance);
@@ -122,7 +122,7 @@ public class NMA_Controller : MonoBehaviour
                 disposeCommand
             );
             comandos.Enqueue(closeDistance);
-            //print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
+            print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
         }
 
         //añado el comando correspondiente a la query.
@@ -146,15 +146,15 @@ public class NMA_Controller : MonoBehaviour
     }
 
     //Movimiento
-    public void MoveToTarget(Vector3 dst)
+    public void MoveToTarget(Vector3 destinyPosition)
     {
-        if (_currentTargetPos != dst)
+        if (_currentTargetPos != destinyPosition)
         {
             forwardLerpTime = 0;
-            _currentTargetPos = dst;
+            _currentTargetPos = destinyPosition;
         }
 
-        _agent.destination = dst;
+        _agent.destination = destinyPosition;
     }
 
     public void UpdateForward()
@@ -191,14 +191,14 @@ public class NMA_Controller : MonoBehaviour
     MouseContext m_GetMouseContextDetection()
     {
         MouseContext _context = new MouseContext();
+
         //Calculo la posición del mouse en el espacio.
         RaycastHit[] hits;
-        Ray ray = _viewCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x,
+        Ray mousePositionInWorld = _viewCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x,
                                                           Input.mousePosition.y,
                                                           _viewCamera.transform.position.y));
 
-        float DistanceToCamera = Vector3.Distance(_viewCamera.transform.position, transform.position);
-        hits = Physics.RaycastAll(ray, DistanceToCamera + maxMouseRayDistance, mouseDetectionMask);
+        hits = Physics.RaycastAll(mousePositionInWorld, Camera.main.farClipPlane, mouseDetectionMask);
 
         if (hits.Length > 0)
             _context.validHit = true;
@@ -217,7 +217,7 @@ public class NMA_Controller : MonoBehaviour
             Collider collider = hit.collider;
             if (collider.transform.CompareTag("NavigationFloor"))
             {
-                _context.hitPosition = collider.transform.position;
+                _context.hitPosition = hit.point;
             }
         }
 

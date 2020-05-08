@@ -6,6 +6,7 @@ using UnityEngine;
 public class CameraBehaviour : MonoBehaviour
 {
     Transform OperativeCamera;
+    [SerializeField] LayerMask groundMask = ~0;
 
     [SerializeField] public Transform Target = null;
     [SerializeField] public bool freeCamera = true;
@@ -39,6 +40,10 @@ public class CameraBehaviour : MonoBehaviour
             freeCamera = false;
         if (Input.GetKeyUp(KeyCode.Space))
             freeCamera = true;
+
+        //Vector3 position = transform.position;
+        //position.y = Target.transform.position.y;
+        //transform.position = position;
 
         #region Movimiento
 
@@ -92,6 +97,8 @@ public class CameraBehaviour : MonoBehaviour
         }
         #endregion
 
+        AdjustY();
+
         #region Zoom
 
         /*
@@ -125,5 +132,21 @@ public class CameraBehaviour : MonoBehaviour
     public void CenterCameraToTarget(Vector3 targetPosition)
     {
         transform.position = ClampToPanLimits(targetPosition, navigationLimits);
+    }
+
+    public void AdjustY()
+    {
+        Ray ray = new Ray(OperativeCamera.position, Vector3.down);
+
+        RaycastHit[] hits = Physics.RaycastAll(ray, Camera.main.farClipPlane, groundMask);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].collider.CompareTag("NavigationFloor"))
+            {
+                transform.position = transform.position.YComponent(hits[i].point.y);
+                break;
+            }
+        }
     }
 }

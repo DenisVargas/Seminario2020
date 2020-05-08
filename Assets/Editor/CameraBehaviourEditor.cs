@@ -25,6 +25,9 @@ public class CameraBehaviourEditor : Editor
     public override void OnInspectorGUI()
     {
         //base.OnInspectorGUI();
+
+        EditorGUI.BeginChangeCheck();
+
         GUIStyle BoldText = new GUIStyle();
         BoldText.fontStyle = FontStyle.Bold;
 
@@ -60,7 +63,7 @@ public class CameraBehaviourEditor : Editor
         //}
         EditorGUILayout.Space();
 
-
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("groundMask"));
         EditorGUILayout.LabelField("Velocities", BoldText);
         //EditorGUILayout.PropertyField(serializedObject.FindProperty("zoomVelocity"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("panSpeed"));
@@ -71,7 +74,10 @@ public class CameraBehaviourEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("navigationLimits"));
         EditorGUILayout.Space();
 
-        serializedObject.ApplyModifiedProperties();
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+        }
 
         //TODO: Encuentra una forma de hacer la edición de los límites, personalizados.
         //EditorGUILayout.Space();

@@ -10,7 +10,10 @@ public class PooleableComponent : MonoBehaviour, IPoolObject<PooleableComponent>
     /// </summary>
     public void Dispose()
     {
-        pool.ReturnToPool(this);
+        if (pool != null)
+            pool.ReturnToPool(this);
+        else
+            Debug.LogError("Pool no seteado");
     }
 
     /// <summary>

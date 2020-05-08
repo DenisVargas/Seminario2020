@@ -60,8 +60,6 @@ public class NMA_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print("Command Count:" + comandos.Count);
-
         bool mod1 = Input.GetKey(KeyCode.LeftShift);
 
         #region Input

@@ -137,7 +137,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         for (int i = 0; i < _animHash.Length; i++)
         {
             _animHash[i] = animparams[i].nameHash;
-            print("Parámetro es: " + animparams[i].name + " y su valor es: " + animparams[i].type);
+            //print("Parámetro es: " + animparams[i].name + " y su valor es: " + animparams[i].type);
         }
 
         //State Machine

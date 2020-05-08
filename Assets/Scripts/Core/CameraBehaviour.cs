@@ -19,6 +19,8 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField] float panSpeed = 20f;
     [SerializeField] float rotationSpeed = 20f;
 
+    float LastYComponent = 0f;
+
     //Zoom.
     //Vector3 zoomMin, zoomMax;
     //float zoomSpeed;
@@ -31,6 +33,8 @@ public class CameraBehaviour : MonoBehaviour
         //ZoomMin = ZoomMax + BNormal * ZoomDist;
         OperativeCamera = Camera.main.transform;
         Target = FindObjectOfType<NMA_Controller>().transform;
+        if (Target != null)
+            transform.position = Target.transform.position;
     }
 
     // Update is called once per frame
@@ -77,6 +81,8 @@ public class CameraBehaviour : MonoBehaviour
         }
         #endregion
 
+        AdjustY();
+
         #region Rotacion
         if (Input.GetKey(KeyCode.E))
         {
@@ -96,8 +102,6 @@ public class CameraBehaviour : MonoBehaviour
             transform.rotation = Quaternion.Slerp(A, B, rotationSpeed * Time.deltaTime);
         }
         #endregion
-
-        AdjustY();
 
         #region Zoom
 
@@ -137,16 +141,23 @@ public class CameraBehaviour : MonoBehaviour
     public void AdjustY()
     {
         Ray ray = new Ray(OperativeCamera.position, Vector3.down);
-
         RaycastHit[] hits = Physics.RaycastAll(ray, Camera.main.farClipPlane, groundMask);
+        bool navigationFloorFinded = false;
 
         for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i].collider.CompareTag("NavigationFloor"))
             {
+                navigationFloorFinded = true;
                 transform.position = transform.position.YComponent(hits[i].point.y);
+                LastYComponent = hits[i].point.y;
                 break;
             }
+        }
+
+        if (!navigationFloorFinded)
+        {
+            transform.position = transform.position.YComponent(LastYComponent);
         }
     }
 }

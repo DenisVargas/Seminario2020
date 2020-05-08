@@ -11,7 +11,6 @@ class CommandMenuEditor : Editor
 
     //Adding.
     CommandMenuItemData itemData = null;
-    OperationOptions value = OperationOptions.Activate;
 
     //Removing 
     int toRemoveIndex = 0;
@@ -115,7 +114,7 @@ class CommandMenuEditor : Editor
             }
 
             itemData = null;
-            value = OperationOptions.Activate;
+            //value = OperationOptions.Activate;
         }
         GUI.color = Color.white;
 

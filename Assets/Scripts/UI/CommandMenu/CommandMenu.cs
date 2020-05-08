@@ -16,8 +16,6 @@ public class CommandMenu : MonoBehaviour
     [SerializeField] GameObject _optionPrefab = null;
     [SerializeField] Scrollbar _verticalScroll = null;
     [SerializeField] Transform _Content = null;
-    [SerializeField] Transform _menuFreeContent = null;
-    //[SerializeField] ScrollRect _scrollRect      = null;
 
     [Header("Options")]
     [SerializeField] Vector2 posOffset = new Vector2(100, 0);

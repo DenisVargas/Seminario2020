@@ -5,8 +5,8 @@ using Utility.ObjectPools;
 
 public class MouseView : MonoBehaviour
 {
-    [SerializeField] GameObject Prefab_CommandTarget;
-    [SerializeField] GameObject Prefab_MousePosition;
+    [SerializeField] GameObject Prefab_CommandTarget = null;
+    [SerializeField] GameObject Prefab_MousePosition = null;
 
     Pool<PooleableComponent> _positionViews;
     Pool<PooleableComponent> _MousePosViews;

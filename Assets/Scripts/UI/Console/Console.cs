@@ -17,12 +17,12 @@ namespace Core.Debuging
 
         #region Texto y Consola
         [Header("Componentes")]
-        [SerializeField] TMP_Text _consoleText;
-        [SerializeField] TMP_InputField _inputField;
-        [SerializeField] Scrollbar _scroll;
+        [SerializeField] TMP_Text _consoleText      = null;
+        [SerializeField] TMP_InputField _inputField = null;
+        [SerializeField] Scrollbar _scroll          = null;
 
-        [SerializeField]  KeyCode _openKey;
-        [SerializeField]  GameObject _activeObject;
+        [SerializeField]  KeyCode _openKey          = KeyCode.Escape;
+        [SerializeField]  GameObject _activeObject  = null;
         #endregion
 
         [Header("Debug Level Colours")]

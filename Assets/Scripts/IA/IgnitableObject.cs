@@ -23,7 +23,7 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
 
     [SerializeField] float _damagePerSecond = 5f;
     [SerializeField] float _affectedRadius = 2;
-    [SerializeField] float _interactionRadius = 3; //Esto tiene que ser dada al player para evitar que reciba daño del fuego.
+    //[SerializeField] float _interactionRadius = 3; //Esto tiene que ser dada al player para evitar que reciba daño del fuego.
     [SerializeField]LayerMask efectTargets = ~0;
 
     public List<IIgnitableObject> toIgnite = new List<IIgnitableObject>();

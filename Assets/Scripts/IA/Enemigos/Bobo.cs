@@ -81,6 +81,7 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
 
     public enum BoboState
     {
+        invalid,
         idle,
         wander,
         pursue,
@@ -92,8 +93,8 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     }
 
     private GenericFSM<BoboState> state = null;
-    [SerializeField] BoboState _currentState;
-    [SerializeField] BoboState _chainState;
+    [SerializeField] BoboState _currentState = BoboState.invalid;
+    //[SerializeField] BoboState _chainState   =  BoboState.invalid;
 
     private Damage _currentDamageState = new Damage() { Ammount = 10 };
     //Dictionary<DamageType, List<DamageAcumulation>> DamageStack = new Dictionary<DamageType, List<DamageAcumulation>>();
@@ -307,7 +308,7 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
             //Si estoy en modo Rage, marco el siguiente estado como RageWaitState.
             if (_rageMode)
             {
-                _chainState = BoboState.pursue;
+                //_chainState = BoboState.pursue;
             }
 
             //Si no estoy en modo Rage y el target esta muerto/destruido.

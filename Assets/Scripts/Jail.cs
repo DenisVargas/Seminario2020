@@ -6,7 +6,7 @@ using Core.DamageSystem;
 [RequireComponent(typeof(Collider))]
 public class Jail : MonoBehaviour
 {
-    [SerializeField] Collider PhysicalCollider;
+    [SerializeField] Collider PhysicalCollider = null;
     [SerializeField] Collider _damageDealer;
     Rigidbody _rb;
 

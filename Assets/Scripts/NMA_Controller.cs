@@ -7,12 +7,11 @@ using UnityEngine.AI;
 //Navigation Mesh Actor Controller.
 public class NMA_Controller : MonoBehaviour
 {
-    [SerializeField] LayerMask mouseDetectionMask = ~0;
-    [SerializeField] int maxMouseRayDistance = 200;
-    [SerializeField] Transform MouseDebug = null;
-    [SerializeField] Transform targetDebug = null;
+    [SerializeField] LayerMask mouseDetectionMask  = ~0;
+    //[SerializeField] Transform MouseDebug          = null;
+    //[SerializeField] Transform targetDebug         = null;
     [SerializeField] float _interactionMaxDistance = 0.1f;
-    [SerializeField] float _movementTreshold = 0.18f;
+    [SerializeField] float _movementTreshold       = 0.18f;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
 
@@ -104,10 +103,7 @@ public class NMA_Controller : MonoBehaviour
                         bool completed = dst <= _movementTreshold;
 
                         if (completed)
-                        {
                             _a_Walking = false;
-                            Debug.LogWarning("Completado");
-                        }
 
                         return completed;
                     },
@@ -146,8 +142,8 @@ public class NMA_Controller : MonoBehaviour
             Vector3 vectorToPlayer = target.position - transform.position;
             Vector3 stopingPosition = target.position -  (vectorToPlayer.normalized * _interactionMaxDistance);
 
-            if (targetDebug != null)
-                targetDebug.position = stopingPosition;
+            //if (targetDebug != null)
+            //    targetDebug.position = stopingPosition;
 
             IQueryComand closeDistance = new cmd_Move
             (

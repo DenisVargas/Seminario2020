@@ -33,7 +33,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 {
     [Header("Stats")]
     [SerializeField] float _health = 10;
-    [SerializeField] float _attackRange;
+    [SerializeField] float _attackRange = 5;
 
     [SerializeField] DamageModifier[] weaknesses;  //Aumentan el daño multiplicandolo x un porcentaje.
     [SerializeField] DamageModifier[] resistances; //reducen el daño x el un porcentaje.
@@ -46,10 +46,10 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
     [Header("References")]
     [SerializeField]
-    Vector3 targetPosition = Vector3.zero;
-    [SerializeField] Waypoint patrolPoints;
-    [SerializeField] int _toStopPositions;
-    [SerializeField] float stopTime;
+    Vector3 targetPosition                 = Vector3.zero;
+    [SerializeField] Waypoint patrolPoints = null;
+    //[SerializeField] int _toStopPositions  = 0;
+    [SerializeField] float stopTime        = 3f;
 
     BabosoState _currentState;
     BabosoState _previousState;
@@ -97,7 +97,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     HitBox _hitbox;
     Damage _damageState = new Damage();
 
-    [SerializeField] Transform _target;
+    [SerializeField] Transform _target = null;
     private Vector3   _targetLocation;
     private bool      _stoping;
     private int _PositionsMoved;
@@ -105,7 +105,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
 #if UNITY_EDITOR
     [Space,Header("Debug Options")]
-    [SerializeField] Color attackRangeColor;
+    [SerializeField] Color attackRangeColor = Color.white;
 #endif
 
     float health

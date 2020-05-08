@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Activator : MonoBehaviour, IInteractable
+public class SlimeCoveredObject : MonoBehaviour , IInteractable
 {
-
     public List<OperationOptions> suportedOperations = new List<OperationOptions>();
-    // Start is called before the first frame update
-    
-    
 
     public Vector3 position { get => transform.position; }
 
@@ -16,23 +12,14 @@ public class Activator : MonoBehaviour, IInteractable
 
     public void Operate(OperationOptions operation, params object[] optionalParams)
     {
-        Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
-        if (operation == OperationOptions.Activate)
+        if (operation == OperationOptions.Ignite)
         {
-            GetComponentInChildren<Jail>().Drop();
+            Destroy(gameObject);
         }
     }
-    private void Awake()
-    {
-
-
-    }
-
 
     List<OperationOptions> IInteractable.GetSuportedOperations()
     {
         return suportedOperations;
     }
-    
-
 }

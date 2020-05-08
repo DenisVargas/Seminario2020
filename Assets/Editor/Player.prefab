@@ -102,11 +102,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6414858267132625118}
+  - component: {fileID: 6370059651321185971}
   - component: {fileID: 6414858267132625117}
   - component: {fileID: 6414858267132625116}
   - component: {fileID: 6414858267132625119}
   - component: {fileID: 4551022286508861444}
-  - component: {fileID: 6370059651321185971}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -130,6 +130,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &6370059651321185971
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6414858267132625105}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 293586a2b09919a4aad2e5ced276aff2, type: 3}
+  m_Controller: {fileID: 9100000, guid: 53d84c49e17c2c84193583d69153487d, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!195 &6414858267132625117
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -214,25 +233,6 @@ MonoBehaviour:
   Prefab_MousePosition: {fileID: 7291510980280904594, guid: 8a74721c20717864d85e0d2efbdfff59,
     type: 3}
   positions: []
---- !u!95 &6370059651321185971
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6414858267132625105}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 293586a2b09919a4aad2e5ced276aff2, type: 3}
-  m_Controller: {fileID: 9100000, guid: 53d84c49e17c2c84193583d69153487d, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &7754093151426026515
 PrefabInstance:
   m_ObjectHideFlags: 0

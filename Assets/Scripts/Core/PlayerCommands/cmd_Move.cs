@@ -30,12 +30,12 @@ public class cmd_Move : IQueryComand
     public void Update()
     {
         completed = _checkCondition(_targetPosition);
-        _moveFunction(_targetPosition);
+        if (!completed)
+            _moveFunction(_targetPosition);
+        else
+            _dispose();
 
         //MonoBehaviour.print(string.Format("move comand Executing, status {0}", completed ? "Completed" : "On Going"));
-
-        if (completed)
-            _dispose();
     }
 
 }

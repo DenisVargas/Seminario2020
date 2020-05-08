@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,18 +16,46 @@ public class NMA_Controller : MonoBehaviour
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
 
+    Animator _anims;
+    int[] animHash = new int[3];
+    bool _a_Walking
+    {
+        get => _anims.GetBool(animHash[0]);
+        set => _anims.SetBool(animHash[0], value);
+    }
+    bool _a_Crouching
+    {
+        get => _anims.GetBool(animHash[1]);
+        set => _anims.SetBool(animHash[1], value);
+    }
+    bool _a_LeverPull
+    {
+        get => _anims.GetBool(animHash[2]);
+        set => _anims.SetBool(animHash[2], value);
+    }
+
+
     Camera _viewCamera = null;
     NavMeshAgent _agent = null;
     CanvasController _canvasController = null;
+    MouseView _mv;
 
     Vector3 _currentTargetPos;
     float forwardLerpTime;
+    bool PlayerInputEnabled = true;
 
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
+        _mv = GetComponent<MouseView>();
+
+        _anims = GetComponent<Animator>();
+        animHash = new int[3];
+        var animparams = _anims.parameters;
+        for (int i = 0; i < animHash.Length; i++)
+            animHash[i] = animparams[i].nameHash;
     }
 
     // Update is called once per frame
@@ -36,8 +65,8 @@ public class NMA_Controller : MonoBehaviour
 
         bool mod1 = Input.GetKey(KeyCode.LeftShift);
 
-        //Asigno la posición como target a nuestro navMeshAgent.
-        if (Input.GetMouseButtonDown(1))
+        #region Input
+        if (PlayerInputEnabled && Input.GetMouseButtonDown(1))
         {
             //Hacer un raycast y fijarme si hay un objeto que se interactuable.
             MouseContext _mouseContext = m_GetMouseContextDetection();
@@ -57,26 +86,37 @@ public class NMA_Controller : MonoBehaviour
             }
             else
             {
-                if (!mod1) comandos.Clear();
+                if (!mod1)
+                {
+                    _mv.ClearView();
+                    comandos.Clear();
+                }
 
-                print(_mouseContext.hitPosition);
+                _mv.SetMousePosition(_mouseContext.hitPosition);
 
                 IQueryComand moveCommand = new cmd_Move
                 (
                     _mouseContext.hitPosition,
-                    MoveToTarget, 
-                    (targetPos) => 
+                    MoveToTarget,
+                    (targetPos) =>
                     {
-                        //print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
                         float dst = Vector3.Distance(transform.position, targetPos);
-                        print(targetPos);
-                        return dst <= _movementTreshold;
+                        bool completed = dst <= _movementTreshold;
+
+                        if (completed)
+                        {
+                            _a_Walking = false;
+                            Debug.LogWarning("Completado");
+                        }
+
+                        return completed;
                     },
                     disposeCommand
                 );
                 comandos.Enqueue(moveCommand);
             }
         }
+        #endregion
 
         if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
             UpdateForward();
@@ -115,9 +155,13 @@ public class NMA_Controller : MonoBehaviour
                 MoveToTarget, 
                 (targetPos) => 
                 {
-                    //print(string.Format("Distancia restante es {0}", _agent.remainingDistance));
-                    float dst = Vector3.Distance(transform.position.YComponent(0), targetPos.YComponent(0));
-                    return dst <= _movementTreshold;
+                    float dst = Vector3.Distance(transform.position, targetPos);
+                    bool completed = dst <= _movementTreshold;
+
+                    if (completed && _a_Walking)
+                        _a_Walking = false;
+
+                    return completed;
                 },
                 disposeCommand
             );
@@ -133,7 +177,8 @@ public class NMA_Controller : MonoBehaviour
             case OperationOptions.Ignite:
                 break;
             case OperationOptions.Activate:
-                IQueryComand activateCommand = new cmd_Activate(operation, target, disposeCommand);
+                Action beforeCommandExecution = () => { _a_LeverPull = true; };
+                IQueryComand activateCommand = new cmd_Activate(operation, target, beforeCommandExecution, disposeCommand);
                 comandos.Enqueue(activateCommand);
 
                 print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
@@ -153,6 +198,8 @@ public class NMA_Controller : MonoBehaviour
             forwardLerpTime = 0;
             _currentTargetPos = destinyPosition;
         }
+        if (!_a_Walking)
+            _a_Walking = true;
 
         _agent.destination = destinyPosition;
     }
@@ -218,10 +265,20 @@ public class NMA_Controller : MonoBehaviour
             if (collider.transform.CompareTag("NavigationFloor"))
             {
                 _context.hitPosition = hit.point;
+                return _context;
             }
         }
 
         return _context;
+    }
+
+    public void AnimEvent_PullLeverStarted()
+    {
+        PlayerInputEnabled = false;
+    }
+    public void AnimEvent_PullLeverEnded()
+    {
+        PlayerInputEnabled = true;
     }
 
     private void OnDrawGizmos()

@@ -273,6 +273,7 @@ public class NMA_Controller : MonoBehaviour
     public void AnimEvent_PullLeverEnded()
     {
         PlayerInputEnabled = true;
+        _a_LeverPull = false;
     }
 
     private void OnDrawGizmos()

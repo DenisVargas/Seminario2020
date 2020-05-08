@@ -7,6 +7,7 @@ public class Activator : MonoBehaviour, IInteractable
 
     public List<OperationOptions> suportedOperations = new List<OperationOptions>();
     // Start is called before the first frame update
+    public Jail _myJail;
     
     
 
@@ -20,7 +21,7 @@ public class Activator : MonoBehaviour, IInteractable
         if (operation == OperationOptions.Activate)
         {
             Debug.Log("me active");
-            GetComponentInChildren<Jail>().Drop();
+            _myJail.Drop();
         }
     }
     private void Awake()

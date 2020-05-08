@@ -385,7 +385,7 @@ GameObject:
   - component: {fileID: 382295928}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: NavigationFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -867,7 +867,7 @@ RotationConstraint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036991820}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Weight: 1
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_RotationOffset: {x: 0, y: 0, z: 0}
@@ -895,6 +895,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1036991826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036991820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b1165000eae504c84e4906d08ee668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefab_CommandTarget: {fileID: 1496282181909800488, guid: e4b5081ab8c2af64aa7b10ab3c3bd9f7,
+    type: 3}
+  Prefab_MousePosition: {fileID: 7291510980280904594, guid: 8a74721c20717864d85e0d2efbdfff59,
+    type: 3}
+  positions: []
 --- !u!1 &1342193672
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class Activator : MonoBehaviour, IInteractable
         Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
         if (operation == OperationOptions.Activate)
         {
+            Debug.Log("me active");
             GetComponentInChildren<Jail>().Drop();
         }
     }

@@ -32,9 +32,14 @@ public class CameraBehaviour : MonoBehaviour
         //var BNormal = operativeCamera.transform.forward;
         //ZoomMin = ZoomMax + BNormal * ZoomDist;
         OperativeCamera = Camera.main.transform;
-        Target = FindObjectOfType<NMA_Controller>().transform;
-        if (Target != null)
+        var Player = FindObjectOfType<NMA_Controller>();
+        if (Player != null)
+        {
+            Target = Player.transform;
             transform.position = Target.transform.position;
+        }
+        else
+            freeCamera = true;
     }
 
     // Update is called once per frame

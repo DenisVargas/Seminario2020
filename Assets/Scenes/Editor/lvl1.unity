@@ -13669,16 +13669,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1782862180497409306, guid: a79c0a916e587934e9ba5f23399def4a,
+        type: 3}
+      propertyPath: m_Name
+      value: Rig
+      objectReference: {fileID: 0}
     - target: {fileID: 3416304873241712605, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3462549061482092273, guid: a79c0a916e587934e9ba5f23399def4a,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: eb49478ea6a3a9d4fba214200e20e1eb, type: 2}
     - target: {fileID: 6414858267132625105, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_Name
@@ -13687,12 +13687,7 @@ PrefabInstance:
     - target: {fileID: 6414858267132625117, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_Speed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6414858267132625117, guid: a79c0a916e587934e9ba5f23399def4a,
-        type: 3}
-      propertyPath: m_AngularSpeed
-      value: 12
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}

@@ -4891,6 +4891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 856897688738227766}
+  - component: {fileID: 4990763127133525132}
   - component: {fileID: 856897688738227761}
   - component: {fileID: 856897688738227764}
   - component: {fileID: 856897688738227767}
@@ -4919,6 +4920,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &4990763127133525132
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688738227760}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 5766f71294217604ba77de25732d5a76, type: 3}
+  m_Controller: {fileID: 9100000, guid: d3a6a30d597e86e46a70a40f4dca81fa, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!195 &856897688738227761
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5093,7 +5113,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: enemy slug prueba
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -6057140222963153312, guid: 5766f71294217604ba77de25732d5a76, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5766f71294217604ba77de25732d5a76, type: 3}
 --- !u!4 &814780343495606734 stripped
 Transform:

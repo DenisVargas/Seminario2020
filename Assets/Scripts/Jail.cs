@@ -9,21 +9,31 @@ public class Jail : MonoBehaviour
     [SerializeField] Collider PhysicalCollider = null;
     [SerializeField] Collider _damageDealer;
     Rigidbody _rb;
+    public bool IsKinematicObj;
+    public bool Growndchecked =false;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _rb.isKinematic = true;
+        _rb.isKinematic = IsKinematicObj;
+    }
+    private void Update()
+    {
+     
     }
 
     public void Drop()
     {
-        _rb.isKinematic = false;
+        _rb.isKinematic = IsKinematicObj;
         StartCoroutine(Deactivate());
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(collision.collider.gameObject.layer == 0)
+        {
+            Growndchecked = true;
+        }
         var myhitedObject = collision.collider.GetComponent<IDestructible>();
 
         if (myhitedObject != null)
@@ -35,7 +45,7 @@ public class Jail : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var killable = other.GetComponentInParent<IDamageable<Damage>>();
-        if (killable != null)
+        if (killable != null && !Growndchecked)
         {
             killable.Hit(new Damage() { instaKill = true });
         }

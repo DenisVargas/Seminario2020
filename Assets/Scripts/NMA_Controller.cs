@@ -43,6 +43,8 @@ public class NMA_Controller : MonoBehaviour
     float forwardLerpTime;
     bool PlayerInputEnabled = true;
 
+    ActivationCommandData Queued_ActivationData = new ActivationCommandData();
+
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -172,10 +174,10 @@ public class NMA_Controller : MonoBehaviour
                 break;
             case OperationOptions.Activate:
                 Action beforeCommandExecution = () => { _a_LeverPull = true; };
-                IQueryComand activateCommand = new cmd_Activate(operation, target, beforeCommandExecution, disposeCommand);
+                Queued_ActivationData = new ActivationCommandData() { target = target, operationOptions = operation };
+                IQueryComand activateCommand = new cmd_Activate(Queued_ActivationData, beforeCommandExecution, disposeCommand);
                 comandos.Enqueue(activateCommand);
-
-                print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
+                //print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
                 break;
             case OperationOptions.Equip:
                 break;
@@ -266,14 +268,20 @@ public class NMA_Controller : MonoBehaviour
         return _context;
     }
 
-    public void AnimEvent_PullLeverStarted()
+    public void AE_PullLeverStarted()
     {
         PlayerInputEnabled = false;
     }
-    public void AnimEvent_PullLeverEnded()
+    public void AE_PullLeverEnded()
     {
         PlayerInputEnabled = true;
         _a_LeverPull = false;
+
+        if (Queued_ActivationData.target != null)
+        {
+            Queued_ActivationData.target.Operate(Queued_ActivationData.operationOptions);
+            Queued_ActivationData = new ActivationCommandData();
+        }
     }
 
     private void OnDrawGizmos()
@@ -282,4 +290,10 @@ public class NMA_Controller : MonoBehaviour
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _interactionMaxDistance);
     }
+}
+
+public struct ActivationCommandData
+{
+    public IInteractable target;
+    public OperationOptions operationOptions;
 }

@@ -5,26 +5,23 @@ using UnityEngine;
 
 public class cmd_Activate : IQueryComand
 {
-    Action OnOperate = delegate { };
+    Action OnStartOperate = delegate { };
     Action _dispose = delegate { };
-    OperationOptions operation;
-    IInteractable target;
+    ActivationCommandData data;
 
     public bool completed { get; private set; } = false;
 
-    public cmd_Activate(OperationOptions operation, IInteractable target,Action OnOperate, Action dispose)
+    public cmd_Activate(ActivationCommandData data, Action OnOperate, Action dispose)
     {
-        this.operation = operation;
-        this.target = target;
-        this.OnOperate = OnOperate;
+        this.data = data;
+        OnStartOperate = OnOperate;
         _dispose = dispose;
     }
 
     public void Update()
     {
         //Ejecuto el comando.
-        OnOperate();
-        target.Operate(operation);
+        OnStartOperate();
         _dispose();
         //MonoBehaviour.print("COMANDO ACTIVAR");
     }

@@ -36,6 +36,7 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
 
     public bool Burning { get; private set; } = (false);
     public Vector3 position => transform.position;
+    public Vector3 LookToDirection => transform.forward;
 
     public bool IsActive => gameObject.activeSelf;
 

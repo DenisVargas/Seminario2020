@@ -46,6 +46,7 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
         }
     }
     public Vector3 position => transform.position;
+    public Vector3 LookToDirection => transform.forward;
 
     //------------------------------------ HOOKS --------------------------------------------
 

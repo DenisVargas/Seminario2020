@@ -271,6 +271,11 @@ public class NMA_Controller : MonoBehaviour
     public void AE_PullLeverStarted()
     {
         PlayerInputEnabled = false;
+
+        if (Queued_ActivationData.target != null)
+        {
+            transform.forward = Queued_ActivationData.target.LookToDirection;
+        }
     }
     public void AE_PullLeverEnded()
     {

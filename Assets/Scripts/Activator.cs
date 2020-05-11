@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class Activator : MonoBehaviour, IInteractable
 {
-
     public List<OperationOptions> suportedOperations = new List<OperationOptions>();
     // Start is called before the first frame update
     public Jail _myJail;
-    
-    
+    public Transform ActivationPosition;
 
-    public Vector3 position { get => transform.position; }
-
-
+    public Vector3 position { get => ActivationPosition.position; }
+    public Vector3 LookToDirection { get => ActivationPosition.forward; }
 
     public void Operate(OperationOptions operation, params object[] optionalParams)
     {
@@ -24,17 +21,9 @@ public class Activator : MonoBehaviour, IInteractable
             _myJail.Drop();
         }
     }
-    private void Awake()
-    {
-
-
-    }
-
 
     List<OperationOptions> IInteractable.GetSuportedOperations()
     {
         return suportedOperations;
     }
-    
-
 }

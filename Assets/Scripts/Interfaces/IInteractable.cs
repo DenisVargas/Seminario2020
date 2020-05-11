@@ -15,6 +15,7 @@ public enum OperationOptions : int
 public interface IInteractable
 {
     Vector3 position { get; }
+    Vector3 LookToDirection { get; }
 
     List<OperationOptions> GetSuportedOperations();
     void Operate(OperationOptions selectedOperation, params object[] optionalParams);

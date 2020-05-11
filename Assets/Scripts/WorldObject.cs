@@ -5,14 +5,15 @@ using UnityEngine;
 public class WorldObject : MonoBehaviour, IInteractable
 {
     [SerializeField] Material onEnterMat = null;
-    [SerializeField] Material onExitMat  = null;
+    [SerializeField] Material onExitMat = null;
 
     Material _normalMat = null;
     Renderer _renderer = null;
 
     public List<OperationOptions> suportedOperations = new List<OperationOptions>();
 
-    public Vector3 position { get => transform.position; }
+    public Vector3 position => transform.position;
+    public Vector3 LookToDirection => transform.forward;
 
     public void Operate(OperationOptions operation, params object[] optionalParams)
     {

@@ -46,6 +46,12 @@ namespace IA.LineOfSight
         /// <returns>Verdadero si el Objetivo específicado está dentro de la línea de visión</returns>
         public bool IsInSight(Transform target)
         {
+            if (target == null)
+            {
+                Debug.Log("El target es inválido");
+                return false;
+            }
+
             positionDiference = target.position - transform.position;
             distanceToTarget = positionDiference.magnitude;
             angleToTarget = Vector3.Angle(transform.forward, positionDiference);

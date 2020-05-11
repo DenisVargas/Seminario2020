@@ -9,5 +9,4 @@ public class destroyme : MonoBehaviour, IDestructible
         Debug.Log("entre");
         Destroy(gameObject);
     }
-
 }

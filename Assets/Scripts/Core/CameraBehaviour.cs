@@ -8,7 +8,7 @@ public class CameraBehaviour : MonoBehaviour
     Transform OperativeCamera;
     [SerializeField] LayerMask groundMask = ~0;
 
-    [SerializeField] public Transform Target = null;
+    [SerializeField] public Transform _target = null;
     [SerializeField] public bool freeCamera = true;
 
     //[SerializeField] float zoomVelocity = 10f;
@@ -35,8 +35,8 @@ public class CameraBehaviour : MonoBehaviour
         var Player = FindObjectOfType<NMA_Controller>();
         if (Player != null)
         {
-            Target = Player.transform;
-            transform.position = Target.transform.position;
+            _target = Player.transform;
+            transform.position = _target.transform.position;
         }
         else
             freeCamera = true;
@@ -75,14 +75,14 @@ public class CameraBehaviour : MonoBehaviour
             inputPos *= panSpeed * Time.deltaTime;
             transform.position = ClampToPanLimits(transform.position + inputPos, navigationLimits);
         }
-        else
+        else if(_target != null)
         {
             //if (MainGameControl.SelectedObjects.Count > 0)
             //    targetLock = MainGameControl.returnSelectedObjectsRelativePosition(); //Obtengo la posicion relativa de los objetos seleccionados.
             //else if (MainGameControl.LastObjectSelected)
             //    targetLock = MainGameControl.LastObjectSelected.transform.position;
 
-            transform.position = ClampToPanLimits(Target.position, navigationLimits);
+            transform.position = ClampToPanLimits(_target.position, navigationLimits);
         }
         #endregion
 

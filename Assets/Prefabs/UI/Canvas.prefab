@@ -1788,7 +1788,6 @@ MonoBehaviour:
     type: 3}
   _verticalScroll: {fileID: 7249967578170324171}
   _Content: {fileID: 7249967579214578012}
-  _menuFreeContent: {fileID: 7249967577965541940}
   posOffset: {x: 100, y: 0}
   presetDataBase:
   - {fileID: 11400000, guid: f72ed518dc8f8f1418ef0d9654f1f4a8, type: 2}
@@ -2087,7 +2086,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7249967578121859792}
   m_HandleRect: {fileID: 7249967578121859795}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

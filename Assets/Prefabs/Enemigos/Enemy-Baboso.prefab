@@ -4783,8 +4783,8 @@ GameObject:
   - component: {fileID: 856897688075987118}
   - component: {fileID: 856897688075987119}
   - component: {fileID: 856897688075987116}
-  m_Layer: 0
-  m_Name: Damage-Collider
+  m_Layer: 8
+  m_Name: HurtBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4802,7 +4802,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 856897688738227766}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &856897688075987119
 CapsuleCollider:
@@ -4855,12 +4855,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856897688428168663}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
   m_Children:
   - {fileID: 856897687836876988}
   m_Father: {fileID: 856897688738227766}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &635854710
 MonoBehaviour:
@@ -4914,10 +4914,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_Children:
-  - {fileID: 856897688075987118}
-  - {fileID: 856897688428168661}
   - {fileID: 814780343495606734}
   - {fileID: 4532671286243731523}
+  - {fileID: 856897688428168661}
+  - {fileID: 856897688075987118}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4976,7 +4976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visibles:
     serializedVersion: 2
-    m_Bits: 3221225473
+    m_Bits: 3221225472
   range: 5
   angle: 45
   Debug_LineOfSight: 1
@@ -5007,7 +5007,6 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   patrolPoints: {fileID: 0}
   stopTime: 0
-  _target: {fileID: 0}
   attackRangeColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &2090906814
 MonoBehaviour:
@@ -5050,7 +5049,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 856897688738227766}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &7902324618854547479
 Light:
@@ -5162,7 +5161,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 5766f71294217604ba77de25732d5a76,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5766f71294217604ba77de25732d5a76,
         type: 3}
@@ -5202,7 +5201,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 5766f71294217604ba77de25732d5a76,
         type: 3}
       propertyPath: m_Name
-      value: enemy slug prueba
+      value: Mesh
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -6057140222963153312, guid: 5766f71294217604ba77de25732d5a76, type: 3}

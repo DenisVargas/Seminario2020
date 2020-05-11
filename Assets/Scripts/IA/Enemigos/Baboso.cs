@@ -97,7 +97,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     HitBox _hitbox;
     Damage _damageState = new Damage();
 
-    [SerializeField] Transform _target = null;
+    Transform _target = null;
     private Vector3   _targetLocation;
     private bool      _stoping;
     private int _PositionsMoved;
@@ -130,6 +130,18 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         _trail = GetComponentInChildren<Trail>();
         _hurtbox = GetComponentInChildren<DamageDealer>();
         _anims = GetComponent<Animator>();
+
+        //AutoSet Del Target.
+        var tar = FindObjectOfType<NMA_Controller>();
+        if (tar != null)
+        {
+            _target = tar.transform;
+            _sight.SetTarget(_target);
+        }
+        else
+        {
+            Debug.LogError(string.Format("{0} No encontró un Target Válido\nTe olvidaste de poner o activar al Player en la escena Salame >:/", gameObject.name));
+        }
 
         //Convertimos strings a hash para obtener las animaciones más rápidamente.
         _animHash = new int[4];
@@ -341,7 +353,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             //Tomo desiciones... pero cuales?
             //Si mi enemigo esta muerto.
 
-            //Cuando dejo de atacar?
+            //Cuando dejo de atacar? --> Animacion.
         };
         think.OnExit += (x) => 
         {
@@ -356,6 +368,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     {
         //Hago las weas.
         state.Update();
+        print("Current State is:" + _currentState.ToString());
     }
 
     private void OnDrawGizmosSelected()
@@ -397,4 +410,5 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     {
         //Cuando conecta un hit... no hago nada en particular.
     }
+
 }

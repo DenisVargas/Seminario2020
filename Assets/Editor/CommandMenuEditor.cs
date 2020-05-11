@@ -30,7 +30,6 @@ class CommandMenuEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_optionPrefab"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_verticalScroll"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_Content"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_menuFreeContent"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("posOffset"));
 
         EditorGUILayout.Space();

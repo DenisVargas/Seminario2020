@@ -7,6 +7,10 @@ namespace IA.StateMachine.Generic
     {
         public State<T> current;
 
+#if(UNITY_EDITOR)
+        public bool Debug_Transitions { get; set; } = false;
+#endif
+
         public GenericFSM(State<T> initialState)
         {
             current = initialState;
@@ -25,7 +29,8 @@ namespace IA.StateMachine.Generic
             {
 
 #if (UNITY_EDITOR)
-                UnityEngine.MonoBehaviour.print(string.Format("Transitioning from {0} to {1}.", current.StateName, transition.Item2.StateName));
+                if(Debug_Transitions)
+                    UnityEngine.MonoBehaviour.print(string.Format("Transitioning from {0} to {1}.", current.StateName, transition.Item2.StateName));
 #endif
 
                 current.Exit(input);
@@ -34,7 +39,7 @@ namespace IA.StateMachine.Generic
                 current.Enter(input);
             }
 #if (UNITY_EDITOR)
-            else
+            else if(Debug_Transitions)
             {
                 UnityEngine.Debug.LogWarning(string.Format("No transitions for input: \"{0}\" where found", input.ToString()));
             }
@@ -118,7 +123,7 @@ namespace IA.StateMachine.Generic
             }
 
             #if UNITY_EDITOR
-                UnityEngine.Debug.LogWarning(string.Format("El estado solicitado ({0}), no se encuentra dentro de las transiciones de {1}.",
+                UnityEngine.Debug.LogError(string.Format("El estado solicitado ({0}), no se encuentra dentro de las transiciones de {1}.",
                                                             input.ToString(), StateName));
             #endif
             return null;

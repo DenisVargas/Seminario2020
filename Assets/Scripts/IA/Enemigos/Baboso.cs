@@ -313,13 +313,13 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
             //Detengo la marcha.
             _agent.isStopped = true;
-            Debug.LogWarning("Attack On Enter");
+            //Debug.LogWarning("Attack On Enter");
         };
         //attack.OnUpdate += () => { };
         attack.OnExit += (nextState) =>
         {
             _a_attack = false;
-            Debug.LogWarning("Attack On Exit");
+            //Debug.LogWarning("Attack On Exit");
         };
 
         burning.OnEnter += (previousState) =>
@@ -363,6 +363,10 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         };
 
         state = startPatrolling ? new GenericFSM<BabosoState>(patroll) : new GenericFSM<BabosoState>(idle);
+
+#if UNITY_EDITOR
+        state.Debug_Transitions = false; 
+#endif
     }
 
     // Update is called once per frame
@@ -370,7 +374,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     {
         //Hago las weas.
         state.Update();
-        print("Current State is:" + _currentState.ToString());
+        //print("Current State is:" + _currentState.ToString());
     }
 
 
@@ -436,7 +440,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     {
         state.Feed(BabosoState.think);
 
-        Debug.LogWarning("AttackEnded");
+        //Debug.LogWarning("AttackEnded");
     }
 
     public void AV_Burning_End()

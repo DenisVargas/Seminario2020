@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Core.DamageSystem;
 
 public struct ActivationCommandData
 {
@@ -10,7 +11,7 @@ public struct ActivationCommandData
     public OperationOptions operationOptions;
 }
 //Navigation Mesh Actor Controller.
-public class NMA_Controller : MonoBehaviour
+public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
 {
     [SerializeField] LayerMask mouseDetectionMask  = ~0;
     //[SerializeField] Transform MouseDebug          = null;
@@ -239,6 +240,8 @@ public class NMA_Controller : MonoBehaviour
         _agent.isStopped = true;
         _agent.ResetPath();
 
+        _a_Dead = true;
+
         //TODO: Notificamos que morimos a algún Mánager
     }
 
@@ -287,6 +290,16 @@ public class NMA_Controller : MonoBehaviour
         return _context;
     }
 
+    //============================================================== Damage System =================================================================
+
+    public void Hit(Damage damage)
+    {
+        if (damage.instaKill)
+        {
+            Die();
+        }
+    }
+
     //=============================================================== Animation Events =============================================================
     public void AE_PullLeverStarted()
     {
@@ -317,5 +330,6 @@ public class NMA_Controller : MonoBehaviour
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _interactionMaxDistance);
     }
+
 }
 

@@ -87,6 +87,11 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         get => _anims.GetBool(_animHash[2]);
         set => _anims.SetBool(_animHash[2], value);
     } 
+    bool _a_attack
+    {
+        get => _anims.GetBool(_animHash[3]);
+        set => _anims.SetBool(_animHash[3], value);
+    }
     #endregion
 
     NavMeshAgent _agent;
@@ -121,6 +126,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             }
         }
     }
+
+    public bool Attack_isInCooldown { get; private set; }
 
     private void Awake()
     {
@@ -299,17 +306,19 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         attack.OnEnter += (previousState) =>
         {
             _currentState = BabosoState.attack;
+            _a_attack = true;
+
+            //Instakilleo al target.
+            KillTarget();
 
             //Detengo la marcha.
             _agent.isStopped = true;
             Debug.LogWarning("Attack On Enter");
         };
-        attack.OnUpdate += () =>
-        {
-
-        };
+        //attack.OnUpdate += () => { };
         attack.OnExit += (nextState) =>
         {
+            _a_attack = false;
             Debug.LogWarning("Attack On Exit");
         };
 
@@ -321,24 +330,18 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _a_Walk = false;
 
             //En propósitos de debug.
-            var matColor = GetComponentInChildren<MeshRenderer>().material;
-            matColor.color = Color.red;
+            //var matColor = GetComponentInChildren<MeshRenderer>().material;
+            //matColor.color = Color.red;
             _remainingBurnTime = _burnTime;
 
             //Dejamos de emitir baba.
             _trail.Emit = false;
 
             //Nos detenemos y reseteamos el camino.
+            _agent.isStopped = true;
             _agent.ResetPath();
         };
-        burning.OnUpdate += () =>
-        {
-            //Esto se maneja x animación.
-            if (_remainingBurnTime > 0)
-                _remainingBurnTime -= Time.deltaTime;
-            else
-                state.Feed(BabosoState.dead);
-        };
+        burning.OnUpdate += () => { };
         //burning.OnExit += (previousState) =>
         //{
         //    //Cuando se termina el tiempo de la animación saltamos a dead.
@@ -352,8 +355,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         {
             //Tomo desiciones... pero cuales?
             //Si mi enemigo esta muerto.
-
-            //Cuando dejo de atacar? --> Animacion.
+            state.Feed(BabosoState.patroll);
         };
         think.OnExit += (x) => 
         {
@@ -371,14 +373,28 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         print("Current State is:" + _currentState.ToString());
     }
 
-    private void OnDrawGizmosSelected()
+
+    //========================================== Member Funcs =================================================
+
+    void KillTarget()
     {
-        //Rango de ataque
-        Gizmos.color = attackRangeColor;
-        Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
+        if (_target != null)
+        {
+            var killeable = _target.GetComponent<IDamageable<Damage>>();
+            if (killeable != null)
+            {
+                killeable.Hit(new Damage() { instaKill = true });
+            }
+            else
+                Debug.LogError("La cagaste, el target no es Damageable");
+        }
+        else
+            Debug.LogError("La cagaste, el target es nulo");
     }
 
+    //========================================== Sistema de Daño ==============================================
+
+    //Recibimos Daño
     public void Hit(Damage damage)
     {
         Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
@@ -400,15 +416,42 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         health -= damage.Ammount;
     }
-
+    //Devolvemos nuestras estadísticas.
     public Damage getDamageState()
     {
         return _damageState;
     }
-
+    //En este caso si resivo un hit, pos me muero asi que no pasa mucho.
     public void HitStatus(HitResult result)
     {
         //Cuando conecta un hit... no hago nada en particular.
     }
 
+    //===================================== Animation Events ===================================================
+
+    //Fases de Ataques --> StartUp, Active, Recovery
+    //Por ahora el juego es Instakill, asi que cuando un enemigo te alcanza, te golpea y tu mueres.
+
+    public void AV_Attack_End()
+    {
+        state.Feed(BabosoState.think);
+
+        Debug.LogWarning("AttackEnded");
+    }
+
+    public void AV_Burning_End()
+    {
+        state.Feed(BabosoState.dead);
+        Debug.LogWarning("AnimEvent: BurningEnd");
+    }
+
+    //===================================== DEBUG ===============================================================
+
+    private void OnDrawGizmosSelected()
+    {
+        //Rango de ataque
+        Gizmos.color = attackRangeColor;
+        Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
+        Gizmos.DrawWireSphere(transform.position, _attackRange);
+    }
 }

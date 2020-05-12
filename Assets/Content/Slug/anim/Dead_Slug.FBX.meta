@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: d5b0b3cbf0ab75a4fa4a68a90d1076a3
+guid: cfae35cce69ca6a4e91b239506ad2f96
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: Burning
-  - first:
-      74: 8273325049105940540
     second: Dead
   externalObjects: {}
   materials:
@@ -38,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Burning
+      name: Dead
       takeName: Take 001
       internalID: 0
-      firstFrame: 0
-      lastFrame: 63
+      firstFrame: 64
+      lastFrame: 75
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -104,7 +101,7 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
+  copyAvatar: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -121,7 +118,8 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 47689f982770dbf428f9c44e4f9d0101,
+    type: 3}
   animationType: 2
   humanoidOversampling: 1
   additionalBone: 0

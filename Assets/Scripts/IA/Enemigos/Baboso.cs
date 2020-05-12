@@ -93,7 +93,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     LineOfSightComponent _sight;
     Trail _trail;
 
-    DamageDealer _hurtbox;
+    HurtBox _hurtbox;
     HitBox _hitbox;
     Damage _damageState = new Damage();
 
@@ -128,7 +128,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         _agent = GetComponent<NavMeshAgent>();
         _sight = GetComponent<LineOfSightComponent>();
         _trail = GetComponentInChildren<Trail>();
-        _hurtbox = GetComponentInChildren<DamageDealer>();
+        _hurtbox = GetComponentInChildren<HurtBox>();
         _anims = GetComponent<Animator>();
 
         //AutoSet Del Target.

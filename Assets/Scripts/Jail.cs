@@ -9,13 +9,13 @@ public class Jail : MonoBehaviour
     [SerializeField] Collider PhysicalCollider = null;
     [SerializeField] Collider _damageDealer;
     Rigidbody _rb;
-    public bool IsKinematicObj;
+   
     public bool Growndchecked =false;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _rb.isKinematic = IsKinematicObj;
+        _rb.isKinematic = true;
     }
     private void Update()
     {
@@ -24,7 +24,7 @@ public class Jail : MonoBehaviour
 
     public void Drop()
     {
-        _rb.isKinematic = IsKinematicObj;
+        _rb.isKinematic = false;
         StartCoroutine(Deactivate());
     }
 

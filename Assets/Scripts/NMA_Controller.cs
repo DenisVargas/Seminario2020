@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public struct ActivationCommandData
+{
+    public IInteractable target;
+    public OperationOptions operationOptions;
+}
 //Navigation Mesh Actor Controller.
 public class NMA_Controller : MonoBehaviour
 {
@@ -32,6 +37,11 @@ public class NMA_Controller : MonoBehaviour
         get => _anims.GetBool(animHash[2]);
         set => _anims.SetBool(animHash[2], value);
     }
+    bool _a_Dead
+    {
+        get => _anims.GetBool(animHash[3]);
+        set => _anims.SetBool(animHash[3], value);
+    }
 
 
     Camera _viewCamera = null;
@@ -53,7 +63,7 @@ public class NMA_Controller : MonoBehaviour
         _mv = GetComponent<MouseView>();
 
         _anims = GetComponent<Animator>();
-        animHash = new int[3];
+        animHash = new int[4];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -223,6 +233,15 @@ public class NMA_Controller : MonoBehaviour
         }
     }
 
+    void Die()
+    {
+        PlayerInputEnabled = false;
+        _agent.isStopped = true;
+        _agent.ResetPath();
+
+        //TODO: Notificamos que morimos a algún Mánager
+    }
+
     struct MouseContext
     {
         public bool interactuableHitted;
@@ -268,6 +287,7 @@ public class NMA_Controller : MonoBehaviour
         return _context;
     }
 
+    //=============================================================== Animation Events =============================================================
     public void AE_PullLeverStarted()
     {
         PlayerInputEnabled = false;
@@ -289,6 +309,8 @@ public class NMA_Controller : MonoBehaviour
         }
     }
 
+    //============================================================== DEBUG ==========================================================================
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -297,8 +319,3 @@ public class NMA_Controller : MonoBehaviour
     }
 }
 
-public struct ActivationCommandData
-{
-    public IInteractable target;
-    public OperationOptions operationOptions;
-}

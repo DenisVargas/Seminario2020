@@ -5,12 +5,12 @@ using Core.DamageSystem;
 public class TrapHitBox : MonoBehaviour
 {
     [Header("Trap Settings")]
-    [SerializeField] bool _instaKill;
+    [SerializeField] bool _instaKill = true;
     [Space]
     [Header("Si instakill esta activado, no hace falta completar el resto :D")]
-    [SerializeField] DamageType _damageType;
-    [SerializeField] float _ammount;
-    [SerializeField] float _criticalMultiplier;
+    [SerializeField] DamageType _damageType    = DamageType.blunt;
+    [SerializeField] float _ammount            = 0f;
+    [SerializeField] float _criticalMultiplier = 2f;
 
     private void OnTriggerEnter(Collider other)
     {

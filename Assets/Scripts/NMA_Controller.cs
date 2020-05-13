@@ -126,9 +126,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
         }
         #endregion
 
-        if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
-            UpdateForward();
-
+        //if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
+        //    UpdateForward();
 
         if (comandos.Count > 0)
         {
@@ -201,6 +200,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
     //Movimiento
     public void MoveToTarget(Vector3 destinyPosition)
     {
+        Vector3 _targetForward = (destinyPosition - transform.position).normalized.YComponent(0);
+        transform.forward = _targetForward;
         if (_currentTargetPos != destinyPosition)
         {
             forwardLerpTime = 0;
@@ -212,18 +213,18 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
         _agent.destination = destinyPosition;
     }
 
-    public void UpdateForward()
-    {
-        //transform.LookAt(dst.YComponent(0)); //Esto funciona, pero realiza un comportamiento extraño que es indeseable ya que tiene en cuenta las 3 dimensiones.
-        Vector3 _TargetForward = (_currentTargetPos.YComponent(0) - transform.position.YComponent(0)).normalized;
+    //public void UpdateForward()
+    //{
+    //    //transform.LookAt(dst.YComponent(0)); //Esto funciona, pero realiza un comportamiento extraño que es indeseable ya que tiene en cuenta las 3 dimensiones.
+    //    Vector3 _TargetForward = (_currentTargetPos.YComponent(0) - transform.position.YComponent(0)).normalized;
 
-        //chequeamos el tiempo del lerp. (Aquí podriamos hacer que el lerp dependa de un tiempo target)
-        //Ejemplo: que lerpee siempre en 0.5 seg o 2 seg.
-        float time = Mathf.Clamp(forwardLerpTime + Time.deltaTime, 0f, 1f);
+    //    //chequeamos el tiempo del lerp. (Aquí podriamos hacer que el lerp dependa de un tiempo target)
+    //    //Ejemplo: que lerpee siempre en 0.5 seg o 2 seg.
+    //    //float time = Mathf.Clamp(forwardLerpTime + Time.deltaTime, 0f, 1f);
 
-        //Lerpeamos y Aplicamos. Slerp para que la rotacion sea suave.
-        transform.forward = Vector3.Slerp(transform.forward, _TargetForward, time);
-    }
+    //    //Lerpeamos y Aplicamos. Slerp para que la rotacion sea suave.
+    //    //transform.forward = Vector3.Slerp(transform.forward, _TargetForward, time);
+    //}
 
     void disposeCommand()
     {
@@ -243,8 +244,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
 
         _a_Dead = true;
         ImDeadBro();
-
-        
     }
 
     struct MouseContext

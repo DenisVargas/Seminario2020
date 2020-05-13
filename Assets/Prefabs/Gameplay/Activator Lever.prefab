@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 8614242783490319396}
   - component: {fileID: 7990428683155442669}
   m_Layer: 0
-  m_Name: Lever 1
+  m_Name: Activator Lever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

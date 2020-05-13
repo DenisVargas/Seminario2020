@@ -21,8 +21,8 @@ public struct DamageAcumulation
     public float Ammount;
 }
 
-
-public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitResult>, IInteractable
+[RequireComponent(typeof(NavMeshAgent), typeof(Animator), typeof(LineOfSightComponent))]
+public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitResult>, IInteractable
 {
     [Header("Stats")]
     [SerializeField] float _health = 100f;
@@ -107,9 +107,26 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
 
     //----------------------------------- Components ----------------------------------------
 
+    private Animator _anim = null;
+    int[] _animHash = new int[3];
+    bool _a_walk
+    {
+        get => _anim.GetBool(_animHash[0]);
+        set => _anim.SetBool(_animHash[0], value);
+    }
+    bool _a_Attack
+    {
+        get => _anim.GetBool(_animHash[1]);
+        set => _anim.SetBool(_animHash[1], value);
+    }
+    bool _a_Dead
+    {
+        get => _anim.GetBool(_animHash[2]);
+        set => _anim.SetBool(_animHash[2], value);
+    }
+
     private NavMeshAgent _agent = null;
     private LineOfSightComponent _sight = null;
-    private Animator _anim = null;
 
 
 #if UNITY_EDITOR
@@ -131,7 +148,6 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     {
         _agent = GetComponent<NavMeshAgent>();
         _sight = GetComponent<LineOfSightComponent>();
-        _anim = GetComponent<Animator>();
 
         _health = _maxHealth;
 
@@ -143,7 +159,12 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
             _sight.SetTarget(_targetTransform);
         }
 
-        #region Estados
+        _anim = GetComponent<Animator>();
+        _animHash = new int[3];
+        for (int i = 0; i < _animHash.Length; i++)
+            _animHash[i] = _anim.parameters[i].nameHash;
+
+        #region Declaración de Estados
         var idle = new State<BoboState>("Idle");
         var wander = new State<BoboState>("Wander");
         var burning = new State<BoboState>("Burning");
@@ -186,7 +207,7 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
         dead.AddTransition(BoboState.idle, idle);
         #endregion
 
-        #region Eventos
+        #region Eventos de Estado
         idle.OnEnter += (x) =>
         {
             if (state != null)
@@ -198,7 +219,14 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
             }
             //Reproduzco la animacion correspondiente.
         };
-        //idle.OnUpdate += ()=> {};
+        idle.OnUpdate += ()=> 
+        {
+            //Si veo al enemigo pero no lo estoy persiguiendo, entonces...
+            if (_sight.IsInSight(_targetTransform) && _currentState != BoboState.pursue)
+            {
+                state.Feed(BoboState.pursue);
+            }
+        };
         //idle.OnExit += (NextState)=> {};
 
         wander.OnEnter += (x) =>
@@ -263,8 +291,7 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
 
         pursue.OnEnter += (x) =>
         {
-            //Seteo la animación correspondiente.
-            _anim.SetBool("pursuing", true);
+            _a_walk = true;
         };
         pursue.OnUpdate += () =>
         {
@@ -282,7 +309,12 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
         };
         pursue.OnExit += (NextState) =>
         {
-            //Debería chequear si se cumple el desplazamiento.
+            _agent.isStopped = true;
+            _agent.ResetPath();
+            if (NextState == BoboState.attack || NextState == BoboState.burning)
+            {
+                _a_walk = false;
+            }
         };
 
         think.OnEnter += (x) =>
@@ -291,6 +323,14 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
             //Seteo el tiempo de reacción.
             //Sino
             //Tomo una desición en base a los inputs.
+            if (_sight.distanceToTarget < _attackRange)
+            {
+                state.Feed(BoboState.attack);
+            }
+            else if (_sight.IsInSight(_targetTransform) && _sight.distanceToTarget > _attackRange)
+            {
+                state.Feed(BoboState.pursue);
+            }
         };
         think.OnUpdate += () =>
         {
@@ -303,6 +343,7 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
         attack.OnEnter += (x) =>
         {
             //Seteo la animación.
+            _a_Attack = true;
             //EL ataque se maneja por eventos asi que esto es lo único que hace.
         };
         attack.OnUpdate += () =>
@@ -324,7 +365,10 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
             //Vuelvo al estado idle.
             //Opcionalmente puedo hacer un festejo.
         };
-        //attack.OnExit += (NextState) => { };
+        attack.OnExit += (NextState) => 
+        {
+            _a_Attack = false;
+        };
 
         rage.OnEnter += (x) =>
         {
@@ -376,12 +420,6 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     void Update()
     {
         state.Update();
-
-        //Si veo al enemigo pero no lo estoy persiguiendo, entonces...
-        if (_sight.IsInSight(_targetTransform) && _currentState != BoboState.pursue)
-        {
-            state.Feed(BoboState.pursue);
-        }
     }
     
     //=================================== Private Memeber Funcs =============================
@@ -517,6 +555,13 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     {
         //Si es atacado por una roca, entra en rageMode.
         state.Feed(BoboState.rage);
+    }
+
+    //============================== Animation Events =======================================
+
+    public void AV_Attack_Ended()
+    {
+        state.Feed(BoboState.think);
     }
 
     //=============================== DEBUG =================================================

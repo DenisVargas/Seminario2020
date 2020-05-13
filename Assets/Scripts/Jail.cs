@@ -1,25 +1,18 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Core.DamageSystem;
 
 [RequireComponent(typeof(Collider))]
 public class Jail : MonoBehaviour
 {
     [SerializeField] Collider PhysicalCollider = null;
-    [SerializeField] Collider _damageDealer;
     Rigidbody _rb;
-   
-    public bool Growndchecked =false;
+
+    public bool Growndchecked = false;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true;
-    }
-    private void Update()
-    {
-     
     }
 
     public void Drop()
@@ -34,20 +27,11 @@ public class Jail : MonoBehaviour
         {
             Growndchecked = true;
         }
-        var myhitedObject = collision.collider.GetComponent<IDestructible>();
 
+        var myhitedObject = collision.collider.GetComponent<IDestructible>();
         if (myhitedObject != null)
         {
             myhitedObject.destroyMe();
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        var killable = other.GetComponentInParent<IDamageable<Damage>>();
-        if (killable != null && !Growndchecked)
-        {
-            killable.Hit(new Damage() { instaKill = true });
         }
     }
 

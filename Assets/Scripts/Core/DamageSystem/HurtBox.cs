@@ -32,10 +32,11 @@ namespace Core.DamageSystem
             _body = GetComponentInParent<IDamageable<Damage>>();
         }
 
-        public void GetDamage(Damage damage)
+        public void TransferDamage(Damage damage)
         {
             Debug.LogWarning(string.Format("{0} ha recibido un HIT", _body.gameObject.name));
             _body.Hit(damage);
+            DetectIncomingDamage = false;
         }
     }
 }

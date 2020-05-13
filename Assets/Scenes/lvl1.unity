@@ -1100,6 +1100,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5469587692330298384, guid: 850251834a439db48873d66acfaf234a,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 6997750817590196718, guid: 850251834a439db48873d66acfaf234a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10282,7 +10287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 929074668}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -28.692, y: 3.355, z: -6.362}
+  m_LocalPosition: {x: -29.44, y: 3.355, z: -5.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1857209142}
@@ -17850,6 +17855,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 439867254}
     m_Modifications:
+    - target: {fileID: 1352058643764812741, guid: 850251834a439db48873d66acfaf234a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1674762267818236375, guid: 850251834a439db48873d66acfaf234a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.15
+      objectReference: {fileID: 0}
     - target: {fileID: 5229473362048165129, guid: 850251834a439db48873d66acfaf234a,
         type: 3}
       propertyPath: m_Name
@@ -17864,6 +17894,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5469587692330298384, guid: 850251834a439db48873d66acfaf234a,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
       objectReference: {fileID: 0}
     - target: {fileID: 6997750817590196718, guid: 850251834a439db48873d66acfaf234a,
         type: 3}
@@ -22666,7 +22701,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhysicalCollider: {fileID: 1837556046}
   _damageDealer: {fileID: 1837556046}
-  IsKinematicObj: 0
   Growndchecked: 0
 --- !u!65 &1837556046
 BoxCollider:
@@ -26696,7 +26730,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhysicalCollider: {fileID: 1280892965395128324}
   _damageDealer: {fileID: 1280892965395128324}
-  IsKinematicObj: 0
   Growndchecked: 0
 --- !u!65 &1280892965395128324
 BoxCollider:
@@ -27167,7 +27200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhysicalCollider: {fileID: 6545859266801399084}
   _damageDealer: {fileID: 6545859266801399084}
-  IsKinematicObj: 0
   Growndchecked: 0
 --- !u!65 &6545859266801399084
 BoxCollider:

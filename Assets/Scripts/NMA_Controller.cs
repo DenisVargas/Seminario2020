@@ -13,6 +13,7 @@ public struct ActivationCommandData
 //Navigation Mesh Actor Controller.
 public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
 {
+    public event Action ImDeadBro = delegate { };
     [SerializeField] LayerMask mouseDetectionMask  = ~0;
     //[SerializeField] Transform MouseDebug          = null;
     //[SerializeField] Transform targetDebug         = null;
@@ -241,8 +242,9 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
         _agent.ResetPath();
 
         _a_Dead = true;
+        ImDeadBro();
 
-        //TODO: Notificamos que morimos a algún Mánager
+        
     }
 
     struct MouseContext

@@ -131,12 +131,17 @@ public class Bobo : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRes
     {
         _agent = GetComponent<NavMeshAgent>();
         _sight = GetComponent<LineOfSightComponent>();
-        _sight.SetTarget(FindObjectOfType<NMA_Controller>().gameObject.transform);
         _anim = GetComponent<Animator>();
 
         _health = _maxHealth;
 
-        _targetTransform = FindObjectOfType<NMA_Controller>().gameObject.transform;
+        var target = FindObjectOfType<NMA_Controller>();
+        if (target != null)
+        {
+            _targetTransform = target.transform;
+            _targetPosition = target.transform.position;
+            _sight.SetTarget(_targetTransform);
+        }
 
         #region Estados
         var idle = new State<BoboState>("Idle");

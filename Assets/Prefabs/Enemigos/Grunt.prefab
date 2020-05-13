@@ -2096,8 +2096,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9118807196185049338}
+  - component: {fileID: 7964812142779624980}
+  - component: {fileID: 1324527352422155877}
   m_Layer: 0
-  m_Name: Enemy 2
+  m_Name: Grunt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2118,6 +2120,64 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7964812142779624980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118807196185049341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e1924a165a8704792f42281b06649a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibles:
+    serializedVersion: 2
+    m_Bits: 3221225472
+  range: 6
+  angle: 45
+  Debug_LineOfSight: 1
+  rangeColor: {r: 1, g: 1, b: 1, a: 1}
+  angleColor: {r: 1, g: 1, b: 1, a: 1}
+  positionDiference: {x: 0, y: 0, z: 0}
+  dirToTarget: {x: 0, y: 0, z: 0}
+  angleToTarget: 0
+  distanceToTarget: 0
+--- !u!114 &1324527352422155877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118807196185049341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6b85cc6c798774b841d4109550d7fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 100
+  _maxHealth: 100
+  _attackRange: 2
+  Interactions: 
+  Weaknesses: []
+  resistances: []
+  _targeteables:
+    serializedVersion: 2
+    m_Bits: 1073742336
+  _rageMode_Duration: 10
+  _rageMode_TargetDetectionRange: 5
+  _wanderMinDistance: 2
+  _wanderMaxDistance: 10
+  _minWanderTime: 2
+  _maxWanderTime: 10
+  _currentState: 0
+  DEBUG_WanderStateRanges: 1
+  DEBUG_WanderRange_Min_GIZMOCOLOR: {r: 0, g: 0, b: 1, a: 1}
+  DEBUG_WanderRange_Max_GIZMOCOLOR: {r: 0, g: 0, b: 1, a: 1}
+  DEBUG_RageMode_Target: 1
+  DEBUG_RageMode_Ranges: 1
+  DEBUG_RM_TrgDetectRange_GIZMOCOLOR: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &9124080367169159345
 GameObject:
   m_ObjectHideFlags: 0

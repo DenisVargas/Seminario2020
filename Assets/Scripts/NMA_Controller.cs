@@ -97,13 +97,14 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
             }
             else
             {
-                if (!mod1)
+                if (mod1)
+                    _mv.SetMousePositionAditive(_mouseContext.hitPosition);
+                else
                 {
-                    _mv.ClearView();
                     comandos.Clear();
+                    _mv.SetMousePosition(_mouseContext.hitPosition);
                 }
 
-                _mv.SetMousePosition(_mouseContext.hitPosition);
 
                 IQueryComand moveCommand = new cmd_Move
                 (

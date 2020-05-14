@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Utility.ObjectPools;
 
@@ -11,13 +10,12 @@ public class MouseView : MonoBehaviour
     Pool<PooleableComponent> _positionViews;
     Pool<PooleableComponent> _MousePosViews;
 
-    public List<GameObject> positions = new List<GameObject>();
-
+    public List<PooleableComponent> positions = new List<PooleableComponent>();
 
     private void Awake()
     {
-        _positionViews = new Pool<PooleableComponent>(true);
-        _positionViews.Populate(10,
+        _positionViews = new Pool<PooleableComponent>(false);
+        _positionViews.Populate(2,
                         () =>
                         {
                             var Target = Instantiate(Prefab_CommandTarget, transform.position, Quaternion.Euler(new Vector3(-90, 0, 0)));
@@ -37,30 +35,35 @@ public class MouseView : MonoBehaviour
         });
     }
 
-    public void SetMousePosition(Vector3 position)
+    public void SetMousePositionAditive(Vector3 position)
     {
-        var Target = _positionViews.GetObject().gameObject;
-        Target.transform.position = position;
-
-        var mPos = _MousePosViews.GetObject().gameObject;
-        mPos.transform.position = position;
-
-        var anims = mPos.GetComponentsInChildren<Animator>();
-        foreach (var anim in anims)
+        var Target = _positionViews.GetObject();
+        if (Target != null)
         {
-            anim.SetTrigger("Position");
+            Target.transform.position = position;
+            positions.Add(Target);
         }
 
-        positions.Add(Target);
+        var mPos = _MousePosViews.GetObject();
+        if (mPos != null)
+        {
+            //Si es nulo que hago?
+            mPos.transform.position = position;
+
+            var anims = mPos.GetComponentsInChildren<Animator>();
+            foreach (var anim in anims)
+            {
+                anim.SetTrigger("Position");
+            }
+        }
     }
 
-    public void ClearView()
+    public void SetMousePosition(Vector3 position)
     {
         for (int i = 0; i < positions.Count; i++)
-        {
-            //Destroy(positions[i]);
-            positions[i].GetComponent<PooleableComponent>().Dispose();
-        }
+            positions[i].Dispose();
         positions.Clear();
+
+        SetMousePositionAditive(position);
     }
 }

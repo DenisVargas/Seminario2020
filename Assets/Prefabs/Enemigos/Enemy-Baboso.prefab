@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856897687836876991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.052}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 856897688428168661}
@@ -40,7 +40,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856897687836876991}
   serializedVersion: 6
-  lengthInSec: 30
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -115,7 +115,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 30
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -222,7 +222,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 1}
+      maxColor: {r: 0.037424356, g: 0.2735849, b: 0.03794957, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -284,7 +284,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 6
+      scalar: 4
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -600,7 +600,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 300
+    maxNumParticles: 100
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -982,40 +982,31 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0.0010681152
+          time: 0
           value: 0
-          inSlope: 10.086511
-          outSlope: 10.086511
-          tangentMode: 0
+          inSlope: 7.289039
+          outSlope: 7.289039
+          tangentMode: 34
           weightedMode: 0
           inWeight: 0
-          outWeight: 0.09274676
+          outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.044730067
-          value: 0.37925556
-          inSlope: -0.10493283
-          outSlope: -0.10493283
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.422825
-          outWeight: 0.4138016
-        - serializedVersion: 3
-          time: 0.93100435
-          value: 0.34076852
-          inSlope: -0.21581478
-          outSlope: -0.21581478
+          time: 0.080512695
+          value: 0.5868602
+          inSlope: 1.7465454
+          outSlope: 1.7465454
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.44340762
+          outWeight: 0.037706926
         - serializedVersion: 3
           time: 1
-          value: 0
-          inSlope: -4.7917933
-          outSlope: -4.7917933
+          value: 1
+          inSlope: 0.07167206
+          outSlope: 0.07167206
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.0453132
+          inWeight: 0.19147672
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -1340,7 +1331,7 @@ ParticleSystem:
         ctime7: 0
         atime0: 0
         atime1: 1966
-        atime2: 51657
+        atime2: 32960
         atime3: 65535
         atime4: 0
         atime5: 0
@@ -4727,7 +4718,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2b344f94a3c57db42ae5907255176e04, type: 2}
+  - {fileID: 2100000, guid: aa2de6e410c23f644ac72cec1b080d39, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4762,7 +4753,7 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
+  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
@@ -4911,7 +4902,7 @@ Transform:
   m_GameObject: {fileID: 856897688738227760}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 814780343495606734}
   - {fileID: 4532671286243731523}
@@ -5105,11 +5096,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 856897688738227766}
     m_Modifications:
-    - target: {fileID: -6057140222963153312, guid: 5766f71294217604ba77de25732d5a76,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: d3a6a30d597e86e46a70a40f4dca81fa, type: 2}
     - target: {fileID: -4216859302048453862, guid: 5766f71294217604ba77de25732d5a76,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5190,8 +5176,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mesh
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -6057140222963153312, guid: 5766f71294217604ba77de25732d5a76, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5766f71294217604ba77de25732d5a76, type: 3}
 --- !u!4 &814780343495606734 stripped
 Transform:

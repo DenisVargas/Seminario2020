@@ -105,7 +105,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
                     _mv.SetMousePosition(_mouseContext.hitPosition);
                 }
 
-
                 IQueryComand moveCommand = new cmd_Move
                 (
                     _mouseContext.hitPosition,
@@ -129,6 +128,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
 
         //if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
         //    UpdateForward();
+
+        //print("Hay " + comandos.Count + " comandos");
 
         if (comandos.Count > 0)
         {
@@ -174,7 +175,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
                 disposeCommand
             );
             comandos.Enqueue(closeDistance);
-            print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
+            //print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
         }
 
         //añado el comando correspondiente a la query.
@@ -285,6 +286,14 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
             if (collider.transform.CompareTag("NavigationFloor"))
             {
                 _context.hitPosition = hit.point;
+
+                //Nos fijamos el punto mas cercano en el navmesh.
+                NavMeshHit nh;
+                if (NavMesh.SamplePosition(hit.point, out nh, 5, NavMesh.AllAreas))
+                {
+                    _context.hitPosition = nh.position;
+                }
+
                 return _context;
             }
         }

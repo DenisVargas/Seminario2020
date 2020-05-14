@@ -46,4 +46,9 @@ public class WorldObject : MonoBehaviour, IInteractable
     {
         return suportedOperations;
     }
+
+    public Vector3 requestSafeInteractionPosition(IInteractor requester)
+    {
+        return position;
+    }
 }

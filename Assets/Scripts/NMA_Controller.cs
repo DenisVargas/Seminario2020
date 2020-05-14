@@ -11,7 +11,7 @@ public struct ActivationCommandData
     public OperationOptions operationOptions;
 }
 //Navigation Mesh Actor Controller.
-public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
+public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 {
     public event Action ImDeadBro = delegate { };
     [SerializeField] LayerMask mouseDetectionMask  = ~0;
@@ -45,6 +45,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>
         set => _anims.SetBool(animHash[3], value);
     }
 
+    public Vector3 position => transform.position;
 
     Camera _viewCamera = null;
     NavMeshAgent _agent = null;

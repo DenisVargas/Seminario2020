@@ -31,8 +31,8 @@ public class Trail : MonoBehaviour
 
             IgnitableObject ignit = instance.GetComponent<IgnitableObject>();
             ignit.pool = spawnPool;
-            ignit.nonActive_LifeTime = _max_nonActiveLifeTime;
-            ignit.Active_FireTime = _max_ActiveLifeTime;
+            ignit.MaxLifeTime = _max_nonActiveLifeTime;
+            ignit.BurningTime = _max_ActiveLifeTime;
             ignit.ExplansionDelayTime = _expandDelayTimePerNode;
 
             ignit.registerInUpdateList_Callback += () => { UpdateList.Add(ignit); };

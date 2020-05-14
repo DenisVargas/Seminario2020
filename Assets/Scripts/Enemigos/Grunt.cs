@@ -30,6 +30,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     [SerializeField] float _attackRange = 2f;
 
     [SerializeField] List<OperationOptions> Interactions = new List<OperationOptions>();
+    [SerializeField] float _safeInteractionDistance = 5f;
 
     public float Health
     {
@@ -592,6 +593,11 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
             Gizmos.color = DEBUG_WanderRange_Max_GIZMOCOLOR;
             Gizmos.DrawWireSphere(transform.position, _wanderMaxDistance);
         }
-    } 
+    }
+
+    public Vector3 requestSafeInteractionPosition(IInteractor requester)
+    {
+        return ((requester.position - transform.position).normalized * _safeInteractionDistance);
+    }
 #endif
 }

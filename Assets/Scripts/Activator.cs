@@ -22,6 +22,11 @@ public class Activator : MonoBehaviour, IInteractable
         }
     }
 
+    public Vector3 requestSafeInteractionPosition(IInteractor requester)
+    {
+        return ActivationPosition.position;
+    }
+
     List<OperationOptions> IInteractable.GetSuportedOperations()
     {
         return suportedOperations;

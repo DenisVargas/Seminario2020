@@ -9,21 +9,22 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
 {
     public Action registerInUpdateList_Callback = delegate { };
     public Action removeFromUpdateList_Callback = delegate { };
+
     [SerializeField] GameObject fireParticle = null;
     [SerializeField] List<OperationOptions> suportedInteractions = new List<OperationOptions>();
 
     [Tooltip("Cuanto tiempo estará activo mientras ")]
-    public float nonActive_LifeTime = 5f;
+    public float MaxLifeTime = 5f;
     [Tooltip("Cuanto tiempo estará prendido el fuego.")]
-    public float Active_FireTime = 5f;
+    public float BurningTime = 5f;
     [HideInInspector]
     public float ExplansionDelayTime = 0.8f;
 
-    [SerializeField] float lifeTime = 0;
+    [SerializeField] float _lifeTime = 0;
 
     [SerializeField] float _damagePerSecond = 5f;
     [SerializeField] float _affectedRadius = 2;
-    //[SerializeField] float _interactionRadius = 3; //Esto tiene que ser dada al player para evitar que reciba daño del fuego.
+    [SerializeField] float _interactionRadius = 3; //Esto tiene que ser dada al player para evitar que reciba daño del fuego.
     [SerializeField]LayerMask efectTargets = ~0;
 
     public List<IIgnitableObject> toIgnite = new List<IIgnitableObject>();
@@ -35,6 +36,7 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
     [SerializeField] HitBox _hitBox = null;
 
     public bool Burning { get; private set; } = (false);
+
     public Vector3 position => transform.position;
     public Vector3 LookToDirection => transform.forward;
 
@@ -42,8 +44,8 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
 
     public void UpdateLifeTime(float deltaTime)
     {
-        lifeTime -= deltaTime;
-        if (lifeTime <= 0)
+        _lifeTime -= deltaTime;
+        if (_lifeTime <= 0)
         {
             Dispose();
         }
@@ -51,7 +53,7 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
 
     public void ResetCurrentLifeTime()
     {
-        lifeTime = nonActive_LifeTime;
+        _lifeTime = MaxLifeTime;
     }
 
     //Para retornar un objeto pooleable al pool del que se originó, utiliza Dispose();
@@ -92,10 +94,10 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
             fireParticle.SetActive(true);
 
             StartCoroutine(DelayedOtherIgnition(delayTime));
-            StartCoroutine(extinguish(Active_FireTime));
+            StartCoroutine(extinguish(BurningTime));
 
             Burning = true;
-            lifeTime = Active_FireTime;
+            _lifeTime = BurningTime;
         }
     }
 
@@ -141,16 +143,20 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
         }
     }
 
+    public Vector3 requestSafeInteractionPosition(IInteractor requester)
+    {
+        return ((requester.position - transform.position).normalized) * _interactionRadius;
+    }
     public List<OperationOptions> GetSuportedOperations()
     {
         return suportedInteractions;
     }
-
     public void Operate(OperationOptions operation, params object[] optionalParams)
     {
         if (operation == OperationOptions.Activate)
             Ignite(ExplansionDelayTime);
     }
+    
 
     private void OnMouseEnter()
     {
@@ -183,7 +189,9 @@ public class IgnitableObject : PooleableComponent, IInteractable, IIgnitableObje
         Gizmos.color = Color.blue;
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _affectedRadius);
-    }
 
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(transform.position, _interactionRadius);
+    }
 #endif
 }

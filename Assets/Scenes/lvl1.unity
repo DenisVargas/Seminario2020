@@ -18112,80 +18112,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 439867254}
     m_Modifications:
-    - target: {fileID: 1352058643764812741, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1674762267818236375, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.103
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.45127222
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.0000005066395
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.00000044703484
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8923864
-      objectReference: {fileID: 0}
-    - target: {fileID: 2475590026857507523, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 53.651
-      objectReference: {fileID: 0}
     - target: {fileID: 5229473362048165129, guid: 850251834a439db48873d66acfaf234a,
         type: 3}
       propertyPath: m_Name
       value: Stone_Stair_3x4x4 (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5229473362048165129, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_TagString
-      value: NavigationFloor
-      objectReference: {fileID: 0}
-    - target: {fileID: 5229473362048165129, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5469587692330298384, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_TagString
-      value: NavigationFloor
-      objectReference: {fileID: 0}
-    - target: {fileID: 5469587692330298384, guid: 850251834a439db48873d66acfaf234a,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6997750817590196718, guid: 850251834a439db48873d66acfaf234a,
         type: 3}

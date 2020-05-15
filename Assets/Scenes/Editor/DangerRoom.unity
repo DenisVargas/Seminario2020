@@ -394,7 +394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &212650718
 Transform:
   m_ObjectHideFlags: 0
@@ -1145,6 +1145,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy-Baboso (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 856897688738227760, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 856897688738227766, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1307,6 +1312,14 @@ PrefabInstance:
       propertyPath: _fireTrailParent
       value: 
       objectReference: {fileID: 711407861}
+    - target: {fileID: 635854710, guid: 77b2ac5fe20f8f54d9e418c67c7b8476, type: 3}
+      propertyPath: _spawnTreshold
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 635854710, guid: 77b2ac5fe20f8f54d9e418c67c7b8476, type: 3}
+      propertyPath: _spawnDistance
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 856897688738227760, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
         type: 3}
       propertyPath: m_Name

@@ -12,6 +12,19 @@ public class TrapHitBox : MonoBehaviour
     [SerializeField] float _ammount            = 0f;
     [SerializeField] float _criticalMultiplier = 2f;
 
+    Collider _col;
+
+    private void Awake()
+    {
+        _col = GetComponent<Collider>();
+    }
+
+    public bool IsActive
+    {
+        get => _col.enabled;
+        set => _col.enabled = value;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         var hurtBox = other.GetComponent<HurtBox>();

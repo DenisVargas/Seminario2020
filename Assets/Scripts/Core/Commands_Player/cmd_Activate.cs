@@ -5,25 +5,24 @@ using UnityEngine;
 
 public class cmd_Activate : IQueryComand
 {
-    Action OnStartOperate = delegate { };
+    Action _animationTrigger = delegate { };
     Action _dispose = delegate { };
-    ActivationCommandData data;
+    ActivationCommandData _data;
 
     public bool completed { get; private set; } = false;
 
-    public cmd_Activate(ActivationCommandData data, Action OnOperate, Action dispose)
+    public cmd_Activate(ActivationCommandData data, Action AnimationTrigger, Action dispose)
     {
-        this.data = data;
-        OnStartOperate = OnOperate;
+        _data = data;
         _dispose = dispose;
+        _animationTrigger = AnimationTrigger;
     }
 
     public void Update()
     {
         //Ejecuto el comando.
-        OnStartOperate();
+        _animationTrigger();
         _dispose();
-        //MonoBehaviour.print("COMANDO ACTIVAR");
     }
 
     public void setUp()

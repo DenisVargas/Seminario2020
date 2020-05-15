@@ -226,7 +226,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _a_Dead = false;
             _a_burning = false;
 
-            print(string.Format("{0}: Entró al estado Idle", gameObject.name));
+            //print(string.Format("{0}: Entró al estado Idle", gameObject.name));
         };
         idle.OnUpdate += () => { };
         idle.OnExit += (nextState) => 

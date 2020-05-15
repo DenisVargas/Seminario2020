@@ -155,20 +155,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireParticle: {fileID: 4255842031857750274}
-  suportedInteractions: 02000000
+  suportedInteractions: 01000000
   MaxLifeTime: 5
   BurningTime: 5
   ExplansionDelayTime: 0.8
-  _lifeTime: 0
-  _damagePerSecond: 5
-  _affectedRadius: 1
-  _interactionRadius: 3
+  _ignitableSearchRadius: 1.5
+  _interactionRadius: 2
   efectTargets:
     serializedVersion: 2
     m_Bits: 1
-  toIgniteObjects: []
   _col: {fileID: 206088919360502986}
-  _hitBox: {fileID: 6667166137061420180}
+  _trapHitBox: {fileID: 3289302911783658168}
 --- !u!1 &206088919451261376
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,9 +176,9 @@ GameObject:
   m_Component:
   - component: {fileID: 206088919451261383}
   - component: {fileID: 206088919451261382}
-  - component: {fileID: 6667166137061420180}
+  - component: {fileID: 3289302911783658168}
   m_Layer: 9
-  m_Name: HitBox
+  m_Name: TrapHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -196,7 +193,7 @@ Transform:
   m_GameObject: {fileID: 206088919451261376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5796, y: 1.5796, z: 1.5796}
   m_Children: []
   m_Father: {fileID: 206088919360502991}
   m_RootOrder: 0
@@ -215,7 +212,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &6667166137061420180
+--- !u!114 &3289302911783658168
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -224,11 +221,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 206088919451261376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3550ce73d667aee4a93cbfd59f0bebca, type: 3}
+  m_Script: {fileID: 11500000, guid: 06238bd3537594442951961b64cc746e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectionInterval: 1
-  _col: {fileID: 0}
+  _instaKill: 1
+  _damageType: 0
+  _ammount: 100
+  _criticalMultiplier: 2
 --- !u!1 &2759721014909509379
 GameObject:
   m_ObjectHideFlags: 0

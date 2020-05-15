@@ -44,6 +44,11 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         get => _anims.GetBool(animHash[3]);
         set => _anims.SetBool(animHash[3], value);
     }
+    bool _a_Ignite
+    {
+        get => _anims.GetBool(animHash[4]);
+        set => _anims.SetBool(animHash[4], value);
+    }
 
     public Vector3 position => transform.position;
 
@@ -66,7 +71,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _mv = GetComponent<MouseView>();
 
         _anims = GetComponent<Animator>();
-        animHash = new int[4];
+        animHash = new int[5];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -130,7 +135,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         //if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
         //    UpdateForward();
 
-        //print("Hay " + comandos.Count + " comandos");
+        print("Hay " + comandos.Count + " comandos");
 
         if (comandos.Count > 0)
         {
@@ -147,21 +152,14 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     public void ExecuteOperation(OperationOptions operation, IInteractable target)
     {
         //Aqui tenemos una referencia a un target y una operación que quiero ejectar sobre él.
-        //(¿Necesito moverme hacia el objetivo primero?) - Opcionalmente me muevo hasta la ubicación del objeto.
-        //print(string.Format("Ejecuto la operación {0} sobre {1}", operation.ToString(), target));
-
         //Chequeo si estoy lo suficientemente cerca para activar el comando.
-        if (Vector3.Distance(transform.position, target.position) > _movementTreshold)
+        print(string.Format("Ejecuto la operación {0} sobre {1}", operation.ToString(), target));
+        var safeInteractionPosition = target.requestSafeInteractionPosition(this);
+        if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
         {
-            Vector3 vectorToPlayer = target.position - transform.position;
-            Vector3 stopingPosition = target.position -  (vectorToPlayer.normalized * _interactionMaxDistance);
-
-            //if (targetDebug != null)
-            //    targetDebug.position = stopingPosition;
-
             IQueryComand closeDistance = new cmd_Move
             (
-                stopingPosition, 
+                safeInteractionPosition,
                 MoveToTarget, 
                 (targetPos) => 
                 {
@@ -180,18 +178,39 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         }
 
         //añado el comando correspondiente a la query.
+        IQueryComand _toActivateCommand;
         switch (operation)
         {
             case OperationOptions.Take:
                 break;
             case OperationOptions.Ignite:
+
+                Queued_ActivationData = new ActivationCommandData() { operationOptions = operation, target = target };
+                _toActivateCommand = new cmd_Ignite(
+                                                      new ActivationCommandData()
+                                                      {
+                                                         target = target,
+                                                         operationOptions = operation
+                                                      },
+                                                      () => { _a_Ignite = true; },
+                                                      disposeCommand
+                                                   );
+                comandos.Enqueue(_toActivateCommand);
+
                 break;
+
             case OperationOptions.Activate:
-                Action beforeCommandExecution = () => { _a_LeverPull = true; };
+
                 Queued_ActivationData = new ActivationCommandData() { target = target, operationOptions = operation };
-                IQueryComand activateCommand = new cmd_Activate(Queued_ActivationData, beforeCommandExecution, disposeCommand);
-                comandos.Enqueue(activateCommand);
+                _toActivateCommand = new cmd_Activate
+                    (
+                        Queued_ActivationData,
+                        () => { _a_LeverPull = true; },
+                        disposeCommand
+                    );
+                comandos.Enqueue(_toActivateCommand);
                 //print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
+
                 break;
             case OperationOptions.Equip:
                 break;
@@ -206,31 +225,16 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         Vector3 _targetForward = (destinyPosition - transform.position).normalized.YComponent(0);
         transform.forward = _targetForward;
         if (_currentTargetPos != destinyPosition)
-        {
-            forwardLerpTime = 0;
             _currentTargetPos = destinyPosition;
-        }
         if (!_a_Walking)
             _a_Walking = true;
 
         _agent.destination = destinyPosition;
     }
 
-    //public void UpdateForward()
-    //{
-    //    //transform.LookAt(dst.YComponent(0)); //Esto funciona, pero realiza un comportamiento extraño que es indeseable ya que tiene en cuenta las 3 dimensiones.
-    //    Vector3 _TargetForward = (_currentTargetPos.YComponent(0) - transform.position.YComponent(0)).normalized;
-
-    //    //chequeamos el tiempo del lerp. (Aquí podriamos hacer que el lerp dependa de un tiempo target)
-    //    //Ejemplo: que lerpee siempre en 0.5 seg o 2 seg.
-    //    //float time = Mathf.Clamp(forwardLerpTime + Time.deltaTime, 0f, 1f);
-
-    //    //Lerpeamos y Aplicamos. Slerp para que la rotacion sea suave.
-    //    //transform.forward = Vector3.Slerp(transform.forward, _TargetForward, time);
-    //}
-
     void disposeCommand()
     {
+        Debug.LogWarning("Hola ");
         var _currentC = comandos.Dequeue();
         if (comandos.Count > 0)
         {
@@ -326,6 +330,21 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     {
         PlayerInputEnabled = true;
         _a_LeverPull = false;
+
+        if (Queued_ActivationData.target != null)
+        {
+            Queued_ActivationData.target.Operate(Queued_ActivationData.operationOptions);
+            Queued_ActivationData = new ActivationCommandData();
+        }
+    }
+    public void AE_Ignite_Start()
+    {
+        PlayerInputEnabled = false;
+    }
+    public void AE_Ignite_End()
+    {
+        PlayerInputEnabled = true;
+        _a_Ignite = false;
 
         if (Queued_ActivationData.target != null)
         {

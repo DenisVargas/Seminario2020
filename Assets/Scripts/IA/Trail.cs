@@ -2,94 +2,75 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utility.ObjectPools;
+using Utility.ObjectPools.Generic;
 
 public class Trail : MonoBehaviour
 {
     [Tooltip("¿Tiene permitido este trail generar nuevos items?")]
-    public bool Emit = true;
+    public bool Emit = false;
     [SerializeField] GameObject _ignitionSystemPrefab = null;
     [SerializeField] Transform _fireTrailParent = null;
     [SerializeField] float _spawnDistance             = 1f;
-    [SerializeField] float _max_nonActiveLifeTime     = 10f;
-    [SerializeField] float _max_ActiveLifeTime        = 5f;
-    [SerializeField, Tooltip("Cuanto tiempo pasará antes de que el fuego se expanda a nodos subyacentes.")]
-    float _expandDelayTimePerNode = 0.8f;
 
-    Pool<PooleableComponent> spawnPool = new Pool<PooleableComponent>(true);
-    List<IgnitableObject> UpdateList = new List<IgnitableObject>();
-    List<IgnitableObject> RemoveList = new List<IgnitableObject>();
-    GameObject lastSpawned = null;
-
+    GenericPool<IgnitableObject> _spawnPool = null;
+    List<IgnitableObject> _spawned = new List<IgnitableObject>();
 
     private void Awake()
     {
-        spawnPool = new Pool<PooleableComponent>(true);
-        Func<PooleableComponent> IgniteObjectFactoryMethod = () =>
-        {
-            var instance = Instantiate(_ignitionSystemPrefab, transform.position, Quaternion.identity, _fireTrailParent);
+        _spawnPool = new GenericPool<IgnitableObject>
+        (
+            20,
+            () =>
+            {
+                var instance = Instantiate(_ignitionSystemPrefab, transform.position, Quaternion.identity, _fireTrailParent);
 
-            IgnitableObject ignit = instance.GetComponent<IgnitableObject>();
-            ignit.pool = spawnPool;
-            ignit.MaxLifeTime = _max_nonActiveLifeTime;
-            ignit.BurningTime = _max_ActiveLifeTime;
-            ignit.ExplansionDelayTime = _expandDelayTimePerNode;
+                IgnitableObject ignit = instance.GetComponent<IgnitableObject>();
+                ignit.OnDisable += () =>
+                {
+                    _spawnPool.DisablePoolObject(ignit);
+                };
 
-            ignit.registerInUpdateList_Callback += () => { UpdateList.Add(ignit); };
-            ignit.removeFromUpdateList_Callback += () => { RemoveList.Add(ignit); };
-
-            return ignit;
-        };
-        spawnPool.Populate(30, IgniteObjectFactoryMethod);
+                ignit.gameObject.SetActive(false);
+                return ignit;
+            },
+            (ignit) =>
+            {
+                ignit.gameObject.SetActive(true);
+                _spawned.Add(ignit);
+            },
+            (ignit) =>
+            {
+                ignit.gameObject.SetActive(false);
+                _spawned.Remove(ignit);
+            }
+        );
+        
     }
 
     private void Update()
     {
         if (Emit)
         {
-            if (lastSpawned == null)
-            {
-                spawnPool.IsDinamic = true;
-                SpawnObjectFromPool();
-                _fireTrailParent.GetChild(0).GetComponent<IgnitableObject>().Enable();
-            }
-            if (Vector3.Distance(transform.position, lastSpawned.transform.position) > _spawnDistance)
-                SpawnObjectFromPool();
-        }
-
-        foreach (var item in UpdateList)
-        {
-            item.UpdateLifeTime(Time.deltaTime);
-        }
-
-        if (RemoveList.Count > 0)
-        {
-            foreach (var item in RemoveList)
-                UpdateList.Remove(item);
-            RemoveList.Clear();
+            SpawnObjectFromPool();
         }
     }
 
     private void OnDisable()
     {
-        foreach (var item in UpdateList)
-        {
-            item.Dispose();
-        }
+        foreach (var item in _spawned)
+            _spawnPool.DisablePoolObject(item);
+        _spawned.Clear();
     }
 
     void SpawnObjectFromPool()
     {
         //Obtengo un objeto del pool.
-        var poolSystem = spawnPool.GetObject();
-        //Reposiciono el objeto en el mundo.
-        poolSystem.gameObject.transform.position = transform.position;
-        //Actualizo la ultima "particula" spawneada.
-        lastSpawned = poolSystem.gameObject;
+        var poolSystem = _spawnPool.GetObjectFromPool();
 
-        // Obtengo su componente Igniteable Object
-        var igniteable = poolSystem.GetComponent<IgnitableObject>();
-        // Reseteo sus tiempos de vida.
-        igniteable.ResetCurrentLifeTime();
+        //Tengo que chequear cosas para que funcione correctamente.
+
+
+        //Reposiciono el objeto en el mundo.
+        poolSystem.transform.position = transform.position;
     }
 }

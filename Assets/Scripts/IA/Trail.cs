@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utility.ObjectPools;
+using Utility.ObjectPools.Generic;
 
 public class Trail : MonoBehaviour
 {
@@ -16,7 +16,7 @@ public class Trail : MonoBehaviour
     [SerializeField, Tooltip("Cuanto tiempo pasará antes de que el fuego se expanda a nodos subyacentes.")]
     float _expandDelayTimePerNode = 0.8f;
 
-    Pool<PooleableComponent> spawnPool = new Pool<PooleableComponent>(true);
+    GenericPool<IgnitableObject> spawnPool;
     List<IgnitableObject> UpdateList = new List<IgnitableObject>();
     List<IgnitableObject> RemoveList = new List<IgnitableObject>();
     GameObject lastSpawned = null;
@@ -24,23 +24,32 @@ public class Trail : MonoBehaviour
 
     private void Awake()
     {
-        spawnPool = new Pool<PooleableComponent>(true);
-        Func<PooleableComponent> IgniteObjectFactoryMethod = () =>
-        {
-            var instance = Instantiate(_ignitionSystemPrefab, transform.position, Quaternion.identity, _fireTrailParent);
+        spawnPool = new GenericPool<IgnitableObject>
+        (
+            20,
+            () =>
+            {
+                //Ignit Factory Method
+                var instance = Instantiate(_ignitionSystemPrefab, transform.position, Quaternion.identity, _fireTrailParent);
 
-            IgnitableObject ignit = instance.GetComponent<IgnitableObject>();
-            ignit.pool = spawnPool;
-            ignit.MaxLifeTime = _max_nonActiveLifeTime;
-            ignit.BurningTime = _max_ActiveLifeTime;
-            ignit.ExplansionDelayTime = _expandDelayTimePerNode;
+                IgnitableObject ignit = instance.GetComponent<IgnitableObject>();
+                ignit.MaxLifeTime = _max_nonActiveLifeTime;
+                ignit.BurningTime = _max_ActiveLifeTime;
+                ignit.ExplansionDelayTime = _expandDelayTimePerNode;
 
-            ignit.registerInUpdateList_Callback += () => { UpdateList.Add(ignit); };
-            ignit.removeFromUpdateList_Callback += () => { RemoveList.Add(ignit); };
-
-            return ignit;
-        };
-        spawnPool.Populate(30, IgniteObjectFactoryMethod);
+                ignit.gameObject.SetActive(false);
+                return ignit;
+            },
+            (ignit) =>
+            {
+                ignit.gameObject.SetActive(true);
+            },
+            (ignit) =>
+            {
+                ignit.gameObject.SetActive(false);
+                spawnPool.DisablePoolObject(ignit);
+            }
+        );
     }
 
     private void Update()
@@ -51,7 +60,7 @@ public class Trail : MonoBehaviour
             {
                 spawnPool.IsDinamic = true;
                 SpawnObjectFromPool();
-                _fireTrailParent.GetChild(0).GetComponent<IgnitableObject>().Enable();
+                _fireTrailParent.GetChild(0).GetComponent<IgnitableObject>();
             }
             if (Vector3.Distance(transform.position, lastSpawned.transform.position) > _spawnDistance)
                 SpawnObjectFromPool();
@@ -72,24 +81,19 @@ public class Trail : MonoBehaviour
 
     private void OnDisable()
     {
+        //Al deshabilitar este objeto que pasa con los Objetos del Pool?
         foreach (var item in UpdateList)
         {
-            item.Dispose();
+            spawnPool.DisablePoolObject(item);
         }
     }
 
     void SpawnObjectFromPool()
     {
         //Obtengo un objeto del pool.
-        var poolSystem = spawnPool.GetObject();
-        //Reposiciono el objeto en el mundo.
-        poolSystem.gameObject.transform.position = transform.position;
-        //Actualizo la ultima "particula" spawneada.
-        lastSpawned = poolSystem.gameObject;
-
-        // Obtengo su componente Igniteable Object
-        var igniteable = poolSystem.GetComponent<IgnitableObject>();
-        // Reseteo sus tiempos de vida.
-        igniteable.ResetCurrentLifeTime();
+        var ignit = spawnPool.GetObjectFromPool();
+        ignit.transform.position = transform.position;
+        lastSpawned = ignit.gameObject;
+        ignit.ResetCurrentLifeTime();
     }
 }

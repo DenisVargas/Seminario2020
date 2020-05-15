@@ -12,9 +12,23 @@ public class TrapHitBox : MonoBehaviour
     [SerializeField] float _ammount            = 0f;
     [SerializeField] float _criticalMultiplier = 2f;
 
+    Collider _col;
+
+    private void Awake()
+    {
+        _col = GetComponent<Collider>();
+    }
+
+    public bool TrapEnabled
+    {
+        get => _col.enabled;
+        set => _col.enabled = value;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        var hurtBox = other.GetComponent<HurtBox>();
+        print(gameObject.name + " hace Daño a: " + other.gameObject.name);
+        var hurtBox = other.GetComponentInChildren<HurtBox>();
         if (hurtBox != null)
         {
             hurtBox.TransferDamage(new Damage() { instaKill = _instaKill, Ammount = _ammount, criticalMultiplier = _criticalMultiplier, type = _damageType });

@@ -235,7 +235,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         if (comandos.Count > 0)
         {
             var next = comandos.Peek();
-            print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
+            //print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
         }
     }
 

@@ -21,16 +21,16 @@ namespace Utility.ObjectPools.Generic
         Action<T> _init       = delegate { };
         Action<T> _finit      = delegate { };
         Func<T> _factoyMethod = delegate { return default(T); };
-        bool isDinamic        = false;
+        public bool IsDinamic = false;
 
-        public GenericPool(int stockInicial, Func<T> FactoryMethod, Action<T> Initialize, Action<T> Finalize, bool isDinamic = false)
+        public GenericPool(int stockInicial, Func<T> FactoryMethod, Action<T> EnablePoolObject, Action<T> DisablePoolObject, bool isDinamic = false)
         {
             _activeObjects = new Dictionary<T, PoolObject<T>>();
             _inactiveObjets = new Queue<PoolObject<T>>();
 
             _factoyMethod = FactoryMethod;
-            _init = Initialize;
-            _finit = Finalize;
+            _init = EnablePoolObject;
+            _finit = DisablePoolObject;
 
             for (int i = 0; i < stockInicial; i++)
             {
@@ -48,7 +48,7 @@ namespace Utility.ObjectPools.Generic
                 return poolObject.GetObject;
             }
 
-            if (isDinamic)
+            if (IsDinamic)
             {
                 var poolObject = new PoolObject<T>(_factoyMethod());
                 _init(poolObject.GetObject);

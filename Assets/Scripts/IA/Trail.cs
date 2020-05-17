@@ -6,7 +6,6 @@ using Utility.ObjectPools.Generic;
 
 public class Trail : MonoBehaviour
 {
-    [Tooltip("¿Tiene permitido este trail generar nuevos items?")]
     public bool Emit = false;
     [SerializeField] GameObject _ignitionSystemPrefab = null;
     [SerializeField] Transform _fireTrailParent = null;
@@ -60,30 +59,25 @@ public class Trail : MonoBehaviour
 
     private void OnDisable()
     {
-        foreach (var item in _spawned)
-            _spawnPool.DisablePoolObject(item);
+        List<IgnitableObject> toRemove = new List<IgnitableObject>(_spawned);
         _spawned.Clear();
+        foreach (var item in toRemove)
+            _spawnPool.DisablePoolObject(item);
     }
 
     void SpawnObjectFromPool()
     {
-        //Tengo que chequear cosas para que funcione correctamente.
         if (_lastSpawned != null)
         {
-            print("La distancia con el ultimo es: " + Vector3.Distance(transform.position, _lastSpawned.position));
+            //print("La distancia con el ultimo es: " + Vector3.Distance(transform.position, _lastSpawned.position));
             if (Vector3.Distance(transform.position, _lastSpawned.position) > _spawnDistance)
             {
                 //Chequeo si no estoy overlapeando algun otro ignitable Object.
-                float overlapedDistance = 0;
-                var overlapped = getOverlappedIgnitableObject(out overlapedDistance);
+                var overlapped = getOverlappedIgnitableObject();
                 if (overlapped != null)
-                {
                     overlapped.OnSpawn();
-                }
                 else
-                {
                     SpawnIgnitableObject();
-                }
             }
         }
         else
@@ -91,15 +85,14 @@ public class Trail : MonoBehaviour
             SpawnIgnitableObject();
         }
     }
-
-    IgnitableObject getOverlappedIgnitableObject(out float overlappedDistance)
+    IgnitableObject getOverlappedIgnitableObject()
     {
         var cols = Physics.OverlapSphere(transform.position, _spawnOverlapTreshold);
         float findedMinDistance = float.MaxValue;
         IgnitableObject closestIgnitableFinded = null;
         foreach (var item in cols)
         {
-            var igniteable = item.GetComponent<IgnitableObject>();            
+            var igniteable = item.GetComponent<IgnitableObject>();
             if (igniteable != null)
             {
                 var dst = Vector3.Distance(transform.position, igniteable.position);
@@ -112,10 +105,8 @@ public class Trail : MonoBehaviour
             else continue;
         }
 
-        overlappedDistance = findedMinDistance;
         return closestIgnitableFinded;
     }
-
     void SpawnIgnitableObject()
     {
         var poolSystem = _spawnPool.GetObjectFromPool();
@@ -127,6 +118,7 @@ public class Trail : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.grey;
@@ -135,5 +127,6 @@ public class Trail : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, _spawnOverlapTreshold);
-    }
+    } 
+#endif
 }

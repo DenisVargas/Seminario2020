@@ -2336,7 +2336,7 @@ MonoBehaviour:
     type: 3}
   _verticalScroll: {fileID: 7249967578170324171}
   _Content: {fileID: 7249967579214578012}
-  posOffset: {x: 10, y: 0}
+  posOffset: {x: 0, y: -60}
   presetDataBase:
   - {fileID: 11400000, guid: f72ed518dc8f8f1418ef0d9654f1f4a8, type: 2}
   - {fileID: 11400000, guid: 703a7e10e796edc49a6f33d1f0db7bfa, type: 2}

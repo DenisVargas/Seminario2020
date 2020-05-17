@@ -4869,7 +4869,8 @@ MonoBehaviour:
   _ignitionSystemPrefab: {fileID: 206088919360503028, guid: 705c5073aec01c04fb84ee42dee48421,
     type: 3}
   _fireTrailParent: {fileID: 0}
-  _spawnDistance: 1
+  _spawnDistance: 0.8
+  _spawnOverlapTreshold: 0.3
 --- !u!1 &856897688738227760
 GameObject:
   m_ObjectHideFlags: 0

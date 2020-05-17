@@ -60,9 +60,10 @@ public class Trail : MonoBehaviour
 
     private void OnDisable()
     {
-        foreach (var item in _spawned)
-            _spawnPool.DisablePoolObject(item);
+        List<IgnitableObject> toRemove = new List<IgnitableObject>(_spawned);
         _spawned.Clear();
+        foreach (var item in toRemove)
+            _spawnPool.DisablePoolObject(item);
     }
 
     void SpawnObjectFromPool()

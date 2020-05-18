@@ -18,7 +18,7 @@ public class CommandMenu : MonoBehaviour
     [SerializeField] Transform _Content = null;
 
     [Header("Options")]
-    [SerializeField] Vector2 posOffset = new Vector2(100, 0);
+    [SerializeField] Vector2 posOffset = new Vector2(0, 0);
 
     public CommandMenuItemData[] presetDataBase = new CommandMenuItemData[0];
     public Dictionary<OperationOptions, GameObject> display = new Dictionary<OperationOptions, GameObject>();
@@ -56,12 +56,13 @@ public class CommandMenu : MonoBehaviour
 
         //Necesito saber el width y hight de mi scroolview.
         //El punto pivot esta en el centro asi que el width es size/2.
-        Vector2 size = GetComponent<RectTransform>().sizeDelta;
+        float sizeY = GetComponent<RectTransform>().rect.height;
+        float sizeX = GetComponent<RectTransform>().rect.width;
 
         //float xValue = Input.mousePosition.x + size.x + posOffset.x;
         //float yValue = Input.mousePosition.y + size.y / 2 + posOffset.y;
-        GetComponent<RectTransform>().position = new Vector3(mouseScreenPosition.x + size.x / 2 + posOffset.x,
-                                                                               mouseScreenPosition.y + posOffset.y, 0);
+        GetComponent<RectTransform>().position = new Vector3(mouseScreenPosition.x + posOffset.x,
+                                                             mouseScreenPosition.y + posOffset.y, 0);
 
         //print(string.Format("Posición en x del Mouse es {0} y la posicion en Y es {1}",
         //    Input.mousePosition.x, Input.mousePosition.y));

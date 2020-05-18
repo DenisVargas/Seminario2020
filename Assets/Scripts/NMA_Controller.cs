@@ -135,7 +135,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         //if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
         //    UpdateForward();
 
-        print("Hay " + comandos.Count + " comandos");
+        //print("Hay " + comandos.Count + " comandos");
 
         if (comandos.Count > 0)
         {

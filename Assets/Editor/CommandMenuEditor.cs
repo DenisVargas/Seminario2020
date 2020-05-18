@@ -27,6 +27,7 @@ class CommandMenuEditor : Editor
     public override void OnInspectorGUI()
     {
         //base.OnInspectorGUI();
+        EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_optionPrefab"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_verticalScroll"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_Content"));
@@ -37,7 +38,10 @@ class CommandMenuEditor : Editor
         //Dibujamos el editor de la database personalizado.
         DrawDatabaseEditor();
 
-        serializedObject.ApplyModifiedProperties();
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 
     private void DrawDatabaseEditor()

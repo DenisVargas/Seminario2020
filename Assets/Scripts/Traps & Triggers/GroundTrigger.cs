@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(BoxCollider))]
 public class GroundTrigger : MonoBehaviour
 {
     UnityEvent OnActivate;
@@ -12,8 +12,15 @@ public class GroundTrigger : MonoBehaviour
     //Action OnActivate = delegate { };
     //Action OnDeActivate = delegate { };
 
-    [SerializeField] Animator _anims;
-    [SerializeField] float _deactivationTime;
+    [SerializeField] Animator _anims = null;
+    [SerializeField] float _deactivationTime = 1f;
+
+    Collider _col = null;
+
+    private void Awake()
+    {
+        _col = GetComponent<Collider>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {

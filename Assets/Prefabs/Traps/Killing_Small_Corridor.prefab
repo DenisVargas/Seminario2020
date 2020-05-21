@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 2070140979329267861}
   - component: {fileID: 6733175518364245831}
   - component: {fileID: 2259697047252118787}
+  - component: {fileID: 5240360824389532153}
   m_Layer: 0
   m_Name: Killing_Small_Corridor
   m_TagString: Untagged
@@ -279,6 +280,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _anims: {fileID: 6733175518364245831}
+--- !u!65 &5240360824389532153
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766029106011015506}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.0000043, y: 6.0000033, z: 6.4935718}
+  m_Center: {x: -3.0000021, y: 3.0000014, z: 2.4094758}
 --- !u!1 &3917495270887151074
 GameObject:
   m_ObjectHideFlags: 0

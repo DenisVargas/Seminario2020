@@ -101,6 +101,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     HurtBox _hurtbox;
     HitBox _hitbox;
     Damage _damageState = new Damage();
+    Rigidbody _rb = null;
 
     Transform _target = null;
     private Vector3   _targetLocation;
@@ -137,6 +138,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         _trail = GetComponentInChildren<Trail>();
         _hurtbox = GetComponentInChildren<HurtBox>();
         _anims = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody>();
 
         //AutoSet Del Target.
         var tar = FindObjectOfType<NMA_Controller>();
@@ -212,8 +214,12 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _agent.ResetPath();
             _agent.isStopped = false;
 
+            _rb.useGravity = false;
+            _rb.velocity = Vector3.zero;
+
             //Apago componentes que no hagan falta.
             //gameObject.SetActive(false);
+            _trail.Emit = false;
         };
         //dead.OnUpdate += () => { };
         dead.OnExit += (x) => { };

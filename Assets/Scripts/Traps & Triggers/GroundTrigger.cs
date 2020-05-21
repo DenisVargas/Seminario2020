@@ -7,8 +7,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(BoxCollider))]
 public class GroundTrigger : MonoBehaviour
 {
-    UnityEvent OnActivate;
-    UnityEvent OnDeActivate;
+    [SerializeField] UnityEvent OnActivate = new UnityEvent();
+    [SerializeField] UnityEvent OnDeActivate = new UnityEvent();
     //Action OnActivate = delegate { };
     //Action OnDeActivate = delegate { };
 

@@ -6,8 +6,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(BoxCollider))]
 public class GroundLever : MonoBehaviour, IInteractable
 {
-    UnityEvent OnActivate;
-    UnityEvent OnDeActivate;
+    [SerializeField] UnityEvent OnActivate = new UnityEvent();
+    [SerializeField] UnityEvent OnDeActivate = new UnityEvent();
 
     [SerializeField] List<OperationOptions> SuportedOperations = new List<OperationOptions>();
     [SerializeField] Transform _activationPosition = null;

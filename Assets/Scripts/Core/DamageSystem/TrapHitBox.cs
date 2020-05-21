@@ -33,4 +33,13 @@ public class TrapHitBox : MonoBehaviour
             hurtBox.TransferDamage(new Damage() { instaKill = _instaKill, Ammount = _ammount, criticalMultiplier = _criticalMultiplier, type = _damageType });
         }
     }
+
+    public void AE_TrapActivated()
+    {
+        _col.enabled = true;
+    }
+    public void AE_TrapDeactivated()
+    {
+        _col.enabled = false;
+    }
 }

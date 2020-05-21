@@ -16,6 +16,7 @@ public class GroundTrigger : MonoBehaviour
     [SerializeField] float _deactivationTime = 1f;
 
     Collider _col = null;
+    List<Collider> OnTop = new List<Collider>();
 
     private void Awake()
     {
@@ -24,18 +25,17 @@ public class GroundTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var player = other.GetComponent<NMA_Controller>();
-        if (player != null)
-        {
-            _anims.SetBool("Pressed", true);
-            OnActivate.Invoke();
-        }
+        OnTop.Add(other);
+        _anims.SetBool("Pressed", true);
+        OnActivate.Invoke();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        var player = other.GetComponent<NMA_Controller>();
-        if (player != null)
+        if (OnTop.Contains(other))
+            OnTop.Remove(other);
+
+        if (OnTop.Count <= 0 )
         {
             _anims.SetBool("Pressed", false);
             StartCoroutine(releaseActivation());

@@ -158,9 +158,9 @@ MonoBehaviour:
   suportedInteractions: 01000000
   MaxLifeTime: 5
   BurningTime: 5
-  ExplansionDelayTime: 0.8
+  ExplansionDelayTime: 0.3
   _ignitableSearchRadius: 1.5
-  _interactionRadius: 2
+  _interactionRadius: 2.2
   efectTargets:
     serializedVersion: 2
     m_Bits: 1

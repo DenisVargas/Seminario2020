@@ -234,7 +234,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
     void disposeCommand()
     {
-        Debug.LogWarning("Hola ");
         var _currentC = comandos.Dequeue();
         if (comandos.Count > 0)
         {

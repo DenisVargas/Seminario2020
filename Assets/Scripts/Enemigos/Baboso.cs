@@ -51,9 +51,9 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     //[SerializeField] int _toStopPositions  = 0;
     [SerializeField] float stopTime        = 1.5f;
 
-    BabosoState _currentState;
-    BabosoState _previousState;
-    BabosoState _nextState;
+    [SerializeField] BabosoState _currentState;
+    [SerializeField] BabosoState _previousState;
+    [SerializeField] BabosoState _nextState;
 
     #region StateMachine
     public enum BabosoState
@@ -63,6 +63,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         pursue,
         attack,
         think,
+        falligTrap,
         burning,
         dead
     }
@@ -94,7 +95,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     }
     #endregion
 
-    NavMeshAgent _agent;
+    Collider _mainCollider = null;
+    NavMeshAgent _agent = null;
     LineOfSightComponent _sight;
     Trail _trail;
 
@@ -133,6 +135,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     private void Awake()
     {
         //Seteo todas las referencias a los componentes.
+        _mainCollider = GetComponent<Collider>();
         _agent = GetComponent<NavMeshAgent>();
         _sight = GetComponent<LineOfSightComponent>();
         _trail = GetComponentInChildren<Trail>();
@@ -169,32 +172,41 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         var pursue = new State<BabosoState>("Pursue");
         var attack = new State<BabosoState>("Attack");
         var burning = new State<BabosoState>("Burning");
+        var falling = new State<BabosoState>("Falling");
         var think = new State<BabosoState>("Think");
 
         #region Transiciones
         idle.AddTransition(BabosoState.dead, dead)
             .AddTransition(BabosoState.burning, burning)
+            .AddTransition(BabosoState.falligTrap, falling)
             .AddTransition(BabosoState.think, think);
 
         patroll.AddTransition(BabosoState.pursue, pursue)
+               .AddTransition(BabosoState.falligTrap, falling)
                .AddTransition(BabosoState.burning, burning)
                .AddTransition(BabosoState.think, think)
                .AddTransition(BabosoState.dead, dead);
 
         pursue.AddTransition(BabosoState.think, think)
               .AddTransition(BabosoState.attack, attack)
+              .AddTransition(BabosoState.falligTrap, falling)
               .AddTransition(BabosoState.burning, burning)
               .AddTransition(BabosoState.dead, dead);
 
+        falling.AddTransition(BabosoState.dead, dead);
+
         attack.AddTransition(BabosoState.dead, dead)
               .AddTransition(BabosoState.burning, burning)
+              .AddTransition(BabosoState.falligTrap, falling)
               .AddTransition(BabosoState.think, think);
 
         burning.AddTransition(BabosoState.think, think)
+               .AddTransition(BabosoState.falligTrap, falling)
                .AddTransition(BabosoState.dead, dead);
 
         think.AddTransition(BabosoState.dead, dead)
              .AddTransition(BabosoState.idle, idle)
+             .AddTransition(BabosoState.falligTrap, falling)
              .AddTransition(BabosoState.burning, burning)
              .AddTransition(BabosoState.patroll, patroll)
              .AddTransition(BabosoState.pursue, pursue);
@@ -219,6 +231,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             }
 
             _rb.useGravity = false;
+            _mainCollider.enabled = false;
             _rb.velocity = Vector3.zero;
 
             //Apago componentes que no hagan falta.
@@ -236,6 +249,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _a_Dead = false;
             _a_burning = false;
 
+            _agent.enabled = true;
             //print(string.Format("{0}: Entró al estado Idle", gameObject.name));
         };
         idle.OnUpdate += () => { };
@@ -362,6 +376,17 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         //    //Cuando se termina el tiempo de la animación saltamos a dead.
         //};
 
+        falling.OnEnter += (x) =>
+        {
+            _currentState = BabosoState.falligTrap;
+
+            _mainCollider.isTrigger = true;
+            _rb.useGravity = true;
+            _agent.isStopped = true;
+            _agent.ResetPath();
+            _agent.enabled = false;
+        };
+
         think.OnEnter += (x) => 
         {
             _currentState = BabosoState.think;
@@ -409,6 +434,11 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         }
         else
             Debug.LogError("La cagaste, el target es nulo");
+    }
+
+    public void ChangeStateTo(BabosoState input)
+    {
+        state.Feed(input);
     }
 
     //========================================== Sistema de Daño ==============================================

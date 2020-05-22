@@ -34,7 +34,7 @@ namespace Core.DamageSystem
 
         public void TransferDamage(Damage damage)
         {
-            Debug.LogWarning(string.Format("{0} ha recibido un HIT", _body.gameObject.name));
+            //Debug.LogWarning(string.Format("{0} ha recibido un HIT", _body.gameObject.name));
             _body.Hit(damage);
             DetectIncomingDamage = false;
         }

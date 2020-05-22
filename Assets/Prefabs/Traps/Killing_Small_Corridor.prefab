@@ -280,6 +280,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _anims: {fileID: 6733175518364245831}
+  OnTop: []
 --- !u!65 &5240360824389532153
 BoxCollider:
   m_ObjectHideFlags: 0

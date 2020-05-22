@@ -272,14 +272,14 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             //Timing.
             if (_stoping)
             {
-                Debug.Log("entre al stopping");
+                //Debug.Log("entre al stopping");
                 
                 _remainingStopTime -=Time.deltaTime;
                 _agent.isStopped = true;
-                Debug.Log(_remainingStopTime);
+                //Debug.Log(_remainingStopTime);
                 if (_remainingStopTime <= 0)
                 {
-                    Debug.Log("Entre Al desstoping");
+                    //Debug.Log("Entre Al desstoping");
                     // _agent.SetDestination(patrolPoints.getNextPosition());
                     _remainingStopTime = stopTime;
                     _agent.isStopped = false;

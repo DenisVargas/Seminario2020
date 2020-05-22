@@ -25,7 +25,7 @@ public class GroundTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Hay una collision: " + other.gameObject.name);
+        //print("Hay una collision: " + other.gameObject.name);
         OnTop.Add(other);
         _anims.SetBool("Pressed", true);
         OnActivate.Invoke();

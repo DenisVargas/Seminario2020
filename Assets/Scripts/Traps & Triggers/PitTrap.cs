@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AI;
+using Core.DamageSystem;
 
 [RequireComponent(typeof(BoxCollider))]
 public class PitTrap : MonoBehaviour
@@ -48,11 +49,16 @@ public class PitTrap : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        OnTop.Add(other);
+        var agent = other.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            OnTop.Add(other);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        print("Salió: " + other.gameObject.name);
         if (OnTop.Contains(other))
             OnTop.Remove(other);
     }

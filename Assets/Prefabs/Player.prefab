@@ -160,7 +160,6 @@ GameObject:
   - component: {fileID: 6414858266429462648}
   - component: {fileID: 6414858266429462630}
   - component: {fileID: 6414858266429462649}
-  - component: {fileID: 3416304873241712605}
   m_Layer: 0
   m_Name: ViewMesh
   m_TagString: Untagged
@@ -228,20 +227,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &3416304873241712605
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6414858266429462651}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.1988272
-  m_Height: 1.9988283
-  m_Direction: 1
-  m_Center: {x: -0.01573466, y: 0.9525278, z: 0.00586021}
 --- !u!1 &6414858267132625105
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +243,7 @@ GameObject:
   - component: {fileID: 6414858267132625119}
   - component: {fileID: 4551022286508861444}
   - component: {fileID: 423975394}
+  - component: {fileID: 8194109981165342777}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -413,6 +399,22 @@ CapsuleCollider:
   m_Height: 1.9988283
   m_Direction: 1
   m_Center: {x: -0.01573466, y: 0.9525278, z: 0.00586021}
+--- !u!114 &8194109981165342777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6414858267132625105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce9f118ab457dd4ea4edcc2c7750237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseDetectionMask:
+    serializedVersion: 2
+    m_Bits: 1
+  hited: []
 --- !u!1001 &7754093151426026515
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -29,8 +29,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     [SerializeField] float _maxHealth = 100f;
     [SerializeField] float _attackRange = 2f;
 
-    [SerializeField] List<OperationOptions> Interactions = new List<OperationOptions>();
+    [Header("Interaction System")]
     [SerializeField] float _safeInteractionDistance = 5f;
+    [SerializeField] List<OperationOptions> ValidOperations = new List<OperationOptions>();
 
     public float Health
     {
@@ -56,6 +57,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     //---------------------------------------------------------------------------------------
 
+    [Space()]
     [SerializeField]DamageModifier[] Weaknesses; //Aumentan el daño ingresante.
     [SerializeField]DamageModifier[] resistances;//reducen el daño ingereante.
 
@@ -106,25 +108,43 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     private Transform _targetTransform;
     private Vector3 _targetPosition;
 
-    //----------------------------------- Components ----------------------------------------
+    //----------------------------------- Animation -----------------------------------------
 
     private Animator _anim = null;
-    int[] _animHash = new int[3];
+    int[] _animHash = new int[6];
     bool _a_walk
     {
         get => _anim.GetBool(_animHash[0]);
         set => _anim.SetBool(_animHash[0], value);
     }
-    bool _a_Attack
+    bool _a_Burning
     {
         get => _anim.GetBool(_animHash[1]);
         set => _anim.SetBool(_animHash[1], value);
     }
-    bool _a_Dead
+    bool _a_GetHit
     {
         get => _anim.GetBool(_animHash[2]);
         set => _anim.SetBool(_animHash[2], value);
     }
+    bool _a_Attack
+    {
+        get => _anim.GetBool(_animHash[3]);
+        set => _anim.SetBool(_animHash[3], value);
+    }
+    bool _a_SmashDown
+    {
+        get => _anim.GetBool(_animHash[4]);
+        set => _anim.SetBool(_animHash[4], value);
+    }
+    bool _a_Dead
+    {
+        get => _anim.GetBool(_animHash[5]);
+        set => _anim.SetBool(_animHash[5], value);
+    }
+    
+
+    //----------------------------------- Components ----------------------------------------
 
     private NavMeshAgent _agent = null;
     private LineOfSightComponent _sight = null;
@@ -140,6 +160,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     [SerializeField] bool DEBUG_RageMode_Target = true; 
     [SerializeField] bool DEBUG_RageMode_Ranges = true;
     [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
+    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
 
 #endif
 
@@ -161,7 +182,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         }
 
         _anim = GetComponent<Animator>();
-        _animHash = new int[3];
+        _animHash = new int[6];
         for (int i = 0; i < _animHash.Length; i++)
             _animHash[i] = _anim.parameters[i].nameHash;
 
@@ -211,6 +232,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         #region Eventos de Estado
         idle.OnEnter += (x) =>
         {
+            _currentState = BoboState.idle;
             if (state != null)
             {
                 if (state.current != null)
@@ -218,7 +240,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
                 else
                     print(string.Format("{0} ha iniciado en el estado Idle", gameObject.name));
             }
-            //Reproduzco la animacion correspondiente.
+            //Por defecto nos aseguramos que no este reproduciendo walk.
+            _a_walk = false;
         };
         idle.OnUpdate += ()=> 
         {
@@ -252,6 +275,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         burning.OnEnter += (x) =>
         {
+            _currentState = BoboState.burning;
             //Seteo la animación.
         };
         burning.OnUpdate += () =>
@@ -292,6 +316,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         pursue.OnEnter += (x) =>
         {
+            _currentState = BoboState.pursue;
             _a_walk = true;
         };
         pursue.OnUpdate += () =>
@@ -312,7 +337,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         {
             _agent.isStopped = true;
             _agent.ResetPath();
-            if (NextState == BoboState.attack || NextState == BoboState.burning)
+            if (NextState == BoboState.burning)
             {
                 _a_walk = false;
             }
@@ -320,6 +345,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         think.OnEnter += (x) =>
         {
+            _currentState = BoboState.think;
             //Si tengo un tiempo de reacción
             //Seteo el tiempo de reacción.
             //Sino
@@ -343,9 +369,10 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         attack.OnEnter += (x) =>
         {
-            //Seteo la animación.
+            _currentState = BoboState.attack;
             _a_Attack = true;
-            //EL ataque se maneja por eventos asi que esto es lo único que hace.
+
+            KillTarget();
         };
         attack.OnUpdate += () =>
         {
@@ -365,10 +392,6 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
             //Sino estoy fuera de rageMode
             //Vuelvo al estado idle.
             //Opcionalmente puedo hacer un festejo.
-        };
-        attack.OnExit += (NextState) => 
-        {
-            _a_Attack = false;
         };
 
         rage.OnEnter += (x) =>
@@ -393,22 +416,18 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
             //Cuando termina la animación pasa el estado pursue.
         };
-        //rage.OnUpdate += () => { };
 
         dead.OnEnter += (x) =>
         {
-            //Seteamos la animación de muerte.
-            //Por ahora desactivamos el GameObject.
-            gameObject.SetActive(false);
+            _currentState = BoboState.dead;
+            _a_Dead = true;
         };
-        //dead.OnUpdate += ()=> { };
         dead.OnExit += (NextState) =>
         {
             //Si nextState es idle -> Significa que estamos usando este NPC en un Pool y queremos reactivarlo.
             if (NextState == BoboState.idle)
             {
                 ResetSetUp();
-                //Reseteamos las estadísticas a las de por defecto.
             }
         }; 
         #endregion
@@ -431,6 +450,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     }
     void MoveToTarget(Vector3 targetPosition)
     {
+        transform.forward = ( Vector3.Normalize((targetPosition - transform.position).YComponent(0)));
+
         if (targetPosition != _agent.destination)
             _agent.SetDestination(targetPosition);
     }
@@ -478,6 +499,21 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
                                                  UnityEngine.Random.Range(0, 1));
         float randomDistance = UnityEngine.Random.Range(_wanderMinDistance, _wanderMaxDistance);
         return transform.position + (RandomTargetPosition * randomDistance);
+    }
+    void KillTarget()
+    {
+        if (_targetTransform != null)
+        {
+            var killeable = _targetTransform.GetComponent<IDamageable<Damage>>();
+            if (killeable != null)
+            {
+                killeable.Hit(new Damage() { instaKill = true });
+            }
+            else
+                Debug.LogError("La cagaste, el target no es Damageable");
+        }
+        else
+            Debug.LogError("La cagaste, el target es nulo");
     }
 
     //============================== State Machine Acces ====================================
@@ -530,7 +566,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     public List<OperationOptions> GetSuportedOperations()
     {
-        return Interactions;
+        return ValidOperations;
     }
 
     public void Operate(OperationOptions selectedOperation, params object[] optionalParams)
@@ -592,6 +628,13 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
             Gizmos.color = DEBUG_WanderRange_Max_GIZMOCOLOR;
             Gizmos.DrawWireSphere(transform.position, _wanderMaxDistance);
+        }
+
+        if (DEBUG_INTERACTION_RAIDUS)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
+            Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
         }
     }
 

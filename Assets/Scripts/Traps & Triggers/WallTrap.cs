@@ -2,7 +2,7 @@
 
 public class WallTrap : MonoBehaviour
 {
-    [SerializeField] Animator _anim;
+    [SerializeField] Animator _anim = null;
 
     public void ActivateTrap()
     {

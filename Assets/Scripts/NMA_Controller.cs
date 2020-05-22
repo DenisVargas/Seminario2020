@@ -56,6 +56,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     NavMeshAgent _agent = null;
     CanvasController _canvasController = null;
     MouseView _mv;
+    MouseContextTracker _mtracker;
 
     Vector3 _currentTargetPos;
     float forwardLerpTime;
@@ -69,6 +70,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
         _mv = GetComponent<MouseView>();
+        _mtracker = GetComponent<MouseContextTracker>();
 
         _anims = GetComponent<Animator>();
         animHash = new int[5];
@@ -86,7 +88,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         if (PlayerInputEnabled && Input.GetMouseButtonDown(1))
         {
             //Hacer un raycast y fijarme si hay un objeto que se interactuable.
-            MouseContext _mouseContext = m_GetMouseContextDetection();
+            MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();
 
             if (!_mouseContext.validHit) return;
 
@@ -250,59 +252,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
         _a_Dead = true;
         ImDeadBro();
-    }
-
-    struct MouseContext
-    {
-        public bool interactuableHitted;
-        public IInteractable firstInteractionObject;
-        public bool validHit;
-        public Vector3 hitPosition;
-    }
-
-    MouseContext m_GetMouseContextDetection()
-    {
-        MouseContext _context = new MouseContext();
-
-        //Calculo la posición del mouse en el espacio.
-        RaycastHit[] hits;
-        Ray mousePositionInWorld = _viewCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x,
-                                                          Input.mousePosition.y,
-                                                          _viewCamera.transform.position.y));
-
-        hits = Physics.RaycastAll(mousePositionInWorld, Camera.main.farClipPlane, mouseDetectionMask);
-
-        if (hits.Length > 0)
-            _context.validHit = true;
-
-        for (int i = 0; i < hits.Length; i++)
-        {
-            var hit = hits[i];
-
-            IInteractable interactableObject = hit.transform.GetComponent<IInteractable>();
-            if (interactableObject != null)
-            {
-                _context.interactuableHitted = true;
-                _context.firstInteractionObject = interactableObject;
-            }
-
-            Collider collider = hit.collider;
-            if (collider.transform.CompareTag("NavigationFloor"))
-            {
-                _context.hitPosition = hit.point;
-
-                //Nos fijamos el punto mas cercano en el navmesh.
-                NavMeshHit nh;
-                if (NavMesh.SamplePosition(hit.point, out nh, 5, NavMesh.AllAreas))
-                {
-                    _context.hitPosition = nh.position;
-                }
-
-                return _context;
-            }
-        }
-
-        return _context;
     }
 
     //============================================================== Damage System =================================================================

@@ -20,6 +20,7 @@ public class CommandMenu : MonoBehaviour
     [Header("Options")]
     [SerializeField] Vector2 posOffset = new Vector2(0, 0);
 
+    [SerializeField]
     public CommandMenuItemData[] presetDataBase = new CommandMenuItemData[0];
     public Dictionary<OperationOptions, GameObject> display = new Dictionary<OperationOptions, GameObject>();
 
@@ -27,7 +28,7 @@ public class CommandMenu : MonoBehaviour
     [SerializeField] bool _sliderContextOn           = false;
     [SerializeField] bool _viewportContextOn         = false;
 
-    public void LoadDisplay()
+    public void LoadData()
     {
         //Cargo la data y instancio el preset visual por cada uno.
         foreach (var data in presetDataBase)
@@ -42,12 +43,6 @@ public class CommandMenu : MonoBehaviour
 
             display.Add(commandItem.Data.Operation, presetInstance);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Emplace(Vector2 mouseScreenPosition)

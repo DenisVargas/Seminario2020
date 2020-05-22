@@ -49,7 +49,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     Vector3 targetPosition                 = Vector3.zero;
     [SerializeField] Waypoint patrolPoints = null;
     //[SerializeField] int _toStopPositions  = 0;
-    [SerializeField] float stopTime        = 3f;
+    [SerializeField] float stopTime        = 1.5f;
 
     BabosoState _currentState;
     BabosoState _previousState;
@@ -139,6 +139,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         _hurtbox = GetComponentInChildren<HurtBox>();
         _anims = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
+        _remainingStopTime = stopTime;
 
         //AutoSet Del Target.
         var tar = FindObjectOfType<NMA_Controller>();
@@ -262,18 +263,23 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
                 //_PositionsMoved++;
                 //_stoping = _PositionsMoved >= _toStopPositions;
                 _agent.SetDestination(patrolPoints.getNextPosition());
-                _stoping = false;
+                _stoping = true;
             }
 
             //Timing.
             if (_stoping)
             {
-                _remainingStopTime--;
-
+                Debug.Log("entre al stopping");
+                
+                _remainingStopTime -=Time.deltaTime;
+                _agent.isStopped = true;
+                Debug.Log(_remainingStopTime);
                 if (_remainingStopTime <= 0)
                 {
-                    _agent.SetDestination(patrolPoints.getNextPosition());
+                    Debug.Log("Entre Al desstoping");
+                    // _agent.SetDestination(patrolPoints.getNextPosition());
                     _remainingStopTime = stopTime;
+                    _agent.isStopped = false;
                     _stoping = false;
                 }
             }

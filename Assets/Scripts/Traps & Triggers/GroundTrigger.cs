@@ -13,7 +13,7 @@ public class GroundTrigger : MonoBehaviour
     //Action OnDeActivate = delegate { };
 
     [SerializeField] Animator _anims = null;
-    [SerializeField] float _deactivationTime = 1f;
+    [SerializeField] float _deactivationTime = 0f;
 
     Collider _col = null;
     List<Collider> OnTop = new List<Collider>();

@@ -15,7 +15,7 @@ public class CanvasController : MonoBehaviour
 
     private void Awake()
     {
-        _MultiCommandMenu.LoadDisplay();
+        _MultiCommandMenu.LoadData();
         FindObjectOfType<NMA_Controller>().ImDeadBro += DisplayLoose;
     }
 

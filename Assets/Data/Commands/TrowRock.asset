@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce9270b8e46476e45b8ee5873d4955b4, type: 3}
-  m_Name: Throw Rock
+  m_Name: TrowRock
   m_EditorClassIdentifier: 
-  Operation: 0
-  Icon: {fileID: 0}
-  CommandName: 
+  Operation: 4
+  Icon: {fileID: 21300000, guid: 21acc49fee4fd4146963367b5cb36f79, type: 3}
+  CommandName: Trow Rock
   CommandDescription: 

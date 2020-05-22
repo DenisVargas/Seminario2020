@@ -16,7 +16,7 @@ public class GroundTrigger : MonoBehaviour
     [SerializeField] float _deactivationTime = 0f;
 
     Collider _col = null;
-    List<Collider> OnTop = new List<Collider>();
+    [SerializeField] List<Collider> OnTop = new List<Collider>();
 
     private void Awake()
     {
@@ -25,6 +25,7 @@ public class GroundTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Hay una collision: " + other.gameObject.name);
         OnTop.Add(other);
         _anims.SetBool("Pressed", true);
         OnActivate.Invoke();

@@ -211,9 +211,12 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _a_Dead = true;
             _a_Walk = false;
 
-            _agent.isStopped = true;
-            _agent.ResetPath();
-            _agent.isStopped = false;
+            if (_agent.isActiveAndEnabled)
+            {
+                _agent.isStopped = true;
+                _agent.ResetPath();
+                _agent.isStopped = false;
+            }
 
             _rb.useGravity = false;
             _rb.velocity = Vector3.zero;

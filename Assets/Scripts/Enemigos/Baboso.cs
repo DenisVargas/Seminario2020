@@ -50,6 +50,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     [SerializeField] Waypoint patrolPoints = null;
     //[SerializeField] int _toStopPositions  = 0;
     [SerializeField] float stopTime        = 1.5f;
+    [SerializeField] GameObject[] burnParticles = new GameObject[2];
 
     BabosoState _currentState;
     BabosoState _previousState;
@@ -339,6 +340,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         burning.OnEnter += (previousState) =>
         {
+            StartCoroutine(Burn());
             _currentState = BabosoState.burning;
             //Prendemos la animación de quemado.
             _a_burning = true;
@@ -457,6 +459,12 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         //Debug.LogWarning("AttackEnded");
     }
+    IEnumerator Burn()
+    {
+        burnParticles[0].SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        burnParticles[1].SetActive(true);
+    }
 
     public void AV_Burning_End()
     {
@@ -473,4 +481,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _attackRange);
     }
-}
+   
+
+    }

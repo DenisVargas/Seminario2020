@@ -4885,6 +4885,7 @@ GameObject:
   - component: {fileID: 856897688738227761}
   - component: {fileID: 856897688738227764}
   - component: {fileID: 856897688738227767}
+  - component: {fileID: 5993281819839330285}
   m_Layer: 0
   m_Name: Enemy-Baboso
   m_TagString: Untagged
@@ -5013,6 +5014,20 @@ MonoBehaviour:
   patrolPoints: {fileID: 0}
   stopTime: 1
   attackRangeColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!136 &5993281819839330285
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688738227760}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4953253
+  m_Height: 1.4368122
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.74728715, z: 0}
 --- !u!1 &1891348988577855661
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,6 +53,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     public Vector3 position => transform.position;
 
     Camera _viewCamera = null;
+    Collider _mainCollider = null;
+    Rigidbody _rb = null;
     NavMeshAgent _agent = null;
     CanvasController _canvasController = null;
     MouseView _mv;
@@ -66,6 +68,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
     void Awake()
     {
+        _rb = GetComponent<Rigidbody>();
+        _mainCollider = GetComponent<Collider>();
         _agent = GetComponent<NavMeshAgent>();
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
@@ -244,11 +248,26 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         }
     }
 
-    void Die()
+    public void FallInTrap()
     {
         PlayerInputEnabled = false;
         _agent.isStopped = true;
         _agent.ResetPath();
+
+        _agent.enabled = false;
+        _rb.useGravity = true;
+        _mainCollider.isTrigger = true;
+    }
+
+    void Die()
+    {
+        PlayerInputEnabled = false;
+
+        if (_agent.isActiveAndEnabled)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
 
         _a_Dead = true;
         ImDeadBro();

@@ -91,6 +91,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         pursue,
         think,
         burning,
+        fallTrap,
         rage,
         attack,
         dead
@@ -146,9 +147,10 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     //----------------------------------- Components ----------------------------------------
 
+    private Rigidbody _rb = null;
+    private Collider _mainCollider = null;
     private NavMeshAgent _agent = null;
     private LineOfSightComponent _sight = null;
-
 
 #if UNITY_EDITOR
     //----------------------------------- DEBUG ---------------------------------------------   
@@ -170,6 +172,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     {
         _agent = GetComponent<NavMeshAgent>();
         _sight = GetComponent<LineOfSightComponent>();
+        _rb = GetComponent<Rigidbody>();
+        _mainCollider = GetComponent<Collider>();
 
         _health = _maxHealth;
 
@@ -190,6 +194,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         var idle = new State<BoboState>("Idle");
         var wander = new State<BoboState>("Wander");
         var burning = new State<BoboState>("Burning");
+        var falling = new State<BoboState>("FallingTrap");
         var rage = new State<BoboState>("Rage");
         var pursue = new State<BoboState>("Pursue");
         var think = new State<BoboState>("Think");
@@ -200,31 +205,40 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         #region Transiciones.
         idle.AddTransition(BoboState.dead, dead)
             .AddTransition(BoboState.pursue, pursue)
+            .AddTransition(BoboState.fallTrap, falling)
             .AddTransition(BoboState.think, think);
 
         wander.AddTransition(BoboState.dead, dead)
             .AddTransition(BoboState.think, think)
+            .AddTransition(BoboState.fallTrap, falling)
             .AddTransition(BoboState.idle, idle);
 
         pursue.AddTransition(BoboState.dead, dead)
               .AddTransition(BoboState.attack, attack)
+              .AddTransition(BoboState.fallTrap, falling)
               .AddTransition(BoboState.think, think);
 
         think.AddTransition(BoboState.dead, dead)
              .AddTransition(BoboState.idle, idle)
+             .AddTransition(BoboState.fallTrap, falling)
              .AddTransition(BoboState.wander, wander)
              .AddTransition(BoboState.pursue, pursue)
              .AddTransition(BoboState.attack, attack);
 
         attack.AddTransition(BoboState.dead, dead)
               .AddTransition(BoboState.think, think)
+              .AddTransition(BoboState.fallTrap, falling)
               .AddTransition(BoboState.pursue, pursue);
 
+        falling.AddTransition(BoboState.dead, dead);
+
         burning.AddTransition(BoboState.dead, dead)
-               .AddTransition(BoboState.think, think);
+               .AddTransition(BoboState.think, think)
+               .AddTransition(BoboState.fallTrap, falling);
 
         rage.AddTransition(BoboState.dead, dead)
-            .AddTransition(BoboState.pursue, pursue);
+            .AddTransition(BoboState.pursue, pursue)
+            .AddTransition(BoboState.fallTrap, falling);
 
         dead.AddTransition(BoboState.idle, idle);
         #endregion
@@ -313,6 +327,16 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
             //Entro en rage.
         };
         //burning.OnExit += (nextState) => { };
+
+        falling.OnEnter += (x) =>
+        {
+            _rb.useGravity = true;
+            _mainCollider.isTrigger = true;
+
+            _agent.isStopped = true;
+            _agent.ResetPath();
+            _agent.enabled = false;
+        };
 
         pursue.OnEnter += (x) =>
         {
@@ -518,9 +542,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     //============================== State Machine Acces ====================================
 
-    public void ChangeStateTo(BoboState nextState)
+    public void ChangeStateTo(BoboState input)
     {
-        state.Feed(nextState);
+        state.Feed(input);
     }
 
     //==================================== Damage System ====================================
@@ -529,10 +553,16 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     {
         //Al recibir daño...
         //Si estamos en idle, wander o think
-            //Entramos en rage.
+        //Entramos en rage.
 
-        //Calculamos el daño.
-        //Aplicamos el resultado.
+        if (damage.instaKill)
+        {
+            if (_currentState != BoboState.dead)
+                Health = 0;
+            return;
+        }
+
+        Health -= damage.Ammount;
     }
 
     public Damage getDamageState()

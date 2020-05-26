@@ -1,45 +1,57 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Animator))]
 public class Jail : MonoBehaviour
 {
-    [SerializeField] Collider PhysicalCollider = null;
-    Rigidbody _rb;
-
-    public bool Growndchecked = false;
+    Animator _anims;
+    [SerializeField] TrapHitBox _hitbox = null;
+    [SerializeField] Collider _destructibleHitbox = null;
+    [SerializeField] float deactivateDelay = 1f;
 
     void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-        _rb.isKinematic = true;
+        _anims = GetComponent<Animator>();
     }
 
     public void Drop()
     {
-        _rb.isKinematic = false;
-        StartCoroutine(Deactivate());
+        _anims.SetBool("Activated", true);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void AV_FallEnded()
     {
-        if(collision.collider.gameObject.layer == 0)
+        if (_hitbox != null)
         {
-            Growndchecked = true;
+            _hitbox.IsActive = true;
         }
+        if (_destructibleHitbox != null)
+        {
+            _destructibleHitbox.enabled = true;
+        }
+        StartCoroutine(delayedDeactivate());
+    }
 
-        var myhitedObject = collision.collider.GetComponent<IDestructible>();
+    IEnumerator delayedDeactivate()
+    {
+        yield return new WaitForSeconds(deactivateDelay);
+        _anims.SetBool("Activated", false);
+        if (_hitbox != null)
+        {
+            _hitbox.IsActive = false;
+        }
+        if (_destructibleHitbox != null)
+        {
+            _destructibleHitbox.enabled = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        var myhitedObject = other.GetComponent<IDestructible>();
         if (myhitedObject != null)
         {
             myhitedObject.destroyMe();
         }
-    }
-
-    IEnumerator Deactivate()
-    {
-        yield return new WaitForSeconds(10f);
-        PhysicalCollider.enabled = false;
-        yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
     }
 }

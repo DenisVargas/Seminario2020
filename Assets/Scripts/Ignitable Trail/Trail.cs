@@ -6,15 +6,24 @@ using Utility.ObjectPools.Generic;
 
 public class Trail : MonoBehaviour
 {
-    public bool Emit = false;
-    [SerializeField] GameObject _ignitionSystemPrefab = null;
+    [Header("Spawn Settings")]
     [SerializeField] Transform _fireTrailParent = null;
     [SerializeField] float _spawnDistance       = 1f;
     [SerializeField] float _spawnOverlapTreshold = 0.9f;
+    [Space]
+    [Header("Igniteable Object Main Settings")]
+    [SerializeField] GameObject _ignitionSystemPrefab = null;
+    [SerializeField, Tooltip("Cuanto tiempo estará activo mientras ")]
+    public float _activeTime = 5f;
+    [SerializeField, Tooltip("Cuanto tiempo estará prendido el fuego.")]
+    public float _burningTime = 5f;
+    [SerializeField] float _expansionDelayTime = 0.8f;
+    [SerializeField] float _inputWaitTime = 2f;
 
     GenericPool<IgnitableObject> _spawnPool = null;
-    List<IgnitableObject> _spawned = new List<IgnitableObject>();
+    //List<IgnitableObject> _spawned = new List<IgnitableObject>();
     IgnitableObject _lastSpawned = null;
+    bool _emit = false;
 
     private void Awake()
     {
@@ -37,13 +46,14 @@ public class Trail : MonoBehaviour
             (ignit) =>
             {
                 ignit.gameObject.SetActive(true);
-                ignit.OnSpawn();
-                _spawned.Add(ignit);
+                ignit.OnSpawn(_activeTime, _burningTime, _inputWaitTime, _expansionDelayTime);
+                //_spawned.Add(ignit);
             },
             (ignit) =>
             {
                 ignit.gameObject.SetActive(false);
-                _spawned.Remove(ignit);
+                ignit.OnDie();
+                //_spawned.Remove(ignit);
             },
             true
         );
@@ -51,18 +61,19 @@ public class Trail : MonoBehaviour
 
     private void Update()
     {
-        if (Emit)
+        if (_emit)
         {
             SpawnObjectFromPool();
         }
     }
 
-    private void OnDisable()
+    public void EnableEmission()
     {
-        List<IgnitableObject> toRemove = new List<IgnitableObject>(_spawned);
-        _spawned.Clear();
-        foreach (var item in toRemove)
-            _spawnPool.DisablePoolObject(item);
+        _emit = true;
+    }
+    public void DisableTrailEmission()
+    {
+        _emit = false;
     }
 
     void SpawnObjectFromPool()
@@ -75,7 +86,7 @@ public class Trail : MonoBehaviour
                 //Chequeo si no estoy overlapeando algun otro ignitable Object.
                 var overlapped = getOverlappedIgnitableObject();
                 if (overlapped != null)
-                    overlapped.OnSpawn();
+                    overlapped.OnSpawn(_activeTime, _burningTime, _inputWaitTime, _expansionDelayTime);
                 else
                     SpawnIgnitableObject();
             }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Activator : MonoBehaviour, IInteractable
 {
-    public List<OperationOptions> suportedOperations = new List<OperationOptions>();
+    public List<OperationType> _suportedOperations = new List<OperationType>();
     // Start is called before the first frame update
     public Jail _myJail;
     public Transform ActivationPosition;
@@ -12,10 +12,14 @@ public class Activator : MonoBehaviour, IInteractable
     public Vector3 position { get => ActivationPosition.position; }
     public Vector3 LookToDirection { get => ActivationPosition.forward; }
 
-    public void Operate(OperationOptions operation, params object[] optionalParams)
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
+    {
+    }
+
+    public void OnOperate(OperationType operation, params object[] optionalParams)
     {
         Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
-        if (operation == OperationOptions.Activate)
+        if (operation == OperationType.Activate)
         {
             Debug.Log("me active");
             _myJail.Drop();
@@ -27,8 +31,12 @@ public class Activator : MonoBehaviour, IInteractable
         return ActivationPosition.position;
     }
 
-    List<OperationOptions> IInteractable.GetSuportedOperations()
+    InteractionParameters IInteractable.GetSuportedInteractionParameters()
     {
-        return suportedOperations;
+        return new InteractionParameters()
+        {
+            LimitedDisplay = false,
+            SuportedOperations = _suportedOperations
+        };
     }
 }

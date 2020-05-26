@@ -7,7 +7,7 @@ using System;
 
 public class CommandMenuItem : MonoBehaviour
 {
-    public event Action<OperationOptions> OnOperationSelected = delegate { };
+    public event Action<OperationType> OnOperationSelected = delegate { };
 
     [SerializeField]
     CommandMenuItemData data = null;

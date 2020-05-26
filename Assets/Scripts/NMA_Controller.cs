@@ -8,7 +8,7 @@ using Core.DamageSystem;
 public struct ActivationCommandData
 {
     public IInteractable target;
-    public OperationOptions operationOptions;
+    public OperationType operationOptions;
 }
 //Navigation Mesh Actor Controller.
 public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
@@ -102,7 +102,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                 _canvasController.DisplayCommandMenu
                 (
                     Input.mousePosition,
-                    _mouseContext.firstInteractionObject.GetSuportedOperations(),
+                    _mouseContext.firstInteractionObject.GetSuportedInteractionParameters(),
                     _mouseContext.firstInteractionObject,
                     ExecuteOperation
                  );
@@ -155,7 +155,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     /// </summary>
     /// <param name="operation">La operación que queremos realizar</param>
     /// <param name="target">El objetivo de dicha operación</param>
-    public void ExecuteOperation(OperationOptions operation, IInteractable target)
+    public void ExecuteOperation(OperationType operation, IInteractable target)
     {
         //Aqui tenemos una referencia a un target y una operación que quiero ejectar sobre él.
         //Chequeo si estoy lo suficientemente cerca para activar el comando.
@@ -187,9 +187,12 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         IQueryComand _toActivateCommand;
         switch (operation)
         {
-            case OperationOptions.Take:
+            case OperationType.Take:
                 break;
-            case OperationOptions.Ignite:
+            case OperationType.Ignite:
+
+                //Aquí tengo que decirle a mi target que se frezee.
+                target.OnConfirmInput(OperationType.Ignite);
 
                 Queued_ActivationData = new ActivationCommandData() { operationOptions = operation, target = target };
                 _toActivateCommand = new cmd_Ignite(
@@ -205,7 +208,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
                 break;
 
-            case OperationOptions.Activate:
+            case OperationType.Activate:
 
                 Queued_ActivationData = new ActivationCommandData() { target = target, operationOptions = operation };
                 _toActivateCommand = new cmd_Activate
@@ -218,7 +221,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                 //print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
 
                 break;
-            case OperationOptions.Equip:
+            case OperationType.Equip:
                 break;
             default:
                 break;
@@ -300,7 +303,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
         if (Queued_ActivationData.target != null)
         {
-            Queued_ActivationData.target.Operate(Queued_ActivationData.operationOptions);
+            Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
             Queued_ActivationData = new ActivationCommandData();
         }
     }
@@ -315,7 +318,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
         if (Queued_ActivationData.target != null)
         {
-            Queued_ActivationData.target.Operate(Queued_ActivationData.operationOptions);
+            Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
             Queued_ActivationData = new ActivationCommandData();
         }
     }

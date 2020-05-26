@@ -9,7 +9,7 @@ public class GroundLever : MonoBehaviour, IInteractable
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
     [SerializeField] UnityEvent OnDeActivate = new UnityEvent();
 
-    [SerializeField] List<OperationOptions> SuportedOperations = new List<OperationOptions>();
+    [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();
     [SerializeField] Transform _activationPosition = null;
     [SerializeField] Animator _anims = null;
 
@@ -18,13 +18,22 @@ public class GroundLever : MonoBehaviour, IInteractable
     public Vector3 position => transform.position;
     public Vector3 LookToDirection => _activationPosition.forward;
 
-    public List<OperationOptions> GetSuportedOperations()
+    public InteractionParameters GetSuportedInteractionParameters()
     {
-        return SuportedOperations;
+        return new InteractionParameters()
+        {
+            LimitedDisplay = false,
+            SuportedOperations = _suportedOperations
+        };
     }
-    public void Operate(OperationOptions selectedOperation, params object[] optionalParams)
+
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
     {
-        if (selectedOperation == OperationOptions.Activate)
+    }
+
+    public void OnOperate(OperationType selectedOperation, params object[] optionalParams)
+    {
+        if (selectedOperation == OperationType.Activate)
         {
             _anims.SetBool("Pressed", true);
             OnActivate.Invoke();

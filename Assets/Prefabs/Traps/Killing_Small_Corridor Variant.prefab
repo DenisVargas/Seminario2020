@@ -10,7 +10,17 @@ PrefabInstance:
     - target: {fileID: 1766029106011015506, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
         type: 3}
       propertyPath: m_Name
-      value: Killing_Small_Corridor
+      value: Killing_Small_Corridor Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5240360824389532153, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 3.773314
+      objectReference: {fileID: 0}
+    - target: {fileID: 5240360824389532153, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 3.0338924
       objectReference: {fileID: 0}
     - target: {fileID: 5774170834655470756, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
         type: 3}

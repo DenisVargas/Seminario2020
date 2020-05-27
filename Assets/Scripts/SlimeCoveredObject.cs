@@ -50,6 +50,7 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
             SuportedOperations = _suportedOperations
         };
     }
+    public void OnCancelOperation(OperationType operation, params object[] optionalParams) { }
 
     IEnumerator Burn()
     {
@@ -77,6 +78,5 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
     }
-
 #endif
 }

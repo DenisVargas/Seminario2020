@@ -29,4 +29,6 @@ public class cmd_Activate : IQueryComand
     {
         MonoBehaviour.print("Setup Query Comand: Activate");
     }
+
+    public void Cancel() { }
 }

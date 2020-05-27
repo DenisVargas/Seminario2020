@@ -37,5 +37,5 @@ public class cmd_Move : IQueryComand
 
         //MonoBehaviour.print(string.Format("move comand Executing, status {0}", completed ? "Completed" : "On Going"));
     }
-
+    public void Cancel() { }
 }

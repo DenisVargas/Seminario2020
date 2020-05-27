@@ -4,4 +4,5 @@
 
     void setUp();
     void Update();
+    void Cancel();
 }

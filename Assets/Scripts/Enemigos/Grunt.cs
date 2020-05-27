@@ -635,6 +635,10 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     {
         //Acá podemos bloquear su comportamiento quizás.
     }
+    public void OnCancelOperation(OperationType operation, params object[] optionalParams)
+    {
+        //Esto se llama cuando se cancela la operación.
+    }
 
     //============================== Animation Events =======================================
 

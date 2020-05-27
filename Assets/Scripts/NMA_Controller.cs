@@ -113,7 +113,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                     _mv.SetMousePositionAditive(_mouseContext.hitPosition);
                 else
                 {
-                    comandos.Clear();
+                    CancelAllCommands();
                     _mv.SetMousePosition(_mouseContext.hitPosition);
                 }
 
@@ -157,9 +157,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     /// <param name="target">El objetivo de dicha operación</param>
     public void ExecuteOperation(OperationType operation, IInteractable target)
     {
-        //Aqui tenemos una referencia a un target y una operación que quiero ejectar sobre él.
-        //Chequeo si estoy lo suficientemente cerca para activar el comando.
-        print(string.Format("Ejecuto la operación {0} sobre {1}", operation.ToString(), target));
         var safeInteractionPosition = target.requestSafeInteractionPosition(this);
         if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
         {
@@ -249,6 +246,14 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             var next = comandos.Peek();
             print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
         }
+    }
+    void CancelAllCommands()
+    {
+        foreach (var command in comandos)
+        {
+            command.Cancel();
+        }
+        comandos.Clear();
     }
 
     public void FallInTrap()

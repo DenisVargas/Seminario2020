@@ -32,4 +32,9 @@ public class cmd_Ignite : IQueryComand
         _OnActivation();
         _dispose();
     }
+
+    public void Cancel()
+    {
+        _data.target.OnCancelOperation(OperationType.Ignite);
+    }
 }

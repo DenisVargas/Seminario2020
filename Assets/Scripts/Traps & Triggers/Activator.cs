@@ -12,9 +12,11 @@ public class Activator : MonoBehaviour, IInteractable
     public Vector3 position { get => ActivationPosition.position; }
     public Vector3 LookToDirection { get => ActivationPosition.forward; }
 
-    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
+    public void OnCancelOperation(OperationType operation, params object[] optionalParams)
     {
+        if (operation == OperationType.Activate) { }
     }
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams) { }
 
     public void OnOperate(OperationType operation, params object[] optionalParams)
     {

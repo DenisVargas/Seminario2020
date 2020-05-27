@@ -41,7 +41,7 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         {
             _freezeInPlace = value;
             if (_freezeInPlace)
-                FreezeInPlace();
+                FreezeAll();
         }
     }
 
@@ -64,7 +64,7 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         else
             _remainingLifeTime -= Time.deltaTime;
     }
-    void FreezeInPlace()
+    void FreezeAll()
     {
         checkSurroundingIgnitionObjects();
         foreach (var ignit in toIgnite)
@@ -72,6 +72,18 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
             if (!ignit.isFreezed)
             {
                 ignit.isFreezed = true;
+            }
+            else continue;
+        }
+    }
+    void UnFreezeAll()
+    {
+        checkSurroundingIgnitionObjects();
+        foreach (var ignit in toIgnite)
+        {
+            if (!ignit.isFreezed && ignit != (IIgnitableObject)this)
+            {
+                ignit.isFreezed = false;
             }
             else continue;
         }
@@ -188,6 +200,13 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         if (operation == OperationType.Ignite)
             Ignite(_expansionDelayTime);
     }
+    public void OnCancelOperation(OperationType operation, params object[] optionalParams)
+    {
+        if (operation == OperationType.Ignite)
+        {
+            _freezeInPlace = false;
+        }
+    }
 
     private void OnMouseEnter()
     {
@@ -208,6 +227,5 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _interactionRadius);
     }
-
 #endif
 }

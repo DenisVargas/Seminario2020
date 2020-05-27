@@ -48,7 +48,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     [SerializeField]
     Vector3 targetPosition                 = Vector3.zero;
     [SerializeField] Waypoint patrolPoints = null;
-    //[SerializeField] int _toStopPositions  = 0;
     [SerializeField] float stopTime        = 1.5f;
     [SerializeField] GameObject[] burnParticles = new GameObject[2];
 
@@ -139,11 +138,11 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         _mainCollider = GetComponent<Collider>();
         _agent = GetComponent<NavMeshAgent>();
         _sight = GetComponent<LineOfSightComponent>();
-        _trail = GetComponentInChildren<Trail>();
         _hurtbox = GetComponentInChildren<HurtBox>();
         _anims = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
         _remainingStopTime = stopTime;
+        _trail = GetComponentInChildren<Trail>();
 
         //AutoSet Del Target.
         var tar = FindObjectOfType<NMA_Controller>();
@@ -234,10 +233,10 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _rb.useGravity = false;
             _mainCollider.enabled = false;
             _rb.velocity = Vector3.zero;
+            _trail.DisableTrailEmission();
 
             //Apago componentes que no hagan falta.
             //gameObject.SetActive(false);
-            _trail.Emit = false;
         };
         //dead.OnUpdate += () => { };
         dead.OnExit += (x) => { };
@@ -366,7 +365,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _remainingBurnTime = _burnTime;
 
             //Dejamos de emitir baba.
-            _trail.Emit = false;
+            _trail.DisableTrailEmission();
 
             //Nos detenemos y reseteamos el camino.
             _agent.isStopped = true;
@@ -404,7 +403,15 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         };
 
-        state = startPatrolling ? new GenericFSM<BabosoState>(patroll) : new GenericFSM<BabosoState>(idle);
+        if (startPatrolling)
+        {
+            state = new GenericFSM<BabosoState>(patroll);
+            _trail.EnableEmission();
+        }
+        else
+        {
+            state = new GenericFSM<BabosoState>(idle);
+        }
 
 #if UNITY_EDITOR
         state.Debug_Transitions = false; 

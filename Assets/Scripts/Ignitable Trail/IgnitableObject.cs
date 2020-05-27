@@ -1,43 +1,102 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Core.DamageSystem;
 using System;
 
 [RequireComponent(typeof(Collider))]
 public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
 {
     public Action OnDisable = delegate { };
+    public event Action CancelInputs = delegate { };
 
     [SerializeField] GameObject fireParticle = null;
-    [SerializeField] List<OperationOptions> suportedInteractions = new List<OperationOptions>();
+    [SerializeField] List<OperationType> _suportedInteractions = new List<OperationType>();
 
-    [SerializeField, Tooltip("Cuanto tiempo estará activo mientras ")]
-    public float MaxLifeTime = 5f;
-    [SerializeField, Tooltip("Cuanto tiempo estará prendido el fuego.")]
-    public float BurningTime = 5f;
-    [SerializeField] float ExplansionDelayTime = 0.8f;
-
-    [SerializeField] float _ignitableSearchRadius;
+    [SerializeField] float _ignitableSearchRadius = 5f;
     [SerializeField] float _interactionRadius = 3; //Esto tiene que ser dada al player para evitar que reciba daño del fuego.
-    [SerializeField]LayerMask efectTargets = ~0;
+    [SerializeField] LayerMask efectTargets = ~0;
 
     public List<IIgnitableObject> toIgnite = new List<IIgnitableObject>();
 
-    [SerializeField] Collider _col = null;
-    [SerializeField] TrapHitBox _trapHitBox;
+    [SerializeField] Collider _interactionCollider = null;
+    [SerializeField] TrapHitBox _trapHitBox = null;
 
     public bool Burning { get; private set; } = (false);
+
+    [SerializeField] float _remainingLifeTime = 0;
+    bool _freezeInPlace = false;
+    float _burningTime = 5f;
+    float _expansionDelayTime = 0.8f;
+    float _inputWaitTime = 2f;
 
     public Vector3 position => transform.position;
     public Vector3 LookToDirection => transform.forward;
 
     public bool IsActive => gameObject.activeSelf;
 
-    public void OnSpawn()
+    public bool isFreezed
     {
+        get => _freezeInPlace;
+        set
+        {
+            _freezeInPlace = value;
+            if (_freezeInPlace)
+                FreezeInPlace();
+        }
+    }
+
+    private void Update()
+    {
+        if (!_freezeInPlace)
+        {
+            reduxHealth();
+        }
+        else if(Burning)
+        {
+            reduxHealth();
+        }
+    }
+
+    void reduxHealth()
+    {
+        if (_remainingLifeTime <= 0)
+            OnDisable();
+        else
+            _remainingLifeTime -= Time.deltaTime;
+    }
+    void FreezeInPlace()
+    {
+        checkSurroundingIgnitionObjects();
+        foreach (var ignit in toIgnite)
+        {
+            if (!ignit.isFreezed)
+            {
+                ignit.isFreezed = true;
+            }
+            else continue;
+        }
+    }
+
+    public void OnSpawn(float LifeTime, float IgnitionLifeTime, float InputWaitTime, float ExpansionDelayTime = 0.8f)
+    {
+        //Iniciamos los contadores.
+        _remainingLifeTime = LifeTime;
+        _burningTime = IgnitionLifeTime;
+        _inputWaitTime = InputWaitTime;
+        _expansionDelayTime = ExpansionDelayTime;
+
         StopAllCoroutines();
-        StartCoroutine(extinguish(MaxLifeTime));
+    }
+
+    public void OnDie()
+    {
+        Burning = false;
+        _interactionCollider.enabled = true;
+        _trapHitBox.IsActive = false;
+        fireParticle.SetActive(false);
+        _freezeInPlace = false;
+        CancelInputs();
+        CancelInputs = delegate { };
     }
 
     public void Ignite(float delayTime = 0)
@@ -45,15 +104,12 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         if (!Burning)
         {
             //print(gameObject.name + " IS IGNITED");
-            //Desactivo mi collider. Ya no soy interactuable.
-            _col.enabled = false;
-            //Activo el área de daño.
+            _interactionCollider.enabled = false;
             _trapHitBox.IsActive = true;
-            //Activo la particula del fueguín.
             fireParticle.SetActive(true);
 
             StartCoroutine(DelayedOtherIgnition(delayTime));
-            StartCoroutine(extinguish(BurningTime));
+            _remainingLifeTime = _burningTime;
 
             Burning = true;
         }
@@ -72,13 +128,6 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         toIgnite.Clear();
     }
 
-    IEnumerator extinguish(float time)
-    {
-        //Aquí en vez de apagar el gameObject de una, deberíamos ir por partes.
-        yield return new WaitForSeconds(time);
-        OnDisable();
-    }
-
     void checkSurroundingIgnitionObjects()
     {
         //Busco objetos circundantes que puedan propagar el daño.
@@ -95,18 +144,49 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         }
     }
 
+    /// <summary>
+    /// Se llama cuando hacemos clic encima.
+    /// </summary>
+    /// <param name="toIgnore">Me mando a mismo</param>
+    public void OnInteractionEvent(IIgnitableObject toIgnore)
+    {
+        checkSurroundingIgnitionObjects();
+        foreach (var igniteable in toIgnite)
+        {
+            if (igniteable != (IIgnitableObject)this && igniteable != toIgnore)
+            {
+                igniteable.OnInteractionEvent(this);
+            }
+        }
+
+        //Aumento el tiempo de vida de esta "particula" x el treshold
+        _remainingLifeTime += _inputWaitTime;
+    }
+
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {
         return (transform.position + ((requester.position - transform.position).normalized) * _interactionRadius);
     }
-    public List<OperationOptions> GetSuportedOperations()
+    public InteractionParameters GetSuportedInteractionParameters()
     {
-        return suportedInteractions;
+        OnInteractionEvent(this);
+
+        return new InteractionParameters()
+        {
+            LimitedDisplay = true,
+            ActiveTime = _inputWaitTime,
+            SuportedOperations = _suportedInteractions
+        };
     }
-    public void Operate(OperationOptions operation, params object[] optionalParams)
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
     {
-        if (operation == OperationOptions.Ignite)
-            Ignite(ExplansionDelayTime);
+        if (selectedOperation == OperationType.Ignite)
+            isFreezed = true;
+    }
+    public void OnOperate(OperationType operation, params object[] optionalParams)
+    {
+        if (operation == OperationType.Ignite)
+            Ignite(_expansionDelayTime);
     }
 
     private void OnMouseEnter()
@@ -128,5 +208,6 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _interactionRadius);
     }
+
 #endif
 }

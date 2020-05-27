@@ -19,7 +19,7 @@ public class CanvasController : MonoBehaviour
         FindObjectOfType<NMA_Controller>().ImDeadBro += DisplayLoose;
     }
 
-    public void DisplayCommandMenu(Vector2 mouseScreenPosition, List<OperationOptions> displayOptions, IInteractable interactionTarget, Action<OperationOptions, IInteractable> callback)
+    public void DisplayCommandMenu(Vector2 mouseScreenPosition, InteractionParameters displayOptions, IInteractable interactionTarget, Action<OperationType, IInteractable> callback)
     {
         //Le paso las nuevas opciones disponibles.
         _MultiCommandMenu.FillOptions(displayOptions, interactionTarget, callback);

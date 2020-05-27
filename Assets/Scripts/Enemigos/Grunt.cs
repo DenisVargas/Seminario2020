@@ -31,7 +31,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     [Header("Interaction System")]
     [SerializeField] float _safeInteractionDistance = 5f;
-    [SerializeField] List<OperationOptions> ValidOperations = new List<OperationOptions>();
+    [SerializeField] List<OperationType> ValidOperations = new List<OperationType>();
 
     public float Health
     {
@@ -594,19 +594,23 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     //================================ Interaction System ===================================
 
-    public List<OperationOptions> GetSuportedOperations()
+    public InteractionParameters GetSuportedInteractionParameters()
     {
-        return ValidOperations;
+        return new InteractionParameters()
+        {
+            LimitedDisplay = false,
+            SuportedOperations = ValidOperations
+        };
     }
 
-    public void Operate(OperationOptions selectedOperation, params object[] optionalParams)
+    public void OnOperate(OperationType selectedOperation, params object[] optionalParams)
     {
         switch (selectedOperation)
         {
-            case OperationOptions.Ignite:
+            case OperationType.Ignite:
                 OnIgnite(optionalParams);
                 break;
-            case OperationOptions.TrowRock:
+            case OperationType.TrowRock:
                 OnHitWithRock(optionalParams);
                 break;
             default:
@@ -622,6 +626,14 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     {
         //Si es atacado por una roca, entra en rageMode.
         state.Feed(BoboState.rage);
+    }
+    public Vector3 requestSafeInteractionPosition(IInteractor requester)
+    {
+        return ((requester.position - transform.position).normalized * _safeInteractionDistance);
+    }
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
+    {
+        //Acá podemos bloquear su comportamiento quizás.
     }
 
     //============================== Animation Events =======================================
@@ -666,11 +678,6 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
             Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
             Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
         }
-    }
-
-    public Vector3 requestSafeInteractionPosition(IInteractor requester)
-    {
-        return ((requester.position - transform.position).normalized * _safeInteractionDistance);
     }
 #endif
 }

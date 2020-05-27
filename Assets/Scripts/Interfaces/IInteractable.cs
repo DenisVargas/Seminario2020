@@ -2,13 +2,23 @@
 using UnityEngine;
 
 [System.Serializable]
-public enum OperationOptions : int
+public enum OperationType : int
 {
     Take = 0,
     Ignite,
     Activate,
     Equip,
     TrowRock
+}
+
+public struct InteractionParameters
+{
+    //Si las operaciones se muestran indefinidamente o no.
+    public bool LimitedDisplay;
+    //El tiempo en el que se expone las operaciones.
+    public float ActiveTime;
+    //Los tipos de acciones que son soportadas.
+    public List<OperationType> SuportedOperations;
 }
 
 public interface IInteractor
@@ -22,6 +32,7 @@ public interface IInteractable
     Vector3 LookToDirection { get; }
 
     Vector3 requestSafeInteractionPosition(IInteractor requester);
-    List<OperationOptions> GetSuportedOperations();
-    void Operate(OperationOptions selectedOperation, params object[] optionalParams);
+    InteractionParameters GetSuportedInteractionParameters();
+    void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams);
+    void OnOperate(OperationType selectedOperation, params object[] optionalParams);
 }

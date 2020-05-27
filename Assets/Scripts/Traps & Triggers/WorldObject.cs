@@ -10,12 +10,12 @@ public class WorldObject : MonoBehaviour, IInteractable
     Material _normalMat = null;
     Renderer _renderer = null;
 
-    public List<OperationOptions> suportedOperations = new List<OperationOptions>();
+    public List<OperationType> suportedOperations = new List<OperationType>();
 
     public Vector3 position => transform.position;
     public Vector3 LookToDirection => transform.forward;
 
-    public void Operate(OperationOptions operation, params object[] optionalParams)
+    public void OnOperate(OperationType operation, params object[] optionalParams)
     {
         Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
     }
@@ -42,13 +42,19 @@ public class WorldObject : MonoBehaviour, IInteractable
         _renderer.material = onExitMat;
     }
 
-    List<OperationOptions> IInteractable.GetSuportedOperations()
+    InteractionParameters IInteractable.GetSuportedInteractionParameters()
     {
-        return suportedOperations;
+        return new InteractionParameters()
+        {
+            LimitedDisplay = false,
+            SuportedOperations = suportedOperations
+        };
     }
 
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {
         return position;
     }
+
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams) { }
 }

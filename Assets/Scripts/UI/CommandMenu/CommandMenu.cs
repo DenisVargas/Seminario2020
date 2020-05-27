@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CommandMenu : MonoBehaviour
 {
-    public event Action<OperationOptions, IInteractable> executeCommand = delegate { };
+    public event Action<OperationType, IInteractable> executeCommand = delegate { };
     [HideInInspector]
     public IInteractable interactionTarget;
 
@@ -22,11 +22,29 @@ public class CommandMenu : MonoBehaviour
 
     [SerializeField]
     public CommandMenuItemData[] presetDataBase = new CommandMenuItemData[0];
-    public Dictionary<OperationOptions, GameObject> display = new Dictionary<OperationOptions, GameObject>();
+    public Dictionary<OperationType, GameObject> display = new Dictionary<OperationType, GameObject>();
 
     [Header("Estado del contexto")]
     [SerializeField] bool _sliderContextOn           = false;
     [SerializeField] bool _viewportContextOn         = false;
+
+    bool _limitedActive = false;
+    [SerializeField] float _remainingActiveTime = 5f;
+
+    private void Update()
+    {
+        if (_limitedActive)
+        {
+            _remainingActiveTime -= Time.deltaTime;
+            print("Remaining Active Time = " + _remainingActiveTime);
+
+            if (_remainingActiveTime <= 0)
+            {
+                _remainingActiveTime = 0;
+                gameObject.SetActive(false);
+            }
+        }
+    }
 
     public void LoadData()
     {
@@ -67,7 +85,7 @@ public class CommandMenu : MonoBehaviour
         //TODO: Reposicionar el menu, si se sale de la pantalla.
     }
 
-    public void ActivateCommand(OperationOptions command)
+    public void ActivateCommand(OperationType command)
     {
         print(string.Format("Activo el comando {0}", command.ToString()));
         //Aquí es donde ejecutamos la acción en si.
@@ -78,19 +96,18 @@ public class CommandMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void FillOptions(List<OperationOptions> operations, IInteractable interactionTarget, Action<OperationOptions, IInteractable> callBack)
+    public void FillOptions(InteractionParameters Interaction, IInteractable interactionTarget, Action<OperationType, IInteractable> callBack)
     {
-        //Registro el evento
         executeCommand += callBack;
-        //Registro el target de las operaciones.
         this.interactionTarget = interactionTarget;
-
-        //Obtengo los childs
+        _limitedActive = Interaction.LimitedDisplay;
+        if (_limitedActive)
+        {
+            _remainingActiveTime = Interaction.ActiveTime;
+        }
         _verticalScroll.size = 1;
-
-        //Recorro opcion por opción y activo solamente aquellos que sean válidos.
         foreach (var item in display)
-            item.Value.SetActive(operations.Contains(item.Key));
+            item.Value.SetActive(Interaction.SuportedOperations.Contains(item.Key));
     }
 
     public void OnSliderContext(bool isInsideSlider)

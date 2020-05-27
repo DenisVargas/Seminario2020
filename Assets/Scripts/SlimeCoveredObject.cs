@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class SlimeCoveredObject : MonoBehaviour, IInteractable
 {
-    [SerializeField] List<OperationOptions> suportedOperations = new List<OperationOptions>();
+    [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();
     [SerializeField] float _safeInteractionDistance = 5;
     [SerializeField] float _burningTime = 5;
     [SerializeField] GameObject[] burnParticles = new GameObject[4];
@@ -34,16 +34,21 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
     {
         return (transform.position + ((requester.position - transform.position).normalized *_safeInteractionDistance));
     }
-    public void Operate(OperationOptions operation, params object[] optionalParams)
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams) { }
+    public void OnOperate(OperationType operation, params object[] optionalParams)
     {
-        if (operation == OperationOptions.Ignite)
+        if (operation == OperationType.Ignite)
         {
             StartCoroutine(Burn());
         }
     }
-    List<OperationOptions> IInteractable.GetSuportedOperations()
+    InteractionParameters IInteractable.GetSuportedInteractionParameters()
     {
-        return suportedOperations;
+        return new InteractionParameters()
+        {
+            LimitedDisplay = false,
+            SuportedOperations = _suportedOperations
+        };
     }
 
     IEnumerator Burn()
@@ -71,6 +76,7 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
         Gizmos.color = Color.green;
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
-    } 
+    }
+
 #endif
 }

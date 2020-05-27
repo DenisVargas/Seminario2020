@@ -252,6 +252,10 @@ MonoBehaviour:
   _hitbox: {fileID: 1253485109}
   _destructibleHitbox: {fileID: 5425837339436761734}
   deactivateDelay: 1
+  _instaKill: 1
+  _damageType: 2
+  _ammount: 100
+  _criticalMultiplier: 2
 --- !u!1 &1865814952854212770
 GameObject:
   m_ObjectHideFlags: 0

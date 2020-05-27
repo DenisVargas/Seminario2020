@@ -5,13 +5,27 @@ using UnityEngine;
 public class Jail : MonoBehaviour
 {
     Animator _anims;
-    [SerializeField] TrapHitBox _hitbox = null;
-    [SerializeField] Collider _destructibleHitbox = null;
+    TrapHitBox _hitbox = null;
+    Collider _destructibleHitbox = null;
+
     [SerializeField] float deactivateDelay = 1f;
+
+    [Header("Hitbox Settings")]
+    [SerializeField] bool _instaKill = true;
+    [SerializeField] DamageType _damageType = DamageType.blunt;
+    [SerializeField] float _ammount = 0f;
+    [SerializeField] float _criticalMultiplier = 2f;
 
     void Awake()
     {
         _anims = GetComponent<Animator>();
+        _destructibleHitbox = GetComponent<Collider>();
+        _destructibleHitbox.isTrigger = true;
+        _hitbox = GetComponentInChildren<TrapHitBox>();
+        if (_hitbox != null)
+        {
+            _hitbox.SetTrapHitbox(_instaKill, _damageType, _ammount, _criticalMultiplier);
+        }
     }
 
     public void Drop()

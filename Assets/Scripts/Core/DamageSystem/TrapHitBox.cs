@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Core.DamageSystem;
 
-[RequireComponent(typeof(Collider))]
+[Serializable, RequireComponent(typeof(Collider))]
 public class TrapHitBox : MonoBehaviour
 {
     [Header("Trap Settings")]
@@ -17,6 +18,14 @@ public class TrapHitBox : MonoBehaviour
     private void Awake()
     {
         _col = GetComponent<Collider>();
+    }
+
+    public void SetTrapHitbox(bool instakill, DamageType type, float ammount, float criticalMultiplier)
+    {
+        _instaKill = instakill;
+        _damageType = type;
+        _ammount = ammount;
+        _criticalMultiplier = criticalMultiplier;
     }
 
     public bool IsActive

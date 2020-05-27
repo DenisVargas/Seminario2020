@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Core.DamageSystem;
+using UnityEngine.UIElements;
 
 public struct ActivationCommandData
 {
@@ -21,6 +22,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     [SerializeField] float _movementTreshold       = 0.18f;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
+
 
     Animator _anims;
     int[] animHash = new int[3];
@@ -59,6 +61,12 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     CanvasController _canvasController = null;
     MouseView _mv;
     MouseContextTracker _mtracker;
+    public GameObject clon;
+    public float clonLife;
+    float clonlifeTime;
+    public float clonCooldown;
+    float clonCooldownRemain;
+    bool clonRecast;
 
     Vector3 _currentTargetPos;
     float forwardLerpTime;
@@ -134,6 +142,50 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                     disposeCommand
                 );
                 comandos.Enqueue(moveCommand);
+            }
+        }
+
+
+        #endregion
+        #region Clon
+        if (PlayerInputEnabled && Input.GetKeyDown(KeyCode.Alpha1) && clonRecast)
+        {
+            if (!clon.activeInHierarchy)
+            {
+                clonlifeTime = clonLife;
+                clon.SetActive(true);
+                
+            }
+
+            else
+            {
+                clon.SetActive(false);
+                clonRecast = false;
+                clonCooldownRemain = clonCooldown;
+            }
+                
+
+        }
+        if (clon.activeInHierarchy)
+        {
+            if (clonlifeTime > 0)
+                clonlifeTime -= Time.deltaTime;
+            else
+            {
+                clon.SetActive(false);
+                clonRecast = false;
+                clonCooldownRemain = clonCooldown;
+            }    
+
+        }
+        else
+        {
+            if (clonCooldownRemain > 0)
+                clonCooldownRemain -= Time.deltaTime;
+            else
+            {
+                clonRecast = true;
+                clonCooldownRemain = 0;
             }
         }
         #endregion

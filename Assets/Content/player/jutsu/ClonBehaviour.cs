@@ -43,6 +43,7 @@ public class ClonBehaviour : MonoBehaviour
         {
             _a_Walking = false;
         }
+        
 
     }
     public void MoveToTarget(Vector3 destinyPosition)

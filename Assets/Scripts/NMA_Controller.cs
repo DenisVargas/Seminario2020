@@ -154,7 +154,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             {
                 clonlifeTime = clonLife;
                 clon.SetActive(true);
-                
+                clon.transform.position = transform.position + transform.forward * 2;
+                clon.transform.forward = transform.forward;
             }
 
             else

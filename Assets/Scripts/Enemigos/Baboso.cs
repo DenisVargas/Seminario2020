@@ -29,7 +29,7 @@ public struct DamageModifier
     public float percentual;
 }
 
-public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitResult>
+public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
 {
     [Header("Stats")]
     [SerializeField] float _health = 10;
@@ -480,10 +480,10 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     {
         if (_target != null)
         {
-            var killeable = _target.GetComponent<IDamageable<Damage>>();
+            var killeable = _target.GetComponent<IDamageable<Damage, HitResult>>();
             if (killeable != null)
             {
-                killeable.Hit(new Damage() { instaKill = true });
+                killeable.GetHit(new Damage() { instaKill = true });
             }
             else
                 Debug.LogError("La cagaste, el target no es Damageable");
@@ -499,37 +499,40 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
     //========================================== Sistema de Daño ==============================================
 
-    //Recibimos Daño
-    public void Hit(Damage damage)
+    public HitResult GetHit(Damage damage)
     {
-        Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
+        HitResult result = new HitResult()
+        {
+            conected = true,
+            fatalDamage = true
+        };
 
+        //Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
         if (damage.instaKill)
         {
             if (damage.type == DamageType.e_fire && _currentState != BabosoState.burning)
             {
                 state.Feed(BabosoState.burning);
             }
-
             if (damage.type == DamageType.blunt && _currentState != BabosoState.explode)
             {
                 state.Feed(BabosoState.explode);
+            }
+            if (damage.type == DamageType.piercing && _currentState != BabosoState.dead)
+            {
+                state.Feed(BabosoState.dead);
             }
         }
         else
         {
             health -= damage.Ammount;
         }
+        return result;
     }
-    //Devolvemos nuestras estadísticas.
-    public Damage getDamageState()
+    public void FeedDamageResult(HitResult result) { }
+    public Damage GetDamageStats()
     {
         return _damageState;
-    }
-    //En este caso si resivo un hit, pos me muero asi que no pasa mucho.
-    public void HitStatus(HitResult result)
-    {
-        //Cuando conecta un hit... no hago nada en particular.
     }
 
     //===================================== Animation Events ===================================================
@@ -568,6 +571,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         Gizmos.color = DEBUG_ExplodeRangeColor;
         Gizmos.DrawWireSphere(transform.position, _explodeRange);
-    } 
+    }
 #endif
 }

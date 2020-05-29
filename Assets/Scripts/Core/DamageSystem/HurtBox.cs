@@ -1,23 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core.DamageSystem
 {
-    public interface IDamageable<Input>
-    {
-        GameObject gameObject { get; }
-        void Hit(Input damage);
-    }
-
     //Esto es un componente que actua como Hurtbox
     //Hurtboxes solo colisionan con Hitboxes, y son Triggers.
-    //Aqui podremos setear debilidades.
 
     [RequireComponent(typeof(Collider))]
     public class HurtBox : MonoBehaviour
     {
-        [SerializeField] IDamageable<Damage> _body;
+        [SerializeField] IDamageable<Damage, HitResult> _body;
         public bool DetectIncomingDamage
         {
             get => _col.enabled;
@@ -29,13 +20,13 @@ namespace Core.DamageSystem
         {
             _col = GetComponent<Collider>();
             _col.isTrigger = true;
-            _body = GetComponentInParent<IDamageable<Damage>>();
+            _body = GetComponentInParent<IDamageable<Damage, HitResult>>();
         }
 
         public void TransferDamage(Damage damage)
         {
             //Debug.LogWarning(string.Format("{0} ha recibido un HIT", _body.gameObject.name));
-            _body.Hit(damage);
+            _body.GetHit(damage);
             DetectIncomingDamage = false;
         }
     }

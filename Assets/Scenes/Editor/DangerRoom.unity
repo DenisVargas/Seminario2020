@@ -735,6 +735,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6414858267132625105, guid: a79c0a916e587934e9ba5f23399def4a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6414858267132625116, guid: a79c0a916e587934e9ba5f23399def4a,
+        type: 3}
+      propertyPath: mouseDetectionMask.m_Bits
+      value: 1073741825
+      objectReference: {fileID: 0}
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -789,6 +799,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194109981165342777, guid: a79c0a916e587934e9ba5f23399def4a,
+        type: 3}
+      propertyPath: mouseDetectionMask.m_Bits
+      value: 1073741825
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a79c0a916e587934e9ba5f23399def4a, type: 3}
@@ -5959,6 +5974,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 856897688738227760, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
+        type: 3}
+      propertyPath: m_Layer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 856897688738227764, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
         type: 3}
       propertyPath: Debug_LineOfSight
@@ -6869,12 +6889,42 @@ PrefabInstance:
     - target: {fileID: 1324527352422155877, guid: bfbb881702913024abeaf06dc24d8478,
         type: 3}
       propertyPath: DEBUG_RageMode_Ranges
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1324527352422155877, guid: bfbb881702913024abeaf06dc24d8478,
         type: 3}
       propertyPath: _safeInteractionDistance
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1324527352422155877, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: DEBUG_RM_TrgDetectRange_GIZMOCOLOR.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1324527352422155877, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: DEBUG_RM_TrgDetectRange_GIZMOCOLOR.g
+      value: 0.16184291
+      objectReference: {fileID: 0}
+    - target: {fileID: 1324527352422155877, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: DEBUG_RM_TrgDetectRange_GIZMOCOLOR.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1324527352422155877, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: _targeteables.m_Bits
+      value: 3221225728
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513995254284600776, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513995254284600776, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2027179780700680543, guid: bfbb881702913024abeaf06dc24d8478,
         type: 3}
@@ -6900,6 +6950,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964812142779624980, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: visibles.m_Bits
+      value: 3221225728
       objectReference: {fileID: 0}
     - target: {fileID: 9118807196185049338, guid: bfbb881702913024abeaf06dc24d8478,
         type: 3}
@@ -6965,6 +7020,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9118807196185049341, guid: bfbb881702913024abeaf06dc24d8478,
+        type: 3}
+      propertyPath: m_Layer
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfbb881702913024abeaf06dc24d8478, type: 3}
@@ -15023,7 +15083,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6414858267625977223}
   m_Layer: 0
-  m_Name: Player (1)
+  m_Name: Clon
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

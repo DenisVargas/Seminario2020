@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IDestructible 
 {
+    Vector3 position { get; }
+    Transform transform { get; }
     void destroyMe();
 }

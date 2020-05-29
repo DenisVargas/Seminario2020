@@ -4,20 +4,12 @@ using UnityEngine;
 
 namespace Core.DamageSystem
 {
-    public interface IAgressor<Input, Feedback>
-    {
-        GameObject gameObject { get; }
-        Input getDamageState();
-        void HitStatus(Feedback result);
-    }
-
     [RequireComponent(typeof(Collider))]
     public class HitBox : MonoBehaviour
     {
         [Tooltip("El intervalo de tiempo entre la cual el daño es aplicado a los hurtboxes")]
         [SerializeField] float _detectionInterval = 1f;
-
-        List<IDamageable<Damage>> _targets = new List<IDamageable<Damage>>();
+        List<IDamageable<Damage, HitResult>> _targets = new List<IDamageable<Damage,HitResult>>();
 
         public bool active
         {
@@ -25,13 +17,15 @@ namespace Core.DamageSystem
             set => _col.enabled = value;
         }
 
-        IAgressor<Damage, HitResult> _body;
-        [SerializeField] Collider _col;
-        float _detectionTime;
+        IDamageable<Damage, HitResult> _body = null;
+        Damage _bodyDamage = new Damage();
+        [SerializeField] Collider _col = null;
+        float _detectionTime = 1f;
 
         private void Awake()
         {
-            _body = GetComponentInParent<IAgressor<Damage, HitResult>>();
+            _body = GetComponentInParent<IDamageable<Damage, HitResult>>();
+            _body.GetDamageStats();
             _col = GetComponent<Collider>();
             _col.isTrigger = true;
         }
@@ -44,8 +38,7 @@ namespace Core.DamageSystem
             {
                 foreach (var target in _targets)
                 {
-                    //Aquí podriamos hacer que el hit retorne información!
-                    target.Hit(_body.getDamageState());
+                    _body.FeedDamageResult(target.GetHit(_bodyDamage));
                     _detectionTime = _detectionInterval;
                 }
             }
@@ -53,7 +46,7 @@ namespace Core.DamageSystem
 
         void CheckCollision(Collider other)
         {
-            var hiteable = other.gameObject.GetComponentInParent<IDamageable<Damage>>();
+            var hiteable = other.gameObject.GetComponentInParent<IDamageable<Damage, HitResult>>();
 
             if (hiteable != null && hiteable.gameObject == _body.gameObject)
             {
@@ -81,7 +74,7 @@ namespace Core.DamageSystem
 
         private void OnTriggerExit(Collider other)
         {
-            var hiteable = other.GetComponent<IDamageable<Damage>>();
+            var hiteable = other.GetComponent<IDamageable<Damage, HitResult>>();
             if (hiteable != null && _targets.Contains(hiteable))
                 _targets.Add(hiteable);
         }

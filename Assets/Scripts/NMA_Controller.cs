@@ -12,17 +12,14 @@ public struct CommandData
     public OperationType operationOptions;
 }
 //Navigation Mesh Actor Controller.
-public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
+public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractor
 {
     public event Action ImDeadBro = delegate { };
-    [SerializeField] LayerMask mouseDetectionMask  = ~0;
     //[SerializeField] Transform MouseDebug          = null;
     //[SerializeField] Transform targetDebug         = null;
-    [SerializeField] float _interactionMaxDistance = 0.1f;
     [SerializeField] float _movementTreshold       = 0.18f;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
-
 
     Animator _anims;
     int[] animHash = new int[4];
@@ -95,7 +92,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _mtracker = GetComponent<MouseContextTracker>();
 
         _anims = GetComponent<Animator>();
-        animHash = new int[5];
+        animHash = new int[7];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -240,12 +237,17 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         {
             case OperationType.Take:
                 break;
+
             case OperationType.Ignite:
 
                 target.OnConfirmInput(OperationType.Ignite);
                 _toActivateCommand = new cmd_Ignite(
                                                       _currentOperationData,
-                                                      () => { _a_Ignite = true; },
+                                                      () => 
+                                                      {
+                                                          _a_Ignite = true;
+                                                          Queued_ActivationData = _currentOperationData;
+                                                      },
                                                       _disposeCommand
                                                    );
                 comandos.Enqueue(_toActivateCommand);
@@ -257,20 +259,31 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                 _toActivateCommand = new cmd_Activate
                     (
                         _currentOperationData,
-                        () => { _a_LeverPull = true; },
+                        () => 
+                        {
+                            _a_LeverPull = true;
+                            Queued_ActivationData = _currentOperationData;
+                        },
                         _disposeCommand
                     );
                 comandos.Enqueue(_toActivateCommand);
                 break;
+
             case OperationType.Equip:
                 break;
             case OperationType.TrowRock:
                 _toActivateCommand = new cmd_TrowRock
                     (
                        _currentOperationData,
-                       () => { _a_ThrowRock = true; },
+                       () => 
+                       {
+                           _a_ThrowRock = true;
+                           transform.forward = (target.position - transform.position).normalized;
+                           Queued_ActivationData = _currentOperationData;
+                       },
                        _disposeCommand
                     );
+                comandos.Enqueue(_toActivateCommand);
                 break;
             default:
                 break;
@@ -296,7 +309,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         if (comandos.Count > 0)
         {
             var next = comandos.Peek();
-            print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
+            //print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
         }
     }
     void CancelAllCommands()
@@ -316,7 +329,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             clon.transform.position = transform.position + transform.forward * 1.5f;
             clon.transform.forward = -transform.forward;
         }
-
         else
         {
             clon.SetActive(false);
@@ -350,16 +362,29 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
     //============================================================== Damage System =================================================================
 
-    public void Hit(Damage damage)
+    public HitResult GetHit(Damage damage)
     {
+        HitResult result = new HitResult() { conected = true, fatalDamage = true };
         if (damage.instaKill)
         {
             Die();
         }
+        return result;
+    }
+    public void FeedDamageResult(HitResult result) { }
+    public Damage GetDamageStats()
+    {
+        return new Damage()
+        {
+            Ammount = 10f,
+            instaKill = false,
+            criticalMultiplier = 2,
+            type = DamageType.piercing
+        };
     }
 
     //=============================================================== Animation Events =============================================================
-    public void AE_PullLeverStarted()
+    void AE_PullLeverStarted()
     {
         PlayerInputEnabled = false;
 
@@ -368,7 +393,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             transform.forward = Queued_ActivationData.target.LookToDirection;
         }
     }
-    public void AE_PullLeverEnded()
+    void AE_PullLeverEnded()
     {
         PlayerInputEnabled = true;
         _a_LeverPull = false;
@@ -379,14 +404,24 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             Queued_ActivationData = new CommandData();
         }
     }
-    public void AE_Ignite_Start()
+    void AE_Ignite_Start()
     {
         PlayerInputEnabled = false;
     }
-    public void AE_Ignite_End()
+    void AE_Ignite_End()
     {
         PlayerInputEnabled = true;
         _a_Ignite = false;
+
+        if (Queued_ActivationData.target != null)
+        {
+            Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
+            Queued_ActivationData = new CommandData();
+        }
+    }
+    void AE_TrowRock_Ended()
+    {
+        _a_ThrowRock = false;
 
         if (Queued_ActivationData.target != null)
         {
@@ -402,13 +437,5 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     }
 
     //============================================================== DEBUG ==========================================================================
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
-        Gizmos.DrawWireSphere(transform.position, _interactionMaxDistance);
-    }
-
 }
 

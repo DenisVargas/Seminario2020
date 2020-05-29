@@ -154,7 +154,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             {
                 clonlifeTime = clonLife;
                 clon.SetActive(true);
-                
             }
 
             else
@@ -163,10 +162,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                 clonRecast = false;
                 clonCooldownRemain = clonCooldown;
             }
-                
-
         }
-        if (clon.activeInHierarchy)
+        if (clon != null && clon.activeInHierarchy)
         {
             if (clonlifeTime > 0)
                 clonlifeTime -= Time.deltaTime;
@@ -175,10 +172,9 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                 clon.SetActive(false);
                 clonRecast = false;
                 clonCooldownRemain = clonCooldown;
-            }    
-
+            }
         }
-        else
+        else if(clon != null)
         {
             if (clonCooldownRemain > 0)
                 clonCooldownRemain -= Time.deltaTime;

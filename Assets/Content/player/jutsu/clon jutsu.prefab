@@ -67,7 +67,7 @@ Animator:
   m_GameObject: {fileID: 609606703466472664}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 293586a2b09919a4aad2e5ced276aff2, type: 3}
-  m_Controller: {fileID: 9100000, guid: c2c5979d1d1d17b43b50e7451c77dbad, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -191,6 +191,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: viking
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.3695412
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.3695412
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.60285926
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.60285926
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -63.015003
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094298017846019822, guid: 293586a2b09919a4aad2e5ced276aff2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 293586a2b09919a4aad2e5ced276aff2, type: 3}

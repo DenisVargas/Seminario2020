@@ -48,7 +48,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 0
       firstFrame: 0
-      lastFrame: 58
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -67,7 +67,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.42082244
+        functionName: ClonSpawn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
+        functionName: finishClon
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -77,7 +93,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 0
       firstFrame: 21
-      lastFrame: 34.1
+      lastFrame: 49.9
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -96,7 +112,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: canMove
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.99664587
+        functionName: canMove
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+          type: 3}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

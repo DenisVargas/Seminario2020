@@ -95,7 +95,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _mtracker = GetComponent<MouseContextTracker>();
 
         _anims = GetComponent<Animator>();
-        animHash = new int[6];
+        animHash = new int[5];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;

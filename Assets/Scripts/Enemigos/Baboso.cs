@@ -51,6 +51,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     [SerializeField] Waypoint patrolPoints = null;
     [SerializeField] float stopTime        = 1.5f;
     [SerializeField] GameObject[] burnParticles = new GameObject[2];
+    [SerializeField] GameObject ExplotionParticle = null;
+    [SerializeField] LayerMask _StaineableMask = ~0;
 
     [SerializeField] BabosoState _currentState;
 
@@ -256,6 +258,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         {
             _currentState = BabosoState.explode;
             //Activo la particula de explosión.
+            ExplotionParticle.SetActive(true);
             //Me dejo de mover.
             if (_agent.isActiveAndEnabled)
             {
@@ -268,6 +271,17 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _rb.velocity = Vector3.zero;
             _mainCollider.enabled = false;
             _trail.DisableTrailEmission();
+
+            //Busco todos los objetos que están al rededor y hacer que se mojen con baba.
+            var findeds = Physics.OverlapSphere(transform.position, _explodeRange, _StaineableMask, QueryTriggerInteraction.Collide);
+            foreach (var col in findeds)
+            {
+                var staineable = col.GetComponent<Staineable>();
+                if (staineable != null)
+                {
+                    staineable.StainWithSlime();
+                }
+            }
         };
         explode.OnUpdate += () =>
         {

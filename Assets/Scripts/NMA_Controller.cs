@@ -25,7 +25,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
 
     Animator _anims;
-    int[] animHash = new int[3];
+    int[] animHash = new int[4];
     bool _a_Walking
     {
         get => _anims.GetBool(animHash[0]);
@@ -50,6 +50,11 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     {
         get => _anims.GetBool(animHash[4]);
         set => _anims.SetBool(animHash[4], value);
+    }
+    bool _a_Clon
+    {
+        get => _anims.GetBool(animHash[5]);
+        set => _anims.SetBool(animHash[5], value);
     }
 
     public Vector3 position => transform.position;
@@ -85,7 +90,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _mtracker = GetComponent<MouseContextTracker>();
 
         _anims = GetComponent<Animator>();
-        animHash = new int[5];
+        animHash = new int[6];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -150,21 +155,9 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         #region Clon
         if (PlayerInputEnabled && Input.GetKeyDown(KeyCode.Alpha1) && clonRecast)
         {
-            if (!clon.activeInHierarchy)
-            {
-                clonlifeTime = clonLife;
-                clon.SetActive(true);
-                clon.transform.position = transform.position + transform.forward * 2;
-                clon.transform.forward = transform.forward;
-            }
-
-            else
-            {
-                clon.SetActive(false);
-                clonRecast = false;
-                clonCooldownRemain = clonCooldown;
-            }
-                
+            comandos.Clear();
+            _a_Clon = true;
+            PlayerInputEnabled = false;
 
         }
         if (clon.activeInHierarchy)
@@ -181,12 +174,16 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         }
         else
         {
-            if (clonCooldownRemain > 0)
-                clonCooldownRemain -= Time.deltaTime;
-            else
+            if(!clonRecast)
             {
+                if (clonCooldownRemain > 0)
+                     clonCooldownRemain -= Time.deltaTime;
+                else
+                {
                 clonRecast = true;
                 clonCooldownRemain = 0;
+                }
+
             }
         }
         #endregion
@@ -304,6 +301,24 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         }
     }
 
+    public void ClonSpawn()
+    {
+        if (!clon.activeInHierarchy)
+        {
+            clonlifeTime = clonLife;
+            clon.SetActive(true);
+            clon.transform.position = transform.position + transform.forward * 1.5f;
+            clon.transform.forward = -transform.forward;
+        }
+
+        else
+        {
+            clon.SetActive(false);
+            clonRecast = false;
+            clonCooldownRemain = clonCooldown;
+        }
+    }
+
     public void FallInTrap()
     {
         PlayerInputEnabled = false;
@@ -314,6 +329,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _rb.useGravity = true;
         _mainCollider.isTrigger = true;
     }
+
 
     void Die()
     {
@@ -374,6 +390,12 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
             Queued_ActivationData = new ActivationCommandData();
         }
+    }
+
+    public void finishClon()
+    {
+        _a_Clon = false;
+        PlayerInputEnabled = true;
     }
 
     //============================================================== DEBUG ==========================================================================

@@ -57,4 +57,6 @@ public class WorldObject : MonoBehaviour, IInteractable
     }
 
     public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams) { }
+
+    public void OnCancelOperation(OperationType operation, params object[] optionalParams) { }
 }

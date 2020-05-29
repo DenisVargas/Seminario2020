@@ -27,9 +27,8 @@ public class GroundLever : MonoBehaviour, IInteractable
         };
     }
 
-    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
-    {
-    }
+    public void OnCancelOperation(OperationType operation, params object[] optionalParams) { }
+    public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams) { }
 
     public void OnOperate(OperationType selectedOperation, params object[] optionalParams)
     {

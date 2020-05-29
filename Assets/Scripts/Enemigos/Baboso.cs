@@ -34,6 +34,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     [Header("Stats")]
     [SerializeField] float _health = 10;
     [SerializeField] float _attackRange = 5;
+    [SerializeField] float _explodeRange = 5;
 
     [SerializeField] DamageModifier[] weaknesses;  //Aumentan el daño multiplicandolo x un porcentaje.
     [SerializeField] DamageModifier[] resistances; //reducen el daño x el un porcentaje.
@@ -52,8 +53,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     [SerializeField] GameObject[] burnParticles = new GameObject[2];
 
     [SerializeField] BabosoState _currentState;
-    [SerializeField] BabosoState _previousState;
-    [SerializeField] BabosoState _nextState;
 
     #region StateMachine
     public enum BabosoState
@@ -65,6 +64,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         think,
         falligTrap,
         burning,
+        explode,
         dead
     }
     GenericFSM<BabosoState> state = null;
@@ -113,7 +113,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
 #if UNITY_EDITOR
     [Space,Header("Debug Options")]
-    [SerializeField] Color attackRangeColor = Color.white;
+    [SerializeField] Color DEBUG_AttackRangeColor = Color.white;
+    [SerializeField] Color DEBUG_ExplodeRangeColor = Color.white;
 #endif
 
     float health
@@ -122,7 +123,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         set
         {
             _health = value;
-            if (_health <= 0)
+            if (_health <= 0 && _currentState != BabosoState.dead)
             {
                 _health = 0;
                 state.Feed(BabosoState.dead);
@@ -167,6 +168,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         //State Machine
         var dead = new State<BabosoState>("Dead");
+        var explode = new State<BabosoState>("Exploded");
         var idle = new State<BabosoState>("Idle");
         var patroll = new State<BabosoState>("Patroll");
         var pursue = new State<BabosoState>("Pursue");
@@ -177,6 +179,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         #region Transiciones
         idle.AddTransition(BabosoState.dead, dead)
+            .AddTransition(BabosoState.explode, explode)
             .AddTransition(BabosoState.burning, burning)
             .AddTransition(BabosoState.falligTrap, falling)
             .AddTransition(BabosoState.think, think);
@@ -184,6 +187,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         patroll.AddTransition(BabosoState.pursue, pursue)
                .AddTransition(BabosoState.falligTrap, falling)
                .AddTransition(BabosoState.burning, burning)
+               .AddTransition(BabosoState.explode, explode)
                .AddTransition(BabosoState.think, think)
                .AddTransition(BabosoState.dead, dead);
 
@@ -191,29 +195,36 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
               .AddTransition(BabosoState.attack, attack)
               .AddTransition(BabosoState.falligTrap, falling)
               .AddTransition(BabosoState.burning, burning)
+              .AddTransition(BabosoState.explode, explode)
               .AddTransition(BabosoState.dead, dead);
 
         falling.AddTransition(BabosoState.dead, dead);
 
         attack.AddTransition(BabosoState.dead, dead)
               .AddTransition(BabosoState.burning, burning)
+              .AddTransition(BabosoState.explode, explode)
               .AddTransition(BabosoState.falligTrap, falling)
               .AddTransition(BabosoState.think, think);
 
         burning.AddTransition(BabosoState.think, think)
                .AddTransition(BabosoState.falligTrap, falling)
+               .AddTransition(BabosoState.explode, explode)
                .AddTransition(BabosoState.dead, dead);
 
         think.AddTransition(BabosoState.dead, dead)
              .AddTransition(BabosoState.idle, idle)
              .AddTransition(BabosoState.falligTrap, falling)
              .AddTransition(BabosoState.burning, burning)
+             .AddTransition(BabosoState.explode, explode)
              .AddTransition(BabosoState.patroll, patroll)
              .AddTransition(BabosoState.pursue, pursue);
 
         //Esto es cuando se resetea, si estamos utilizando un pool de enemigos.
         dead.AddTransition(BabosoState.idle, idle)
+            .AddTransition(BabosoState.explode, explode)
             .AddTransition(BabosoState.patroll, patroll);
+
+        explode.AddTransition(BabosoState.idle, idle);
         #endregion
 
         dead.OnEnter += (x) => 
@@ -240,6 +251,28 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         };
         //dead.OnUpdate += () => { };
         dead.OnExit += (x) => { };
+
+        explode.OnEnter += (x) =>
+        {
+            _currentState = BabosoState.explode;
+            //Activo la particula de explosión.
+            //Me dejo de mover.
+            if (_agent.isActiveAndEnabled)
+            {
+                _agent.isStopped = true;
+                _agent.ResetPath();
+                _agent.isStopped = false;
+            }
+            //Desactivo mis otros componentes.
+            _rb.useGravity = false;
+            _rb.velocity = Vector3.zero;
+            _mainCollider.enabled = false;
+            _trail.DisableTrailEmission();
+        };
+        explode.OnUpdate += () =>
+        {
+            print("Explotanding");
+        };
 
         idle.OnEnter += (previousState) => 
         {
@@ -457,22 +490,22 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     {
         Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
 
-        //Si me alcanza el daño de fuego.
-        if (damage.instaKill && damage.type == DamageType.e_fire)
-        {
-            if (_currentState != BabosoState.burning)
-                state.Feed(BabosoState.burning);
-            return;
-        }
-
         if (damage.instaKill)
         {
-            if (_currentState != BabosoState.dead)
-                health = 0;
-            return;
-        }
+            if (damage.type == DamageType.e_fire && _currentState != BabosoState.burning)
+            {
+                state.Feed(BabosoState.burning);
+            }
 
-        health -= damage.Ammount;
+            if (damage.type == DamageType.blunt && _currentState != BabosoState.explode)
+            {
+                state.Feed(BabosoState.explode);
+            }
+        }
+        else
+        {
+            health -= damage.Ammount;
+        }
     }
     //Devolvemos nuestras estadísticas.
     public Damage getDamageState()
@@ -496,6 +529,12 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         //Debug.LogWarning("AttackEnded");
     }
+    public void AV_Burning_End()
+    {
+        state.Feed(BabosoState.dead);
+        Debug.LogWarning("AnimEvent: BurningEnd");
+    }
+
     IEnumerator Burn()
     {
         burnParticles[0].SetActive(true);
@@ -503,21 +542,18 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         burnParticles[1].SetActive(true);
     }
 
-    public void AV_Burning_End()
-    {
-        state.Feed(BabosoState.dead);
-        Debug.LogWarning("AnimEvent: BurningEnd");
-    }
-
     //===================================== DEBUG ===============================================================
 
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         //Rango de ataque
-        Gizmos.color = attackRangeColor;
+        Gizmos.color = DEBUG_AttackRangeColor;
         Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
         Gizmos.DrawWireSphere(transform.position, _attackRange);
-    }
-   
 
-    }
+        Gizmos.color = DEBUG_ExplodeRangeColor;
+        Gizmos.DrawWireSphere(transform.position, _explodeRange);
+    } 
+#endif
+}

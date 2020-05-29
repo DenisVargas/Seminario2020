@@ -35,4 +35,5 @@ public interface IInteractable
     InteractionParameters GetSuportedInteractionParameters();
     void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams);
     void OnOperate(OperationType selectedOperation, params object[] optionalParams);
+    void OnCancelOperation(OperationType operation, params object[] optionalParams);
 }

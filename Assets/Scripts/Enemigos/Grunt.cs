@@ -152,20 +152,6 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     private NavMeshAgent _agent = null;
     private LineOfSightComponent _sight = null;
 
-#if UNITY_EDITOR
-    //----------------------------------- DEBUG ---------------------------------------------   
-    [Space(), Header("DEBUG GIZMOS")]
-    [SerializeField] bool DEBUG_WanderStateRanges = true;
-    [SerializeField] Color DEBUG_WanderRange_Min_GIZMOCOLOR = Color.blue;
-    [SerializeField] Color DEBUG_WanderRange_Max_GIZMOCOLOR = Color.blue;
-    [Space]
-    [SerializeField] bool DEBUG_RageMode_Target = true; 
-    [SerializeField] bool DEBUG_RageMode_Ranges = true;
-    [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
-    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
-
-#endif
-
     //=======================================================================================
 
     private void Awake()
@@ -421,8 +407,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         rage.OnEnter += (x) =>
         {
             _currentState = BoboState.rage;
+            print("Worth");
             //Seteo la animación -> Necesito mostrarle al player que me di cuenta que entre en rage!
-            _anim.SetBool((int)BoboState.rage, true);
+            //_anim.SetBool((int)BoboState.rage, true);
 
             //Mientras espero a que la animación termine...
 
@@ -574,21 +561,21 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     public void HitStatus(HitResult result)
     {
         //Si cause daño efectivamente.
-        if (result.conected)
-        {
-            //El golpe conectó con el objetivo.
+        //if (result.conected)
+        //{
+        //    //El golpe conectó con el objetivo.
 
-            //Si objetivo fue destruido y sigo en ragemode...
-            if (result.fatalDamage && _rageMode)
-            {
-                //Festejo y busco un nuevo target.
-                //Seteo la animación de festejo.
-                _anim.SetBool(10, true);
-                //Actualizo un nuevo target, mientras busco el estado.
-                SelectRageModeTarget();
-                return;
-            }
-        }
+        //    //Si objetivo fue destruido y sigo en ragemode...
+        //    if (result.fatalDamage && _rageMode)
+        //    {
+        //        //Festejo y busco un nuevo target.
+        //        //Seteo la animación de festejo.
+        //        _anim.SetBool(10, true);
+        //        //Actualizo un nuevo target, mientras busco el estado.
+        //        SelectRageModeTarget();
+        //        return;
+        //    }
+        //}
     }
 
 
@@ -629,7 +616,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     }
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {
-        return ((requester.position - transform.position).normalized * _safeInteractionDistance);
+        return transform.position + ((requester.position - transform.position).normalized * _safeInteractionDistance);
     }
     public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
     {
@@ -647,8 +634,18 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         state.Feed(BoboState.think);
     }
 
-    //=============================== DEBUG =================================================
 #if UNITY_EDITOR
+    //=============================== DEBUG =================================================
+
+    [Space(), Header("DEBUG GIZMOS")]
+    [SerializeField] bool DEBUG_WanderStateRanges = true;
+    [SerializeField] Color DEBUG_WanderRange_Min_GIZMOCOLOR = Color.blue;
+    [SerializeField] Color DEBUG_WanderRange_Max_GIZMOCOLOR = Color.blue;
+    [Space]
+    [SerializeField] bool DEBUG_RageMode_Target = true;
+    [SerializeField] bool DEBUG_RageMode_Ranges = true;
+    [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
+    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
     private void OnDrawGizmos()
     {
         if (DEBUG_RageMode_Ranges)

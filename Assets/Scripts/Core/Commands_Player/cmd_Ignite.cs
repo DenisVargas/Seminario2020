@@ -5,31 +5,25 @@ using UnityEngine;
 
 public class cmd_Ignite : IQueryComand
 {
-    Action _OnActivation = delegate { };
+    Action _AnimationTrigger = delegate { };
     Action _dispose = delegate { };
 
-    ActivationCommandData _data;
-    bool _IsDone = false;
+    CommandData _data;
 
-    public bool completed => _IsDone;
+    public bool completed { get; private set; } = (false);
 
-    public cmd_Ignite(ActivationCommandData data, Action OnActivation, Action Dispose)
+    public cmd_Ignite(CommandData data, Action OnActivation, Action Dispose)
     {
         _dispose = Dispose;
-        _OnActivation = OnActivation;
+        _AnimationTrigger = OnActivation;
         _data = data;
     }
 
-    public void setUp()
-    {
-        //Por ahora no hay mucho para contar.
-    }
-
-    public void Update()
+    public void Execute()
     {
         //Ejecuto el commando
-        _IsDone = true;
-        _OnActivation();
+        completed = true;
+        _AnimationTrigger();
         _dispose();
     }
 

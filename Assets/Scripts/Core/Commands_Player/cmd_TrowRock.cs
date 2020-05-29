@@ -3,25 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cmd_Activate : IQueryComand
+public class cmd_TrowRock : IQueryComand
 {
     Action _animationTrigger = delegate { };
     Action _dispose = delegate { };
-    CommandData _data;
 
-    public bool completed { get; private set; } = false;
+    CommandData _commandData;
 
-    public cmd_Activate(CommandData data, Action AnimationTrigger, Action dispose)
+    public bool completed { get; private set; } = (false);
+
+    public cmd_TrowRock(CommandData commandData, Action AnimationTrigger, Action disposeCommandCallback)
     {
-        _data = data;
-        _dispose = dispose;
+        _commandData = commandData;
         _animationTrigger = AnimationTrigger;
+        _dispose = disposeCommandCallback;
     }
 
     public void Execute()
     {
         //Ejecuto el comando.
         _animationTrigger();
+        completed = true;
         _dispose();
     }
     public void Cancel() { }

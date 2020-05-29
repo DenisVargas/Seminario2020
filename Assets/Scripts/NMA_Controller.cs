@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using Core.DamageSystem;
 using UnityEngine.UIElements;
 
-public struct ActivationCommandData
+public struct CommandData
 {
     public IInteractable target;
     public OperationType operationOptions;
@@ -56,6 +56,11 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         get => _anims.GetBool(animHash[5]);
         set => _anims.SetBool(animHash[5], value);
     }
+    bool _a_ThrowRock
+    {
+        get => _anims.GetBool(animHash[6]);
+        set => _anims.SetBool(animHash[6], value);
+    }
 
     public Vector3 position => transform.position;
 
@@ -77,7 +82,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     float forwardLerpTime;
     bool PlayerInputEnabled = true;
 
-    ActivationCommandData Queued_ActivationData = new ActivationCommandData();
+    CommandData Queued_ActivationData = new CommandData();
 
     void Awake()
     {
@@ -117,7 +122,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                     Input.mousePosition,
                     _mouseContext.firstInteractionObject.GetSuportedInteractionParameters(),
                     _mouseContext.firstInteractionObject,
-                    ExecuteOperation
+                    QuerySelectedOperation
                  );
             }
             else
@@ -144,7 +149,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
                         return completed;
                     },
-                    disposeCommand
+                    _disposeCommand
                 );
                 comandos.Enqueue(moveCommand);
             }
@@ -187,15 +192,10 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         }
         #endregion
 
-        //if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
-        //    UpdateForward();
-
-        //print("Hay " + comandos.Count + " comandos");
-
         if (comandos.Count > 0)
         {
             IQueryComand current = comandos.Peek();
-            current.Update();
+            current.Execute();
         }
     }
 
@@ -204,7 +204,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     /// </summary>
     /// <param name="operation">La operación que queremos realizar</param>
     /// <param name="target">El objetivo de dicha operación</param>
-    public void ExecuteOperation(OperationType operation, IInteractable target)
+    public void QuerySelectedOperation(OperationType operation, IInteractable target)
     {
         var safeInteractionPosition = target.requestSafeInteractionPosition(this);
         if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
@@ -223,7 +223,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
                     return completed;
                 },
-                disposeCommand
+                _disposeCommand
             );
             comandos.Enqueue(closeDistance);
             //print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
@@ -231,24 +231,22 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
         //añado el comando correspondiente a la query.
         IQueryComand _toActivateCommand;
+        CommandData _currentOperationData = new CommandData()
+        {
+            target = target,
+            operationOptions = operation
+        };
         switch (operation)
         {
             case OperationType.Take:
                 break;
             case OperationType.Ignite:
 
-                //Aquí tengo que decirle a mi target que se frezee.
                 target.OnConfirmInput(OperationType.Ignite);
-
-                Queued_ActivationData = new ActivationCommandData() { operationOptions = operation, target = target };
                 _toActivateCommand = new cmd_Ignite(
-                                                      new ActivationCommandData()
-                                                      {
-                                                         target = target,
-                                                         operationOptions = operation
-                                                      },
+                                                      _currentOperationData,
                                                       () => { _a_Ignite = true; },
-                                                      disposeCommand
+                                                      _disposeCommand
                                                    );
                 comandos.Enqueue(_toActivateCommand);
 
@@ -256,18 +254,23 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
             case OperationType.Activate:
 
-                Queued_ActivationData = new ActivationCommandData() { target = target, operationOptions = operation };
                 _toActivateCommand = new cmd_Activate
                     (
-                        Queued_ActivationData,
+                        _currentOperationData,
                         () => { _a_LeverPull = true; },
-                        disposeCommand
+                        _disposeCommand
                     );
                 comandos.Enqueue(_toActivateCommand);
-                //print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
-
                 break;
             case OperationType.Equip:
+                break;
+            case OperationType.TrowRock:
+                _toActivateCommand = new cmd_TrowRock
+                    (
+                       _currentOperationData,
+                       () => { _a_ThrowRock = true; },
+                       _disposeCommand
+                    );
                 break;
             default:
                 break;
@@ -287,7 +290,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _agent.destination = destinyPosition;
     }
 
-    void disposeCommand()
+    void _disposeCommand()
     {
         var _currentC = comandos.Dequeue();
         if (comandos.Count > 0)
@@ -304,7 +307,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         }
         comandos.Clear();
     }
-
     public void ClonSpawn()
     {
         if (!clon.activeInHierarchy)
@@ -322,7 +324,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             clonCooldownRemain = clonCooldown;
         }
     }
-
     public void FallInTrap()
     {
         PlayerInputEnabled = false;
@@ -333,8 +334,6 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _rb.useGravity = true;
         _mainCollider.isTrigger = true;
     }
-
-
     void Die()
     {
         PlayerInputEnabled = false;
@@ -377,7 +376,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         if (Queued_ActivationData.target != null)
         {
             Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
-            Queued_ActivationData = new ActivationCommandData();
+            Queued_ActivationData = new CommandData();
         }
     }
     public void AE_Ignite_Start()
@@ -392,7 +391,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         if (Queued_ActivationData.target != null)
         {
             Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
-            Queued_ActivationData = new ActivationCommandData();
+            Queued_ActivationData = new CommandData();
         }
     }
 

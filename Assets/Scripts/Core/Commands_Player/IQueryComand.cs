@@ -2,7 +2,6 @@
 {
     bool completed { get; }
 
-    void setUp();
-    void Update();
+    void Execute();
     void Cancel();
 }

@@ -65,10 +65,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     [Header("Rage Mode")]
     [SerializeField] LayerMask _targeteables = ~0;
-    [SerializeField] float _rageMode_Duration = 10f;
     [SerializeField] float _rageMode_TargetDetectionRange = 5;
 
-    private bool _rageMode = false;
     private float _rageModeTime = 0f;
 
     //--------------------------------- Wander State ----------------------------------------

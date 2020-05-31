@@ -7,7 +7,6 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
 {
     [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();
     [SerializeField] float _safeInteractionDistance = 5;
-    [SerializeField] float _burningTime = 5;
     [SerializeField] GameObject[] burnParticles = new GameObject[4];
     [SerializeField] float _fallSpeed = 2;
 

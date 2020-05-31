@@ -6,8 +6,8 @@ using UnityEngine;
 public class Staineable : MonoBehaviour, IIgnitableObject, IInteractable
 {
     [SerializeField] Renderer _mainRenderer;
-    [SerializeField] Material NormalMaterial;
-    [SerializeField] Material StainedMaterial;
+    [SerializeField] Material NormalMaterial = null;
+    [SerializeField] Material StainedMaterial = null;
 
     [SerializeField] bool isStained = false;
     [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();

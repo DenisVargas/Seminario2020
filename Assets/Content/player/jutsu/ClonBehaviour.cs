@@ -3,71 +3,127 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Core.DamageSystem;
 
-public class ClonBehaviour : MonoBehaviour
+public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
 {
+    public event Action OnRecast = delegate { };
 
-    MouseContextTracker _mtracker;
-    Animator _anims;
+    Animator _anims = null;
     NavMeshAgent _agent = null;
-    bool CanMove;
-    [SerializeField] float _movementTreshold = 0.18f;
-    Vector3 _currentTargetPos;
+    Vector3 _currentTargetPosition;
+
+    [SerializeField] float _maxLifeTime;
+    [SerializeField] float _ClonMovementTreshold = 0.1f;
+
+    float remainingLifeTime = 0f;
+    bool canMove = false;
+
+    public bool IsActive
+    {
+        get => gameObject.activeSelf;
+    }
 
     bool _a_Walking
     {
         get => _anims.GetBool("walking");
         set => _anims.SetBool("walking", value);
     }
+
+    public bool IsAlive { get; private set; } = (true);
+
     // Start is called before the first frame update
 
-    void Awake()
+    public void Awake()
     {
-        _mtracker = GetComponent<MouseContextTracker>();
         _anims = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
     }
-   
 
     // Update is called once per frame
     void Update()
     {
-        if (CanMove) {
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (canMove)
         {
-            MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();
-            if (!_mouseContext.validHit) return;
-            Debug.Log("entre");
-            MoveToTarget(_mouseContext.hitPosition);
+            float dst = Vector3.Distance(transform.position, _currentTargetPosition);
+            if (dst < _ClonMovementTreshold)
+            {
+                _a_Walking = false;
+                _agent.isStopped = true;
+                _agent.ResetPath();
+            }
+        }
 
-        }
-        if (transform.position == _agent.destination)
-        {
-            _a_Walking = false;
-        }
-        }
-        
-
+        if (remainingLifeTime > 0)
+            remainingLifeTime -= Time.deltaTime;
+        else
+            RecastClon();
     }
-    public void MoveToTarget(Vector3 destinyPosition)
+    public void SetState(float maxLifeTime, float MovementTreshold)
     {
+        _maxLifeTime = maxLifeTime;
+        remainingLifeTime = maxLifeTime;
+        _ClonMovementTreshold = MovementTreshold;
+        canMove = false;
+    }
+    public void SetMovementDestinyPosition(Vector3 destinyPosition)
+    {
+        _currentTargetPosition = destinyPosition;
         Vector3 _targetForward = (destinyPosition -transform.position).normalized.YComponent(0);
         transform.forward = _targetForward;
 
-        if (!_a_Walking)
-            _a_Walking = true;
+        _a_Walking = true;
 
+        if (_agent.isStopped)
+            _agent.isStopped = false;
         _agent.destination = destinyPosition;
     }
-    void canMove(int canorcant)
+    public void InvokeClon(Vector3 position, Vector3 forward)
     {
-        if (canorcant == 0)
-            CanMove = false;
-        else
-            CanMove = true;
+        transform.position = position;
+        transform.forward = forward;
+        IsAlive = true;
+        gameObject.SetActive(true);
     }
-   
+    public void RecastClon()
+    {
+        gameObject.SetActive(false);
+        remainingLifeTime = _maxLifeTime;
+        canMove = false;
+        IsAlive = false;
+        OnRecast();
+    }
 
+    //================================ Animation Events ======================================
 
+    void AV_startedInvoke()
+    {
+        canMove = false;
+    }
+    void AV_finishedInvoke()
+    {
+        canMove = true;
+    }
+
+    //================================ Damage System =========================================
+
+    public HitResult GetHit(Damage damage)
+    {
+        HitResult result = new HitResult()
+        {
+            conected = true,
+            fatalDamage = true
+        };
+
+        RecastClon(); //Podriamos animarlo pero ALV.
+
+        return result;
+    }
+
+    public void FeedDamageResult(HitResult result) { }
+
+    public Damage GetDamageStats()
+    {
+        return new Damage { Ammount = 0, criticalMultiplier = 0, instaKill = false, type = DamageType.piercing };
+    }
 }

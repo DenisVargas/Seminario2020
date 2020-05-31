@@ -113,21 +113,21 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: canMove
+      - time: 1
+        functionName: AV_finishedInvoke
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+        objectReferenceParameter: {fileID: 11500000, guid: aa3146a78d9aba14098a28cdec064280,
           type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.99664587
-        functionName: canMove
+      - time: 0
+        functionName: AV_startedInvoke
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+        objectReferenceParameter: {fileID: 11500000, guid: aa3146a78d9aba14098a28cdec064280,
           type: 3}
         floatParameter: 0
-        intParameter: 1
+        intParameter: 0
         messageOptions: 0
       transformMask: []
       maskType: 3

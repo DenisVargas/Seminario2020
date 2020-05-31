@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Activator : MonoBehaviour, IInteractable
 {
+    UnityEvent OnActivate = new UnityEvent();
     public List<OperationType> _suportedOperations = new List<OperationType>();
     // Start is called before the first frame update
-    public Jail _myJail;
     public Transform ActivationPosition;
 
     public Vector3 position { get => ActivationPosition.position; }
@@ -20,11 +20,10 @@ public class Activator : MonoBehaviour, IInteractable
 
     public void OnOperate(OperationType operation, params object[] optionalParams)
     {
-        Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
+        //Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
         if (operation == OperationType.Activate)
         {
-            Debug.Log("me active");
-            _myJail.Drop();
+            OnActivate.Invoke();
         }
     }
 

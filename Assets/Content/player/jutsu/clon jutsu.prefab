@@ -12,14 +12,13 @@ GameObject:
   - component: {fileID: 3214321289226282696}
   - component: {fileID: 1206968749}
   - component: {fileID: 1206968745}
-  - component: {fileID: 1206968746}
   m_Layer: 0
   m_Name: clon jutsu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &146319457527333128
 Transform:
   m_ObjectHideFlags: 0
@@ -88,23 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa3146a78d9aba14098a28cdec064280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementTreshold: 0.18
---- !u!114 &1206968746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609606703466472664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ce9f118ab457dd4ea4edcc2c7750237, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseDetectionMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  hited: []
+  _maxLifeTime: 0
+  _ClonMovementTreshold: 0.18
 --- !u!1001 &6692161863879824401
 PrefabInstance:
   m_ObjectHideFlags: 0

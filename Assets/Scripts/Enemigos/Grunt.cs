@@ -58,8 +58,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     //---------------------------------------------------------------------------------------
 
     [Space()]
-    [SerializeField]DamageModifier[] Weaknesses; //Aumentan el daño ingresante.
-    [SerializeField]DamageModifier[] resistances;//reducen el daño ingereante.
+    [SerializeField] DamageModifier[] Weaknesses; //Aumentan el daño ingresante.
+    [SerializeField] DamageModifier[] resistances;//reducen el daño ingereante.
 
     //--------------------------------- Rage Mode -------------------------------------------
 
@@ -68,7 +68,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [SerializeField] float _rageMode_Duration = 10f;
     [SerializeField] float _rageMode_TargetDetectionRange = 5;
 
-    private bool _rageMode      = false;
+    private bool _rageMode = false;
     private float _rageModeTime = 0f;
 
     //--------------------------------- Wander State ----------------------------------------
@@ -76,8 +76,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [Header("Wander State")]
     [SerializeField] float _wanderMinDistance = 2f;
     [SerializeField] float _wanderMaxDistance = 10f;
-    [SerializeField] float _minWanderTime     = 2f;
-    [SerializeField] float _maxWanderTime     = 10f;
+    [SerializeField] float _minWanderTime = 2f;
+    [SerializeField] float _maxWanderTime = 10f;
 
     private float _wanderingTime = 0f;
 
@@ -143,7 +143,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         get => _anim.GetBool(_animHash[5]);
         set => _anim.SetBool(_animHash[5], value);
     }
-    
+
+    public bool IsAlive { get; private set; } = (true);
 
     //----------------------------------- Components ----------------------------------------
 
@@ -439,6 +440,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         {
             _currentState = BoboState.dead;
             _a_Dead = true;
+            IsAlive = false;
         };
         dead.OnExit += (NextState) =>
         {
@@ -465,6 +467,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     private void ResetSetUp()
     {
         _health = _maxHealth;
+        IsAlive = true;
     }
     void MoveToTarget(Vector3 targetPosition)
     {

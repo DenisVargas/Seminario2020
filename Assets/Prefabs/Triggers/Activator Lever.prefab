@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46cad506252471e4bb9e9225a4605f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  suportedOperations: 02000000
+  _suportedOperations: 02000000
   _myJail: {fileID: 0}
   ActivationPosition: {fileID: 8329770672175740069}
 --- !u!65 &7990428683155442669

@@ -81,7 +81,6 @@ public class PitTrap : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        print("Salió: " + other.gameObject.name);
         if (OnTop.Contains(other))
             OnTop.Remove(other);
     }

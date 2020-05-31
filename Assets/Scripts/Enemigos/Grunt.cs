@@ -318,12 +318,14 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
         falling.OnEnter += (x) =>
         {
-            _rb.useGravity = true;
-            _mainCollider.isTrigger = true;
-
+            _currentState = BoboState.fallTrap;
             _agent.isStopped = true;
             _agent.ResetPath();
             _agent.enabled = false;
+
+            _mainCollider.isTrigger = true;
+            _rb.useGravity = true;
+            _rb.isKinematic = false;
         };
 
         pursue.OnEnter += (x) =>
@@ -439,6 +441,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             _currentState = BoboState.dead;
             _a_Dead = true;
             IsAlive = false;
+
+            _rb.useGravity = false;
+            _rb.isKinematic = true;
         };
         dead.OnExit += (NextState) =>
         {
@@ -618,15 +623,32 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     public HitResult GetHit(Damage damage)
     {
         HitResult result = new HitResult() { fatalDamage = true, conected = true };
+        print($"Recibió un golpe {damage.type.ToString()} y es un instakill: {damage.instaKill}");
         //Al recibir daño...
+        if (_currentState == BoboState.dead) return new HitResult { conected = false, fatalDamage = false };
+
         if (damage.instaKill)
         {
-            if (_currentState != BoboState.dead)
-                Health = 0;
             result.fatalDamage = true;
+            result.conected = true;
+
+            //if (damage.type == DamageType.blunt)
+            //{
+            //    state.Feed(BoboState.dead);
+            //}
+
+            //if (damage.type == DamageType.piercing)
+            //{
+                
+            //}
+
+            state.Feed(BoboState.dead);
+        }
+        else
+        {
+            Health -= damage.Ammount;
         }
 
-        Health -= damage.Ammount;
         return result;
     }
     public Damage GetDamageStats()

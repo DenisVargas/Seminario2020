@@ -50,7 +50,6 @@ public class PitTrap : MonoBehaviour
             var grunt = coll.GetComponent<Grunt>();
             if (grunt != null)
             {
-                //Accedo a grunt y le digo que pase a falling.
                 grunt.ChangeStateTo(Grunt.BoboState.fallTrap);
                 falling = true;
             }

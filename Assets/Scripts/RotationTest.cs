@@ -5,7 +5,7 @@ using UnityEngine;
 public class RotationTest : MonoBehaviour
 {
     [SerializeField, Range(0, 1)] float interpolation = 0;
-    [SerializeField, Range(0, 180)] float angle = 0;
+    //[SerializeField, Range(0, 180)] float angle = 0;
     [SerializeField] Vector3 addRotation = Vector3.zero;
 
     [SerializeField, Range(0, 180)] float minRotationA = 0;

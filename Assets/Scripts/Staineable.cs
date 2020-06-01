@@ -5,9 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Staineable : MonoBehaviour, IIgnitableObject, IInteractable
 {
-    [SerializeField] Renderer _mainRenderer;
-    [SerializeField] Material NormalMaterial = null;
+    Renderer _mainRenderer;
+    Material NormalMaterial = null;
     [SerializeField] Material StainedMaterial = null;
+    [SerializeField] GameObject ignitionParticle = null;
 
     [SerializeField] bool isStained = false;
     [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();
@@ -33,6 +34,15 @@ public class Staineable : MonoBehaviour, IIgnitableObject, IInteractable
         _mainRenderer.material = StainedMaterial;
     }
 
+    public void DisableInteraction()
+    {
+        IsCurrentlyInteractable = false;
+    }
+    public void ResetEntity()
+    {
+        
+    }
+
     //======================================== Ingnition System ====================================================
     public bool isFreezed { get; set; } = (false);
     public bool Burning { get; set; } = (false);
@@ -43,17 +53,22 @@ public class Staineable : MonoBehaviour, IIgnitableObject, IInteractable
 
     public void Ignite(float delayTime)
     {
+        if (ignitionParticle != null)
+            ignitionParticle.SetActive(true);
+
         //Prengo fuego a las mierdas.
     }
     public void OnInteractionEvent(IIgnitableObject toIgnore) { }
 
     //======================================== Interaction System ====================================================
 
+    public bool IsCurrentlyInteractable { get; private set; } = (false);
+    public int InteractionsAmmount => _suportedOperations.Count;
+
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {
         return transform.position + (((requester.position - transform.position).normalized) * _safeInteractionDistance);
     }
-
     public InteractionParameters GetSuportedInteractionParameters()
     {
         return new InteractionParameters()
@@ -65,7 +80,6 @@ public class Staineable : MonoBehaviour, IIgnitableObject, IInteractable
     }
 
     public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams) { }
-
     public void OnOperate(OperationType selectedOperation, params object[] optionalParams)
     {
         if (selectedOperation == OperationType.Ignite)
@@ -73,7 +87,6 @@ public class Staineable : MonoBehaviour, IIgnitableObject, IInteractable
             Ignite(_otherFiringDelayTime);
         }
     }
-
     public void OnCancelOperation(OperationType operation, params object[] optionalParams) { }
 
 #if UNITY_EDITOR

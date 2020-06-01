@@ -45,6 +45,9 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         }
     }
 
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedInteractions.Count;
+
     private void Update()
     {
         if (!_freezeInPlace)

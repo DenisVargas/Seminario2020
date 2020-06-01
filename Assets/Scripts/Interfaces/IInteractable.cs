@@ -28,11 +28,15 @@ public interface IInteractor
 
 public interface IInteractable
 {
+    bool IsCurrentlyInteractable { get; }
+    int InteractionsAmmount { get; }
+
     Vector3 position { get; }
     Vector3 LookToDirection { get; }
 
     Vector3 requestSafeInteractionPosition(IInteractor requester);
     InteractionParameters GetSuportedInteractionParameters();
+
     void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams);
     void OnOperate(OperationType selectedOperation, params object[] optionalParams);
     void OnCancelOperation(OperationType operation, params object[] optionalParams);

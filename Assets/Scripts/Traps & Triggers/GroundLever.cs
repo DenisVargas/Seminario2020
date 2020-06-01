@@ -18,6 +18,9 @@ public class GroundLever : MonoBehaviour, IInteractable
     public Vector3 position => transform.position;
     public Vector3 LookToDirection => _activationPosition.forward;
 
+    public bool IsCurrentlyInteractable { get; private set; } = (false);
+    public int InteractionsAmmount => _suportedOperations.Count;
+
     public InteractionParameters GetSuportedInteractionParameters()
     {
         return new InteractionParameters()

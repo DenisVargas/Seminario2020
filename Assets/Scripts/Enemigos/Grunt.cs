@@ -257,20 +257,26 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
         wander.OnEnter += (x) =>
         {
-            print(string.Format("{0} ha entrado al estado {1}", gameObject.name, state.current.StateName));
-
-            //Reproduzco la animación correspondiente.
+            _currentState = BoboState.wander;
+            _agent.isStopped = false;
             _wanderingTime = 0;
         };
         wander.OnUpdate += () =>
         {
             // Reduzco un timer, cuando el tiempo llegue a 0. 
             _wanderingTime -= Time.deltaTime;
-            if (_wanderingTime <= 0)
+            print($"Wandering Time is: {_wanderingTime}");
+            if (_wanderingTime < 0)
             {
-                // Busco un nuevo targetPosition;
+                //Debug.LogWarning("Terminó el tiempo del wandering");
                 _targetPosition = getRandomPosition();
+
                 _wanderingTime = UnityEngine.Random.Range(_minWanderTime, _maxWanderTime);
+
+                _agent.isStopped = true;
+                _agent.ResetPath();
+                _agent.SetDestination(_targetPosition);
+                _agent.isStopped = false;
             }
         };
         //wander.OnExit += (NextState) => { };
@@ -589,11 +595,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     Vector3 getRandomPosition()
     {
         //Calculo un target Random.
-        var RandomTargetPosition = new Vector3(UnityEngine.Random.Range(0, 1),
-                                                 0,
-                                                 UnityEngine.Random.Range(0, 1));
+        var RandomTargetPosition = new Vector3(UnityEngine.Random.Range(0f, 1f),
+                                                 0f,
+                                                 UnityEngine.Random.Range(0f, 1f));
         float randomDistance = UnityEngine.Random.Range(_wanderMinDistance, _wanderMaxDistance);
-        return transform.position + (RandomTargetPosition * randomDistance);
+
+        return (transform.position + (RandomTargetPosition * randomDistance));
     }
     void KillTarget()
     {

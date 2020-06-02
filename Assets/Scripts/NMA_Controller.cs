@@ -72,7 +72,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
     MouseContextTracker _mtracker;
 
     [Header("Clon")]
-    public ClonBehaviour _clon                   = null;
+    public ClonBehaviour Clon                    = null;
     [SerializeField] float _clonLife             = 20f;
     [SerializeField] float _clonCooldown         = 4f;
     [SerializeField] float _ClonMovementTreshold = 0.1f;
@@ -94,11 +94,11 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         _mv = GetComponent<MouseView>();
         _mtracker = GetComponent<MouseContextTracker>();
 
-        if (_clon != null)
+        if (Clon != null)
         {
-            _clon.Awake();
-            _clon.SetState(_clonLife, _ClonMovementTreshold);
-            _clon.OnRecast += ClonDeactivate;
+            Clon.Awake();
+            Clon.SetState(_clonLife, _ClonMovementTreshold);
+            Clon.OnRecast += ClonDeactivate;
         }
 
         _anims = GetComponent<Animator>();
@@ -163,20 +163,20 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
             }
         }
 
-        if (PlayerInputEnabled && Input.GetMouseButtonDown(1) && mod2 && _clon.IsActive)
+        if (PlayerInputEnabled && Input.GetMouseButtonDown(1) && mod2 && Clon.IsActive)
         {
             MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();
 
             if (!_mouseContext.validHit) return;
 
             if (_mouseContext.validHit)
-                _clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
+                Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
         }
 
 
         #endregion
         #region Clon
-        if (PlayerInputEnabled && Input.GetKeyDown(KeyCode.Alpha1) && !_clon.IsActive)
+        if (PlayerInputEnabled && Input.GetKeyDown(KeyCode.Alpha1) && !Clon.IsActive)
         {
             comandos.Clear();
             _a_Clon = true;
@@ -195,9 +195,9 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
 
     public void ClonSpawn()
     {
-        if (!_clon.IsActive && _canCastAClon)
+        if (!Clon.IsActive && _canCastAClon)
         {
-            _clon.InvokeClon(transform.position + transform.forward * 1.5f, -transform.forward);
+            Clon.InvokeClon(transform.position + transform.forward * 1.5f, -transform.forward);
             _canCastAClon = false;
         }
     }

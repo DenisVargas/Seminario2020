@@ -1117,7 +1117,7 @@ MonoBehaviour:
   _consoleText: {fileID: 2062809508}
   _inputField: {fileID: 1195501559}
   _scroll: {fileID: 1614755382}
-  _openKey: 27
+  _openKey: 256
   _activeObject: {fileID: 540497177}
   normalLevelColor: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 1}
   WarningLevelColor: {r: 1, g: 0.4485501, b: 0, a: 1}

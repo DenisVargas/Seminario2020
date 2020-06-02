@@ -29,6 +29,9 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
     public Vector3 position { get => transform.position; }
     public Vector3 LookToDirection { get => transform.forward; }
 
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedOperations.Count;
+
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {
         return (transform.position + ((requester.position - transform.position).normalized *_safeInteractionDistance));

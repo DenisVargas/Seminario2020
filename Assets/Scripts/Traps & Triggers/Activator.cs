@@ -4,13 +4,16 @@ using UnityEngine.Events;
 
 public class Activator : MonoBehaviour, IInteractable
 {
-    UnityEvent OnActivate = new UnityEvent();
+    [SerializeField] UnityEvent OnActivate = new UnityEvent();
     public List<OperationType> _suportedOperations = new List<OperationType>();
-    // Start is called before the first frame update
+
     public Transform ActivationPosition;
 
     public Vector3 position { get => ActivationPosition.position; }
     public Vector3 LookToDirection { get => ActivationPosition.forward; }
+
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedOperations.Count;
 
     public void OnCancelOperation(OperationType operation, params object[] optionalParams)
     {
@@ -20,7 +23,6 @@ public class Activator : MonoBehaviour, IInteractable
 
     public void OnOperate(OperationType operation, params object[] optionalParams)
     {
-        //Debug.LogWarning(string.Format("{0} se ha activado!", gameObject.name));
         if (operation == OperationType.Activate)
         {
             OnActivate.Invoke();

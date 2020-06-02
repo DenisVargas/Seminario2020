@@ -31,7 +31,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     [Header("Interaction System")]
     [SerializeField] float _safeInteractionDistance = 5f;
-    [SerializeField] List<OperationType> ValidOperations = new List<OperationType>();
+    [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();
 
     public float Health
     {
@@ -143,6 +143,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     }
 
     public bool IsAlive { get; private set; } = (true);
+
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedOperations.Count;
 
     //----------------------------------- Components ----------------------------------------
 
@@ -688,7 +691,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         return new InteractionParameters()
         {
             LimitedDisplay = false,
-            SuportedOperations = ValidOperations
+            SuportedOperations = _suportedOperations
         };
     }
 

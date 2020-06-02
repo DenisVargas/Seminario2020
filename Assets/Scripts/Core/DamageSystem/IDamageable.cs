@@ -6,7 +6,10 @@ namespace Core.DamageSystem
     {
         bool IsAlive { get;}
 
+        //Componentes
         GameObject gameObject { get; }
+        Transform transform { get; }
+
         output GetHit(Input damage);
         void FeedDamageResult(output result);
         Input GetDamageStats();

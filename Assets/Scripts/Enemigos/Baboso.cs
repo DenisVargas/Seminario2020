@@ -156,9 +156,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
         if (tar != null)
         {
             _player = tar.transform;
-            _sight.SetTarget(_player);
-
-            _playerClone = tar._clon.transform;
+            _playerClone = tar.Clon.transform;
         }
         else
         {

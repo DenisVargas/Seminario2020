@@ -67,11 +67,6 @@ namespace IA.LineOfSight
             return true;
         }
 
-        public void SetTarget(Transform toSearch)
-        {
-            Target = toSearch;
-        }
-
         //Snippet for Debugg
 #if (UNITY_EDITOR)
         void OnDrawGizmosSelected()

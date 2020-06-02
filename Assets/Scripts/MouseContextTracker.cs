@@ -16,6 +16,7 @@ public class MouseContextTracker : MonoBehaviour
 {
     Camera _viewCamera;
     [SerializeField] LayerMask mouseDetectionMask = ~0;
+    public Texture2D defaultCursor;
 
 #if UNITY_EDITOR
     [SerializeField] List<Collider> hited = new List<Collider>(); 
@@ -24,6 +25,11 @@ public class MouseContextTracker : MonoBehaviour
     private void Awake()
     {
         _viewCamera = Camera.main;
+        if (defaultCursor != null)
+        {
+            Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
+            Cursor.visible = true;
+        }
     }
 
     public MouseContext GetCurrentMouseContext()
@@ -34,7 +40,10 @@ public class MouseContextTracker : MonoBehaviour
     MouseContext m_MouseContextDetection()
     {
         MouseContext _context = new MouseContext();
-        hited = new List<Collider>();
+
+#if UNITY_EDITOR
+        hited = new List<Collider>(); 
+#endif
 
         //Calculo la posición del mouse en el espacio.
         RaycastHit[] hits;

@@ -595,7 +595,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     }
     void KillTarget()
     {
-        if (_target != null)
+        if (_target != null && _target.IsAlive)
         {
             FeedDamageResult(_target.GetHit(new Damage() { instaKill = true, type = DamageType.piercing }));
         }

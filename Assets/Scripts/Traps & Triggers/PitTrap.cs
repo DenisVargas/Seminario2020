@@ -23,20 +23,10 @@ public class PitTrap : MonoBehaviour
         _col = GetComponent<BoxCollider>();
         _col.isTrigger = true;
     }
-
     private void Update()
     {
         if (isActive)
             killOnTopEntities();
-    }
-
-    public void OnEnableTrap()
-    {
-        _anims.SetBool("Activate", true);
-        OnActivate.Invoke();
-
-        isActive = true;
-        killOnTopEntities();
     }
 
     public void killOnTopEntities()
@@ -75,7 +65,14 @@ public class PitTrap : MonoBehaviour
 
         OnTop = FilteredOnTop;
     }
+    public void OnEnableTrap()
+    {
+        _anims.SetBool("Activate", true);
+        OnActivate.Invoke();
 
+        isActive = true;
+        killOnTopEntities();
+    }
     public void OnDisableTrap()
     {
         _anims.SetBool("Activate", false);
@@ -93,7 +90,6 @@ public class PitTrap : MonoBehaviour
             OnTop.Add(other);
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         //print($"{other.gameObject.name} Salió de la trampa");

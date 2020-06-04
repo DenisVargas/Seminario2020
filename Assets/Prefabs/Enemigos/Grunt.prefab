@@ -207,7 +207,7 @@ MonoBehaviour:
   _maxHealth: 100
   _attackRange: 2
   _safeInteractionDistance: 5
-  ValidOperations: 04000000
+  _suportedOperations: 
   Weaknesses: []
   resistances: []
   _targeteables:
@@ -296,17 +296,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: a3fa38a829c77f544b917aafefe92011,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.48629963
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a3fa38a829c77f544b917aafefe92011,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.48629963
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a3fa38a829c77f544b917aafefe92011,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.48629963
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: a3fa38a829c77f544b917aafefe92011,
         type: 3}

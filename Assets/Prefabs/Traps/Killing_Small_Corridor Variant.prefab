@@ -162,7 +162,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground_Stakes (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4902758768693931148, guid: ff968f67aa7be46478eef0e2fb49ff61, type: 3}
+    - {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ff968f67aa7be46478eef0e2fb49ff61, type: 3}
 --- !u!1001 &8403233542426311685
 PrefabInstance:
@@ -225,6 +227,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 8.127902
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 1.9620991
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.017121553
       objectReference: {fileID: 0}
     - target: {fileID: 5320096550121634184, guid: ff968f67aa7be46478eef0e2fb49ff61,
         type: 3}

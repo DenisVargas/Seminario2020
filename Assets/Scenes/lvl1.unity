@@ -20782,6 +20782,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb20f03da788ad242a0dd835f2bd9176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnDestroy:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReset:
+    m_PersistentCalls:
+      m_Calls: []
+  mainViewMesh: {fileID: 0}
+  destructedVersion: {fileID: 0}
+  destroyForce: 30
 --- !u!1001 &1652977620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27598,7 +27607,7 @@ PrefabInstance:
     - target: {fileID: 1724401336576020042, guid: 529f8865c48f413419c20644df564294,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.12
+      value: 1.83
       objectReference: {fileID: 0}
     - target: {fileID: 1724401336576020042, guid: 529f8865c48f413419c20644df564294,
         type: 3}
@@ -27608,7 +27617,7 @@ PrefabInstance:
     - target: {fileID: 1724401336576020042, guid: 529f8865c48f413419c20644df564294,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -21.32
+      value: -21.49
       objectReference: {fileID: 0}
     - target: {fileID: 1724401336576020042, guid: 529f8865c48f413419c20644df564294,
         type: 3}
@@ -27655,6 +27664,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelExit
       objectReference: {fileID: 0}
+    - target: {fileID: 1724401336576020055, guid: 529f8865c48f413419c20644df564294,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
+        type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 529f8865c48f413419c20644df564294, type: 3}
 --- !u!33 &2088647165695093742

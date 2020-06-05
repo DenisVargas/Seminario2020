@@ -397,7 +397,7 @@ MonoBehaviour:
   mouseDetectionMask:
     serializedVersion: 2
     m_Bits: 1
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: 1f9f8bba5217d064a8c63720188a3279, type: 3}
   hited: []
 --- !u!114 &4551022286508861444
 MonoBehaviour:

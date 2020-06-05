@@ -336,6 +336,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         _agent.isStopped = true;
         _agent.ResetPath();
 
+        comandos.Clear();
+
         _agent.enabled = false;
         _rb.useGravity = true;
         _mainCollider.isTrigger = true;
@@ -350,6 +352,9 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
             _agent.ResetPath();
         }
 
+        _rb.useGravity = false;
+        _rb.velocity = Vector3.zero;
+        _agent.velocity = Vector3.zero;
         _a_Dead = true;
         IsAlive = false;
         ImDeadBro();

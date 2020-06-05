@@ -58,12 +58,14 @@ public class Staineable : MonoBehaviour, IIgnitableObject, IInteractable
 
         //Prengo fuego a las mierdas.
     }
-    public void OnInteractionEvent(IIgnitableObject toIgnore) { }
+    public void OnInteractionEvent() { }
 
     //======================================== Interaction System ====================================================
 
     public bool IsCurrentlyInteractable { get; private set; } = (false);
     public int InteractionsAmmount => _suportedOperations.Count;
+
+    public bool lockInteraction => false;
 
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {

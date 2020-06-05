@@ -155,7 +155,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 2.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -182,7 +182,7 @@ MonoBehaviour:
   visibles:
     serializedVersion: 2
     m_Bits: 3221225472
-  range: 6
+  range: 10
   angle: 45
   Debug_LineOfSight: 1
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
@@ -207,7 +207,7 @@ MonoBehaviour:
   _maxHealth: 100
   _attackRange: 2
   _safeInteractionDistance: 5
-  _suportedOperations: 
+  _suportedOperations: 04000000
   Weaknesses: []
   resistances: []
   _targeteables:

@@ -230,6 +230,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
 
         //Esto es cuando se resetea, si estamos utilizando un pool de enemigos.
         dead.AddTransition(BabosoState.idle, idle)
+            .AddTransition(BabosoState.falligTrap, falling)
             .AddTransition(BabosoState.explode, explode)
             .AddTransition(BabosoState.patroll, patroll);
 
@@ -252,7 +253,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
             }
 
             _rb.useGravity = false;
-            _mainCollider.enabled = false;
+            //_mainCollider.enabled = false;
             _rb.velocity = Vector3.zero;
             _trail.DisableTrailEmission();
 
@@ -330,19 +331,23 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
         patroll.OnEnter += (x) => 
         {
             _currentState = BabosoState.patroll;
-            //Seteo la animacion.
-            _a_Walk = true;
 
-            if (_agent.isStopped)
-                _agent.isStopped = false;
-
-            //Obtengo un target Point para moverme.
-            _targetLocation = patrolPoints.getNextPosition();
-            _stoping = false;
-
-            if (!_stoping && _agent.destination != _targetLocation)
+            if(_agent.isActiveAndEnabled)
             {
-                _agent.SetDestination(_targetLocation);
+                //Seteo la animacion.
+                _a_Walk = true;
+
+                if (_agent.isStopped)
+                    _agent.isStopped = false;
+
+                //Obtengo un target Point para moverme.
+                _targetLocation = patrolPoints.getNextPosition();
+                _stoping = false;
+
+                if (!_stoping && _agent.destination != _targetLocation)
+                {
+                    _agent.SetDestination(_targetLocation);
+                }
             }
         };
         patroll.OnUpdate += () => 
@@ -532,6 +537,12 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
         }
         else
             Debug.LogError("La cagaste, el target es nulo");
+    }
+
+    public void FallInTrap()
+    {
+        if (_currentState != BabosoState.falligTrap)
+            state.Feed(BabosoState.falligTrap);
     }
 
     public void ChangeStateTo(BabosoState input)

@@ -38,7 +38,7 @@ public class PitTrap : MonoBehaviour
             var slug = coll.GetComponent<Baboso>();
             if (slug != null)
             {
-                slug.ChangeStateTo(Baboso.BabosoState.falligTrap);
+                slug.FallInTrap();
                 falling = true;
             }
 
@@ -58,9 +58,7 @@ public class PitTrap : MonoBehaviour
             }
 
             if (!falling)
-            {
                 FilteredOnTop.Add(coll);
-            }
         }
 
         OnTop = FilteredOnTop;

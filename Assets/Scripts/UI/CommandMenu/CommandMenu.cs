@@ -36,7 +36,7 @@ public class CommandMenu : MonoBehaviour
         if (_limitedActive)
         {
             _remainingActiveTime -= Time.deltaTime;
-            print("Remaining Active Time = " + _remainingActiveTime);
+            //print("Remaining Active Time = " + _remainingActiveTime);
 
             if (_remainingActiveTime <= 0)
             {

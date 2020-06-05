@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deactivateDelay: 1
-  autoDeactivate: 0
+  autoDeactivate: 1
   _instaKill: 1
   _damageType: 2
   _ammount: 100

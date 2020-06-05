@@ -4837,6 +4837,7 @@ GameObject:
   - component: {fileID: 856897688738227767}
   - component: {fileID: 5993281819839330285}
   - component: {fileID: 3149757821092993301}
+  - component: {fileID: 1712010139}
   m_Layer: 0
   m_Name: Enemy-Baboso
   m_TagString: Untagged
@@ -4936,8 +4937,8 @@ MonoBehaviour:
   visibles:
     serializedVersion: 2
     m_Bits: 3221225472
-  range: 10
-  angle: 45
+  range: 8
+  angle: 60
   Debug_LineOfSight: 1
   rangeColor: {r: 0, g: 0.027990818, b: 1, a: 1}
   angleColor: {r: 1, g: 0, b: 0, a: 1}
@@ -5008,10 +5009,23 @@ MonoBehaviour:
   _spawnOverlapTreshold: 0.3
   _ignitionSystemPrefab: {fileID: 206088919360503028, guid: 705c5073aec01c04fb84ee42dee48421,
     type: 3}
-  _activeTime: 5
+  _activeTime: 10
   _burningTime: 5
   _expansionDelayTime: 0.3
   _inputWaitTime: 2
+--- !u!65 &1712010139
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688738227760}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.3047228, z: 0.8020064}
+  m_Center: {x: -3.8951172e-11, y: 0.6071143, z: 0.01862943}
 --- !u!1 &1717668563935843160
 GameObject:
   m_ObjectHideFlags: 0

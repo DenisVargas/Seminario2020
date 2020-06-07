@@ -22,8 +22,18 @@ public struct DamageAcumulation
 }
 
 [RequireComponent(typeof(NavMeshAgent), typeof(Animator), typeof(LineOfSightComponent))]
-public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractable
+public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractable, ILivingEntity
 {
+    event Action<GameObject> OnEntityDead = delegate { };
+    public void SubscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    {
+        this.OnEntityDead += OnEntityDead;
+    }
+    public void UnsuscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    {
+        this.OnEntityDead += OnEntityDead;
+    }
+
     [Header("Stats")]
     [SerializeField] float _health = 100f;
     [SerializeField] float _maxHealth = 100f;
@@ -445,6 +455,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
             _rb.useGravity = false;
             _rb.isKinematic = true;
+
+            OnEntityDead(gameObject);
         };
         dead.OnExit += (NextState) =>
         {

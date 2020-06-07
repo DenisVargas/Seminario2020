@@ -39,6 +39,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [SerializeField] float _maxHealth = 100f;
     [SerializeField] float _attackRange = 2f;
     [SerializeField] float _minDetectionRange = 3f;
+    [SerializeField] float _desapearEffectDelay = 4f;
+    [SerializeField] float _timeToDesapear = 2f;
 
     [Header("Interaction System")]
     [SerializeField] float _safeInteractionDistance = 5f;
@@ -456,6 +458,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             _rb.useGravity = false;
             _rb.isKinematic = true;
 
+            StartCoroutine(FallAndDestroyGameObject());
             OnEntityDead(gameObject);
         };
         dead.OnExit += (NextState) =>
@@ -778,6 +781,23 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         _a_GetHit = false;
     }
 
+    IEnumerator FallAndDestroyGameObject()
+    {
+        yield return new WaitForSeconds(_desapearEffectDelay);
+        float fallEffectTime = 0;
+        _agent.enabled = false;
+        _rb.isKinematic = true;
+
+        while (fallEffectTime < _timeToDesapear)
+        {
+            transform.position += (Vector3.down * Time.deltaTime);
+            yield return null;
+            fallEffectTime += Time.deltaTime;
+        }
+
+        Destroy(gameObject);
+    }
+
 #if UNITY_EDITOR
     //=============================== DEBUG =================================================
 
@@ -793,6 +813,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [SerializeField] bool DEBUG_RageMode_Ranges = true;
     [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
     [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
+
     private void OnDrawGizmos()
     {
         if (DEBUG_RageMode_Ranges)

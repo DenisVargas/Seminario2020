@@ -41,7 +41,7 @@ public interface ILivingEntity
 
 public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEntity
 {
-    public event Action<GameObject> OnEntityDead;
+    public event Action<GameObject> OnEntityDead = delegate { };
     public void SubscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
     {
         this.OnEntityDead += OnEntityDead;
@@ -60,7 +60,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
     [SerializeField] DamageModifier[] resistances; //reducen el daño x el un porcentaje.
 
     [Header("Aditional Options")]
-    [SerializeField] float timeToDesapear = 8f;
+    [SerializeField] float _desapearEffectDelay = 4f;
+    [SerializeField] float _timeToDesapear = 4f;
     [SerializeField] bool startPatrolling = false;
     [SerializeField] float _burnTime = 3f;
 
@@ -140,6 +141,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
     [Space, Header("Debug Options")]
     [SerializeField] Color DEBUG_AttackRangeColor = Color.white;
     [SerializeField] Color DEBUG_ExplodeRangeColor = Color.white;
+    
 #endif
 
     float health
@@ -279,7 +281,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
 
             //Apago componentes que no hagan falta.
             OnEntityDead(gameObject);
-            StartCoroutine(OnDie());
+            StartCoroutine(FallAndDestroyGameObject());
         };
         dead.OnExit += (x) => 
         {
@@ -481,24 +483,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
             _agent.enabled = false;
         };
 
-        //think.OnEnter += (x) => 
-        //{
-        //    _currentState = BabosoState.think;
-        //};
-        //think.OnUpdate += () => 
-        //{
-        //    //Tomo desiciones... pero cuales?
-        //    //Si mi enemigo esta muerto.
-        //    if (_currentTarget == null && startPatrolling)
-        //        state.Feed(BabosoState.patroll);
-        //    else
-        //        state.Feed(BabosoState.idle);
-        //};
-        //think.OnExit += (x) => 
-        //{
-
-        //};
-
         if (startPatrolling)
         {
             state = new GenericFSM<BabosoState>(patroll);
@@ -645,7 +629,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
         state.Feed(BabosoState.dead);
         Debug.LogWarning("AnimEvent: BurningEnd");
     }
-    
 
     IEnumerator Burn()
     {
@@ -653,13 +636,16 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
         yield return new WaitForSeconds(0.1f);
         burnParticles[1].SetActive(true);
     }
-    IEnumerator OnDie()
+    IEnumerator FallAndDestroyGameObject()
     {
-        yield return new WaitForSeconds(2f);
-        float fallEffectTime = timeToDesapear;
-        while (fallEffectTime < 2f)
+        yield return new WaitForSeconds(_desapearEffectDelay);
+        float fallEffectTime = 0;
+        _agent.enabled = false;
+        _rb.isKinematic = true;
+
+        while (fallEffectTime < _timeToDesapear)
         {
-            transform.position -= Vector3.down;
+            transform.position += (Vector3.down * Time.deltaTime);
             yield return null;
             fallEffectTime += Time.deltaTime;
         }
@@ -680,8 +666,5 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
         Gizmos.color = DEBUG_ExplodeRangeColor;
         Gizmos.DrawWireSphere(transform.position, _explodeRange);
     }
-
-    
-
 #endif
 }

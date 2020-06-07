@@ -22,7 +22,7 @@ public struct DamageAcumulation
 }
 
 [RequireComponent(typeof(NavMeshAgent), typeof(Animator), typeof(LineOfSightComponent))]
-public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitResult>, IInteractable
+public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractable
 {
     [Header("Stats")]
     [SerializeField] float _health = 100f;
@@ -31,7 +31,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     [Header("Interaction System")]
     [SerializeField] float _safeInteractionDistance = 5f;
-    [SerializeField] List<OperationType> ValidOperations = new List<OperationType>();
+    [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();
 
     public float Health
     {
@@ -58,17 +58,15 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     //---------------------------------------------------------------------------------------
 
     [Space()]
-    [SerializeField]DamageModifier[] Weaknesses; //Aumentan el daño ingresante.
-    [SerializeField]DamageModifier[] resistances;//reducen el daño ingereante.
+    [SerializeField] DamageModifier[] Weaknesses; //Aumentan el daño ingresante.
+    [SerializeField] DamageModifier[] resistances;//reducen el daño ingereante.
 
     //--------------------------------- Rage Mode -------------------------------------------
 
     [Header("Rage Mode")]
     [SerializeField] LayerMask _targeteables = ~0;
-    [SerializeField] float _rageMode_Duration = 10f;
     [SerializeField] float _rageMode_TargetDetectionRange = 5;
 
-    private bool _rageMode      = false;
     private float _rageModeTime = 0f;
 
     //--------------------------------- Wander State ----------------------------------------
@@ -76,8 +74,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     [Header("Wander State")]
     [SerializeField] float _wanderMinDistance = 2f;
     [SerializeField] float _wanderMaxDistance = 10f;
-    [SerializeField] float _minWanderTime     = 2f;
-    [SerializeField] float _maxWanderTime     = 10f;
+    [SerializeField] float _minWanderTime = 2f;
+    [SerializeField] float _maxWanderTime = 10f;
 
     private float _wanderingTime = 0f;
 
@@ -106,8 +104,10 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     //----------------------------------- Targeting -----------------------------------------
 
-    private Transform _targetTransform;
-    private Vector3 _targetPosition;
+    IDamageable<Damage, HitResult> _target;
+    Vector3 _targetPosition;
+    NMA_Controller _player;
+    ClonBehaviour _playerClone;
 
     //----------------------------------- Animation -----------------------------------------
 
@@ -143,7 +143,10 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         get => _anim.GetBool(_animHash[5]);
         set => _anim.SetBool(_animHash[5], value);
     }
-    
+
+    public bool IsAlive { get; private set; } = (true);
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedOperations.Count;
 
     //----------------------------------- Components ----------------------------------------
 
@@ -151,20 +154,6 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     private Collider _mainCollider = null;
     private NavMeshAgent _agent = null;
     private LineOfSightComponent _sight = null;
-
-#if UNITY_EDITOR
-    //----------------------------------- DEBUG ---------------------------------------------   
-    [Space(), Header("DEBUG GIZMOS")]
-    [SerializeField] bool DEBUG_WanderStateRanges = true;
-    [SerializeField] Color DEBUG_WanderRange_Min_GIZMOCOLOR = Color.blue;
-    [SerializeField] Color DEBUG_WanderRange_Max_GIZMOCOLOR = Color.blue;
-    [Space]
-    [SerializeField] bool DEBUG_RageMode_Target = true; 
-    [SerializeField] bool DEBUG_RageMode_Ranges = true;
-    [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
-    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
-
-#endif
 
     //=======================================================================================
 
@@ -177,12 +166,18 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         _health = _maxHealth;
 
-        var target = FindObjectOfType<NMA_Controller>();
-        if (target != null)
+        var player = FindObjectOfType<NMA_Controller>();
+        if (player != null)
         {
-            _targetTransform = target.transform;
-            _targetPosition = target.transform.position;
-            _sight.SetTarget(_targetTransform);
+            _player = player;
+
+            ClonBehaviour clon = player.Clon;
+            if (clon != null)
+            {
+                _playerClone = clon;
+            }
+            else
+                Debug.LogError("La cagaste, el clon no esta seteado.");
         }
 
         _anim = GetComponent<Animator>();
@@ -204,6 +199,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         #region Transiciones.
         idle.AddTransition(BoboState.dead, dead)
+            .AddTransition(BoboState.rage, rage)
             .AddTransition(BoboState.pursue, pursue)
             .AddTransition(BoboState.fallTrap, falling)
             .AddTransition(BoboState.think, think);
@@ -227,6 +223,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         attack.AddTransition(BoboState.dead, dead)
               .AddTransition(BoboState.think, think)
+              .AddTransition(BoboState.idle, idle)
               .AddTransition(BoboState.fallTrap, falling)
               .AddTransition(BoboState.pursue, pursue);
 
@@ -237,6 +234,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
                .AddTransition(BoboState.fallTrap, falling);
 
         rage.AddTransition(BoboState.dead, dead)
+            .AddTransition(BoboState.idle, idle)
             .AddTransition(BoboState.pursue, pursue)
             .AddTransition(BoboState.fallTrap, falling);
 
@@ -259,8 +257,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         };
         idle.OnUpdate += ()=> 
         {
-            //Si veo al enemigo pero no lo estoy persiguiendo, entonces...
-            if (_sight.IsInSight(_targetTransform) && _currentState != BoboState.pursue)
+            checkForPlayerOrClone();
+            if ( _target != null && _currentState != BoboState.pursue)
             {
                 state.Feed(BoboState.pursue);
             }
@@ -269,20 +267,26 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         wander.OnEnter += (x) =>
         {
-            print(string.Format("{0} ha entrado al estado {1}", gameObject.name, state.current.StateName));
-
-            //Reproduzco la animación correspondiente.
+            _currentState = BoboState.wander;
+            _agent.isStopped = false;
             _wanderingTime = 0;
         };
         wander.OnUpdate += () =>
         {
             // Reduzco un timer, cuando el tiempo llegue a 0. 
             _wanderingTime -= Time.deltaTime;
-            if (_wanderingTime <= 0)
+            print($"Wandering Time is: {_wanderingTime}");
+            if (_wanderingTime < 0)
             {
-                // Busco un nuevo targetPosition;
+                //Debug.LogWarning("Terminó el tiempo del wandering");
                 _targetPosition = getRandomPosition();
+
                 _wanderingTime = UnityEngine.Random.Range(_minWanderTime, _maxWanderTime);
+
+                _agent.isStopped = true;
+                _agent.ResetPath();
+                _agent.SetDestination(_targetPosition);
+                _agent.isStopped = false;
             }
         };
         //wander.OnExit += (NextState) => { };
@@ -330,12 +334,14 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         falling.OnEnter += (x) =>
         {
-            _rb.useGravity = true;
-            _mainCollider.isTrigger = true;
-
+            _currentState = BoboState.fallTrap;
             _agent.isStopped = true;
             _agent.ResetPath();
             _agent.enabled = false;
+
+            _mainCollider.isTrigger = true;
+            _rb.useGravity = true;
+            _rb.isKinematic = false;
         };
 
         pursue.OnEnter += (x) =>
@@ -346,16 +352,13 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         pursue.OnUpdate += () =>
         {
             //Me muevo en dirección al objetivo.
-            if (_targetTransform != null)
-                MoveToTarget(_targetTransform.position);
+            if (_target != null)
+                MoveToTarget(_target.transform.position);
 
             //Si la distancia de ataque es menor a un treshold.
-            float dst = Vector3.Distance(transform.position, _targetTransform.position);
+            float dst = Vector3.Distance(transform.position, _target.transform.position);
             if (dst <= _attackRange)
-            {
-                //Ataco.
                 state.Feed(BoboState.attack);
-            }
         };
         pursue.OnExit += (NextState) =>
         {
@@ -370,17 +373,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         think.OnEnter += (x) =>
         {
             _currentState = BoboState.think;
-            //Si tengo un tiempo de reacción
-            //Seteo el tiempo de reacción.
-            //Sino
-            //Tomo una desición en base a los inputs.
-            if (_sight.distanceToTarget < _attackRange)
+
+            checkForPlayerOrClone();
+            if (_target != null || _target.IsAlive)
             {
-                state.Feed(BoboState.attack);
-            }
-            else if (_sight.IsInSight(_targetTransform) && _sight.distanceToTarget > _attackRange)
-            {
-                state.Feed(BoboState.pursue);
+                if (_sight.IsInSight(_target.transform))
+                    state.Feed(_sight.distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
             }
         };
         think.OnUpdate += () =>
@@ -395,56 +393,54 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         {
             _currentState = BoboState.attack;
             _a_Attack = true;
-
-            KillTarget();
+            _a_walk = false;
+            _agent.isStopped = true;
+            _agent.ResetPath();
+            _rb.velocity = Vector3.zero;
+            transform.forward = (_target.transform.position - transform.position).YComponent(0).normalized;
         };
-        attack.OnUpdate += () =>
+        attack.OnExit += (x) =>
         {
-            //Chequeo información relevante para el estado del ataque.
-            //Cuando el ataque termine, utiliza esta info para determinar que acción realizar consecutivamente.
-
-            //Mini think!!
-            //Si estoy en modo Rage, marco el siguiente estado como RageWaitState.
-            if (_rageMode)
-            {
-                //_chainState = BoboState.pursue;
-            }
-
-            //Si no estoy en modo Rage y el target esta muerto/destruido.
-            //Si todavía estoy en rageMode.
-            //Selecciono otro target.
-            //Sino estoy fuera de rageMode
-            //Vuelvo al estado idle.
-            //Opcionalmente puedo hacer un festejo.
+            _agent.isStopped = false;
+            _a_Attack = false;
         };
 
         rage.OnEnter += (x) =>
         {
             _currentState = BoboState.rage;
             //Seteo la animación -> Necesito mostrarle al player que me di cuenta que entre en rage!
-            _anim.SetBool((int)BoboState.rage, true);
+            _a_GetHit = true;
+            //_anim.SetBool((int)BoboState.rage, true);
 
             //Mientras espero a que la animación termine...
 
-            //Si no estoy en rageMode
-            if (!_rageMode)
-            {
-                //Marco el estado a rageMode!
-                _rageMode = true;
-                //Inicio el contador.
-                _rageModeTime = _rageMode_Duration;
-            }
+            ////Si no estoy en rageMode
+            //if (!_rageMode)
+            //{
+            //    //Marco el estado a rageMode!
+            //    _rageMode = true;
+            //    //Inicio el contador.
+            //    _rageModeTime = _rageMode_Duration;
+            //}
 
             //Selecciono un nuevo Target y marco el siguiente estado como persue.
             SelectRageModeTarget();
 
             //Cuando termina la animación pasa el estado pursue.
         };
+        rage.OnExit += (x) =>
+        {
+            _a_GetHit = false;
+        };
 
         dead.OnEnter += (x) =>
         {
             _currentState = BoboState.dead;
             _a_Dead = true;
+            IsAlive = false;
+
+            _rb.useGravity = false;
+            _rb.isKinematic = true;
         };
         dead.OnExit += (NextState) =>
         {
@@ -468,9 +464,10 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     
     //=================================== Private Memeber Funcs =============================
 
-    private void ResetSetUp()
+    void ResetSetUp()
     {
         _health = _maxHealth;
+        IsAlive = true;
     }
     void MoveToTarget(Vector3 targetPosition)
     {
@@ -486,24 +483,95 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
         //Raycast en área.
         var posibleTargets = Physics.OverlapSphere(transform.position, _rageMode_TargetDetectionRange, _targeteables);
+        List<IDamageable<Damage, HitResult>> OnSight_Killeables = new List<IDamageable<Damage, HitResult>>();
+        List<IDamageable<Damage, HitResult>> OutOfSight_Killeables = new List<IDamageable<Damage, HitResult>>();
 
-        var closerTarget = posibleTargets
-                          .OrderBy(x =>
-                          {
-                              return Vector3.Distance(transform.position, 
-                                                      x.gameObject.transform.position);
-                          })
-                          .FirstOrDefault();
+        List<IDestructible> OnSight_Destructibles = new List<IDestructible>();
+        List<IDestructible> OutOfSight_Destructibles = new List<IDestructible>();
 
-        if (closerTarget != null)
+        foreach (var item in posibleTargets)
         {
-            //Paso a think.
-            state.Feed(BoboState.think);
+            //Chequeo primero por IDamageables.
+            var Damageable = item.GetComponent<IDamageable<Damage, HitResult>>();
+            if (Damageable == (IDamageable<Damage, HitResult>)this)
+                continue;
+
+            if (Damageable != null)
+            {
+                if (_sight.IsInSight(item.transform))
+                    OnSight_Killeables.Add(Damageable);
+                else
+                    OutOfSight_Killeables.Add(Damageable);
+                continue;
+            }
+            //Chequeo por IDestructible.
+            var Destructible = item.GetComponent<IDestructible>();
+            if (Destructible != null)
+            {
+                if (_sight.IsInSight(item.transform))
+                    OnSight_Destructibles.Add(Destructible);
+                else
+                    OutOfSight_Destructibles.Add(Destructible);
+            }
+        }
+
+        Transform CloserTarget = null;
+        if (OnSight_Killeables.Count > 0)
+        {
+            //Si hay objetivos dentro del rango de vision...
+            CloserTarget = OnSight_Killeables
+                              .OrderBy(killeable =>
+                              {
+                                  return Vector3.Distance(transform.position, killeable.gameObject.transform.position);
+                              })
+                              .First()
+                              .gameObject.transform;
+        }
+        else if(OnSight_Destructibles.Count > 0)
+        {
+            //Si no hay objetivos killeables, chequeo los destructibles...
+            CloserTarget = OnSight_Destructibles
+                .OrderBy( destructible => {
+                    return Vector3.Distance(transform.position, destructible.position);
+                })
+                .First()
+                .transform;
         }
         else
         {
-            _targetTransform = closerTarget.transform;
+            if (OutOfSight_Killeables.Count > 0)
+            {
+                CloserTarget = OutOfSight_Killeables
+                    .OrderBy(killeable =>
+                    {
+                        //return Vector3.Distance(transform.position, killeable.gameObject.transform.position);
+                        return Vector3.Angle(transform.forward, killeable.gameObject.transform.position);
+                    })
+                    .First()
+                    .gameObject.transform;
+            }
+            else if(OutOfSight_Destructibles.Count > 0)
+            {
+                CloserTarget = OutOfSight_Destructibles
+                    .OrderBy(killeable =>
+                    {
+                        return Vector3.Distance(transform.position, killeable.transform.position);
+                    })
+                    .First()
+                    .transform;
+            }
         }
+
+        if (CloserTarget != null)
+        {
+            var targetDamageableComponent = CloserTarget.GetComponent<IDamageable<Damage, HitResult>>();
+            if (targetDamageableComponent != null)
+            {
+                _target = targetDamageableComponent;
+                state.Feed(BoboState.pursue);
+            }
+        }
+        else state.Feed(BoboState.idle);
     }
     void UpdateRageModeState()
     {
@@ -518,26 +586,49 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     Vector3 getRandomPosition()
     {
         //Calculo un target Random.
-        var RandomTargetPosition = new Vector3(UnityEngine.Random.Range(0, 1),
-                                                 0,
-                                                 UnityEngine.Random.Range(0, 1));
+        var RandomTargetPosition = new Vector3(UnityEngine.Random.Range(0f, 1f),
+                                                 0f,
+                                                 UnityEngine.Random.Range(0f, 1f));
         float randomDistance = UnityEngine.Random.Range(_wanderMinDistance, _wanderMaxDistance);
-        return transform.position + (RandomTargetPosition * randomDistance);
+
+        return (transform.position + (RandomTargetPosition * randomDistance));
     }
     void KillTarget()
     {
-        if (_targetTransform != null)
+        if (_target != null && _target.IsAlive)
         {
-            var killeable = _targetTransform.GetComponent<IDamageable<Damage>>();
-            if (killeable != null)
-            {
-                killeable.Hit(new Damage() { instaKill = true });
-            }
-            else
-                Debug.LogError("La cagaste, el target no es Damageable");
+            FeedDamageResult(_target.GetHit(new Damage() { instaKill = true, type = DamageType.piercing }));
         }
         else
             Debug.LogError("La cagaste, el target es nulo");
+    }
+    void checkForPlayerOrClone()
+    {
+        if (_player != null && _playerClone != null)
+        {
+            float mindist = float.MaxValue;
+            IDamageable<Damage, HitResult> closerTarget = null;
+
+            if (_sight.IsInSight(_player.transform) && _player.IsAlive)
+            {
+                if(_sight.distanceToTarget < mindist)
+                    closerTarget = _player;
+            }
+            else if(_sight.IsInSight(_playerClone.transform) && _playerClone.IsAlive)
+            {
+                if (_sight.distanceToTarget < mindist)
+                    closerTarget = _playerClone;
+            }
+
+            if (closerTarget != null)
+            {
+                var currentTarget = closerTarget;
+                if (currentTarget != null)
+                    _target = currentTarget;
+                else
+                    Debug.LogError("La cagaste, el objetivo no es Damageable");
+            }
+        }
     }
 
     //============================== State Machine Acces ====================================
@@ -549,48 +640,48 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     //==================================== Damage System ====================================
 
-    public void Hit(Damage damage)
+    public HitResult GetHit(Damage damage)
     {
+        HitResult result = new HitResult() { fatalDamage = true, conected = true };
+        print($"Recibió un golpe {damage.type.ToString()} y es un instakill: {damage.instaKill}");
         //Al recibir daño...
-        //Si estamos en idle, wander o think
-        //Entramos en rage.
+        if (_currentState == BoboState.dead) return new HitResult { conected = false, fatalDamage = false };
 
         if (damage.instaKill)
         {
-            if (_currentState != BoboState.dead)
-                Health = 0;
-            return;
+            result.fatalDamage = true;
+            result.conected = true;
+
+            //if (damage.type == DamageType.blunt)
+            //{
+            //    state.Feed(BoboState.dead);
+            //}
+
+            //if (damage.type == DamageType.piercing)
+            //{
+                
+            //}
+
+            state.Feed(BoboState.dead);
+        }
+        else
+        {
+            Health -= damage.Ammount;
         }
 
-        Health -= damage.Ammount;
+        return result;
     }
-
-    public Damage getDamageState()
+    public Damage GetDamageStats()
     {
         //Retornamos nuestras estadísticas de combate actuales.
         return _currentDamageState;
     }
-
-    public void HitStatus(HitResult result)
+    public void FeedDamageResult(HitResult result)
     {
         //Si cause daño efectivamente.
-        if (result.conected)
-        {
-            //El golpe conectó con el objetivo.
-
-            //Si objetivo fue destruido y sigo en ragemode...
-            if (result.fatalDamage && _rageMode)
-            {
-                //Festejo y busco un nuevo target.
-                //Seteo la animación de festejo.
-                _anim.SetBool(10, true);
-                //Actualizo un nuevo target, mientras busco el estado.
-                SelectRageModeTarget();
-                return;
-            }
-        }
+        if (result.conected && result.fatalDamage)
+            _target = null;
     }
-
 
     //================================ Interaction System ===================================
 
@@ -599,7 +690,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
         return new InteractionParameters()
         {
             LimitedDisplay = false,
-            SuportedOperations = ValidOperations
+            SuportedOperations = _suportedOperations
         };
     }
 
@@ -625,11 +716,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
     private void OnHitWithRock(object[] optionalParams)
     {
         //Si es atacado por una roca, entra en rageMode.
+        print("Me han pegado con una roca, hijos de puta!");
         state.Feed(BoboState.rage);
     }
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {
-        return ((requester.position - transform.position).normalized * _safeInteractionDistance);
+        return transform.position + ((requester.position - transform.position).normalized * _safeInteractionDistance);
     }
     public void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
     {
@@ -642,13 +734,45 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
 
     //============================== Animation Events =======================================
 
-    public void AV_Attack_Ended()
+    void AV_AttackStart()
     {
-        state.Feed(BoboState.think);
+        //Le digo a mi current target, que se quede quieto!.
+    }
+    void AV_Attack_Hit()
+    {
+        KillTarget();
+        _a_Attack = false;
+    }
+    void AV_Attack_Ended()
+    {
+        checkForPlayerOrClone();
+        if (_target == null)
+        {
+            state.Feed(BoboState.idle);
+        }
+        else
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, _target.transform.position);
+            state.Feed(distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
+        }
+    }
+    void AV_HitReact_End()
+    {
+        _a_GetHit = false;
     }
 
-    //=============================== DEBUG =================================================
 #if UNITY_EDITOR
+    //=============================== DEBUG =================================================
+
+    [Space(), Header("DEBUG GIZMOS")]
+    [SerializeField] bool DEBUG_WanderStateRanges = true;
+    [SerializeField] Color DEBUG_WanderRange_Min_GIZMOCOLOR = Color.blue;
+    [SerializeField] Color DEBUG_WanderRange_Max_GIZMOCOLOR = Color.blue;
+    [Space]
+    [SerializeField] bool DEBUG_RageMode_Target = true;
+    [SerializeField] bool DEBUG_RageMode_Ranges = true;
+    [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
+    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
     private void OnDrawGizmos()
     {
         if (DEBUG_RageMode_Ranges)
@@ -658,11 +782,11 @@ public class Grunt : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitRe
             Gizmos.DrawWireSphere(transform.position, _rageMode_TargetDetectionRange);
         }
 
-        if (DEBUG_RageMode_Target && _targetTransform != null)
+        if (DEBUG_RageMode_Target && _target != null)
         {
-            bool isVisible = _sight.IsInSight(_targetTransform);
+            bool isVisible = _sight.IsInSight(_target.transform);
             Gizmos.color = isVisible ? Color.green : Color.red;
-            Gizmos.DrawLine(transform.position, _targetTransform.position);
+            Gizmos.DrawLine(transform.position, _target.transform.position);
         }
 
         if (DEBUG_WanderStateRanges)

@@ -45,6 +45,12 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
         }
     }
 
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedInteractions.Count;
+
+    public bool lockInteraction => isLocked;
+    bool isLocked = false;
+
     private void Update()
     {
         if (!_freezeInPlace)
@@ -160,19 +166,26 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
     /// Se llama cuando hacemos clic encima.
     /// </summary>
     /// <param name="toIgnore">Me mando a mismo</param>
-    public void OnInteractionEvent(IIgnitableObject toIgnore)
+    public void OnInteractionEvent()
     {
+        isLocked = true;
         checkSurroundingIgnitionObjects();
         foreach (var igniteable in toIgnite)
         {
-            if (igniteable != (IIgnitableObject)this && igniteable != toIgnore)
+            if (igniteable != (IIgnitableObject)this && !igniteable.lockInteraction)
             {
-                igniteable.OnInteractionEvent(this);
+                igniteable.OnInteractionEvent();
             }
         }
 
         //Aumento el tiempo de vida de esta "particula" x el treshold
         _remainingLifeTime += _inputWaitTime;
+        StartCoroutine(UnlockInNextFrame());
+    }
+    IEnumerator UnlockInNextFrame()
+    {
+        yield return new WaitForSeconds(0.1f);
+        isLocked = false;
     }
 
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
@@ -181,7 +194,7 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
     }
     public InteractionParameters GetSuportedInteractionParameters()
     {
-        OnInteractionEvent(this);
+        OnInteractionEvent();
 
         return new InteractionParameters()
         {

@@ -15,12 +15,22 @@ PrefabInstance:
     - target: {fileID: 5240360824389532153, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
         type: 3}
       propertyPath: m_Size.y
-      value: 3.773314
+      value: 2.8434951
       objectReference: {fileID: 0}
     - target: {fileID: 5240360824389532153, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
         type: 3}
       propertyPath: m_Center.y
-      value: 3.0338924
+      value: 3.050804
+      objectReference: {fileID: 0}
+    - target: {fileID: 5240360824389532153, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5.9425244
+      objectReference: {fileID: 0}
+    - target: {fileID: 5240360824389532153, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -2.9712622
       objectReference: {fileID: 0}
     - target: {fileID: 5774170834655470756, guid: 87d433a187723ff44b50ba1f7fa0e6b5,
         type: 3}
@@ -152,7 +162,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground_Stakes (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4902758768693931148, guid: ff968f67aa7be46478eef0e2fb49ff61, type: 3}
+    - {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ff968f67aa7be46478eef0e2fb49ff61, type: 3}
 --- !u!1001 &8403233542426311685
 PrefabInstance:
@@ -215,6 +227,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 8.127902
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 1.9620991
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203213855134483405, guid: ff968f67aa7be46478eef0e2fb49ff61,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.017121553
       objectReference: {fileID: 0}
     - target: {fileID: 5320096550121634184, guid: ff968f67aa7be46478eef0e2fb49ff61,
         type: 3}

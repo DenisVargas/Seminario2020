@@ -29,7 +29,7 @@ public struct DamageModifier
     public float percentual;
 }
 
-public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitResult>
+public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
 {
     [Header("Stats")]
     [SerializeField] float _health = 10;
@@ -47,10 +47,12 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
     [Header("References")]
     [SerializeField]
-    Vector3 targetPosition                 = Vector3.zero;
+    Vector3 targetPosition = Vector3.zero;
     [SerializeField] Waypoint patrolPoints = null;
-    [SerializeField] float stopTime        = 1.5f;
+    [SerializeField] float stopTime = 1.5f;
     [SerializeField] GameObject[] burnParticles = new GameObject[2];
+    [SerializeField] GameObject ExplotionParticle = null;
+    [SerializeField] LayerMask _StaineableMask = ~0;
 
     [SerializeField] BabosoState _currentState;
 
@@ -61,7 +63,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         patroll,
         pursue,
         attack,
-        think,
+        //think,
         falligTrap,
         burning,
         explode,
@@ -87,7 +89,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     {
         get => _anims.GetBool(_animHash[2]);
         set => _anims.SetBool(_animHash[2], value);
-    } 
+    }
     bool _a_attack
     {
         get => _anims.GetBool(_animHash[3]);
@@ -105,14 +107,16 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     Damage _damageState = new Damage();
     Rigidbody _rb = null;
 
-    Transform _target = null;
-    private Vector3   _targetLocation;
-    private bool      _stoping;
+    Transform _player = null;
+    Transform _playerClone = null;
+    Transform _currentTarget = null;
+    private Vector3 _targetLocation;
+    private bool _stoping;
     private int _PositionsMoved;
     private float _remainingStopTime;
 
 #if UNITY_EDITOR
-    [Space,Header("Debug Options")]
+    [Space, Header("Debug Options")]
     [SerializeField] Color DEBUG_AttackRangeColor = Color.white;
     [SerializeField] Color DEBUG_ExplodeRangeColor = Color.white;
 #endif
@@ -133,6 +137,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
     public bool Attack_isInCooldown { get; private set; }
 
+    public bool IsAlive { get; private set; } = (true);
+
     private void Awake()
     {
         //Seteo todas las referencias a los componentes.
@@ -149,8 +155,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         var tar = FindObjectOfType<NMA_Controller>();
         if (tar != null)
         {
-            _target = tar.transform;
-            _sight.SetTarget(_target);
+            _player = tar.transform;
+            _playerClone = tar.Clon.transform;
         }
         else
         {
@@ -175,24 +181,25 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         var attack = new State<BabosoState>("Attack");
         var burning = new State<BabosoState>("Burning");
         var falling = new State<BabosoState>("Falling");
-        var think = new State<BabosoState>("Think");
+        //var think = new State<BabosoState>("Think");
 
         #region Transiciones
         idle.AddTransition(BabosoState.dead, dead)
+            .AddTransition(BabosoState.pursue, pursue)
             .AddTransition(BabosoState.explode, explode)
             .AddTransition(BabosoState.burning, burning)
-            .AddTransition(BabosoState.falligTrap, falling)
-            .AddTransition(BabosoState.think, think);
+            .AddTransition(BabosoState.falligTrap, falling);
+            //.AddTransition(BabosoState.think, think);
 
         patroll.AddTransition(BabosoState.pursue, pursue)
                .AddTransition(BabosoState.falligTrap, falling)
                .AddTransition(BabosoState.burning, burning)
                .AddTransition(BabosoState.explode, explode)
-               .AddTransition(BabosoState.think, think)
+               //.AddTransition(BabosoState.think, think)
                .AddTransition(BabosoState.dead, dead);
 
-        pursue.AddTransition(BabosoState.think, think)
-              .AddTransition(BabosoState.attack, attack)
+        pursue.AddTransition(BabosoState.attack, attack)
+              //.AddTransition(BabosoState.think, think)
               .AddTransition(BabosoState.falligTrap, falling)
               .AddTransition(BabosoState.burning, burning)
               .AddTransition(BabosoState.explode, explode)
@@ -201,26 +208,29 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         falling.AddTransition(BabosoState.dead, dead);
 
         attack.AddTransition(BabosoState.dead, dead)
+              .AddTransition(BabosoState.attack, attack)
               .AddTransition(BabosoState.burning, burning)
               .AddTransition(BabosoState.explode, explode)
               .AddTransition(BabosoState.falligTrap, falling)
-              .AddTransition(BabosoState.think, think);
+              .AddTransition(BabosoState.idle, idle)
+              .AddTransition(BabosoState.patroll, patroll);
 
-        burning.AddTransition(BabosoState.think, think)
-               .AddTransition(BabosoState.falligTrap, falling)
+        burning.AddTransition(BabosoState.falligTrap, falling)
+               //.AddTransition(BabosoState.think, think)
                .AddTransition(BabosoState.explode, explode)
                .AddTransition(BabosoState.dead, dead);
 
-        think.AddTransition(BabosoState.dead, dead)
-             .AddTransition(BabosoState.idle, idle)
-             .AddTransition(BabosoState.falligTrap, falling)
-             .AddTransition(BabosoState.burning, burning)
-             .AddTransition(BabosoState.explode, explode)
-             .AddTransition(BabosoState.patroll, patroll)
-             .AddTransition(BabosoState.pursue, pursue);
+        //think.AddTransition(BabosoState.dead, dead)
+        //     .AddTransition(BabosoState.idle, idle)
+        //     .AddTransition(BabosoState.falligTrap, falling)
+        //     .AddTransition(BabosoState.burning, burning)
+        //     .AddTransition(BabosoState.explode, explode)
+        //     .AddTransition(BabosoState.patroll, patroll)
+        //     .AddTransition(BabosoState.pursue, pursue);
 
         //Esto es cuando se resetea, si estamos utilizando un pool de enemigos.
         dead.AddTransition(BabosoState.idle, idle)
+            .AddTransition(BabosoState.falligTrap, falling)
             .AddTransition(BabosoState.explode, explode)
             .AddTransition(BabosoState.patroll, patroll);
 
@@ -233,6 +243,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             //Seteo animación.
             _a_Dead = true;
             _a_Walk = false;
+            IsAlive = false;
 
             if (_agent.isActiveAndEnabled)
             {
@@ -242,7 +253,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             }
 
             _rb.useGravity = false;
-            _mainCollider.enabled = false;
+            //_mainCollider.enabled = false;
             _rb.velocity = Vector3.zero;
             _trail.DisableTrailEmission();
 
@@ -250,12 +261,16 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             //gameObject.SetActive(false);
         };
         //dead.OnUpdate += () => { };
-        dead.OnExit += (x) => { };
+        dead.OnExit += (x) => 
+        {
+            IsAlive = true;
+        };
 
         explode.OnEnter += (x) =>
         {
             _currentState = BabosoState.explode;
             //Activo la particula de explosión.
+            ExplotionParticle.SetActive(true);
             //Me dejo de mover.
             if (_agent.isActiveAndEnabled)
             {
@@ -268,6 +283,17 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _rb.velocity = Vector3.zero;
             _mainCollider.enabled = false;
             _trail.DisableTrailEmission();
+
+            //Busco todos los objetos que están al rededor y hacer que se mojen con baba.
+            var findeds = Physics.OverlapSphere(transform.position, _explodeRange, _StaineableMask, QueryTriggerInteraction.Collide);
+            foreach (var col in findeds)
+            {
+                var staineable = col.GetComponent<Staineable>();
+                if (staineable != null)
+                {
+                    staineable.StainWithSlime();
+                }
+            }
         };
         explode.OnUpdate += () =>
         {
@@ -282,10 +308,21 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _a_Dead = false;
             _a_burning = false;
 
+            if (startPatrolling)
+            {
+                _agent.isStopped = false;
+            }
+            else
+            {
+                _agent.isStopped = true;
+                _agent.ResetPath();
+                _agent.isStopped = false;
+            }
+
             _agent.enabled = true;
             //print(string.Format("{0}: Entró al estado Idle", gameObject.name));
         };
-        idle.OnUpdate += () => { };
+        idle.OnUpdate += () => checkPlayerOrClone();
         idle.OnExit += (nextState) => 
         {
             print(string.Format("{0}: Salió del estado Idle", gameObject.name));
@@ -294,16 +331,23 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         patroll.OnEnter += (x) => 
         {
             _currentState = BabosoState.patroll;
-            //Seteo la animacion.
-            _a_Walk = true;
 
-            //Obtengo un target Point para moverme.
-            _targetLocation = patrolPoints.getNextPosition();
-            _stoping = false;
-
-            if (!_stoping && _agent.destination != _targetLocation)
+            if(_agent.isActiveAndEnabled)
             {
-                _agent.SetDestination(_targetLocation);
+                //Seteo la animacion.
+                _a_Walk = true;
+
+                if (_agent.isStopped)
+                    _agent.isStopped = false;
+
+                //Obtengo un target Point para moverme.
+                _targetLocation = patrolPoints.getNextPosition();
+                _stoping = false;
+
+                if (!_stoping && _agent.destination != _targetLocation)
+                {
+                    _agent.SetDestination(_targetLocation);
+                }
             }
         };
         patroll.OnUpdate += () => 
@@ -320,7 +364,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             if (_stoping)
             {
                 //Debug.Log("entre al stopping");
-                
                 _remainingStopTime -=Time.deltaTime;
                 _agent.isStopped = true;
                 //Debug.Log(_remainingStopTime);
@@ -334,9 +377,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
                 }
             }
 
-            //Si veo al enemigo paso a perseguirlo.
-            if (_sight.IsInSight(_target))
-                state.Feed(BabosoState.pursue);
+            checkPlayerOrClone();
         };
         patroll.OnExit += (x) => 
         {
@@ -347,12 +388,15 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
         {
             _currentState = BabosoState.pursue;
             _a_Walk = true;
+            if (_agent.isStopped)
+                _agent.isStopped = false;
         };
         pursue.OnUpdate += () => 
         {
-            _agent.SetDestination(_target.position);
+            if(_currentTarget != null && _agent.destination != _currentTarget.position)
+                _agent.SetDestination(_currentTarget.position);
 
-            if (Vector3.Distance(_target.position, transform.position) < _attackRange)
+            if (Vector3.Distance(_currentTarget.position, transform.position) < _attackRange)
             {
                 state.Feed(BabosoState.attack);
             }
@@ -370,18 +414,14 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _currentState = BabosoState.attack;
             _a_attack = true;
 
-            //Instakilleo al target.
             KillTarget();
 
-            //Detengo la marcha.
             _agent.isStopped = true;
-            //Debug.LogWarning("Attack On Enter");
         };
-        //attack.OnUpdate += () => { };
         attack.OnExit += (nextState) =>
         {
             _a_attack = false;
-            //Debug.LogWarning("Attack On Exit");
+            _agent.isStopped = false;
         };
 
         burning.OnEnter += (previousState) =>
@@ -421,20 +461,23 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
             _agent.enabled = false;
         };
 
-        think.OnEnter += (x) => 
-        {
-            _currentState = BabosoState.think;
-        };
-        think.OnUpdate += () => 
-        {
-            //Tomo desiciones... pero cuales?
-            //Si mi enemigo esta muerto.
-            state.Feed(BabosoState.patroll);
-        };
-        think.OnExit += (x) => 
-        {
+        //think.OnEnter += (x) => 
+        //{
+        //    _currentState = BabosoState.think;
+        //};
+        //think.OnUpdate += () => 
+        //{
+        //    //Tomo desiciones... pero cuales?
+        //    //Si mi enemigo esta muerto.
+        //    if (_currentTarget == null && startPatrolling)
+        //        state.Feed(BabosoState.patroll);
+        //    else
+        //        state.Feed(BabosoState.idle);
+        //};
+        //think.OnExit += (x) => 
+        //{
 
-        };
+        //};
 
         if (startPatrolling)
         {
@@ -451,31 +494,55 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 #endif
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //Hago las weas.
         state.Update();
-        //print("Current State is:" + _currentState.ToString());
     }
-
 
     //========================================== Member Funcs =================================================
 
+    void checkPlayerOrClone()
+    {
+        if (_player != null && _sight.IsInSight(_player))
+        {
+            var targetState = _player.GetComponent<IDamageable<Damage, HitResult>>();
+            if (targetState != null && targetState.IsAlive)
+            {
+                _currentTarget = _player;
+                state.Feed(BabosoState.pursue);
+            }
+        }
+        if (_playerClone != null && _sight.IsInSight(_playerClone))
+        {
+            var targetState = _playerClone.GetComponent<IDamageable<Damage, HitResult>>();
+            if (targetState != null && targetState.IsAlive)
+            {
+                _currentTarget = _playerClone;
+                state.Feed(BabosoState.pursue);
+            }
+        }
+    }
+
     void KillTarget()
     {
-        if (_target != null)
+        if (_currentTarget != null)
         {
-            var killeable = _target.GetComponent<IDamageable<Damage>>();
+            var killeable = _currentTarget.GetComponent<IDamageable<Damage, HitResult>>();
             if (killeable != null)
             {
-                killeable.Hit(new Damage() { instaKill = true });
+                killeable.GetHit(new Damage() { instaKill = true });
             }
             else
                 Debug.LogError("La cagaste, el target no es Damageable");
         }
         else
             Debug.LogError("La cagaste, el target es nulo");
+    }
+
+    public void FallInTrap()
+    {
+        if (_currentState != BabosoState.falligTrap)
+            state.Feed(BabosoState.falligTrap);
     }
 
     public void ChangeStateTo(BabosoState input)
@@ -485,37 +552,40 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
     //========================================== Sistema de Daño ==============================================
 
-    //Recibimos Daño
-    public void Hit(Damage damage)
+    public HitResult GetHit(Damage damage)
     {
-        Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
+        HitResult result = new HitResult()
+        {
+            conected = true,
+            fatalDamage = true
+        };
 
+        //Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
         if (damage.instaKill)
         {
             if (damage.type == DamageType.e_fire && _currentState != BabosoState.burning)
             {
                 state.Feed(BabosoState.burning);
             }
-
             if (damage.type == DamageType.blunt && _currentState != BabosoState.explode)
             {
                 state.Feed(BabosoState.explode);
+            }
+            if (damage.type == DamageType.piercing && _currentState != BabosoState.dead)
+            {
+                state.Feed(BabosoState.dead);
             }
         }
         else
         {
             health -= damage.Ammount;
         }
+        return result;
     }
-    //Devolvemos nuestras estadísticas.
-    public Damage getDamageState()
+    public void FeedDamageResult(HitResult result) { }
+    public Damage GetDamageStats()
     {
         return _damageState;
-    }
-    //En este caso si resivo un hit, pos me muero asi que no pasa mucho.
-    public void HitStatus(HitResult result)
-    {
-        //Cuando conecta un hit... no hago nada en particular.
     }
 
     //===================================== Animation Events ===================================================
@@ -523,13 +593,29 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
     //Fases de Ataques --> StartUp, Active, Recovery
     //Por ahora el juego es Instakill, asi que cuando un enemigo te alcanza, te golpea y tu mueres.
 
-    public void AV_Attack_End()
+    void AV_Attack_End()
     {
-        state.Feed(BabosoState.think);
-
-        //Debug.LogWarning("AttackEnded");
+        var AttackTarget = _currentTarget.GetComponent<IDamageable<Damage, HitResult>>();
+        if (AttackTarget != null)
+        {
+            if (AttackTarget.IsAlive)
+            {
+                if (Vector3.Distance(transform.position, _currentTarget.position) < _attackRange)
+                    state.Feed(BabosoState.attack);
+                else
+                    state.Feed(BabosoState.pursue);
+            }
+            else
+            {
+                _currentTarget = null;
+                if (startPatrolling)
+                    state.Feed(BabosoState.patroll);
+                else
+                    state.Feed(BabosoState.idle);
+            }
+        }
     }
-    public void AV_Burning_End()
+    void AV_Burning_End()
     {
         state.Feed(BabosoState.dead);
         Debug.LogWarning("AnimEvent: BurningEnd");
@@ -554,6 +640,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage>, IAgressor<Damage, HitR
 
         Gizmos.color = DEBUG_ExplodeRangeColor;
         Gizmos.DrawWireSphere(transform.position, _explodeRange);
-    } 
+    }
 #endif
 }

@@ -31,15 +31,23 @@ public class CameraBehaviour : MonoBehaviour
         //ZoomMax = new Vector3(operativeCamera.transform.localPosition.x, operativeCamera.transform.localPosition.y, operativeCamera.transform.localPosition.z);
         //var BNormal = operativeCamera.transform.forward;
         //ZoomMin = ZoomMax + BNormal * ZoomDist;
+
         OperativeCamera = Camera.main.transform;
-        var Player = FindObjectOfType<NMA_Controller>();
-        if (Player != null)
+        if (_target == null)
         {
-            _target = Player.transform;
-            transform.position = _target.transform.position;
+            var Player = FindObjectOfType<NMA_Controller>();
+            if (Player != null)
+            {
+                _target = Player.transform;
+                transform.position = _target.transform.position;
+            }
+            else
+                freeCamera = true;
         }
         else
-            freeCamera = true;
+        {
+            transform.position = _target.transform.position;
+        }
     }
 
     // Update is called once per frame

@@ -31,41 +31,58 @@ public class CameraBehaviourEditor : Editor
         GUIStyle BoldText = new GUIStyle();
         BoldText.fontStyle = FontStyle.Bold;
 
-        GUILayout.Space(20f);
+        //GUILayout.Space(20f);
 
-        EditorGUILayout.LabelField("Camera Locking", BoldText);
-        string[] options = { "Free Camera", "Locked To Target" };
-        selected = GUILayout.SelectionGrid(selected, options, 2);
-        switch (selected)
-        {
-            case 0:
-                ins.freeCamera = true;
-                break;
-            case 1:
-                ins.freeCamera = false;
-                break;
-            default:
-                break;
-        }
-
-        //EditorGUILayout.PropertyField(serializedObject.FindProperty("Target"));
-
-        //ins.Target = (Transform)EditorGUILayout.ObjectField(ins.Target, typeof(Transform), true);
-        //if (GUILayout.Button("Pick First Player Controller in Scene"))
+        //Esto no esta funcionando correctamente, el resultado no se serializa.
+        //Al salir del PlayMode la referencias se pierden.
+        //EditorGUILayout.LabelField("Camera Locking", BoldText);
+        //string[] options = { "Free Camera", "Locked To Target" };
+        //int currentSelection = ins.freeCamera ? 0 : 1;
+        //selected = GUILayout.SelectionGrid(selected, options, 2);
+        //if (selected != currentSelection)
         //{
-        //    var finded = GameObject.Find("Player");
-        //    if (!finded) Debug.LogError("Player has not been found");
-        //    else
+        //    Undo.RecordObject(ins, "Switched DefaultMode");
+        //    switch (selected)
         //    {
-        //        ins.Target = finded.transform;
-        //        serializedObject.ApplyModifiedProperties();
+        //        case 0:
+        //            ins.freeCamera = true;
+        //            break;
+        //        case 1:
+        //            ins.freeCamera = false;
+        //            break;
+        //        default:
+        //            break;
         //    }
         //}
+
+        //if (ins._target != null)
+        //{
+        //    EditorGUILayout.LabelField($"Current target is: {ins._target.gameObject.name}", BoldText);
+        //}
+        //else
+        //{
+        //    GUI.color = Color.red;
+        //    EditorGUILayout.LabelField("Current target has not been setted.", BoldText);
+        //    GUI.color = Color.white;
+        //    if (GUILayout.Button("Pick First Player Controller in Scene"))
+        //    {
+        //        var finded = GameObject.Find("Player");
+        //        if (!finded) Debug.LogError("Player has not been found");
+        //        else
+        //        {
+        //            Undo.RecordObject(ins, "Player Setted");
+        //            ins._target = finded.transform;
+        //        }
+        //    }
+        //}
+
         EditorGUILayout.Space();
 
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_target"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("freeCamera"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("groundMask"));
+
         EditorGUILayout.LabelField("Velocities", BoldText);
-        //EditorGUILayout.PropertyField(serializedObject.FindProperty("zoomVelocity"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("panSpeed"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("rotationSpeed"));
 
@@ -73,11 +90,6 @@ public class CameraBehaviourEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mousePanBorderThickness"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("navigationLimits"));
         EditorGUILayout.Space();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            serializedObject.ApplyModifiedProperties();
-        }
 
         //TODO: Encuentra una forma de hacer la edición de los límites, personalizados.
         //EditorGUILayout.Space();
@@ -105,6 +117,11 @@ public class CameraBehaviourEditor : Editor
 
         //TODO: Una manera de editar la inclinación y el zoom de la cámara de forma mas intuitiva.
         //DrawCameraDistanceEditor();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 
     private void DrawCameraDistanceEditor()

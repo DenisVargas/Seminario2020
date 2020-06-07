@@ -7,28 +7,22 @@ public class cmd_Activate : IQueryComand
 {
     Action _animationTrigger = delegate { };
     Action _dispose = delegate { };
-    ActivationCommandData _data;
+    CommandData _data;
 
     public bool completed { get; private set; } = false;
 
-    public cmd_Activate(ActivationCommandData data, Action AnimationTrigger, Action dispose)
+    public cmd_Activate(CommandData data, Action AnimationTrigger, Action dispose)
     {
         _data = data;
         _dispose = dispose;
         _animationTrigger = AnimationTrigger;
     }
 
-    public void Update()
+    public void Execute()
     {
         //Ejecuto el comando.
         _animationTrigger();
         _dispose();
     }
-
-    public void setUp()
-    {
-        MonoBehaviour.print("Setup Query Comand: Activate");
-    }
-
     public void Cancel() { }
 }

@@ -10,10 +10,13 @@ public class WorldObject : MonoBehaviour, IInteractable
     Material _normalMat = null;
     Renderer _renderer = null;
 
-    public List<OperationType> suportedOperations = new List<OperationType>();
+    public List<OperationType> _suportedOperations = new List<OperationType>();
 
     public Vector3 position => transform.position;
     public Vector3 LookToDirection => transform.forward;
+
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedOperations.Count;
 
     public void OnOperate(OperationType operation, params object[] optionalParams)
     {
@@ -47,7 +50,7 @@ public class WorldObject : MonoBehaviour, IInteractable
         return new InteractionParameters()
         {
             LimitedDisplay = false,
-            SuportedOperations = suportedOperations
+            SuportedOperations = _suportedOperations
         };
     }
 

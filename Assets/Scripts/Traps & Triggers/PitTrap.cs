@@ -13,6 +13,7 @@ public class PitTrap : MonoBehaviour
 
     [SerializeField] Animator _anims = null;
 
+    bool isActive = false;
     BoxCollider _col;
 
     [SerializeField] List<Collider> OnTop = new List<Collider>();
@@ -22,12 +23,14 @@ public class PitTrap : MonoBehaviour
         _col = GetComponent<BoxCollider>();
         _col.isTrigger = true;
     }
-
-    public void OnEnableTrap()
+    private void Update()
     {
-        _anims.SetBool("Activate", true);
-        OnActivate.Invoke();
+        if (isActive)
+            killOnTopEntities();
+    }
 
+    public void killOnTopEntities()
+    {
         var FilteredOnTop = new List<Collider>();
         foreach (var coll in OnTop)
         {
@@ -35,7 +38,7 @@ public class PitTrap : MonoBehaviour
             var slug = coll.GetComponent<Baboso>();
             if (slug != null)
             {
-                slug.ChangeStateTo(Baboso.BabosoState.falligTrap);
+                slug.FallInTrap();
                 falling = true;
             }
 
@@ -50,38 +53,44 @@ public class PitTrap : MonoBehaviour
             var grunt = coll.GetComponent<Grunt>();
             if (grunt != null)
             {
-                //Accedo a grunt y le digo que pase a falling.
                 grunt.ChangeStateTo(Grunt.BoboState.fallTrap);
                 falling = true;
             }
 
             if (!falling)
-            {
                 FilteredOnTop.Add(coll);
-            }
         }
 
         OnTop = FilteredOnTop;
     }
+    public void OnEnableTrap()
+    {
+        _anims.SetBool("Activate", true);
+        OnActivate.Invoke();
 
+        isActive = true;
+        killOnTopEntities();
+    }
     public void OnDisableTrap()
     {
         _anims.SetBool("Activate", false);
         OnDeActivate.Invoke();
+
+        isActive = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        //print($"{other.gameObject.name} entro a la trampa");
         var agent = other.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
             OnTop.Add(other);
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
-        print("Salió: " + other.gameObject.name);
+        //print($"{other.gameObject.name} Salió de la trampa");
         if (OnTop.Contains(other))
             OnTop.Remove(other);
     }

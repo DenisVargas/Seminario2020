@@ -36,7 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - Targets
+  - LivingEntities
   - Obstacles
   m_SortingLayers:
   - name: Default

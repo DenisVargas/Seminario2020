@@ -9,6 +9,7 @@ public class Jail : MonoBehaviour
     Collider _destructibleHitbox = null;
 
     [SerializeField] float deactivateDelay = 1f;
+    [SerializeField] bool autoDeactivate = false;
 
     [Header("Hitbox Settings")]
     [SerializeField] bool _instaKill = true;
@@ -32,6 +33,18 @@ public class Jail : MonoBehaviour
     {
         _anims.SetBool("Activated", true);
     }
+    public void PullUp()
+    {
+        _anims.SetBool("Activated", false);
+        if (_hitbox != null)
+        {
+            _hitbox.IsActive = false;
+        }
+        if (_destructibleHitbox != null)
+        {
+            _destructibleHitbox.enabled = false;
+        }
+    }
 
     public void AV_FallEnded()
     {
@@ -43,21 +56,16 @@ public class Jail : MonoBehaviour
         {
             _destructibleHitbox.enabled = true;
         }
-        StartCoroutine(delayedDeactivate());
+        if (autoDeactivate)
+        {
+            StartCoroutine(delayedDeactivate());
+        }
     }
 
     IEnumerator delayedDeactivate()
     {
         yield return new WaitForSeconds(deactivateDelay);
-        _anims.SetBool("Activated", false);
-        if (_hitbox != null)
-        {
-            _hitbox.IsActive = false;
-        }
-        if (_destructibleHitbox != null)
-        {
-            _destructibleHitbox.enabled = false;
-        }
+        PullUp();
     }
 
     private void OnTriggerEnter(Collider other)

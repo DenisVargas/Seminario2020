@@ -7,7 +7,6 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
 {
     [SerializeField] List<OperationType> _suportedOperations = new List<OperationType>();
     [SerializeField] float _safeInteractionDistance = 5;
-    [SerializeField] float _burningTime = 5;
     [SerializeField] GameObject[] burnParticles = new GameObject[4];
     [SerializeField] float _fallSpeed = 2;
 
@@ -29,6 +28,9 @@ public class SlimeCoveredObject : MonoBehaviour, IInteractable
 
     public Vector3 position { get => transform.position; }
     public Vector3 LookToDirection { get => transform.forward; }
+
+    public bool IsCurrentlyInteractable { get; private set; } = (true);
+    public int InteractionsAmmount => _suportedOperations.Count;
 
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {

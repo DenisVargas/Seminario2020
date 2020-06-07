@@ -31,6 +31,7 @@ namespace Utility.ObjectPools.Generic
             _factoyMethod = FactoryMethod;
             _init = Initialize;
             _finit = Finalize;
+            this.isDinamic = isDinamic;
 
             for (int i = 0; i < stockInicial; i++)
             {

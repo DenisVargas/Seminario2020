@@ -6,23 +6,20 @@ using UnityEngine.AI;
 using Core.DamageSystem;
 using UnityEngine.UIElements;
 
-public struct ActivationCommandData
+public struct CommandData
 {
     public IInteractable target;
     public OperationType operationOptions;
 }
 //Navigation Mesh Actor Controller.
-public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
+public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractor
 {
     public event Action ImDeadBro = delegate { };
-    [SerializeField] LayerMask mouseDetectionMask  = ~0;
     //[SerializeField] Transform MouseDebug          = null;
     //[SerializeField] Transform targetDebug         = null;
-    [SerializeField] float _interactionMaxDistance = 0.1f;
-    [SerializeField] float _movementTreshold       = 0.18f;
+    [SerializeField] float _movementTreshold = 0.18f;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
-
 
     Animator _anims;
     int[] animHash = new int[4];
@@ -56,8 +53,15 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         get => _anims.GetBool(animHash[5]);
         set => _anims.SetBool(animHash[5], value);
     }
+    bool _a_ThrowRock
+    {
+        get => _anims.GetBool(animHash[6]);
+        set => _anims.SetBool(animHash[6], value);
+    }
 
     public Vector3 position => transform.position;
+
+    public bool IsAlive { get; private set; } = (true);
 
     Camera _viewCamera = null;
     Collider _mainCollider = null;
@@ -66,18 +70,19 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     CanvasController _canvasController = null;
     MouseView _mv;
     MouseContextTracker _mtracker;
-    public GameObject clon;
-    public float clonLife;
-    float clonlifeTime;
-    public float clonCooldown;
-    float clonCooldownRemain;
-    bool clonRecast;
+
+    [Header("Clon")]
+    public ClonBehaviour Clon                    = null;
+    [SerializeField] float _clonLife             = 20f;
+    [SerializeField] float _clonCooldown         = 4f;
+    [SerializeField] float _ClonMovementTreshold = 0.1f;
+    bool _canCastAClon                           = true;
 
     Vector3 _currentTargetPos;
     float forwardLerpTime;
     bool PlayerInputEnabled = true;
 
-    ActivationCommandData Queued_ActivationData = new ActivationCommandData();
+    CommandData Queued_ActivationData = new CommandData();
 
     void Awake()
     {
@@ -89,8 +94,15 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _mv = GetComponent<MouseView>();
         _mtracker = GetComponent<MouseContextTracker>();
 
+        if (Clon != null)
+        {
+            Clon.Awake();
+            Clon.SetState(_clonLife, _ClonMovementTreshold);
+            Clon.OnRecast += ClonDeactivate;
+        }
+
         _anims = GetComponent<Animator>();
-        animHash = new int[6];
+        animHash = new int[7];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -100,9 +112,10 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     void Update()
     {
         bool mod1 = Input.GetKey(KeyCode.LeftShift);
+        bool mod2 = Input.GetKey(KeyCode.LeftControl);
 
         #region Input
-        if (PlayerInputEnabled && Input.GetMouseButtonDown(1))
+        if (PlayerInputEnabled && Input.GetMouseButtonDown(1) && !mod2)
         {
             //Hacer un raycast y fijarme si hay un objeto que se interactuable.
             MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();
@@ -117,7 +130,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
                     Input.mousePosition,
                     _mouseContext.firstInteractionObject.GetSuportedInteractionParameters(),
                     _mouseContext.firstInteractionObject,
-                    ExecuteOperation
+                    QuerySelectedOperation
                  );
             }
             else
@@ -144,60 +157,53 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
                         return completed;
                     },
-                    disposeCommand
+                    _disposeCommand
                 );
                 comandos.Enqueue(moveCommand);
             }
         }
 
+        if (PlayerInputEnabled && Input.GetMouseButtonDown(1) && mod2 && Clon.IsActive)
+        {
+            MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();
+
+            if (!_mouseContext.validHit) return;
+
+            if (_mouseContext.validHit)
+                Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
+        }
+
 
         #endregion
         #region Clon
-        if (PlayerInputEnabled && Input.GetKeyDown(KeyCode.Alpha1) && clonRecast)
+        if (PlayerInputEnabled && Input.GetKeyDown(KeyCode.Alpha1) && !Clon.IsActive)
         {
             comandos.Clear();
             _a_Clon = true;
             PlayerInputEnabled = false;
-
+            ClonSpawn();
         }
-        if (clon.activeInHierarchy)
-        {
-            if (clonlifeTime > 0)
-                clonlifeTime -= Time.deltaTime;
-            else
-            {
-                clon.SetActive(false);
-                clonRecast = false;
-                clonCooldownRemain = clonCooldown;
-            }    
 
-        }
-        else
-        {
-            if(!clonRecast)
-            {
-                if (clonCooldownRemain > 0)
-                     clonCooldownRemain -= Time.deltaTime;
-                else
-                {
-                clonRecast = true;
-                clonCooldownRemain = 0;
-                }
-
-            }
-        }
         #endregion
-
-        //if (_currentTargetPos != Vector3.zero && transform.forward != _currentTargetPos)
-        //    UpdateForward();
-
-        //print("Hay " + comandos.Count + " comandos");
 
         if (comandos.Count > 0)
         {
             IQueryComand current = comandos.Peek();
-            current.Update();
+            current.Execute();
         }
+    }
+
+    public void ClonSpawn()
+    {
+        if (!Clon.IsActive && _canCastAClon)
+        {
+            Clon.InvokeClon(transform.position + transform.forward * 1.5f, -transform.forward);
+            _canCastAClon = false;
+        }
+    }
+    public void ClonDeactivate()
+    {
+        StartCoroutine(clonCoolDown());
     }
 
     /// <summary>
@@ -205,7 +211,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     /// </summary>
     /// <param name="operation">La operación que queremos realizar</param>
     /// <param name="target">El objetivo de dicha operación</param>
-    public void ExecuteOperation(OperationType operation, IInteractable target)
+    public void QuerySelectedOperation(OperationType operation, IInteractable target)
     {
         var safeInteractionPosition = target.requestSafeInteractionPosition(this);
         if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
@@ -224,7 +230,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
                     return completed;
                 },
-                disposeCommand
+                _disposeCommand
             );
             comandos.Enqueue(closeDistance);
             //print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
@@ -232,24 +238,27 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
         //añado el comando correspondiente a la query.
         IQueryComand _toActivateCommand;
+        CommandData _currentOperationData = new CommandData()
+        {
+            target = target,
+            operationOptions = operation
+        };
         switch (operation)
         {
             case OperationType.Take:
                 break;
+
             case OperationType.Ignite:
 
-                //Aquí tengo que decirle a mi target que se frezee.
                 target.OnConfirmInput(OperationType.Ignite);
-
-                Queued_ActivationData = new ActivationCommandData() { operationOptions = operation, target = target };
                 _toActivateCommand = new cmd_Ignite(
-                                                      new ActivationCommandData()
+                                                      _currentOperationData,
+                                                      () => 
                                                       {
-                                                         target = target,
-                                                         operationOptions = operation
+                                                          _a_Ignite = true;
+                                                          Queued_ActivationData = _currentOperationData;
                                                       },
-                                                      () => { _a_Ignite = true; },
-                                                      disposeCommand
+                                                      _disposeCommand
                                                    );
                 comandos.Enqueue(_toActivateCommand);
 
@@ -257,18 +266,34 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
 
             case OperationType.Activate:
 
-                Queued_ActivationData = new ActivationCommandData() { target = target, operationOptions = operation };
                 _toActivateCommand = new cmd_Activate
                     (
-                        Queued_ActivationData,
-                        () => { _a_LeverPull = true; },
-                        disposeCommand
+                        _currentOperationData,
+                        () => 
+                        {
+                            _a_LeverPull = true;
+                            Queued_ActivationData = _currentOperationData;
+                        },
+                        _disposeCommand
                     );
                 comandos.Enqueue(_toActivateCommand);
-                //print("Comando Activate añadido. Hay " + comandos.Count + " comandos");
-
                 break;
+
             case OperationType.Equip:
+                break;
+            case OperationType.TrowRock:
+                _toActivateCommand = new cmd_TrowRock
+                    (
+                       _currentOperationData,
+                       () => 
+                       {
+                           _a_ThrowRock = true;
+                           transform.forward = (target.position - transform.position).normalized;
+                           Queued_ActivationData = _currentOperationData;
+                       },
+                       _disposeCommand
+                    );
+                comandos.Enqueue(_toActivateCommand);
                 break;
             default:
                 break;
@@ -288,13 +313,13 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         _agent.destination = destinyPosition;
     }
 
-    void disposeCommand()
+    void _disposeCommand()
     {
         var _currentC = comandos.Dequeue();
         if (comandos.Count > 0)
         {
             var next = comandos.Peek();
-            print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
+            //print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
         }
     }
     void CancelAllCommands()
@@ -305,37 +330,18 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         }
         comandos.Clear();
     }
-
-    public void ClonSpawn()
-    {
-        if (!clon.activeInHierarchy)
-        {
-            clonlifeTime = clonLife;
-            clon.SetActive(true);
-            clon.transform.position = transform.position + transform.forward * 1.5f;
-            clon.transform.forward = -transform.forward;
-        }
-
-        else
-        {
-            clon.SetActive(false);
-            clonRecast = false;
-            clonCooldownRemain = clonCooldown;
-        }
-    }
-
     public void FallInTrap()
     {
         PlayerInputEnabled = false;
         _agent.isStopped = true;
         _agent.ResetPath();
 
+        comandos.Clear();
+
         _agent.enabled = false;
         _rb.useGravity = true;
         _mainCollider.isTrigger = true;
     }
-
-
     void Die()
     {
         PlayerInputEnabled = false;
@@ -346,22 +352,39 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             _agent.ResetPath();
         }
 
+        _rb.useGravity = false;
+        _rb.velocity = Vector3.zero;
+        _agent.velocity = Vector3.zero;
         _a_Dead = true;
+        IsAlive = false;
         ImDeadBro();
     }
 
     //============================================================== Damage System =================================================================
 
-    public void Hit(Damage damage)
+    public HitResult GetHit(Damage damage)
     {
+        HitResult result = new HitResult() { conected = true, fatalDamage = true };
         if (damage.instaKill)
         {
             Die();
         }
+        return result;
+    }
+    public void FeedDamageResult(HitResult result) { }
+    public Damage GetDamageStats()
+    {
+        return new Damage()
+        {
+            Ammount = 10f,
+            instaKill = false,
+            criticalMultiplier = 2,
+            type = DamageType.piercing
+        };
     }
 
     //=============================================================== Animation Events =============================================================
-    public void AE_PullLeverStarted()
+    void AE_PullLeverStarted()
     {
         PlayerInputEnabled = false;
 
@@ -370,7 +393,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
             transform.forward = Queued_ActivationData.target.LookToDirection;
         }
     }
-    public void AE_PullLeverEnded()
+    void AE_PullLeverEnded()
     {
         PlayerInputEnabled = true;
         _a_LeverPull = false;
@@ -378,14 +401,14 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         if (Queued_ActivationData.target != null)
         {
             Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
-            Queued_ActivationData = new ActivationCommandData();
+            Queued_ActivationData = new CommandData();
         }
     }
-    public void AE_Ignite_Start()
+    void AE_Ignite_Start()
     {
         PlayerInputEnabled = false;
     }
-    public void AE_Ignite_End()
+    void AE_Ignite_End()
     {
         PlayerInputEnabled = true;
         _a_Ignite = false;
@@ -393,7 +416,17 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
         if (Queued_ActivationData.target != null)
         {
             Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
-            Queued_ActivationData = new ActivationCommandData();
+            Queued_ActivationData = new CommandData();
+        }
+    }
+    void AE_TrowRock_Ended()
+    {
+        _a_ThrowRock = false;
+
+        if (Queued_ActivationData.target != null)
+        {
+            Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
+            Queued_ActivationData = new CommandData();
         }
     }
 
@@ -401,16 +434,16 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage>, IInteractor
     {
         _a_Clon = false;
         PlayerInputEnabled = true;
+        _canCastAClon = true;
+    }
+
+    IEnumerator clonCoolDown()
+    {
+        _canCastAClon = false;
+        yield return new WaitForSeconds(_clonCooldown);
+        _canCastAClon = true;
     }
 
     //============================================================== DEBUG ==========================================================================
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
-        Gizmos.DrawWireSphere(transform.position, _interactionMaxDistance);
-    }
-
 }
 

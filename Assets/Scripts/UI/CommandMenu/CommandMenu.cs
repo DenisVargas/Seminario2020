@@ -36,7 +36,7 @@ public class CommandMenu : MonoBehaviour
         if (_limitedActive)
         {
             _remainingActiveTime -= Time.deltaTime;
-            print("Remaining Active Time = " + _remainingActiveTime);
+            //print("Remaining Active Time = " + _remainingActiveTime);
 
             if (_remainingActiveTime <= 0)
             {
@@ -87,7 +87,7 @@ public class CommandMenu : MonoBehaviour
 
     public void ActivateCommand(OperationType command)
     {
-        print(string.Format("Activo el comando {0}", command.ToString()));
+        //print(string.Format("Activo el comando {0}", command.ToString()));
         //Aquí es donde ejecutamos la acción en si.
         executeCommand(command, interactionTarget);
         //Limpiamos los residuos.
@@ -129,6 +129,6 @@ public class CommandMenu : MonoBehaviour
             gameObject.SetActive(false);
         }
 
-        print(string.Format("Viewport context is {0}", isInsideViewport ? "On" : "off"));
+        //print(string.Format("Viewport context is {0}", isInsideViewport ? "On" : "off"));
     }
 }

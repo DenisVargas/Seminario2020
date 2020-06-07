@@ -27,7 +27,7 @@ public class cmd_Move : IQueryComand
         //Esto lo tengo al pepe por ahora.
     }
 
-    public void Update()
+    public void Execute()
     {
         completed = _checkCondition(_targetPosition);
         if (!completed)

@@ -514,11 +514,14 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
         }
         if (_playerClone != null && _sight.IsInSight(_playerClone))
         {
-            var targetState = _playerClone.GetComponent<IDamageable<Damage, HitResult>>();
-            if (targetState != null && targetState.IsAlive)
+            if(_playerClone.gameObject.activeSelf)
             {
-                _currentTarget = _playerClone;
-                state.Feed(BabosoState.pursue);
+                var targetState = _playerClone.GetComponent<IDamageable<Damage, HitResult>>();
+                if (targetState != null && targetState.IsAlive)
+                {
+                    _currentTarget = _playerClone;
+                    state.Feed(BabosoState.pursue);
+                }
             }
         }
     }
@@ -530,6 +533,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
             var killeable = _currentTarget.GetComponent<IDamageable<Damage, HitResult>>();
             if (killeable != null)
             {
+                killeable.GetStun();
                 killeable.GetHit(new Damage() { instaKill = true });
             }
             else

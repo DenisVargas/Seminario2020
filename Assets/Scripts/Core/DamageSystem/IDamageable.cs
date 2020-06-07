@@ -13,5 +13,8 @@ namespace Core.DamageSystem
         output GetHit(Input damage);
         void FeedDamageResult(output result);
         Input GetDamageStats();
+
+        //Stuns!
+        void GetStun();
     }
 }

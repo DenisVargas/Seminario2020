@@ -126,4 +126,10 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         return new Damage { Ammount = 0, criticalMultiplier = 0, instaKill = false, type = DamageType.piercing };
     }
+
+    public void GetStun()
+    {
+        _agent.isStopped = true;
+        _agent.ResetPath();
+    }
 }

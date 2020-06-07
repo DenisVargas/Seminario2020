@@ -398,6 +398,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             _agent.ResetPath();
             _rb.velocity = Vector3.zero;
             transform.forward = (_target.transform.position - transform.position).YComponent(0).normalized;
+
+            //Le digo a mi current target, que se quede quieto!.
+            _target.GetStun();
         };
         attack.OnExit += (x) =>
         {
@@ -682,6 +685,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         if (result.conected && result.fatalDamage)
             _target = null;
     }
+    public void GetStun(){}
 
     //================================ Interaction System ===================================
 
@@ -734,10 +738,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     //============================== Animation Events =======================================
 
-    void AV_AttackStart()
-    {
-        //Le digo a mi current target, que se quede quieto!.
-    }
+    void AV_AttackStart() { }
     void AV_Attack_Hit()
     {
         KillTarget();
@@ -807,5 +808,6 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
         }
     }
+
 #endif
 }

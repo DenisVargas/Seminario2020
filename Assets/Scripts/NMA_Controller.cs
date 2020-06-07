@@ -382,6 +382,13 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
             type = DamageType.piercing
         };
     }
+    public void GetStun()
+    {
+        PlayerInputEnabled = false;
+        comandos.Clear();
+        _agent.isStopped = true;
+        _agent.ResetPath();
+    }
 
     //=============================================================== Animation Events =============================================================
     void AE_PullLeverStarted()

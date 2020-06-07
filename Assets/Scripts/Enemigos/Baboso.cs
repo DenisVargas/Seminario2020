@@ -587,6 +587,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         return _damageState;
     }
+    public void GetStun() { }
 
     //===================================== Animation Events ===================================================
 
@@ -641,5 +642,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
         Gizmos.color = DEBUG_ExplodeRangeColor;
         Gizmos.DrawWireSphere(transform.position, _explodeRange);
     }
+
+    
 #endif
 }

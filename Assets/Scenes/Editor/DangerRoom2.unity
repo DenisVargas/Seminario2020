@@ -6750,7 +6750,7 @@ PrefabInstance:
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.81
+      value: -1.64
       objectReference: {fileID: 0}
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
@@ -6760,7 +6760,7 @@ PrefabInstance:
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.37
+      value: -9.32
       objectReference: {fileID: 0}
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
@@ -7393,6 +7393,11 @@ PrefabInstance:
       propertyPath: patrolPoints
       value: 
       objectReference: {fileID: 1185035781}
+    - target: {fileID: 856897688738227767, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
+        type: 3}
+      propertyPath: timeToDesapear
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3149757821092993301, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
         type: 3}
       propertyPath: _spawnDistance

@@ -206,6 +206,7 @@ MonoBehaviour:
   _health: 100
   _maxHealth: 100
   _attackRange: 2
+  _minDetectionRange: 2.5
   _safeInteractionDistance: 5
   _suportedOperations: 04000000
   Weaknesses: []
@@ -219,6 +220,8 @@ MonoBehaviour:
   _minWanderTime: 2
   _maxWanderTime: 10
   _currentState: 0
+  DEBUG_MINDETECTIONRANGE: 1
+  DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 1, b: 1, a: 1}
   DEBUG_WanderStateRanges: 0
   DEBUG_WanderRange_Min_GIZMOCOLOR: {r: 0, g: 0, b: 1, a: 1}
   DEBUG_WanderRange_Max_GIZMOCOLOR: {r: 0, g: 0, b: 1, a: 1}

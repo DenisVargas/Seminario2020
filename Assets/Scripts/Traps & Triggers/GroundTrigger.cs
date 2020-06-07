@@ -9,8 +9,6 @@ public class GroundTrigger : MonoBehaviour
 {
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
     [SerializeField] UnityEvent OnDeActivate = new UnityEvent();
-    //Action OnActivate = delegate { };
-    //Action OnDeActivate = delegate { };
 
     [SerializeField] Animator _anims = null;
     [SerializeField] float _deactivationTime = 0f;
@@ -23,23 +21,52 @@ public class GroundTrigger : MonoBehaviour
         _col = GetComponent<Collider>();
     }
 
+    public void RemoveColliderFromActivationList(GameObject gameObject)
+    {
+        var toRemove = gameObject.GetComponent<Collider>();
+
+        if (toRemove != null && OnTop.Contains(toRemove))
+        {
+            OnTop.Remove(toRemove);
+            if (OnTop.Count <= 0)
+            {
+                _anims.SetBool("Pressed", false);
+                OnDeActivate.Invoke();
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        //print("Hay una collision: " + other.gameObject.name);
-        OnTop.Add(other);
-        _anims.SetBool("Pressed", true);
-        OnActivate.Invoke();
+        if (!other.isTrigger)
+        {
+            OnTop.Add(other);
+            _anims.SetBool("Pressed", true);
+
+            var LiveEntity = other.GetComponent<ILivingEntity>();
+            if (LiveEntity != null)
+                LiveEntity.SubscribeToLifeCicleDependency(RemoveColliderFromActivationList);
+
+            OnActivate.Invoke();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (OnTop.Contains(other))
-            OnTop.Remove(other);
-
-        if (OnTop.Count <= 0 )
+        if (!other.isTrigger)
         {
-            _anims.SetBool("Pressed", false);
-            StartCoroutine(releaseActivation());
+            if (OnTop.Contains(other))
+                OnTop.Remove(other);
+
+            var LiveEntity = other.GetComponent<ILivingEntity>();
+            if (LiveEntity != null)
+                LiveEntity.UnsuscribeToLifeCicleDependency(RemoveColliderFromActivationList);
+
+            if (OnTop.Count <= 0 )
+            {
+                _anims.SetBool("Pressed", false);
+                StartCoroutine(releaseActivation());
+            }
         }
     }
 

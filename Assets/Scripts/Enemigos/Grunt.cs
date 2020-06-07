@@ -28,6 +28,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [SerializeField] float _health = 100f;
     [SerializeField] float _maxHealth = 100f;
     [SerializeField] float _attackRange = 2f;
+    [SerializeField] float _minDetectionRange = 3f;
 
     [Header("Interaction System")]
     [SerializeField] float _safeInteractionDistance = 5f;
@@ -612,15 +613,18 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             float mindist = float.MaxValue;
             IDamageable<Damage, HitResult> closerTarget = null;
 
-            if (_sight.IsInSight(_player.transform) && _player.IsAlive)
+            if (_player.IsAlive)
             {
-                if(_sight.distanceToTarget < mindist)
-                    closerTarget = _player;
+                if (_sight.IsInSight(_player.transform) && _sight.distanceToTarget < mindist
+                    || _sight.distanceToTarget < _minDetectionRange)
+                        closerTarget = _player;
             }
-            else if(_sight.IsInSight(_playerClone.transform) && _playerClone.IsAlive)
+
+            if (_playerClone.IsAlive)
             {
-                if (_sight.distanceToTarget < mindist)
-                    closerTarget = _playerClone;
+                if (_sight.IsInSight(_playerClone.transform) && _sight.distanceToTarget < mindist ||
+                    _sight.distanceToTarget < _minDetectionRange)
+                        closerTarget = _playerClone;
             }
 
             if (closerTarget != null)
@@ -766,6 +770,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     //=============================== DEBUG =================================================
 
     [Space(), Header("DEBUG GIZMOS")]
+    [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
+    [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
+
     [SerializeField] bool DEBUG_WanderStateRanges = true;
     [SerializeField] Color DEBUG_WanderRange_Min_GIZMOCOLOR = Color.blue;
     [SerializeField] Color DEBUG_WanderRange_Max_GIZMOCOLOR = Color.blue;
@@ -806,6 +813,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             Gizmos.color = Color.green;
             Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
             Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
+        }
+
+        if (DEBUG_MINDETECTIONRANGE)
+        {
+            Gizmos.color = DEBUG_MINDETECTIONRANGE_COLOR;
+            Gizmos.DrawWireSphere(transform.position, _minDetectionRange);
         }
     }
 

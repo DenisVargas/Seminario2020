@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using IA.StateMachine.Generic;
 using IA.LineOfSight;
 using Core.DamageSystem;
+using System;
 
 public enum DamageType
 {
@@ -29,8 +30,27 @@ public struct DamageModifier
     public float percentual;
 }
 
-public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
+public interface ILivingEntity
 {
+    GameObject gameObject { get; }
+
+    //Permite subscibir una funcion que se llame cuando esta unidad muere.
+    void SubscribeToLifeCicleDependency(Action<GameObject> OnEntityDead);
+    void UnsuscribeToLifeCicleDependency(Action<GameObject> OnEntityDead);
+}
+
+public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEntity
+{
+    public event Action<GameObject> OnEntityDead;
+    public void SubscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    {
+        this.OnEntityDead += OnEntityDead;
+    }
+    public void UnsuscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    {
+        this.OnEntityDead -= OnEntityDead;
+    }
+
     [Header("Stats")]
     [SerializeField] float _health = 10;
     [SerializeField] float _attackRange = 5;
@@ -40,6 +60,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
     [SerializeField] DamageModifier[] resistances; //reducen el daño x el un porcentaje.
 
     [Header("Aditional Options")]
+    [SerializeField] float timeToDesapear = 8f;
     [SerializeField] bool startPatrolling = false;
     [SerializeField] float _burnTime = 3f;
 
@@ -253,14 +274,13 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
             }
 
             _rb.useGravity = false;
-            //_mainCollider.enabled = false;
             _rb.velocity = Vector3.zero;
             _trail.DisableTrailEmission();
 
             //Apago componentes que no hagan falta.
-            //gameObject.SetActive(false);
+            OnEntityDead(gameObject);
+            StartCoroutine(OnDie());
         };
-        //dead.OnUpdate += () => { };
         dead.OnExit += (x) => 
         {
             IsAlive = true;
@@ -625,12 +645,26 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
         state.Feed(BabosoState.dead);
         Debug.LogWarning("AnimEvent: BurningEnd");
     }
+    
 
     IEnumerator Burn()
     {
         burnParticles[0].SetActive(true);
         yield return new WaitForSeconds(0.1f);
         burnParticles[1].SetActive(true);
+    }
+    IEnumerator OnDie()
+    {
+        yield return new WaitForSeconds(2f);
+        float fallEffectTime = timeToDesapear;
+        while (fallEffectTime < 2f)
+        {
+            transform.position -= Vector3.down;
+            yield return null;
+            fallEffectTime += Time.deltaTime;
+        }
+
+        Destroy(gameObject);
     }
 
     //===================================== DEBUG ===============================================================
@@ -648,5 +682,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>
     }
 
     
+
 #endif
 }

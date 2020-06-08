@@ -1,68 +1,50 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Utility.ObjectPools;
+using Utility.ObjectPools.Generic;
 
 public class MouseView : MonoBehaviour
 {
     [SerializeField] GameObject Prefab_CommandTarget = null;
     [SerializeField] GameObject Prefab_MousePosition = null;
 
-    Pool<PooleableComponent> _positionViews;
-    Pool<PooleableComponent> _MousePosViews;
-
-    public List<PooleableComponent> positions = new List<PooleableComponent>();
+    GenericPool<GameObject> _MousePositionViews = null;
+    public List<GameObject> _spawnedPositions = new List<GameObject>();
 
     private void Awake()
     {
-        _positionViews = new Pool<PooleableComponent>(false);
-        _positionViews.Populate(2,
-                        () =>
-                        {
-                            var Target = Instantiate(Prefab_CommandTarget, transform.position, Quaternion.Euler(new Vector3(-90, 0, 0)));
-                            var comp = Target.GetComponent<PooleableComponent>();
-                            comp.pool = _positionViews;
-
-                            return comp;
-                        });
-
-        _MousePosViews = new Pool<PooleableComponent>(false);
-        _MousePosViews.Populate(5, () =>
-        {
-            var mPos = Instantiate(Prefab_MousePosition, Vector3.zero, Quaternion.identity);
-            var poolObj = mPos.GetComponent<PooleableComponent>();
-            poolObj.pool = _MousePosViews;
-            return poolObj;
-        });
+        _MousePositionViews = new GenericPool<GameObject>
+        (
+            10,
+            () =>
+            {
+                var spawned = Instantiate(Prefab_CommandTarget, transform.position, Quaternion.Euler(new Vector3(-90, 0, 0)));
+                spawned.SetActive(false);
+                return spawned;
+            },
+            (poolObject) => { poolObject.SetActive(true); _spawnedPositions.Add(poolObject); },
+            (poolObject) => { poolObject.SetActive(false); _spawnedPositions.Remove(poolObject); },
+            true
+        );
     }
 
     public void SetMousePositionAditive(Vector3 position)
     {
-        var Target = _positionViews.GetObject();
-        if (Target != null)
-        {
-            Target.transform.position = position;
-            positions.Add(Target);
-        }
-
-        var mPos = _MousePosViews.GetObject();
-        if (mPos != null)
-        {
-            //Si es nulo que hago?
-            mPos.transform.position = position;
-
-            var anims = mPos.GetComponentsInChildren<Animator>();
-            foreach (var anim in anims)
-            {
+        var posPreview = GameObject.Instantiate(Prefab_MousePosition, position, Quaternion.identity);
+        var animators = posPreview.GetComponentsInChildren<Animator>();
+        if (animators != null)
+            foreach (var anim in animators)
                 anim.SetTrigger("Position");
-            }
-        }
+
+        var mPos = _MousePositionViews.GetObjectFromPool();
+        if (mPos != null)
+            mPos.transform.position = position;
     }
 
     public void SetMousePosition(Vector3 position)
     {
-        for (int i = 0; i < positions.Count; i++)
-            positions[i].Dispose();
-        positions.Clear();
+        int spawnedCount = _spawnedPositions.Count;
+        for (int i = 0; i < spawnedCount; i++)
+            _MousePositionViews.DisablePoolObject(_spawnedPositions[0]);
 
         SetMousePositionAditive(position);
     }

@@ -7,6 +7,7 @@ public class Jail : MonoBehaviour
     Animator _anims;
     TrapHitBox _hitbox = null;
     Collider _destructibleHitbox = null;
+    public GameObject Smash;
 
     [SerializeField] float deactivateDelay = 1f;
     [SerializeField] bool autoDeactivate = false;
@@ -44,10 +45,12 @@ public class Jail : MonoBehaviour
         {
             _destructibleHitbox.enabled = false;
         }
+        Smash.SetActive(false);
     }
 
     public void AV_FallEnded()
     {
+        Smash.SetActive(true);
         if (_hitbox != null)
         {
             _hitbox.IsActive = true;
@@ -60,6 +63,7 @@ public class Jail : MonoBehaviour
         {
             StartCoroutine(delayedDeactivate());
         }
+        
     }
 
     IEnumerator delayedDeactivate()

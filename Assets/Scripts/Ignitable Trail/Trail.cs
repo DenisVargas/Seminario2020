@@ -124,8 +124,8 @@ public class Trail : MonoBehaviour
         if (poolSystem != null)
         {
             //Reposiciono el objeto en el mundo.
-            poolSystem.transform.position = transform.position;
-            //poolSystem.transform.right = transform.forward;
+            poolSystem.transform.position = transform.position - (transform.forward/2);
+            poolSystem.transform.right = transform.forward;
             _lastSpawned = poolSystem;
         }
     }

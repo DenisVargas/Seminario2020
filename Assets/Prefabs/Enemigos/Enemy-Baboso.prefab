@@ -4909,7 +4909,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 856897688738227760}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
@@ -5007,11 +5007,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fireTrailParent: {fileID: 0}
-  _spawnDistance: 0.1
-  _spawnOverlapTreshold: 0.05
+  _spawnDistance: 0.4
+  _spawnOverlapTreshold: 0.4
   _ignitionSystemPrefab: {fileID: 206088919360503028, guid: 705c5073aec01c04fb84ee42dee48421,
     type: 3}
-  _activeTime: 10
+  _activeTime: 15
   _burningTime: 5
   _expansionDelayTime: 0.3
   _inputWaitTime: 2

@@ -150,6 +150,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_6x6x6 (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7807,6 +7812,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_6x6x6 (54)
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9462,7 +9472,7 @@ PrefabInstance:
     - target: {fileID: 856897688738227766, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 856897688738227766, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
         type: 3}
@@ -10218,6 +10228,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube_6x6x6 (55)
+      objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
       objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
@@ -14353,6 +14368,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube_6x6x6 (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
       objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
@@ -19962,6 +19982,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_4x4x4
       objectReference: {fileID: 0}
+    - target: {fileID: 6827046416910181076, guid: 9da133b3da1a2af4ba4db672e111b400,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da133b3da1a2af4ba4db672e111b400, type: 3}
 --- !u!1 &978648167 stripped
@@ -20458,6 +20483,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube_6x6x6 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
       objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
@@ -22110,6 +22140,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_3x3x3 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1786535378310827702, guid: df63e65188c494d43bf748a8c7f5dd3d,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df63e65188c494d43bf748a8c7f5dd3d, type: 3}
 --- !u!4 &1059712476 stripped
@@ -23031,6 +23066,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23111,8 +23151,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 18.269503, y: 6.3269086, z: 6.092439}
-  m_Center: {x: -8.921218, y: 2.970127, z: -2.9537816}
+  m_Size: {x: 18.171135, y: 6.3269086, z: 6.092439}
+  m_Center: {x: -8.970402, y: 2.970127, z: -2.9537816}
 --- !u!1001 &1089249886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27258,6 +27298,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_6x6x6 (60)
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -29069,6 +29114,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_6x6x6 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -29626,6 +29676,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube_6x6x6 (36)
+      objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
       objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
@@ -30947,6 +31002,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_6x6x6 (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -31076,6 +31136,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube_6x6x6 (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
       objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
@@ -39115,6 +39180,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_6x6x6 (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -44677,6 +44747,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 290353102867599937, guid: c89c2e75ab986164a8329fe96d788bbd,
+        type: 3}
+      propertyPath: m_TagString
+      value: NavigationFloor
+      objectReference: {fileID: 0}
     - target: {fileID: 2137968489118455853, guid: c89c2e75ab986164a8329fe96d788bbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -45165,6 +45240,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6c8700b84674f64690d05fcbeba311a, type: 3}
+--- !u!1 &2027282886 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1786535378310827702, guid: df63e65188c494d43bf748a8c7f5dd3d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1059712475}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2027282887
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027282886}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.2990572, y: 6.153033, z: 3.1031373}
+  m_Center: {x: -1.5458194, y: 0.08438873, z: -1.448432}
 --- !u!1 &2028527761
 GameObject:
   m_ObjectHideFlags: 0

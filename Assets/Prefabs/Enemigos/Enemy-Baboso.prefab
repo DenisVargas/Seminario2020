@@ -4838,7 +4838,7 @@ GameObject:
   - component: {fileID: 5993281819839330285}
   - component: {fileID: 3149757821092993301}
   - component: {fileID: 1712010139}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: Enemy-Baboso
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -15107,7 +15107,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 27bbf78b68d2d6a4d8553605d9b8c8fb,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 28.647734
+      value: 17.98193
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 27bbf78b68d2d6a4d8553605d9b8c8fb,
         type: 3}
@@ -15118,6 +15118,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rastro de babafbx
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 27bbf78b68d2d6a4d8553605d9b8c8fb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27bbf78b68d2d6a4d8553605d9b8c8fb, type: 3}

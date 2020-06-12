@@ -33,7 +33,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Cutoff: 0.5
-    - _EmissionColor: 0.638
+    - _EmissionColor: 0.659
     - _EmissionPower: 1
     - _InvFade: 1
     - __dirty: 0

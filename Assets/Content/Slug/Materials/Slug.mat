@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: new Slug
+  m_Name: Slug
   m_Shader: {fileID: 4800000, guid: b62792ffbc2bab645b361d09f2203d2c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0

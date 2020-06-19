@@ -303,8 +303,10 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
     //Movimiento
     public void MoveToTarget(Vector3 destinyPosition)
     {
-        Vector3 _targetForward = (destinyPosition - transform.position).normalized.YComponent(0);
+        //Vector3 _targetForward = (destinyPosition - transform.position).normalized.YComponent(0);
+        Vector3 _targetForward = (_agent.steeringTarget - transform.position).normalized.YComponent(0);
         transform.forward = _targetForward;
+
         if (_currentTargetPos != destinyPosition)
             _currentTargetPos = destinyPosition;
         if (!_a_Walking)

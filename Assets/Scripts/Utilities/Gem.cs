@@ -14,10 +14,9 @@ public class Gem : MonoBehaviour, IInteractable
     public List<OperationType> _suportedOperations = new List<OperationType>();
     public bool IsCurrentlyInteractable => throw new System.NotImplementedException();
 
-    public int InteractionsAmmount => throw new System.NotImplementedException();
+    public int InteractionsAmmount => _suportedOperations.Count;
 
-    public Vector3 position => throw new System.NotImplementedException();
-
+    public Vector3 position => transform.position;
     public Vector3 LookToDirection => ActivationPosition.forward;
 
     public InteractionParameters GetSuportedInteractionParameters()

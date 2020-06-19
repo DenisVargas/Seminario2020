@@ -68,7 +68,7 @@ public class MouseContextTracker : MonoBehaviour
             var hit = hits[i];
 
             IInteractable interactableObject = hit.transform.GetComponentInParent<IInteractable>();
-            if (interactableObject != null)
+            if (interactableObject != null && interactableObject.InteractionsAmmount > 0)
             {
                 _context.interactuableHitted = true;
                 _context.firstInteractionObject = interactableObject;

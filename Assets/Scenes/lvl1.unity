@@ -3036,18 +3036,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (12)
       objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!1001 &137840211
 PrefabInstance:
@@ -7665,28 +7654,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 833160318}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &308234301 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-    type: 3}
-  m_PrefabInstance: {fileID: 1732386032}
-  m_PrefabAsset: {fileID: 0}
---- !u!208 &308234305
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 308234301}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!1001 &308565464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7869,16 +7836,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (16)
-      objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
@@ -12911,16 +12868,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!4 &462303340 stripped
@@ -14822,28 +14769,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 511250648}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &513177148 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-    type: 3}
-  m_PrefabInstance: {fileID: 1817223503}
-  m_PrefabAsset: {fileID: 0}
---- !u!208 &513177152
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 513177148}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!4 &514575840 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: d6c8700b84674f64690d05fcbeba311a,
@@ -14905,16 +14830,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (14)
-      objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
@@ -16714,16 +16629,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
@@ -20540,28 +20445,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 742125907}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &743249877 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-    type: 3}
-  m_PrefabInstance: {fileID: 1252655243}
-  m_PrefabAsset: {fileID: 0}
---- !u!208 &743249881
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 743249877}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!1001 &743488952
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21255,11 +21138,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (23)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
@@ -22144,28 +22022,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b7592e58f0b03940bc09e11504181a0, type: 3}
---- !u!1 &791713165 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-    type: 3}
-  m_PrefabInstance: {fileID: 137119420}
-  m_PrefabAsset: {fileID: 0}
---- !u!208 &791713169
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791713165}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!1001 &795047725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28523,16 +28379,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (19)
       objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!1001 &1009337014
@@ -29881,21 +29727,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3174702831184271575, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: OnDestroy.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 1710100235}
-    - target: {fileID: 3174702831184271575, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: OnDestroy.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
@@ -36738,13 +36569,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (21)
       objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!1001 &1253956564
 PrefabInstance:
@@ -45393,16 +45218,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (18)
       objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!1001 &1518650646
@@ -45460,16 +45275,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (15)
-      objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
@@ -50459,12 +50264,6 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!208 &1710100235 stripped
-NavMeshObstacle:
-  m_CorrespondingSourceObject: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-    type: 3}
-  m_PrefabInstance: {fileID: 1042413537}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1711471889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51632,13 +51431,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (22)
       objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!1001 &1732389885
 PrefabInstance:
@@ -51775,16 +51568,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (17)
-      objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
@@ -53792,13 +53575,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (20)
       objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!1001 &1817849315
 PrefabInstance:
@@ -56099,16 +55876,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!4 &1882044839 stripped
@@ -57044,16 +56811,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_1x1x1 (11)
       objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}
 --- !u!1001 &1928629334
@@ -57348,16 +57105,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Box_1x1x1 (13)
-      objectReference: {fileID: 0}
-    - target: {fileID: 381544679429717547, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095050971765177677, guid: 0875567973ccacc4e8488a4f389d3c91,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0875567973ccacc4e8488a4f389d3c91, type: 3}

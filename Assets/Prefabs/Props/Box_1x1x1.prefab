@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3174702831184271575}
   - component: {fileID: 2732326046432118612}
   - component: {fileID: 2095050971765177677}
-  - component: {fileID: 2815561311414242771}
   m_Layer: 0
   m_Name: Box_1x1x1
   m_TagString: Untagged
@@ -133,28 +132,15 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381544679429717547}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.5, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.5, z: 0}
   m_TimeToStationary: 0.5
---- !u!65 &2815561311414242771
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381544679429717547}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7994080308221422143
 GameObject:
   m_ObjectHideFlags: 0
@@ -5062,11 +5048,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box_Destroyed
       objectReference: {fileID: 0}
-    - target: {fileID: 6325665386275723659, guid: 3ee4c7d50a53c0a429411a4e883e91e1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ee4c7d50a53c0a429411a4e883e91e1, type: 3}
 --- !u!1 &6807446758980920037 stripped
@@ -5342,6 +5323,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198778633208645958, guid: 89956e675b749204c8e10395ce2b5fb9,
         type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 1.3799596
+      objectReference: {fileID: 0}
+    - target: {fileID: 198778633208645958, guid: 89956e675b749204c8e10395ce2b5fb9,
+        type: 3}
       propertyPath: InitialModule.maxNumParticles
       value: 200
       objectReference: {fileID: 0}
@@ -5354,11 +5340,6 @@ PrefabInstance:
         type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 198778633208645958, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1.3799596
       objectReference: {fileID: 0}
     - target: {fileID: 199049106770456860, guid: 89956e675b749204c8e10395ce2b5fb9,
         type: 3}

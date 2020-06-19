@@ -342,6 +342,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
 
         _agent.enabled = false;
         _rb.useGravity = true;
+        _rb.isKinematic = false;
         _mainCollider.isTrigger = true;
     }
     void Die()

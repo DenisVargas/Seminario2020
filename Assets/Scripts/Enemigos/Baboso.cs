@@ -257,7 +257,8 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
             .AddTransition(BabosoState.explode, explode)
             .AddTransition(BabosoState.patroll, patroll);
 
-        explode.AddTransition(BabosoState.idle, idle);
+        explode.AddTransition(BabosoState.idle, idle)
+               .AddTransition(BabosoState.dead, dead);
         #endregion
 
         dead.OnEnter += (x) => 
@@ -316,10 +317,9 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
                     staineable.StainWithSlime();
                 }
             }
-        };
-        explode.OnUpdate += () =>
-        {
-            print("Explotanding");
+
+            print("LLego a la explotion!");
+            state.Feed(BabosoState.dead);
         };
 
         idle.OnEnter += (previousState) => 
@@ -562,11 +562,14 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
 
     public HitResult GetHit(Damage damage)
     {
+
         HitResult result = new HitResult()
         {
             conected = true,
             fatalDamage = true
         };
+
+        if (_currentState == BabosoState.dead) return result;
 
         //Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
         if (damage.instaKill)

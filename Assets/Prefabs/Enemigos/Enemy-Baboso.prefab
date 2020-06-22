@@ -4938,7 +4938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visibles:
     serializedVersion: 2
-    m_Bits: 3221225472
+    m_Bits: 3221225728
   range: 8
   angle: 60
   Debug_LineOfSight: 1
@@ -4963,6 +4963,7 @@ MonoBehaviour:
   _health: 10
   _attackRange: 1.5
   _explodeRange: 5
+  _minDetectionRange: 3
   weaknesses: []
   resistances: []
   _desapearEffectDelay: 4
@@ -4980,8 +4981,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _currentState: 0
-  DEBUG_AttackRangeColor: {r: 1, g: 1, b: 1, a: 1}
-  DEBUG_ExplodeRangeColor: {r: 1, g: 1, b: 1, a: 1}
+  DEBUG_ATACKRANGE: 0
+  DEBUG_AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
+  DEBUG_EXPLODERANGE: 0
+  DEBUG_ExplodeRangeColor: {r: 1, g: 0.4669811, b: 0.4669811, a: 1}
+  DEBUG_MINDETECTIONRANGE: 0
+  DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 0.18705177, b: 1, a: 1}
 --- !u!136 &5993281819839330285
 CapsuleCollider:
   m_ObjectHideFlags: 0

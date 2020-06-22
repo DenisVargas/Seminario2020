@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using IA.StateMachine.Generic;
 using IA.LineOfSight;
 using Core.DamageSystem;
+using Core.Debuging; 
 
 public struct HitResult
 {
@@ -21,7 +22,7 @@ public struct DamageAcumulation
     public float Ammount;
 }
 
-[RequireComponent(typeof(NavMeshAgent), typeof(Animator), typeof(LineOfSightComponent))]
+[RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
 public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractable, ILivingEntity
 {
     event Action<GameObject> OnEntityDead = delegate { };
@@ -80,7 +81,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [SerializeField] LayerMask _targeteables = ~0;
     [SerializeField] float _rageMode_TargetDetectionRange = 5;
 
-    private float _rageModeTime = 0f;
+    int _hitSecuence = 0;
+    [SerializeField] float _detectionDelay = 0.5f;
+    bool _playerFound = false;
+    bool _otherKilleableTargetFounded = false;
+    bool _otherDestructibleFounded = false;
+    List<Transform> _targetsfounded;
 
     //--------------------------------- Wander State ----------------------------------------
 
@@ -110,14 +116,14 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     private GenericFSM<BoboState> state = null;
     [SerializeField] BoboState _currentState = BoboState.invalid;
-    //[SerializeField] BoboState _chainState   =  BoboState.invalid;
+    [SerializeField] BoboState _chainState   =  BoboState.invalid;
 
     private Damage _currentDamageState = new Damage() { Ammount = 10 };
     //Dictionary<DamageType, List<DamageAcumulation>> DamageStack = new Dictionary<DamageType, List<DamageAcumulation>>();
 
     //----------------------------------- Targeting -----------------------------------------
 
-    IDamageable<Damage, HitResult> _target;
+    IDamageable<Damage, HitResult> _killeableTarget;
     Vector3 _targetPosition;
     NMA_Controller _player;
     ClonBehaviour _playerClone;
@@ -156,6 +162,11 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         get => _anim.GetBool(_animHash[5]);
         set => _anim.SetBool(_animHash[5], value);
     }
+    bool _a_targetFinded
+    {
+        get => _anim.GetBool(_animHash[6]);
+        set => _anim.SetBool(_animHash[6], value);
+    }
 
     public bool IsAlive { get; private set; } = (true);
     public bool IsCurrentlyInteractable { get; private set; } = (true);
@@ -166,16 +177,75 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     private Rigidbody _rb = null;
     private Collider _mainCollider = null;
     private NavMeshAgent _agent = null;
-    private LineOfSightComponent _sight = null;
+    [SerializeField] LineOfSightComponent _sight = null;
+
+#if UNITY_EDITOR
+    //=============================== DEBUG =================================================
+
+    [Space(), Header("DEBUG GIZMOS")]
+    [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
+    [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
+
+    [SerializeField] bool DEBUG_WanderStateRanges = true;
+    [SerializeField] Color DEBUG_WanderRange_Min_GIZMOCOLOR = Color.blue;
+    [SerializeField] Color DEBUG_WanderRange_Max_GIZMOCOLOR = Color.blue;
+    [Space]
+    [SerializeField] bool DEBUG_RageMode_Target = true;
+    [SerializeField] bool DEBUG_RageMode_Ranges = true;
+    [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
+    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
+
+    private void OnDrawGizmos()
+    {
+        if (DEBUG_RageMode_Ranges)
+        {
+            Gizmos.color = DEBUG_RM_TrgDetectRange_GIZMOCOLOR;
+            Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
+            Gizmos.DrawWireSphere(transform.position, _rageMode_TargetDetectionRange);
+        }
+
+        if (DEBUG_RageMode_Target && _killeableTarget != null)
+        {
+            bool isVisible = _sight.IsInSight(_killeableTarget.transform);
+            Gizmos.color = isVisible ? Color.green : Color.red;
+            Gizmos.DrawLine(transform.position, _killeableTarget.transform.position);
+        }
+
+        if (DEBUG_WanderStateRanges)
+        {
+            Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
+
+            Gizmos.color = DEBUG_WanderRange_Min_GIZMOCOLOR;
+            Gizmos.DrawWireSphere(transform.position, _wanderMinDistance);
+
+            Gizmos.color = DEBUG_WanderRange_Max_GIZMOCOLOR;
+            Gizmos.DrawWireSphere(transform.position, _wanderMaxDistance);
+        }
+
+        if (DEBUG_INTERACTION_RAIDUS)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
+            Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
+        }
+
+        if (DEBUG_MINDETECTIONRANGE)
+        {
+            Gizmos.color = DEBUG_MINDETECTIONRANGE_COLOR;
+            Gizmos.DrawWireSphere(transform.position, _minDetectionRange);
+        }
+    }
+
+#endif
 
     //=======================================================================================
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _sight = GetComponent<LineOfSightComponent>();
         _rb = GetComponent<Rigidbody>();
         _mainCollider = GetComponent<Collider>();
+        _targetsfounded = new List<Transform>();
 
         _health = _maxHealth;
 
@@ -194,7 +264,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         }
 
         _anim = GetComponent<Animator>();
-        _animHash = new int[6];
+        _animHash = new int[7];
         for (int i = 0; i < _animHash.Length; i++)
             _animHash[i] = _anim.parameters[i].nameHash;
 
@@ -235,6 +305,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
              .AddTransition(BoboState.attack, attack);
 
         attack.AddTransition(BoboState.dead, dead)
+              .AddTransition(BoboState.attack, attack)
               .AddTransition(BoboState.think, think)
               .AddTransition(BoboState.idle, idle)
               .AddTransition(BoboState.fallTrap, falling)
@@ -271,7 +342,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         idle.OnUpdate += ()=> 
         {
             checkForPlayerOrClone();
-            if ( _target != null && _currentState != BoboState.pursue)
+
+            print(_sight.distanceToTarget);
+            if ( _killeableTarget != null && _currentState != BoboState.pursue)
             {
                 state.Feed(BoboState.pursue);
             }
@@ -365,11 +438,11 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         pursue.OnUpdate += () =>
         {
             //Me muevo en dirección al objetivo.
-            if (_target != null)
-                MoveToTarget(_target.transform.position);
+            if (_killeableTarget != null)
+                MoveToTarget(_killeableTarget.transform.position);
 
             //Si la distancia de ataque es menor a un treshold.
-            float dst = Vector3.Distance(transform.position, _target.transform.position);
+            float dst = Vector3.Distance(transform.position, _killeableTarget.transform.position);
             if (dst <= _attackRange)
                 state.Feed(BoboState.attack);
         };
@@ -388,9 +461,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             _currentState = BoboState.think;
 
             checkForPlayerOrClone();
-            if (_target != null || _target.IsAlive)
+            if (_killeableTarget != null || _killeableTarget.IsAlive)
             {
-                if (_sight.IsInSight(_target.transform))
+                if (_sight.IsInSight(_killeableTarget.transform))
                     state.Feed(_sight.distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
             }
         };
@@ -410,43 +483,48 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             _agent.isStopped = true;
             _agent.ResetPath();
             _rb.velocity = Vector3.zero;
-            transform.forward = (_target.transform.position - transform.position).YComponent(0).normalized;
+            transform.forward = (_killeableTarget.transform.position - transform.position).YComponent(0).normalized;
 
             //Le digo a mi current target, que se quede quieto!.
-            _target.GetStun();
+            _killeableTarget.GetStun();
         };
         attack.OnExit += (x) =>
         {
             _agent.isStopped = false;
-            _a_Attack = false;
         };
 
         rage.OnEnter += (x) =>
         {
             _currentState = BoboState.rage;
-            //Seteo la animación -> Necesito mostrarle al player que me di cuenta que entre en rage!
+            Core.Debuging.Console.instance.Print($"{gameObject.name} entro al estado Rage");
+            _targetsfounded = new List<Transform>();
+
             _a_GetHit = true;
-            //_anim.SetBool((int)BoboState.rage, true);
-
-            //Mientras espero a que la animación termine...
-
-            ////Si no estoy en rageMode
-            //if (!_rageMode)
+            _hitSecuence = 1;
+        };
+        rage.OnUpdate += () =>
+        {
+            if (_hitSecuence == 2 && !_playerFound)
+            {
+                CheckNearVisible();
+            }
+            //if (_hitSecuence == 3)
             //{
-            //    //Marco el estado a rageMode!
-            //    _rageMode = true;
-            //    //Inicio el contador.
-            //    _rageModeTime = _rageMode_Duration;
+            //    //Mira en dirección del target encontrado.
+            //    //if (_killeableTarget != null && _otherKilleableTargetFounded || _killeableTarget != null && _playerFound)
+            //    //{
+            //    //    Vector3 dirtoTarget = (_killeableTarget.transform.position - transform.position).YComponent(0).normalized;
+            //    //    transform.forward = dirtoTarget;
+            //    //}
             //}
-
-            //Selecciono un nuevo Target y marco el siguiente estado como persue.
-            SelectRageModeTarget();
-
-            //Cuando termina la animación pasa el estado pursue.
         };
         rage.OnExit += (x) =>
         {
             _a_GetHit = false;
+            _hitSecuence = 0;
+            _otherKilleableTargetFounded = false;
+            _targetsfounded = new List<Transform>();
+            _playerFound = false;
         };
 
         dead.OnEnter += (x) =>
@@ -480,7 +558,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     {
         state.Update();
     }
-    
+
     //=================================== Private Memeber Funcs =============================
 
     void ResetSetUp()
@@ -495,18 +573,13 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         if (targetPosition != _agent.destination)
             _agent.SetDestination(targetPosition);
     }
-    void SelectRageModeTarget()
+    void CheckNearVisible()
     {
         //Priorizamos las unidades vivas.
-        //Si no hay unidades vidas seleccionamos el target destructible mas cercano.
-
-        //Raycast en área.
         var posibleTargets = Physics.OverlapSphere(transform.position, _rageMode_TargetDetectionRange, _targeteables);
         List<IDamageable<Damage, HitResult>> OnSight_Killeables = new List<IDamageable<Damage, HitResult>>();
-        List<IDamageable<Damage, HitResult>> OutOfSight_Killeables = new List<IDamageable<Damage, HitResult>>();
-
+        //Si no hay unidades vidas seleccionamos el target destructible mas cercano.
         List<IDestructible> OnSight_Destructibles = new List<IDestructible>();
-        List<IDestructible> OutOfSight_Destructibles = new List<IDestructible>();
 
         foreach (var item in posibleTargets)
         {
@@ -515,93 +588,63 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             if (Damageable == (IDamageable<Damage, HitResult>)this)
                 continue;
 
-            if (Damageable != null)
+            if (Damageable != null && _sight.IsInSight(item.transform))
             {
-                if (_sight.IsInSight(item.transform))
-                    OnSight_Killeables.Add(Damageable);
+                OnSight_Killeables.Add(Damageable);
+
+                if (Damageable.gameObject.CompareTag("Player"))
+                {
+                    Debug.LogWarning("TE VI PUTO");
+                    _playerFound = true;
+                    _killeableTarget = Damageable;
+                    StartCoroutine(DelayedDetection());
+                    break;
+                }
                 else
-                    OutOfSight_Killeables.Add(Damageable);
+                    _otherKilleableTargetFounded = true;
+
                 continue;
             }
+
             //Chequeo por IDestructible.
             var Destructible = item.GetComponent<IDestructible>();
-            if (Destructible != null)
+            if (Destructible != null && _sight.IsInSight(item.transform))
             {
-                if (_sight.IsInSight(item.transform))
-                    OnSight_Destructibles.Add(Destructible);
-                else
-                    OutOfSight_Destructibles.Add(Destructible);
+                _otherDestructibleFounded = true;
+                OnSight_Destructibles.Add(Destructible);
             }
         }
 
-        Transform CloserTarget = null;
         if (OnSight_Killeables.Count > 0)
         {
             //Si hay objetivos dentro del rango de vision...
-            CloserTarget = OnSight_Killeables
+            var CloserTarget = OnSight_Killeables
                               .OrderBy(killeable =>
                               {
                                   return Vector3.Distance(transform.position, killeable.gameObject.transform.position);
                               })
                               .First()
                               .gameObject.transform;
+
+            if (!_targetsfounded.Contains(CloserTarget))
+                _targetsfounded.Add(CloserTarget);
         }
         else if(OnSight_Destructibles.Count > 0)
         {
             //Si no hay objetivos killeables, chequeo los destructibles...
-            CloserTarget = OnSight_Destructibles
+            var CloserTarget = OnSight_Destructibles
                 .OrderBy( destructible => {
                     return Vector3.Distance(transform.position, destructible.position);
                 })
                 .First()
                 .transform;
-        }
-        else
-        {
-            if (OutOfSight_Killeables.Count > 0)
-            {
-                CloserTarget = OutOfSight_Killeables
-                    .OrderBy(killeable =>
-                    {
-                        //return Vector3.Distance(transform.position, killeable.gameObject.transform.position);
-                        return Vector3.Angle(transform.forward, killeable.gameObject.transform.position);
-                    })
-                    .First()
-                    .gameObject.transform;
-            }
-            else if(OutOfSight_Destructibles.Count > 0)
-            {
-                CloserTarget = OutOfSight_Destructibles
-                    .OrderBy(killeable =>
-                    {
-                        return Vector3.Distance(transform.position, killeable.transform.position);
-                    })
-                    .First()
-                    .transform;
-            }
-        }
 
-        if (CloserTarget != null)
-        {
-            var targetDamageableComponent = CloserTarget.GetComponent<IDamageable<Damage, HitResult>>();
-            if (targetDamageableComponent != null)
-            {
-                _target = targetDamageableComponent;
-                state.Feed(BoboState.pursue);
-            }
+            if (!_targetsfounded.Contains(CloserTarget))
+                _targetsfounded.Add(CloserTarget);
         }
-        else state.Feed(BoboState.idle);
+        print($"{gameObject.name}::CheckNearVisible");
     }
-    void UpdateRageModeState()
-    {
-        _rageModeTime -= Time.deltaTime;
 
-        if (_rageModeTime < 0)
-        {
-            //Acá puedo añadir cosas.
-            _rageModeTime = 0;
-        }
-    }
     Vector3 getRandomPosition()
     {
         //Calculo un target Random.
@@ -614,31 +657,31 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     }
     void KillTarget()
     {
-        if (_target != null && _target.IsAlive)
+        if (_killeableTarget != null && _killeableTarget.IsAlive)
         {
-            FeedDamageResult(_target.GetHit(new Damage() { instaKill = true, type = DamageType.piercing }));
+            FeedDamageResult(_killeableTarget.GetHit(new Damage() { instaKill = true, type = DamageType.piercing }));
         }
-        else
-            Debug.LogError("La cagaste, el target es nulo");
     }
     void checkForPlayerOrClone()
     {
         if (_player != null && _playerClone != null)
         {
+            float distToPlayer = (_player.transform.position - transform.position).magnitude;
+            float distToClone = (_playerClone.transform.position - transform.position).magnitude;
             float mindist = float.MaxValue;
             IDamageable<Damage, HitResult> closerTarget = null;
 
             if (_player.IsAlive)
             {
-                if (_sight.IsInSight(_player.transform) && _sight.distanceToTarget < mindist
-                    || _sight.distanceToTarget < _minDetectionRange)
+                if (_sight.IsInSight(_player.transform) && distToPlayer < mindist
+                    || distToPlayer < _minDetectionRange)
                         closerTarget = _player;
             }
 
             if (_playerClone.IsAlive)
             {
-                if (_sight.IsInSight(_playerClone.transform) && _sight.distanceToTarget < mindist ||
-                    _sight.distanceToTarget < _minDetectionRange)
+                if (_sight.IsInSight(_playerClone.transform) && distToClone < mindist ||
+                    distToClone < _minDetectionRange)
                         closerTarget = _playerClone;
             }
 
@@ -646,7 +689,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             {
                 var currentTarget = closerTarget;
                 if (currentTarget != null)
-                    _target = currentTarget;
+                    _killeableTarget = currentTarget;
                 else
                     Debug.LogError("La cagaste, el objetivo no es Damageable");
             }
@@ -702,7 +745,11 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     {
         //Si cause daño efectivamente.
         if (result.conected && result.fatalDamage)
-            _target = null;
+        {
+            Core.Debuging.Console.instance.Print($"{gameObject.name} ha conectado un golpe directo y ha matado a su objetivo", DebugLevel.info);
+            _a_targetFinded = false;
+            _killeableTarget = null;
+        }
     }
     public void GetStun(){}
 
@@ -757,7 +804,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     //============================== Animation Events =======================================
 
-    void AV_AttackStart() { }
+    void AV_AttackStart()
+    {
+    }
     void AV_Attack_Hit()
     {
         KillTarget();
@@ -765,22 +814,71 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     }
     void AV_Attack_Ended()
     {
-        checkForPlayerOrClone();
-        if (_target == null)
+        if (_currentState == BoboState.rage)
         {
             state.Feed(BoboState.idle);
         }
-        else
+
+        if (_currentState == BoboState.attack)
         {
-            float distanceToTarget = Vector3.Distance(transform.position, _target.transform.position);
-            state.Feed(distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
+            checkForPlayerOrClone();
+            if (_killeableTarget == null || !_killeableTarget.IsAlive)
+            {
+                state.Feed(BoboState.idle);
+            }
+            else
+            {
+                float distanceToTarget = Vector3.Distance(transform.position, _killeableTarget.transform.position);
+                state.Feed(distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
+            }
         }
     }
     void AV_HitReact_End()
     {
         _a_GetHit = false;
     }
+    void AV_TurnArround_Start()
+    {
+        Core.Debuging.Console.instance.Print($"{gameObject.name}::Evento De Animacion::TurnArround_Start", DebugLevel.info);
+        print($"{gameObject.name}::Evento De Animacion::TurnArround_Start");
+        _hitSecuence = 2;
+    }
+    void AV_TurnArround_End()
+    {
+        _hitSecuence = 3;
+        if (_playerFound || _otherKilleableTargetFounded || _otherDestructibleFounded)
+            _a_targetFinded = true;
+    }
+    void AV_Angry_Start()
+    {
 
+    }
+    void AV_Angry_End()
+    {
+        if (_otherKilleableTargetFounded || _otherDestructibleFounded)
+        {
+            Core.Debuging.Console.instance.Print($"{gameObject.name} ha encontrado a un target válido.", DebugLevel.info);
+            _killeableTarget = _targetsfounded[0].GetComponent<IDamageable<Damage, HitResult>>();
+            _a_walk = true;
+            state.Feed(BoboState.pursue);
+        }
+        else
+        {
+            Core.Debuging.Console.instance.Print($"{gameObject.name} no ha encontrado a un target válido.", DebugLevel.error);
+            state.Feed(BoboState.idle);
+        }
+    }
+
+    IEnumerator DelayedDetection()
+    {
+        yield return new WaitForSeconds(_detectionDelay);
+
+        Debug.LogWarning("PLAYER SPOTTED");
+        _a_walk = true;
+        _a_targetFinded = true;
+        state.Feed(BoboState.pursue);
+        Core.Debuging.Console.instance.Print($"{gameObject.name} ha encontrado al Player!: {_killeableTarget.gameObject.name}", DebugLevel.info);
+    }
     IEnumerator FallAndDestroyGameObject()
     {
         yield return new WaitForSeconds(_desapearEffectDelay);
@@ -797,63 +895,4 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
         Destroy(gameObject);
     }
-
-#if UNITY_EDITOR
-    //=============================== DEBUG =================================================
-
-    [Space(), Header("DEBUG GIZMOS")]
-    [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
-    [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
-
-    [SerializeField] bool DEBUG_WanderStateRanges = true;
-    [SerializeField] Color DEBUG_WanderRange_Min_GIZMOCOLOR = Color.blue;
-    [SerializeField] Color DEBUG_WanderRange_Max_GIZMOCOLOR = Color.blue;
-    [Space]
-    [SerializeField] bool DEBUG_RageMode_Target = true;
-    [SerializeField] bool DEBUG_RageMode_Ranges = true;
-    [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
-    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
-
-    private void OnDrawGizmos()
-    {
-        if (DEBUG_RageMode_Ranges)
-        {
-            Gizmos.color = DEBUG_RM_TrgDetectRange_GIZMOCOLOR;
-            Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
-            Gizmos.DrawWireSphere(transform.position, _rageMode_TargetDetectionRange);
-        }
-
-        if (DEBUG_RageMode_Target && _target != null)
-        {
-            bool isVisible = _sight.IsInSight(_target.transform);
-            Gizmos.color = isVisible ? Color.green : Color.red;
-            Gizmos.DrawLine(transform.position, _target.transform.position);
-        }
-
-        if (DEBUG_WanderStateRanges)
-        {
-            Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
-
-            Gizmos.color = DEBUG_WanderRange_Min_GIZMOCOLOR;
-            Gizmos.DrawWireSphere(transform.position, _wanderMinDistance);
-
-            Gizmos.color = DEBUG_WanderRange_Max_GIZMOCOLOR;
-            Gizmos.DrawWireSphere(transform.position, _wanderMaxDistance);
-        }
-
-        if (DEBUG_INTERACTION_RAIDUS)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
-            Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
-        }
-
-        if (DEBUG_MINDETECTIONRANGE)
-        {
-            Gizmos.color = DEBUG_MINDETECTIONRANGE_COLOR;
-            Gizmos.DrawWireSphere(transform.position, _minDetectionRange);
-        }
-    }
-
-#endif
 }

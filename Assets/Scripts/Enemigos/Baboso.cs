@@ -52,9 +52,10 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
     }
 
     [Header("Stats")]
-    [SerializeField] float _health = 10;
-    [SerializeField] float _attackRange = 5;
-    [SerializeField] float _explodeRange = 5;
+    [SerializeField] float _health = 10f;
+    [SerializeField] float _attackRange = 5f;
+    [SerializeField] float _explodeRange = 5f;
+    [SerializeField] float _minDetectionRange = 1f;
 
     [SerializeField] DamageModifier[] weaknesses;  //Aumentan el daño multiplicandolo x un porcentaje.
     [SerializeField] DamageModifier[] resistances; //reducen el daño x el un porcentaje.
@@ -138,10 +139,41 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
     private float _remainingStopTime;
 
 #if UNITY_EDITOR
+    //===================================== DEBUG ===============================================================
+
     [Space, Header("Debug Options")]
+    [SerializeField] bool DEBUG_ATACKRANGE = false;
     [SerializeField] Color DEBUG_AttackRangeColor = Color.white;
+
+    [SerializeField] bool DEBUG_EXPLODERANGE = false;
     [SerializeField] Color DEBUG_ExplodeRangeColor = Color.white;
-    
+
+    [SerializeField] bool DEBUG_MINDETECTIONRANGE = false;
+    [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.white;
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
+
+        if (DEBUG_ATACKRANGE)
+        {
+            Gizmos.color = DEBUG_AttackRangeColor;
+            Gizmos.DrawWireSphere(transform.position, _attackRange); 
+        }
+
+        if (DEBUG_EXPLODERANGE)
+        {
+            Gizmos.color = DEBUG_ExplodeRangeColor;
+            Gizmos.DrawWireSphere(transform.position, _explodeRange); 
+        }
+
+        if (DEBUG_MINDETECTIONRANGE)
+        {
+            Gizmos.color = DEBUG_MINDETECTIONRANGE_COLOR;
+            Gizmos.DrawWireSphere(transform.position, _minDetectionRange);
+        }
+    }
+
 #endif
 
     float health
@@ -435,9 +467,6 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
         {
             _currentState = BabosoState.attack;
             _a_attack = true;
-
-            KillTarget();
-
             _agent.isStopped = true;
         };
         attack.OnExit += (nextState) =>
@@ -507,7 +536,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
 
     void checkPlayerOrClone()
     {
-        if (_player != null && _sight.IsInSight(_player))
+        if (_player != null && _sight.IsInSight(_player) || _sight.distanceToTarget < _minDetectionRange)
         {
             var targetState = _player.GetComponent<IDamageable<Damage, HitResult>>();
             if (targetState != null && targetState.IsAlive)
@@ -516,7 +545,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
                 state.Feed(BabosoState.pursue);
             }
         }
-        if (_playerClone != null && _sight.IsInSight(_playerClone))
+        if (_playerClone != null && _sight.IsInSight(_playerClone) || _sight.distanceToTarget < _minDetectionRange)
         {
             if(_playerClone.gameObject.activeSelf)
             {
@@ -538,13 +567,13 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
             if (killeable != null)
             {
                 killeable.GetStun();
-                killeable.GetHit(new Damage() { instaKill = true });
+                FeedDamageResult(killeable.GetHit(new Damage() { instaKill = true }));
             }
             else
                 Debug.LogError("La cagaste, el target no es Damageable");
         }
         else
-            Debug.LogError("La cagaste, el target es nulo");
+            Debug.LogWarning("El target es nulo, No lo habran matado ya antes?");
     }
 
     public void FallInTrap()
@@ -593,18 +622,27 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
         }
         return result;
     }
-    public void FeedDamageResult(HitResult result) { }
+    public void FeedDamageResult(HitResult result){ }
     public Damage GetDamageStats()
     {
         return _damageState;
     }
     public void GetStun() { }
-
-    //===================================== Animation Events ===================================================
+//===================================== Animation Events ===================================================
 
     //Fases de Ataques --> StartUp, Active, Recovery
     //Por ahora el juego es Instakill, asi que cuando un enemigo te alcanza, te golpea y tu mueres.
 
+    void AV_Attack_Start()
+    {
+        if (_currentTarget != null)
+            transform.forward = (_currentTarget.transform.position - transform.position).normalized;
+    }
+    void AV_Attack_Land()
+    {
+        if (_currentTarget != null)
+            KillTarget();
+    }
     void AV_Attack_End()
     {
         var AttackTarget = _currentTarget.GetComponent<IDamageable<Damage, HitResult>>();
@@ -655,19 +693,4 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
 
         Destroy(gameObject);
     }
-
-    //===================================== DEBUG ===============================================================
-
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        //Rango de ataque
-        Gizmos.color = DEBUG_AttackRangeColor;
-        Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-
-        Gizmos.color = DEBUG_ExplodeRangeColor;
-        Gizmos.DrawWireSphere(transform.position, _explodeRange);
-    }
-#endif
 }

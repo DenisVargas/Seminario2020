@@ -6,14 +6,17 @@ using TMPro;
 
 namespace Core.Debuging
 {
+    public enum DebugLevel
+    {
+        info,
+        warning,
+        error
+    }
+
     public class Console : MonoBehaviour
     {
-        public static Console c; //Singleton.
-        public enum DebugLevel
-        {
-            warning,
-            error
-        }
+        public static Console instance; //Singleton.
+        
 
         #region Texto y Consola
         [Header("Componentes")]
@@ -27,6 +30,7 @@ namespace Core.Debuging
 
         [Header("Debug Level Colours")]
         [SerializeField] Color normalLevelColor = Color.red;
+        [SerializeField] Color infoLevelColor = Color.red;
         [SerializeField] Color WarningLevelColor = Color.red;
         [SerializeField] Color errorLevelColor = Color.red;
 
@@ -35,7 +39,7 @@ namespace Core.Debuging
 
         private void Awake()
         {
-            if (c == null) c = this;
+            if (instance == null) instance = this;
             else Destroy(gameObject);
 
             _commands.Add("cs", () => { _consoleText.text = ""; });
@@ -83,6 +87,9 @@ namespace Core.Debuging
             Color debugColor = Color.white;
             switch (level)
             {
+                case DebugLevel.info:
+                    debugColor = infoLevelColor;
+                    break;
                 case DebugLevel.warning:
                     debugColor = WarningLevelColor;
                     break;

@@ -21,7 +21,6 @@ public class Gem : MonoBehaviour, IInteractable
 
     public InteractionParameters GetSuportedInteractionParameters()
     {
-       
         return new InteractionParameters()
         {
             ActiveTime = 10,

@@ -850,15 +850,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     }
     void AV_Angry_End()
     {
-        if (_otherKilleableTargetFounded)
+        if (_otherKilleableTargetFounded || _otherDestructibleFounded)
         {
             Core.Debuging.Console.instance.Print($"{gameObject.name} ha encontrado a un target válido.", DebugLevel.info);
             _killeableTarget = _targetsfounded[0].GetComponent<IDamageable<Damage, HitResult>>();
+            _a_walk = true;
             state.Feed(BoboState.pursue);
-        }
-        else if (_otherDestructibleFounded)
-        {
-            print("Se encontro un objeto destructible");
         }
         else
         {
@@ -872,8 +869,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         yield return new WaitForSeconds(_detectionDelay);
 
         Debug.LogWarning("PLAYER SPOTTED");
+        _a_walk = true;
         _a_targetFinded = true;
-        _chainState = BoboState.pursue;
+        state.Feed(BoboState.pursue);
         Core.Debuging.Console.instance.Print($"{gameObject.name} ha encontrado al Player!: {_killeableTarget.gameObject.name}", DebugLevel.info);
     }
     IEnumerator FallAndDestroyGameObject()

@@ -48952,6 +48952,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Killing_Small_Corridor Variant (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5.6752596
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.843495
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 6.4935713
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -3.1048946
+      objectReference: {fileID: 0}
     - target: {fileID: 8632818721413787912, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -61492,12 +61512,22 @@ PrefabInstance:
     - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}
       propertyPath: m_Size.x
-      value: 5.284686
+      value: 5.357393
       objectReference: {fileID: 0}
     - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}
       propertyPath: m_Center.x
-      value: -2.642343
+      value: -2.6786964
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.843495
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 6.4935713
       objectReference: {fileID: 0}
     - target: {fileID: 8632818721413787912, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}

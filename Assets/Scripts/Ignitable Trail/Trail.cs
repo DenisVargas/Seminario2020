@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using Utility.ObjectPools.Generic;
 
@@ -125,7 +126,14 @@ public class Trail : MonoBehaviour
         {
             //Reposiciono el objeto en el mundo.
             poolSystem.transform.position = transform.position - (transform.forward/2);
-            poolSystem.transform.right = transform.forward;
+            //poolSystem.transform.right = transform.forward;
+            //int Rnd = UnityEngine.Random.Range(0,2);
+            //if(Rnd == 0)
+            //    poolSystem.SetDirection(-1);
+            //else
+            //    poolSystem.SetDirection(1);
+            poolSystem.SetDirection(UnityEngine.Random.Range(0, 2) == 0 ? transform.forward : -transform.forward).SetMaterial(UnityEngine.Random.Range(0, 3));
+
             _lastSpawned = poolSystem;
         }
     }

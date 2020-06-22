@@ -18,6 +18,10 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
 
     public List<IIgnitableObject> toIgnite = new List<IIgnitableObject>();
 
+    public MeshRenderer myMesh;
+    public List<Material> myMaterials = new List<Material>();
+    Dictionary<int, Material> MySelectedMatirial = new Dictionary<int, Material>();
+
     [SerializeField] Collider _interactionCollider = null;
     [SerializeField] TrapHitBox _trapHitBox = null;
 
@@ -228,6 +232,20 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
     private void OnMouseExit()
     {
         //Feedback de interacción.
+    }
+public IgnitableObject SetDirection(Vector3 Dir)
+    {
+        transform.right = Dir;
+        return this;
+    }
+    public IgnitableObject SetMaterial(int Key)
+    {
+        for (int i = 0; i < myMaterials.Count; i++)
+        {
+            MySelectedMatirial.Add(i, myMaterials[i]);
+        }
+        myMesh.material = MySelectedMatirial[Key];
+        return this;
     }
 
 #if UNITY_EDITOR

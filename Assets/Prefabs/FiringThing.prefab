@@ -162,6 +162,11 @@ MonoBehaviour:
   efectTargets:
     serializedVersion: 2
     m_Bits: 1
+  myMesh: {fileID: 8835212789124928482}
+  myMaterials:
+  - {fileID: 2100000, guid: 0d15e9c5d54cd6d43900fea4969bbdb8, type: 2}
+  - {fileID: 2100000, guid: 9943f33052d9b994db37508c6e613e7d, type: 2}
+  - {fileID: 2100000, guid: eb03c59d75f8b914a98519bbfa32e727, type: 2}
   _interactionCollider: {fileID: 206088919360502986}
   _trapHitBox: {fileID: 3289302911783658168}
   _remainingLifeTime: 0

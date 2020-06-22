@@ -328,21 +328,22 @@ MonoBehaviour:
   _health: 100
   _maxHealth: 100
   _attackRange: 2
-  _minDetectionRange: 2.5
+  _minDetectionRange: 3
   _desapearEffectDelay: 4
   _timeToDesapear: 2
-  _safeInteractionDistance: 5
+  _safeInteractionDistance: 3.5
   _suportedOperations: 04000000
   Weaknesses: []
   resistances: []
   _targeteables:
     serializedVersion: 2
-    m_Bits: 1073742336
+    m_Bits: 3221225728
   _rageMode_TargetDetectionRange: 10
-  _wanderMinDistance: 2
-  _wanderMaxDistance: 10
+  _detectionDelay: 0.1
+  _wanderMinDistance: 3
+  _wanderMaxDistance: 6
   _minWanderTime: 2
-  _maxWanderTime: 10
+  _maxWanderTime: 6
   _currentState: 0
   _chainState: 0
   _sight: {fileID: 4840451606186532923}

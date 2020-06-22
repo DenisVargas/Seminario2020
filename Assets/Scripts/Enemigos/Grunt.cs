@@ -305,6 +305,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
              .AddTransition(BoboState.attack, attack);
 
         attack.AddTransition(BoboState.dead, dead)
+              .AddTransition(BoboState.attack, attack)
               .AddTransition(BoboState.think, think)
               .AddTransition(BoboState.idle, idle)
               .AddTransition(BoboState.fallTrap, falling)
@@ -341,6 +342,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         idle.OnUpdate += ()=> 
         {
             checkForPlayerOrClone();
+
+            print(_sight.distanceToTarget);
             if ( _killeableTarget != null && _currentState != BoboState.pursue)
             {
                 state.Feed(BoboState.pursue);
@@ -663,20 +666,22 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     {
         if (_player != null && _playerClone != null)
         {
+            float distToPlayer = (_player.transform.position - transform.position).magnitude;
+            float distToClone = (_playerClone.transform.position - transform.position).magnitude;
             float mindist = float.MaxValue;
             IDamageable<Damage, HitResult> closerTarget = null;
 
             if (_player.IsAlive)
             {
-                if (_sight.IsInSight(_player.transform) && _sight.distanceToTarget < mindist
-                    || _sight.distanceToTarget < _minDetectionRange)
+                if (_sight.IsInSight(_player.transform) && distToPlayer < mindist
+                    || distToPlayer < _minDetectionRange)
                         closerTarget = _player;
             }
 
             if (_playerClone.IsAlive)
             {
-                if (_sight.IsInSight(_playerClone.transform) && _sight.distanceToTarget < mindist ||
-                    _sight.distanceToTarget < _minDetectionRange)
+                if (_sight.IsInSight(_playerClone.transform) && distToClone < mindist ||
+                    distToClone < _minDetectionRange)
                         closerTarget = _playerClone;
             }
 
@@ -817,7 +822,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         if (_currentState == BoboState.attack)
         {
             checkForPlayerOrClone();
-            if (_killeableTarget == null)
+            if (_killeableTarget == null || !_killeableTarget.IsAlive)
             {
                 state.Feed(BoboState.idle);
             }

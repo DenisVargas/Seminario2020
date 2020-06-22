@@ -67,6 +67,22 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0
+        functionName: AV_Attack_Start
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: ace8e4810fdadff4790a0b7006c4b3b8,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.3765823
+        functionName: AV_Attack_Land
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: ace8e4810fdadff4790a0b7006c4b3b8,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

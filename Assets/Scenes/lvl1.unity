@@ -397,7 +397,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 40
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -671,7 +671,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 38
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -781,6 +781,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VAS1_6x4 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938046507845951451, guid: ece849d66bc981f42825a9cb36cbb952,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ece849d66bc981f42825a9cb36cbb952, type: 3}
@@ -1847,6 +1852,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &68361372 stripped
@@ -2330,6 +2340,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!1 &76074694
@@ -2614,6 +2629,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -3002,7 +3022,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 28
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -3269,6 +3289,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &122603553 stripped
@@ -3438,6 +3463,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!1001 &137119420
@@ -3564,6 +3594,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
@@ -4110,6 +4145,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (34)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -4877,6 +4917,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &178558399 stripped
@@ -5052,6 +5097,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &185270658 stripped
@@ -5205,6 +5255,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner_Finit (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
@@ -5366,6 +5421,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -5675,6 +5735,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -5987,6 +6052,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -6537,6 +6607,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &230546819 stripped
@@ -6616,6 +6691,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (47)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -7016,7 +7096,7 @@ PrefabInstance:
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
@@ -7092,6 +7172,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -7222,6 +7307,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -7387,6 +7477,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
@@ -7942,6 +8037,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8147,6 +8247,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &289586338 stripped
@@ -8210,7 +8315,7 @@ PrefabInstance:
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
@@ -8360,6 +8465,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -8601,6 +8711,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -8993,6 +9108,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &315318462 stripped
@@ -9052,7 +9172,7 @@ PrefabInstance:
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
@@ -9178,6 +9298,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -9342,6 +9467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -9767,6 +9897,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (36)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &332317687 stripped
@@ -10121,6 +10256,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &336610429 stripped
@@ -10195,6 +10335,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -10833,6 +10978,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -11798,6 +11948,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (41)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &376403049 stripped
@@ -11981,6 +12136,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12111,6 +12271,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &380672158 stripped
@@ -12191,6 +12356,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!1001 &386322471
@@ -12259,6 +12429,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (31)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -12576,6 +12751,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12710,6 +12890,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (50)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -13178,7 +13363,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 33
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -13222,90 +13407,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3094b2c123410ee48a7f6d2258ec7523, type: 3}
---- !u!1001 &438555761
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1857209142}
-    m_Modifications:
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -34.345
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.928
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.959
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4948794864911169691, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_Name
-      value: Rock_FlamePlace (10)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0b114b99a18090c47acc642532a682ac, type: 3}
 --- !u!1001 &439855001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13542,6 +13643,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13756,7 +13862,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -13996,6 +14102,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -14686,7 +14797,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 30
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -14871,97 +14982,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1417144566}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &478750210
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 478750211}
-  - component: {fileID: 478750212}
-  m_Layer: 0
-  m_Name: Point Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &478750211
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478750210}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.559}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 984523862}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &478750212
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478750210}
-  m_Enabled: 1
-  serializedVersion: 9
-  m_Type: 2
-  m_Color: {r: 0.9245283, g: 0.5969303, b: 0.41429335, a: 1}
-  m_Intensity: 1.36
-  m_Range: 9.870674
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!4 &482647711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: d6c8700b84674f64690d05fcbeba311a,
@@ -15232,6 +15252,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
@@ -15951,6 +15976,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &506856435 stripped
@@ -16328,6 +16358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner_Finit (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
@@ -17168,6 +17203,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (56)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &550410058 stripped
@@ -17387,6 +17427,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &557763092 stripped
@@ -17491,6 +17536,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -17787,6 +17837,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &570044386 stripped
@@ -17945,6 +18000,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (37)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -18585,6 +18645,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner_Finit (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &602788119 stripped
@@ -18665,6 +18730,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &603230644 stripped
@@ -18724,7 +18794,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -19094,7 +19164,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 37
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -19159,6 +19229,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
@@ -19373,6 +19448,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786535378310827702, guid: df63e65188c494d43bf748a8c7f5dd3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df63e65188c494d43bf748a8c7f5dd3d, type: 3}
@@ -19776,7 +19856,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 25
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -20332,7 +20412,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -22245,6 +22325,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &733298439 stripped
@@ -22440,6 +22525,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -22826,6 +22916,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &756085869 stripped
@@ -22900,6 +22995,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -23103,6 +23203,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &766094639 stripped
@@ -23207,6 +23312,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner_Finit (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
@@ -23531,12 +23641,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 773894304}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &775350204 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 1195170256}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &775683430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: d6c8700b84674f64690d05fcbeba311a,
@@ -23707,6 +23811,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -24032,6 +24141,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -25511,6 +25625,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &837832452 stripped
@@ -25817,6 +25936,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner_Finit (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &850723882 stripped
@@ -25977,6 +26101,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (40)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -26256,6 +26385,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -26390,6 +26524,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (37)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -26651,6 +26790,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -27116,6 +27260,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!1001 &894538332
@@ -27189,6 +27338,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (55)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -27357,6 +27511,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &901612876 stripped
@@ -27392,6 +27551,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
@@ -27680,6 +27844,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &919103371 stripped
@@ -27894,6 +28063,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (52)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &927136552 stripped
@@ -27931,7 +28105,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1857209142}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &929074670
 Light:
@@ -28083,140 +28257,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 929361312}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &933207071
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 984523862}
-    m_Modifications:
-    - target: {fileID: 1253142483436318, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_Name
-      value: ToonFire
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.049999356
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.92499936
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.50000024
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.50000024
-      objectReference: {fileID: 0}
-    - target: {fileID: 198168859160489886, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198168859160489886, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198168859160489886, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198205007009897148, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198205007009897148, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198205007009897148, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198260517930635872, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198260517930635872, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198260517930635872, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198321560017527566, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198321560017527566, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: autoRandomSeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198778633208645958, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198778633208645958, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
 --- !u!1001 &933263835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28423,7 +28463,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -28494,6 +28534,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -28786,6 +28831,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (49)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &957530918 stripped
@@ -28950,6 +29000,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
@@ -29558,7 +29613,7 @@ PrefabInstance:
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
@@ -30196,12 +30251,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
---- !u!4 &984523862 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 438555761}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &986519445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30273,6 +30322,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -30723,7 +30777,7 @@ PrefabInstance:
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
         type: 3}
@@ -31104,17 +31158,17 @@ PrefabInstance:
     - target: {fileID: 7251703340794333835, guid: 42a94bfd3ab9cc548aa910b30b04d4dc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.27
+      value: -53.96
       objectReference: {fileID: 0}
     - target: {fileID: 7251703340794333835, guid: 42a94bfd3ab9cc548aa910b30b04d4dc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.982
+      value: 2.61
       objectReference: {fileID: 0}
     - target: {fileID: 7251703340794333835, guid: 42a94bfd3ab9cc548aa910b30b04d4dc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.01999998
+      value: 4.48
       objectReference: {fileID: 0}
     - target: {fileID: 7251703340794333835, guid: 42a94bfd3ab9cc548aa910b30b04d4dc,
         type: 3}
@@ -31584,6 +31638,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -32298,6 +32357,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (38)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1038229509 stripped
@@ -32372,6 +32436,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -32621,6 +32690,101 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1695388209}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1048565038
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1857209142}
+    m_Modifications:
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -40.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.9804263
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.123
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0072985603
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.050164178
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.2206072
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.97404456
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.453
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 5.794
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -25.500002
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863788639, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_Name
+      value: Torch (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917874097535, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1.24
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3094b2c123410ee48a7f6d2258ec7523, type: 3}
+--- !u!4 &1048565039 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+    type: 3}
+  m_PrefabInstance: {fileID: 1048565038}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1049020999 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 856897688738227766, guid: 77b2ac5fe20f8f54d9e418c67c7b8476,
@@ -32780,6 +32944,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -32942,6 +33111,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &1057847793 stripped
@@ -33032,6 +33206,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1786535378310827702, guid: df63e65188c494d43bf748a8c7f5dd3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df63e65188c494d43bf748a8c7f5dd3d, type: 3}
 --- !u!4 &1059712476 stripped
@@ -33061,6 +33240,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -33266,6 +33450,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
@@ -33865,6 +34054,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &1075678623 stripped
@@ -33946,6 +34140,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!1001 &1079705898
@@ -34014,6 +34213,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -34942,6 +35146,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -35096,6 +35305,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 372454808512177247, guid: 8a2a78301f340fc4bbf6ba861bb4cbfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 3016494618825307021, guid: 8a2a78301f340fc4bbf6ba861bb4cbfe,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -35204,7 +35418,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -35351,6 +35565,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -35476,8 +35695,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.8381815, z: 1}
+  m_Center: {x: 0.0000000016904698, y: -0.41909057, z: -0.0000000029943952}
 --- !u!23 &1108935146
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -35691,6 +35910,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!1001 &1117452061
@@ -35861,6 +36085,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1121223831 stripped
@@ -35946,6 +36175,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (42)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -36089,6 +36323,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -36169,8 +36408,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.7110541, y: 1.6351304, z: 1.8971684}
-  m_Center: {x: 3.2385108, y: -0.41398394, z: -1.2724949}
+  m_Size: {x: 1.7110538, y: 1.6351304, z: 3.8603106}
+  m_Center: {x: 3.2385046, y: -0.41398305, z: -0.29092354}
 --- !u!1001 &1134254185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36192,6 +36431,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -36333,6 +36577,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (39)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -36502,7 +36751,7 @@ PrefabInstance:
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 27
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
@@ -36637,6 +36886,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
@@ -36819,6 +37073,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -37797,7 +38056,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 36
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -37917,6 +38176,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
@@ -38356,90 +38620,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1195145370}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1195170256
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1857209142}
-    m_Modifications:
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -34.345
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.928
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.631
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289660000733719771, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4948794864911169691, guid: 0b114b99a18090c47acc642532a682ac,
-        type: 3}
-      propertyPath: m_Name
-      value: Rock_FlamePlace (11)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0b114b99a18090c47acc642532a682ac, type: 3}
 --- !u!1001 &1195585324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38586,6 +38766,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &1195701343 stripped
@@ -38660,6 +38845,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -38914,6 +39104,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!1001 &1218880764
@@ -39130,6 +39325,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -39990,6 +40190,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &1253956565 stripped
@@ -40347,140 +40552,6 @@ Transform:
   m_Father: {fileID: 800680095}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1276109504
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 775350204}
-    m_Modifications:
-    - target: {fileID: 1253142483436318, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_Name
-      value: ToonFire
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.049999356
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.92499936
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.50000024
-      objectReference: {fileID: 0}
-    - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.50000024
-      objectReference: {fileID: 0}
-    - target: {fileID: 198168859160489886, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198168859160489886, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198168859160489886, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198205007009897148, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198205007009897148, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198205007009897148, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198260517930635872, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198260517930635872, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198260517930635872, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198321560017527566, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198321560017527566, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: autoRandomSeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198778633208645958, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198778633208645958, guid: 89956e675b749204c8e10395ce2b5fb9,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
 --- !u!1001 &1276929516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40777,6 +40848,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -40907,6 +40983,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!1001 &1283270303
@@ -40969,7 +41050,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 31
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -41133,6 +41214,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
@@ -41591,6 +41677,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
@@ -42174,6 +42265,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1307304852 stripped
@@ -42258,6 +42354,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
@@ -43345,6 +43446,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -43861,6 +43967,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &1349556193 stripped
@@ -44228,6 +44339,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!1001 &1361770741
@@ -44371,6 +44487,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -44657,7 +44778,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 24
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -44746,6 +44867,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
@@ -44855,7 +44981,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 23
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -45074,6 +45200,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 372454808512177247, guid: 8a2a78301f340fc4bbf6ba861bb4cbfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 3016494618825307021, guid: 8a2a78301f340fc4bbf6ba861bb4cbfe,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -45278,6 +45409,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -45560,6 +45696,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (47)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -45859,97 +46000,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 334614412}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1410350437
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1410350438}
-  - component: {fileID: 1410350439}
-  m_Layer: 0
-  m_Name: Point Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1410350438
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410350437}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.559}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 775350204}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &1410350439
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410350437}
-  m_Enabled: 1
-  serializedVersion: 9
-  m_Type: 2
-  m_Color: {r: 0.9245283, g: 0.5969303, b: 0.41429335, a: 1}
-  m_Intensity: 1.01
-  m_Range: 9.46417
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!1001 &1414034617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46510,6 +46560,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (44)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1429523495 stripped
@@ -46573,7 +46628,7 @@ PrefabInstance:
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
@@ -46943,6 +46998,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2757744213279788497, guid: adca1cb1c9e1fa9488ed5c5a61493614,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7987041102033585548, guid: adca1cb1c9e1fa9488ed5c5a61493614,
         type: 3}
       propertyPath: m_TagString
@@ -46952,6 +47012,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7987041102033585548, guid: adca1cb1c9e1fa9488ed5c5a61493614,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7987041102033585550, guid: adca1cb1c9e1fa9488ed5c5a61493614,
         type: 3}
@@ -47504,6 +47569,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &1460088963 stripped
@@ -47636,6 +47706,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -47777,6 +47852,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9149029082296901544, guid: e105c727eee1ea4428c5e6b4815d1b3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e105c727eee1ea4428c5e6b4815d1b3f, type: 3}
 --- !u!4 &1465053069 stripped
@@ -47890,6 +47970,110 @@ Transform:
   m_Father: {fileID: 1214139191}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1469289257
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1857209142}
+    m_Modifications:
+    - target: {fileID: 5092059917863435379, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.027
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435379, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.404
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435379, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.231
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -64.507
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.164
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.4840171
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.56976354
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5592921
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.44772533
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.40262145
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -73.661
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -192.27899
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 100.275
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917863788639, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_Name
+      value: Torch (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092059917874097535, guid: 3094b2c123410ee48a7f6d2258ec7523,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1.24
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3094b2c123410ee48a7f6d2258ec7523, type: 3}
 --- !u!1 &1469926477 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7822388804674350332, guid: 5bff0f06a4bb7a84ca6cc90db388b4fd,
@@ -48768,6 +48952,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Killing_Small_Corridor Variant (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5.6752596
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.843495
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 6.4935713
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -3.1048946
+      objectReference: {fileID: 0}
     - target: {fileID: 8632818721413787912, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -49377,6 +49581,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (51)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1535259416 stripped
@@ -49581,6 +49790,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &1544552171 stripped
@@ -49655,6 +49869,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -50342,6 +50561,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &1560090618 stripped
@@ -50503,6 +50727,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (48)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1564907683 stripped
@@ -50583,6 +50812,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -51073,6 +51307,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -51472,7 +51711,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 39
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -51593,6 +51832,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (39)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -51998,6 +52242,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1613486425 stripped
@@ -52272,6 +52521,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &1618484236 stripped
@@ -52352,6 +52606,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!1001 &1624252684
@@ -52409,7 +52668,7 @@ PrefabInstance:
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 35
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
@@ -52818,7 +53077,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 32
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -53578,7 +53837,7 @@ PrefabInstance:
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 691015850728444347, guid: e49fbd04c70c023449b3948b91ebcb4b,
         type: 3}
@@ -53721,17 +53980,17 @@ PrefabInstance:
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -20.98
+      value: -53.67
       objectReference: {fileID: 0}
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.982
+      value: 2.61
       objectReference: {fileID: 0}
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.66
+      value: 5.12
       objectReference: {fileID: 0}
     - target: {fileID: 6414858267132625118, guid: a79c0a916e587934e9ba5f23399def4a,
         type: 3}
@@ -54082,6 +54341,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (46)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1684373581 stripped
@@ -54192,6 +54456,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -54976,6 +55245,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1713481473 stripped
@@ -55248,6 +55522,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner_INT_EXT (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -55584,6 +55863,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (53)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1725382742 stripped
@@ -55613,6 +55897,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -55743,6 +56032,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -56447,7 +56741,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 34
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -57091,6 +57385,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!1001 &1775243823
@@ -57159,6 +57458,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -57277,6 +57581,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1982289330605929219, guid: 624f2cac0addbe945a9186754af77374,
     type: 3}
   m_PrefabInstance: {fileID: 1776351955}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1778348174 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
+    type: 3}
+  m_PrefabInstance: {fileID: 1469289257}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1778760674 stripped
 Transform:
@@ -57902,6 +58212,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1812753064 stripped
@@ -58039,6 +58354,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (45)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -58248,6 +58568,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (54)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1817978641 stripped
@@ -58416,6 +58741,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1820775403 stripped
@@ -58491,6 +58821,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &1821294171 stripped
@@ -58565,6 +58900,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VAS1_6x4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938046507845951451, guid: ece849d66bc981f42825a9cb36cbb952,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ece849d66bc981f42825a9cb36cbb952, type: 3}
@@ -58992,6 +59332,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7822388804674350332, guid: 5bff0f06a4bb7a84ca6cc90db388b4fd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bff0f06a4bb7a84ca6cc90db388b4fd, type: 3}
 --- !u!1001 &1836178140
@@ -59060,6 +59405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -59197,6 +59547,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -59317,6 +59672,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -59659,11 +60019,10 @@ Transform:
   - {fileID: 273071896}
   - {fileID: 1098383693}
   - {fileID: 1042588409}
-  - {fileID: 984523862}
   - {fileID: 929074669}
-  - {fileID: 775350204}
   - {fileID: 516948306}
   - {fileID: 1649502243}
+  - {fileID: 691015851389017608}
   - {fileID: 1848081511}
   - {fileID: 55098370}
   - {fileID: 170048527}
@@ -59675,7 +60034,6 @@ Transform:
   - {fileID: 613764653}
   - {fileID: 1593694590}
   - {fileID: 374000331}
-  - {fileID: 691015851389017608}
   - {fileID: 1386336300}
   - {fileID: 1379652192}
   - {fileID: 141625251}
@@ -59694,6 +60052,8 @@ Transform:
   - {fileID: 2074152024}
   - {fileID: 49282636}
   - {fileID: 1308170190}
+  - {fileID: 1048565039}
+  - {fileID: 1778348174}
   m_Father: {fileID: 981319527}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59718,6 +60078,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -60009,6 +60374,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!1001 &1865213527
@@ -60151,6 +60521,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -60537,6 +60912,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -60970,6 +61350,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -61127,12 +61512,22 @@ PrefabInstance:
     - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}
       propertyPath: m_Size.x
-      value: 5.284686
+      value: 5.357393
       objectReference: {fileID: 0}
     - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}
       propertyPath: m_Center.x
-      value: -2.642343
+      value: -2.6786964
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.843495
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022484667337206869, guid: 6f393ebcb33c7b5419443155fc477f19,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 6.4935713
       objectReference: {fileID: 0}
     - target: {fileID: 8632818721413787912, guid: 6f393ebcb33c7b5419443155fc477f19,
         type: 3}
@@ -61263,6 +61658,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -62026,6 +62426,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner_Finit (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &1937675685 stripped
@@ -62408,6 +62813,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!1001 &1948534168
@@ -62431,6 +62841,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -62516,6 +62931,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -62646,6 +63066,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -63326,6 +63751,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner_Finit (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &1958722260 stripped
@@ -63690,6 +64120,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
@@ -64101,6 +64536,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
 --- !u!4 &1989112876 stripped
@@ -64250,6 +64690,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (43)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &1993255971 stripped
@@ -64324,6 +64769,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner_Finit (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
@@ -64672,6 +65122,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &2007372597 stripped
@@ -64751,6 +65206,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (46)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -65010,6 +65470,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -65290,6 +65755,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -65591,6 +66061,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6091301587051721106, guid: 512b7ecff1d95514ca2b1e097a6c129a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 7522873360258889635, guid: 512b7ecff1d95514ca2b1e097a6c129a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -65699,7 +66174,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -65815,6 +66290,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (30)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
@@ -65984,6 +66464,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
 --- !u!4 &2039394517 stripped
@@ -66127,6 +66612,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner_Finit (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086682622942325871, guid: 0bb7d4fedb5cb5344b1de2003f780cf7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb7d4fedb5cb5344b1de2003f780cf7, type: 3}
@@ -66357,8 +66847,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.6551212, z: 1}
+  m_Center: {x: 0.0000000013423458, y: -0.32756057, z: -0.0000000022288864}
 --- !u!23 &2053393831
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66749,7 +67239,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 26
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -67529,6 +68019,11 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -68018,6 +68513,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleWall_T1_VDS1_6x4 (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 8383138671294096136, guid: 0f39e095b8fbfa44cad8333d07b1d13c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f39e095b8fbfa44cad8333d07b1d13c, type: 3}
 --- !u!4 &2113535759 stripped
@@ -68296,6 +68796,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547374596315487827, guid: d632e3b3ca858d64eabf80f9b1dc16db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6060546734075873889, guid: d632e3b3ca858d64eabf80f9b1dc16db,
         type: 3}
@@ -68856,7 +69361,7 @@ PrefabInstance:
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
       propertyPath: m_RootOrder
-      value: 29
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 5092059917863435391, guid: 3094b2c123410ee48a7f6d2258ec7523,
         type: 3}
@@ -69146,6 +69651,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SimpleWall_T1_VBS1_6x4 (35)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221051462878845783, guid: b707cbb0302fd1b4cbee07103f83e2b3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b707cbb0302fd1b4cbee07103f83e2b3, type: 3}
@@ -69576,7 +70086,7 @@ Transform:
   - {fileID: 396969932}
   - {fileID: 468961778}
   m_Father: {fileID: 1857209142}
-  m_RootOrder: 22
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1126051401965813998
 Transform:

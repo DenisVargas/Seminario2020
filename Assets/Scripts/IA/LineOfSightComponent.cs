@@ -52,19 +52,21 @@ namespace IA.LineOfSight
                 return false;
             }
 
-            positionDiference = target.position - transform.position;
+            positionDiference = (target.position - transform.position);
             distanceToTarget = positionDiference.magnitude;
-            angleToTarget = Vector3.Angle(transform.forward, positionDiference);
+            Vector3 BidimensionalProjection = positionDiference.YComponent(0);
+            angleToTarget = Vector3.Angle(transform.forward, BidimensionalProjection);
+            dirToTarget = positionDiference.normalized;
 
             dirToTarget = positionDiference.normalized;
 
             if (distanceToTarget > range || angleToTarget > angle) return false;
 
             RaycastHit hitInfo;
-            if (Physics.Raycast(transform.position, dirToTarget, out hitInfo, range, visibles))
+            if (Physics.Raycast(transform.position, dirToTarget, out hitInfo, range + 1, visibles))
                 return hitInfo.transform == target;
 
-            return true;
+            return false;
         }
 
         //Snippet for Debugg

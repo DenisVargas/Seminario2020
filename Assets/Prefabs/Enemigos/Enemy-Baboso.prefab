@@ -4938,7 +4938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visibles:
     serializedVersion: 2
-    m_Bits: 3221225472
+    m_Bits: 3221225728
   range: 8
   angle: 60
   Debug_LineOfSight: 1

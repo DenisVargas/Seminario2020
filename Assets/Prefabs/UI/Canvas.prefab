@@ -1120,6 +1120,7 @@ MonoBehaviour:
   _openKey: 256
   _activeObject: {fileID: 540497177}
   normalLevelColor: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 1}
+  infoLevelColor: {r: 0, g: 0.50425196, b: 1, a: 1}
   WarningLevelColor: {r: 1, g: 0.4485501, b: 0, a: 1}
   errorLevelColor: {r: 0.8301887, g: 0.16055535, b: 0.16055535, a: 1}
 --- !u!1 &1531545665

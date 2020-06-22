@@ -91,6 +91,61 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &5648313807326625295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2600450864647600134}
+  - component: {fileID: 4840451606186532923}
+  m_Layer: 0
+  m_Name: SightSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2600450864647600134
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648313807326625295}
+  m_LocalRotation: {x: -0.69491166, y: -0.18672186, z: -0.106801644, w: 0.6861678}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 317979888359518059}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -83.482, y: -108.242004, z: 84.245}
+--- !u!114 &4840451606186532923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648313807326625295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e1924a165a8704792f42281b06649a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibles:
+    serializedVersion: 2
+    m_Bits: 3221225728
+  range: 10
+  angle: 45
+  Debug_LineOfSight: 1
+  rangeColor: {r: 1, g: 1, b: 1, a: 1}
+  angleColor: {r: 1, g: 0, b: 0, a: 1}
+  positionDiference: {x: 0, y: 0, z: 0}
+  dirToTarget: {x: 0, y: 0, z: 0}
+  angleToTarget: 0
+  distanceToTarget: 0
 --- !u!1 &8855646504975492525
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +217,6 @@ GameObject:
   - component: {fileID: 1513995254284600776}
   - component: {fileID: 3840256945297130291}
   - component: {fileID: 1897162461496647059}
-  - component: {fileID: 7964812142779624980}
   - component: {fileID: 1324527352422155877}
   m_Layer: 30
   m_Name: Grunt
@@ -259,30 +313,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &7964812142779624980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9118807196185049341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78e1924a165a8704792f42281b06649a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visibles:
-    serializedVersion: 2
-    m_Bits: 3221225472
-  range: 10
-  angle: 45
-  Debug_LineOfSight: 1
-  rangeColor: {r: 1, g: 1, b: 1, a: 1}
-  angleColor: {r: 1, g: 1, b: 1, a: 1}
-  positionDiference: {x: 0, y: 0, z: 0}
-  dirToTarget: {x: 0, y: 0, z: 0}
-  angleToTarget: 0
-  distanceToTarget: 0
 --- !u!114 &1324527352422155877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,6 +344,8 @@ MonoBehaviour:
   _minWanderTime: 2
   _maxWanderTime: 10
   _currentState: 0
+  _chainState: 0
+  _sight: {fileID: 4840451606186532923}
   DEBUG_MINDETECTIONRANGE: 1
   DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 1, b: 1, a: 1}
   DEBUG_WanderStateRanges: 0
@@ -405,6 +437,12 @@ PrefabInstance:
 --- !u!4 &5444688218013075045 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 311c0d87c20ccd24da9a83084dd1287a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078013808036097407}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &317979888359518059 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8458764096696352236, guid: 311c0d87c20ccd24da9a83084dd1287a,
     type: 3}
   m_PrefabInstance: {fileID: 1078013808036097407}
   m_PrefabAsset: {fileID: 0}

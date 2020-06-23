@@ -240,10 +240,7 @@ public IgnitableObject SetDirection(Vector3 Dir)
     }
     public IgnitableObject SetMaterial(int Key)
     {
-        for (int i = 0; i < myMaterials.Count; i++)
-        {
-            MySelectedMatirial.Add(i, myMaterials[i]);
-        }
+        
         myMesh.material = MySelectedMatirial[Key];
         return this;
     }
@@ -257,6 +254,13 @@ public IgnitableObject SetDirection(Vector3 Dir)
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _interactionRadius);
+    }
+    void Awake()
+    {
+        for (int i = 0; i < myMaterials.Count; i++)
+        {
+            MySelectedMatirial.Add(i, myMaterials[i]);
+        }
     }
 #endif
 }

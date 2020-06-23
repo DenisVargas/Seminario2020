@@ -15,6 +15,6 @@ namespace Core.DamageSystem
         Input GetDamageStats();
 
         //Stuns!
-        void GetStun();
+        void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod);
     }
 }

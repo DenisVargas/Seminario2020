@@ -21,6 +21,7 @@ public struct Damage
     public float Ammount;
     public float criticalMultiplier;
     public bool instaKill;
+    public int KillAnimationType;
 }
 
 [System.Serializable]
@@ -566,7 +567,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
             var killeable = _currentTarget.GetComponent<IDamageable<Damage, HitResult>>();
             if (killeable != null)
             {
-                killeable.GetStun();
+                killeable.GetStun(transform.position, 0);
                 FeedDamageResult(killeable.GetHit(new Damage() { instaKill = true }));
             }
             else
@@ -627,7 +628,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
     {
         return _damageState;
     }
-    public void GetStun() { }
+    public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethodID) { }
 //===================================== Animation Events ===================================================
 
     //Fases de Ataques --> StartUp, Active, Recovery

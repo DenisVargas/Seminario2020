@@ -486,7 +486,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             transform.forward = (_killeableTarget.transform.position - transform.position).YComponent(0).normalized;
 
             //Le digo a mi current target, que se quede quieto!.
-            _killeableTarget.GetStun();
+            _killeableTarget.GetStun(transform.position, 1);
         };
         attack.OnExit += (x) =>
         {
@@ -659,7 +659,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     {
         if (_killeableTarget != null && _killeableTarget.IsAlive)
         {
-            FeedDamageResult(_killeableTarget.GetHit(new Damage() { instaKill = true, type = DamageType.piercing }));
+            FeedDamageResult(_killeableTarget.GetHit(new Damage() { instaKill = true, type = DamageType.piercing, KillAnimationType = 1 }));
         }
     }
     void checkForPlayerOrClone()
@@ -751,7 +751,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             _killeableTarget = null;
         }
     }
-    public void GetStun(){}
+    public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod){}
 
     //================================ Interaction System ===================================
 

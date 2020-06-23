@@ -58,6 +58,21 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         get => _anims.GetBool(animHash[6]);
         set => _anims.SetBool(animHash[6], value);
     }
+    bool _a_GetStunned
+    {
+        get => _anims.GetBool(animHash[7]);
+        set => _anims.SetBool(animHash[7], value);
+    }
+    int _a_KillingMethodID
+    {
+        get => _anims.GetInteger(animHash[8]);
+        set => _anims.SetInteger(animHash[8], value);
+    }
+    bool _a_GetSmashed
+    {
+        get => _anims.GetBool(animHash[9]);
+        set => _anims.SetBool(animHash[9], value);
+    }
 
     public Vector3 position => transform.position;
 
@@ -102,7 +117,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         }
 
         _anims = GetComponent<Animator>();
-        animHash = new int[7];
+        animHash = new int[10];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -345,7 +360,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         _rb.isKinematic = false;
         _mainCollider.isTrigger = true;
     }
-    void Die()
+    void Die(int KillingAnimType)
     {
         PlayerInputEnabled = false;
 
@@ -358,6 +373,11 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         _rb.useGravity = false;
         _rb.velocity = Vector3.zero;
         _agent.velocity = Vector3.zero;
+        _a_KillingMethodID = KillingAnimType;
+
+        if (KillingAnimType == 1)
+            _a_GetSmashed = true;
+
         _a_Dead = true;
         IsAlive = false;
         ImDeadBro();
@@ -370,7 +390,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         HitResult result = new HitResult() { conected = true, fatalDamage = true };
         if (damage.instaKill)
         {
-            Die();
+            Die(damage.KillAnimationType);
         }
         return result;
     }
@@ -385,8 +405,15 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
             type = DamageType.piercing
         };
     }
-    public void GetStun()
+    public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod)
     {
+        Vector3 DirToAgressor = (AgressorPosition - transform.position).normalized;
+        transform.forward = DirToAgressor;
+
+        _a_Walking = false;
+        _a_KillingMethodID = PosibleKillingMethod;
+        _a_GetStunned = true;
+
         PlayerInputEnabled = false;
         comandos.Clear();
         _agent.isStopped = true;

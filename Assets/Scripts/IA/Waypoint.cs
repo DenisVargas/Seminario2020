@@ -1,43 +1,27 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Waypoint : MonoBehaviour
 {
-    public GameObject pointPrefab;
+    public int CurrentPositionIndex = 0;
     public List<Transform> points = new List<Transform>();
 
-    int currentPosition = 0;
-
-    public Vector3 getNextPosition()
+    public Vector3 getPosition(int index)
     {
-        currentPosition++;
-        if (currentPosition >= points.Count)
-            currentPosition = 0;
-
-        return points[currentPosition].position;
+        if (index < points.Count)
+            return points[index].position;
+        else return points[CurrentPositionIndex].position;
     }
+    public Vector3 getNextPosition(int from)
+    {
+        from++;
+        if (from >= points.Count)
+            from = 0;
 
-    //public void GetNextPoints()
-    //{
-        //var childs = transform.GetComponentsInChildren<Transform>();
-        //if (childs != null && childs.Length > 0)
-        //{
-        //    for (int i = 1; i < childs.Length; i++)
-        //    {
-        //        Vector3 position = (childs[i]).position;
-        //        if (!point.Contains(position))
-        //            point.Add(position);
-        //    }
-        //}
-        //else
-        //{
-        //    string message = childs != null ? "El resultado es nulo" : "El count es 0";
-        //    Debug.LogError(message);
-        //}
-    //}
-
-    // Update is called once per frame
+        return points[from].position;
+    }
 
     #region Lerping
     public static Vector2 Lerp(Vector2 a, Vector2 b, float t)
@@ -60,6 +44,6 @@ public class Waypoint : MonoBehaviour
         Vector2 p0 = QuadraticCurve(a, b, c, t);
         Vector2 p1 = QuadraticCurve(b, c, d, t);
         return Lerp(p0, p1, t);
-    } 
+    }
     #endregion
 }

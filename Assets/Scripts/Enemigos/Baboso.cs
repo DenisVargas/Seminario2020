@@ -396,7 +396,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
                     _agent.isStopped = false;
 
                 //Obtengo un target Point para moverme.
-                _targetLocation = patrolPoints.getNextPosition();
+                _targetLocation = patrolPoints.getNextPosition(0);
                 _stoping = false;
 
                 if (!_stoping && _agent.destination != _targetLocation)
@@ -411,7 +411,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
             {
                 //_PositionsMoved++;
                 //_stoping = _PositionsMoved >= _toStopPositions;
-                _agent.SetDestination(patrolPoints.getNextPosition());
+                _agent.SetDestination(patrolPoints.getNextPosition(0));
                 _stoping = true;
             }
 

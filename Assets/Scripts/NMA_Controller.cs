@@ -78,6 +78,8 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
 
     public bool IsAlive { get; private set; } = (true);
 
+    public ParticleSystem BloodStain;
+
     Camera _viewCamera = null;
     Collider _mainCollider = null;
     Rigidbody _rb = null;
@@ -92,6 +94,7 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
     [SerializeField] float _clonCooldown         = 4f;
     [SerializeField] float _ClonMovementTreshold = 0.1f;
     bool _canCastAClon                           = true;
+
 
     Vector3 _currentTargetPos;
     float forwardLerpTime;
@@ -472,6 +475,10 @@ public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IIn
         _a_Clon = false;
         PlayerInputEnabled = true;
         _canCastAClon = true;
+    }
+    public void PlayBlood()
+    {
+        BloodStain.Play();
     }
 
     IEnumerator clonCoolDown()

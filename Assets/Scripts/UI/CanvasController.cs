@@ -50,10 +50,13 @@ public class CanvasController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
          
             Fade.canvasRenderer.SetAlpha(i*0.1f);
+            if (i == 0)
+                Fade.enabled = false;
         }
     }
     IEnumerator FadeOut()
     {
+        Fade.enabled = true;
         for (int i = 1; i <= 10; i++)
         {
             yield return new WaitForSeconds(0.1f);

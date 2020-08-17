@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Get Component of Type</Title>
+      <Author>Denis Vargas Rivero</Author>
+      <Description>Autofills Component search an store to Variable of ComponentType</Description>
+      <Shortcut>vgetComp</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp">
+        <![CDATA[$Type$ $varName$ = GetComponent<$Type$>()$end$;]]>
+      </Code>
+
+      <Imports>
+        <Namespace>UnityEngine</Namespace>
+      </Imports>
+
+      <Declarations>
+        <Literal>
+          <ID>varName</ID>
+          <ToolTip>Nombre de la variable</ToolTip>
+          <Default>component</Default>
+        </Literal>
+        <Literal>
+          <ID>Type</ID>
+          <ToolTip>Tipo de dato del Estado</ToolTip>
+          <Default>ComponentType</Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

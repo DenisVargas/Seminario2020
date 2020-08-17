@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>New State Machine with Default State</Title>
+      <Author>Denis Vargas Rivero</Author>
+      <Description>Autofills a new State Machine and Adds DefaultState</Description>
+      <Shortcut>createStateMachineAndDefaultState</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp">
+        <![CDATA[new FiniteStateMachine<$FSMType$>();
+                 var $varName$ = GetComponent<$Type$>().AttachTo($FSM$);$end$]]>
+      </Code>
+
+      <Imports>
+        <Namespace>IA.FSM</Namespace>
+      </Imports>
+
+      <Declarations>
+          <Literal>
+              <ID>FSMType</ID>
+              <ToolTip>Tipo de la FSM</ToolTip>
+              <Default>FSMType</Default>
+          </Literal>
+
+          <Literal>
+              <ID>varName</ID>
+              <ToolTip>Nombre de la variable</ToolTip>
+              <Default>NewState</Default>
+          </Literal>
+
+          <Literal>
+              <ID>Type</ID>
+              <ToolTip>Tipo de dato del Estado</ToolTip>
+              <Default>State</Default>
+          </Literal>
+
+          <Literal>
+              <ID>FSM</ID>
+              <ToolTip>State machine a la cual el estado pertenece</ToolTip>
+              <Default>_states</Default>
+          </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create Default State</Title>
+      <Author>Denis Vargas Rivero</Author>
+      <Description>Autofill Default State Creation</Description>
+      <Shortcut>createStateDefault</Shortcut>
+    </Header>
+
+    <Snippet>
+      <Code Language="CSharp">
+        <![CDATA[var $name$ = GetComponent<$Type$>().AttachTo($FSM$,true);$end$]]>
+      </Code>
+      <Imports>
+        <Namespace>IA.FSM</Namespace>
+      </Imports>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Nombre de la variable</ToolTip>
+          <Default>NewState</Default>
+        </Literal>
+      <Literal>
+          <ID>Type</ID>
+          <ToolTip>Tipo de dato del estado</ToolTip>
+          <Default>StateType</Default>
+        </Literal>
+      <Literal>
+          <ID>FSM</ID>
+          <ToolTip>State machine a la cual el estado pertenece</ToolTip>
+          <Default>_states</Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Get State Component</Title>
+      <Author>Denis Vargas Rivero</Author>
+      <Description>Autofills StateComponent search and Attachment</Description>
+      <Shortcut>createStateAndAttach</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp">
+        <![CDATA[var $varName$ = GetComponent<$Type$>().AttachTo($FSM$);$end$]]>
+      </Code>
+    <Imports>
+      <Namespace>IA.FSM</Namespace>
+    </Imports>
+      <Declarations>
+        <Literal>
+          <ID>varName</ID>
+          <ToolTip>Nombre de la variable</ToolTip>
+          <Default>NewState</Default>
+        </Literal>
+      <Literal>
+          <ID>Type</ID>
+          <ToolTip>Tipo de dato del Estado</ToolTip>
+          <Default>State</Default>
+        </Literal>
+      <Literal>
+          <ID>FSM</ID>
+          <ToolTip>State machine a la cual el estado pertenece</ToolTip>
+          <Default>_states</Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+
+</CodeSnippets>

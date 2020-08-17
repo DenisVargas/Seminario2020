@@ -12,7 +12,7 @@ public struct CommandData
     public OperationType operationOptions;
 }
 //Navigation Mesh Actor Controller.
-public class NMA_Controller : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractor
+public class NMA_Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, HitResult>, IInteractor
 {
     public event Action ImDeadBro = delegate { };
     //[SerializeField] Transform MouseDebug          = null;

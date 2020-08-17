@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using IA.StateMachine.Generic;
+//using IA.StateMachine.Generic;
 using IA.LineOfSight;
 using Core.DamageSystem;
 using Core.Debuging; 
@@ -56,7 +56,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             if (_health <= 0)
             {
                 _health = 0;
-                state.Feed(BoboState.dead);
+                //state.Feed(BoboState.dead);
             }
             Hook_HealthUpdate(_health);
         }
@@ -114,7 +114,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         dead
     }
 
-    private GenericFSM<BoboState> state = null;
+    //private GenericFSM<BoboState> state = null;
     [SerializeField] BoboState _currentState = BoboState.invalid;
     [SerializeField] BoboState _chainState   =  BoboState.invalid;
 
@@ -269,294 +269,294 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             _animHash[i] = _anim.parameters[i].nameHash;
 
         #region Declaración de Estados
-        var idle = new State<BoboState>("Idle");
-        var wander = new State<BoboState>("Wander");
-        var burning = new State<BoboState>("Burning");
-        var falling = new State<BoboState>("FallingTrap");
-        var rage = new State<BoboState>("Rage");
-        var pursue = new State<BoboState>("Pursue");
-        var think = new State<BoboState>("Think");
-        var attack = new State<BoboState>("Attack");
-        var dead = new State<BoboState>("Dead");
+        //var idle = new State<BoboState>("Idle");
+        //var wander = new State<BoboState>("Wander");
+        //var burning = new State<BoboState>("Burning");
+        //var falling = new State<BoboState>("FallingTrap");
+        //var rage = new State<BoboState>("Rage");
+        //var pursue = new State<BoboState>("Pursue");
+        //var think = new State<BoboState>("Think");
+        //var attack = new State<BoboState>("Attack");
+        //var dead = new State<BoboState>("Dead");
         #endregion
 
         #region Transiciones.
-        idle.AddTransition(BoboState.dead, dead)
-            .AddTransition(BoboState.rage, rage)
-            .AddTransition(BoboState.pursue, pursue)
-            .AddTransition(BoboState.fallTrap, falling)
-            .AddTransition(BoboState.think, think);
+        //idle.AddTransition(BoboState.dead, dead)
+        //    .AddTransition(BoboState.rage, rage)
+        //    .AddTransition(BoboState.pursue, pursue)
+        //    .AddTransition(BoboState.fallTrap, falling)
+        //    .AddTransition(BoboState.think, think);
 
-        wander.AddTransition(BoboState.dead, dead)
-            .AddTransition(BoboState.think, think)
-            .AddTransition(BoboState.fallTrap, falling)
-            .AddTransition(BoboState.idle, idle);
+        //wander.AddTransition(BoboState.dead, dead)
+        //    .AddTransition(BoboState.think, think)
+        //    .AddTransition(BoboState.fallTrap, falling)
+        //    .AddTransition(BoboState.idle, idle);
 
-        pursue.AddTransition(BoboState.dead, dead)
-              .AddTransition(BoboState.attack, attack)
-              .AddTransition(BoboState.fallTrap, falling)
-              .AddTransition(BoboState.think, think);
+        //pursue.AddTransition(BoboState.dead, dead)
+        //      .AddTransition(BoboState.attack, attack)
+        //      .AddTransition(BoboState.fallTrap, falling)
+        //      .AddTransition(BoboState.think, think);
 
-        think.AddTransition(BoboState.dead, dead)
-             .AddTransition(BoboState.idle, idle)
-             .AddTransition(BoboState.fallTrap, falling)
-             .AddTransition(BoboState.wander, wander)
-             .AddTransition(BoboState.pursue, pursue)
-             .AddTransition(BoboState.attack, attack);
+        //think.AddTransition(BoboState.dead, dead)
+        //     .AddTransition(BoboState.idle, idle)
+        //     .AddTransition(BoboState.fallTrap, falling)
+        //     .AddTransition(BoboState.wander, wander)
+        //     .AddTransition(BoboState.pursue, pursue)
+        //     .AddTransition(BoboState.attack, attack);
 
-        attack.AddTransition(BoboState.dead, dead)
-              .AddTransition(BoboState.attack, attack)
-              .AddTransition(BoboState.think, think)
-              .AddTransition(BoboState.idle, idle)
-              .AddTransition(BoboState.fallTrap, falling)
-              .AddTransition(BoboState.pursue, pursue);
+        //attack.AddTransition(BoboState.dead, dead)
+        //      .AddTransition(BoboState.attack, attack)
+        //      .AddTransition(BoboState.think, think)
+        //      .AddTransition(BoboState.idle, idle)
+        //      .AddTransition(BoboState.fallTrap, falling)
+        //      .AddTransition(BoboState.pursue, pursue);
 
-        falling.AddTransition(BoboState.dead, dead);
+        //falling.AddTransition(BoboState.dead, dead);
 
-        burning.AddTransition(BoboState.dead, dead)
-               .AddTransition(BoboState.think, think)
-               .AddTransition(BoboState.fallTrap, falling);
+        //burning.AddTransition(BoboState.dead, dead)
+        //       .AddTransition(BoboState.think, think)
+        //       .AddTransition(BoboState.fallTrap, falling);
 
-        rage.AddTransition(BoboState.dead, dead)
-            .AddTransition(BoboState.idle, idle)
-            .AddTransition(BoboState.pursue, pursue)
-            .AddTransition(BoboState.fallTrap, falling);
+        //rage.AddTransition(BoboState.dead, dead)
+        //    .AddTransition(BoboState.idle, idle)
+        //    .AddTransition(BoboState.pursue, pursue)
+        //    .AddTransition(BoboState.fallTrap, falling);
 
-        dead.AddTransition(BoboState.idle, idle);
+        //dead.AddTransition(BoboState.idle, idle);
         #endregion
 
         #region Eventos de Estado
-        idle.OnEnter += (x) =>
-        {
-            _currentState = BoboState.idle;
-            if (state != null)
-            {
-                if (state.current != null)
-                    print(string.Format("{0} ha entrado al estado {1}", gameObject.name, state.current.StateName));
-                else
-                    print(string.Format("{0} ha iniciado en el estado Idle", gameObject.name));
-            }
-            //Por defecto nos aseguramos que no este reproduciendo walk.
-            _a_walk = false;
-        };
-        idle.OnUpdate += ()=> 
-        {
-            checkForPlayerOrClone();
+        //idle.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.idle;
+        //    if (state != null)
+        //    {
+        //        if (state.current != null)
+        //            print(string.Format("{0} ha entrado al estado {1}", gameObject.name, state.current.StateName));
+        //        else
+        //            print(string.Format("{0} ha iniciado en el estado Idle", gameObject.name));
+        //    }
+        //    //Por defecto nos aseguramos que no este reproduciendo walk.
+        //    _a_walk = false;
+        //};
+        //idle.OnUpdate += ()=> 
+        //{
+        //    checkForPlayerOrClone();
 
             
-            if ( _killeableTarget != null && _currentState != BoboState.pursue)
-            {
-                state.Feed(BoboState.pursue);
-            }
-        };
-        //idle.OnExit += (NextState)=> {};
+        //    if ( _killeableTarget != null && _currentState != BoboState.pursue)
+        //    {
+        //        state.Feed(BoboState.pursue);
+        //    }
+        //};
+        ////idle.OnExit += (NextState)=> {};
 
-        wander.OnEnter += (x) =>
-        {
-            _currentState = BoboState.wander;
-            _agent.isStopped = false;
-            _wanderingTime = 0;
-        };
-        wander.OnUpdate += () =>
-        {
-            // Reduzco un timer, cuando el tiempo llegue a 0. 
-            _wanderingTime -= Time.deltaTime;
-            print($"Wandering Time is: {_wanderingTime}");
-            if (_wanderingTime < 0)
-            {
-                //Debug.LogWarning("Terminó el tiempo del wandering");
-                _targetPosition = getRandomPosition();
+        //wander.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.wander;
+        //    _agent.isStopped = false;
+        //    _wanderingTime = 0;
+        //};
+        //wander.OnUpdate += () =>
+        //{
+        //    // Reduzco un timer, cuando el tiempo llegue a 0. 
+        //    _wanderingTime -= Time.deltaTime;
+        //    print($"Wandering Time is: {_wanderingTime}");
+        //    if (_wanderingTime < 0)
+        //    {
+        //        //Debug.LogWarning("Terminó el tiempo del wandering");
+        //        _targetPosition = getRandomPosition();
 
-                _wanderingTime = UnityEngine.Random.Range(_minWanderTime, _maxWanderTime);
+        //        _wanderingTime = UnityEngine.Random.Range(_minWanderTime, _maxWanderTime);
 
-                _agent.isStopped = true;
-                _agent.ResetPath();
-                _agent.SetDestination(_targetPosition);
-                _agent.isStopped = false;
-            }
-        };
-        //wander.OnExit += (NextState) => { };
+        //        _agent.isStopped = true;
+        //        _agent.ResetPath();
+        //        _agent.SetDestination(_targetPosition);
+        //        _agent.isStopped = false;
+        //    }
+        //};
+        ////wander.OnExit += (NextState) => { };
 
-        burning.OnEnter += (x) =>
-        {
-            _currentState = BoboState.burning;
-            //Seteo la animación.
-        };
-        burning.OnUpdate += () =>
-        {
-            #region TODO
-            //Tengo un timing en el que estoy prendido fuego...
-            //Por cada segundo que estoy prendido fuego, me aplico daño x acumulación.
-            //List<int> indexesToDelete = new List<int>();
+        //burning.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.burning;
+        //    //Seteo la animación.
+        //};
+        //burning.OnUpdate += () =>
+        //{
+        //    #region TODO
+        //    //Tengo un timing en el que estoy prendido fuego...
+        //    //Por cada segundo que estoy prendido fuego, me aplico daño x acumulación.
+        //    //List<int> indexesToDelete = new List<int>();
 
-            //float fireDamage = 0;
-            //for (int i = 0; i < DamageStack[DamageType.e_fire].Count; i++)
-            //{
-            //    var acum = DamageStack[DamageType.e_fire][i];
-            //    fireDamage += acum.Ammount;
+        //    //float fireDamage = 0;
+        //    //for (int i = 0; i < DamageStack[DamageType.e_fire].Count; i++)
+        //    //{
+        //    //    var acum = DamageStack[DamageType.e_fire][i];
+        //    //    fireDamage += acum.Ammount;
 
-            //    float time = acum.TimeRemaining;
-            //    time -= Time.deltaTime;
-            //    if (time <= 0)
-            //        indexesToDelete.Add(i);
-            //}
+        //    //    float time = acum.TimeRemaining;
+        //    //    time -= Time.deltaTime;
+        //    //    if (time <= 0)
+        //    //        indexesToDelete.Add(i);
+        //    //}
 
-            //foreach (var index in indexesToDelete)
-            //{
-            //    DamageStack[DamageType.e_fire].RemoveAt(index);
-            //}
+        //    //foreach (var index in indexesToDelete)
+        //    //{
+        //    //    DamageStack[DamageType.e_fire].RemoveAt(index);
+        //    //}
 
-            //Health -= fireDamage; 
-            #endregion
+        //    //Health -= fireDamage; 
+        //    #endregion
 
-            //Esto estaría kul, pero por ahora solo me muero al terminar la animación.
-            //Espero a que la animación termine.
+        //    //Esto estaría kul, pero por ahora solo me muero al terminar la animación.
+        //    //Espero a que la animación termine.
 
-            //Igual que en attack, reviso todo lo que sea relevante al ataque
-            //Si no veo a un player y sigo vivo cuando termino de prenderme fuego.
-            //Entro en rage.
-        };
-        //burning.OnExit += (nextState) => { };
+        //    //Igual que en attack, reviso todo lo que sea relevante al ataque
+        //    //Si no veo a un player y sigo vivo cuando termino de prenderme fuego.
+        //    //Entro en rage.
+        //};
+        ////burning.OnExit += (nextState) => { };
 
-        falling.OnEnter += (x) =>
-        {
-            _currentState = BoboState.fallTrap;
-            _agent.isStopped = true;
-            _agent.ResetPath();
-            _agent.enabled = false;
+        //falling.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.fallTrap;
+        //    _agent.isStopped = true;
+        //    _agent.ResetPath();
+        //    _agent.enabled = false;
 
-            _mainCollider.isTrigger = true;
-            _rb.useGravity = true;
-            _rb.isKinematic = false;
-        };
+        //    _mainCollider.isTrigger = true;
+        //    _rb.useGravity = true;
+        //    _rb.isKinematic = false;
+        //};
 
-        pursue.OnEnter += (x) =>
-        {
-            _currentState = BoboState.pursue;
-            _a_walk = true;
-        };
-        pursue.OnUpdate += () =>
-        {
-            //Me muevo en dirección al objetivo.
-            if (_killeableTarget != null)
-                MoveToTarget(_killeableTarget.transform.position);
+        //pursue.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.pursue;
+        //    _a_walk = true;
+        //};
+        //pursue.OnUpdate += () =>
+        //{
+        //    //Me muevo en dirección al objetivo.
+        //    if (_killeableTarget != null)
+        //        MoveToTarget(_killeableTarget.transform.position);
 
-            //Si la distancia de ataque es menor a un treshold.
-            float dst = Vector3.Distance(transform.position, _killeableTarget.transform.position);
-            if (dst <= _attackRange)
-                state.Feed(BoboState.attack);
-        };
-        pursue.OnExit += (NextState) =>
-        {
-            _agent.isStopped = true;
-            _agent.ResetPath();
-            if (NextState == BoboState.burning)
-            {
-                _a_walk = false;
-            }
-        };
+        //    //Si la distancia de ataque es menor a un treshold.
+        //    float dst = Vector3.Distance(transform.position, _killeableTarget.transform.position);
+        //    if (dst <= _attackRange)
+        //        state.Feed(BoboState.attack);
+        //};
+        //pursue.OnExit += (NextState) =>
+        //{
+        //    _agent.isStopped = true;
+        //    _agent.ResetPath();
+        //    if (NextState == BoboState.burning)
+        //    {
+        //        _a_walk = false;
+        //    }
+        //};
 
-        think.OnEnter += (x) =>
-        {
-            _currentState = BoboState.think;
+        //think.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.think;
 
-            checkForPlayerOrClone();
-            if (_killeableTarget != null || _killeableTarget.IsAlive)
-            {
-                if (_sight.IsInSight(_killeableTarget.transform))
-                    state.Feed(_sight.distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
-            }
-        };
-        think.OnUpdate += () =>
-        {
-            //Actualizo el tiempo de reacción restante.
-            //Si el tiempo de reacción es 0.
-            //Tomo una desición en base a los inputs.
-        };
-        //think.OnExit += (NextState) => { };
+        //    checkForPlayerOrClone();
+        //    if (_killeableTarget != null || _killeableTarget.IsAlive)
+        //    {
+        //        if (_sight.IsInSight(_killeableTarget.transform))
+        //            state.Feed(_sight.distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
+        //    }
+        //};
+        //think.OnUpdate += () =>
+        //{
+        //    //Actualizo el tiempo de reacción restante.
+        //    //Si el tiempo de reacción es 0.
+        //    //Tomo una desición en base a los inputs.
+        //};
+        ////think.OnExit += (NextState) => { };
 
-        attack.OnEnter += (x) =>
-        {
-            _currentState = BoboState.attack;
-            _a_Attack = true;
-            _a_walk = false;
-            _agent.isStopped = true;
-            _agent.ResetPath();
-            _rb.velocity = Vector3.zero;
-            transform.forward = (_killeableTarget.transform.position - transform.position).YComponent(0).normalized;
+        //attack.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.attack;
+        //    _a_Attack = true;
+        //    _a_walk = false;
+        //    _agent.isStopped = true;
+        //    _agent.ResetPath();
+        //    _rb.velocity = Vector3.zero;
+        //    transform.forward = (_killeableTarget.transform.position - transform.position).YComponent(0).normalized;
 
-            //Le digo a mi current target, que se quede quieto!.
-            _killeableTarget.GetStun(transform.position, 1);
-        };
-        attack.OnExit += (x) =>
-        {
-            _agent.isStopped = false;
-        };
+        //    //Le digo a mi current target, que se quede quieto!.
+        //    _killeableTarget.GetStun(transform.position, 1);
+        //};
+        //attack.OnExit += (x) =>
+        //{
+        //    _agent.isStopped = false;
+        //};
 
-        rage.OnEnter += (x) =>
-        {
-            _currentState = BoboState.rage;
-            Core.Debuging.Console.instance.Print($"{gameObject.name} entro al estado Rage");
-            _targetsfounded = new List<Transform>();
+        //rage.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.rage;
+        //    Core.Debuging.Console.instance.Print($"{gameObject.name} entro al estado Rage");
+        //    _targetsfounded = new List<Transform>();
 
-            _a_GetHit = true;
-            _hitSecuence = 1;
-        };
-        rage.OnUpdate += () =>
-        {
-            if (_hitSecuence == 2 && !_playerFound)
-            {
-                CheckNearVisible();
-            }
-            //if (_hitSecuence == 3)
-            //{
-            //    //Mira en dirección del target encontrado.
-            //    //if (_killeableTarget != null && _otherKilleableTargetFounded || _killeableTarget != null && _playerFound)
-            //    //{
-            //    //    Vector3 dirtoTarget = (_killeableTarget.transform.position - transform.position).YComponent(0).normalized;
-            //    //    transform.forward = dirtoTarget;
-            //    //}
-            //}
-        };
-        rage.OnExit += (x) =>
-        {
-            _a_GetHit = false;
-            _hitSecuence = 0;
-            _otherKilleableTargetFounded = false;
-            _targetsfounded = new List<Transform>();
-            _playerFound = false;
-        };
+        //    _a_GetHit = true;
+        //    _hitSecuence = 1;
+        //};
+        //rage.OnUpdate += () =>
+        //{
+        //    if (_hitSecuence == 2 && !_playerFound)
+        //    {
+        //        CheckNearVisible();
+        //    }
+        //    //if (_hitSecuence == 3)
+        //    //{
+        //    //    //Mira en dirección del target encontrado.
+        //    //    //if (_killeableTarget != null && _otherKilleableTargetFounded || _killeableTarget != null && _playerFound)
+        //    //    //{
+        //    //    //    Vector3 dirtoTarget = (_killeableTarget.transform.position - transform.position).YComponent(0).normalized;
+        //    //    //    transform.forward = dirtoTarget;
+        //    //    //}
+        //    //}
+        //};
+        //rage.OnExit += (x) =>
+        //{
+        //    _a_GetHit = false;
+        //    _hitSecuence = 0;
+        //    _otherKilleableTargetFounded = false;
+        //    _targetsfounded = new List<Transform>();
+        //    _playerFound = false;
+        //};
 
-        dead.OnEnter += (x) =>
-        {
-            _currentState = BoboState.dead;
-            _a_Dead = true;
-            IsAlive = false;
+        //dead.OnEnter += (x) =>
+        //{
+        //    _currentState = BoboState.dead;
+        //    _a_Dead = true;
+        //    IsAlive = false;
 
-            _rb.useGravity = false;
-            _rb.isKinematic = true;
+        //    _rb.useGravity = false;
+        //    _rb.isKinematic = true;
 
-            StartCoroutine(FallAndDestroyGameObject());
-            OnEntityDead(gameObject);
-        };
-        dead.OnExit += (NextState) =>
-        {
-            //Si nextState es idle -> Significa que estamos usando este NPC en un Pool y queremos reactivarlo.
-            if (NextState == BoboState.idle)
-            {
-                ResetSetUp();
-            }
-        }; 
+        //    StartCoroutine(FallAndDestroyGameObject());
+        //    OnEntityDead(gameObject);
+        //};
+        //dead.OnExit += (NextState) =>
+        //{
+        //    //Si nextState es idle -> Significa que estamos usando este NPC en un Pool y queremos reactivarlo.
+        //    if (NextState == BoboState.idle)
+        //    {
+        //        ResetSetUp();
+        //    }
+        //}; 
         #endregion
 
         //State Machine
-        state = new GenericFSM<BoboState>(idle);
+        //state = new GenericFSM<BoboState>(idle);
     }
 
     // Update is called once per frame
     void Update()
     {
-        state.Update();
+        //state.Update();
     }
 
     //=================================== Private Memeber Funcs =============================
@@ -700,7 +700,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     public void ChangeStateTo(BoboState input)
     {
-        state.Feed(input);
+        //state.Feed(input);
     }
 
     //==================================== Damage System ====================================
@@ -727,7 +727,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
                 
             //}
 
-            state.Feed(BoboState.dead);
+            //state.Feed(BoboState.dead);
         }
         else
         {
@@ -781,13 +781,13 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     private void OnIgnite(object[] optionalParams)
     {
         //Si recibe daño igniteante, este puede prenderse fuego.
-        state.Feed(BoboState.burning);
+        //state.Feed(BoboState.burning);
     }
     private void OnHitWithRock(object[] optionalParams)
     {
         //Si es atacado por una roca, entra en rageMode.
         print("Me han pegado con una roca, hijos de puta!");
-        state.Feed(BoboState.rage);
+        //state.Feed(BoboState.rage);
     }
     public Vector3 requestSafeInteractionPosition(IInteractor requester)
     {
@@ -816,7 +816,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     {
         if (_currentState == BoboState.rage)
         {
-            state.Feed(BoboState.idle);
+            //state.Feed(BoboState.idle);
         }
 
         if (_currentState == BoboState.attack)
@@ -824,12 +824,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             checkForPlayerOrClone();
             if (_killeableTarget == null || !_killeableTarget.IsAlive)
             {
-                state.Feed(BoboState.idle);
+                //state.Feed(BoboState.idle);
             }
             else
             {
                 float distanceToTarget = Vector3.Distance(transform.position, _killeableTarget.transform.position);
-                state.Feed(distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
+                //state.Feed(distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
             }
         }
     }
@@ -860,12 +860,12 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             Core.Debuging.Console.instance.Print($"{gameObject.name} ha encontrado a un target válido.", DebugLevel.info);
             _killeableTarget = _targetsfounded[0].GetComponent<IDamageable<Damage, HitResult>>();
             _a_walk = true;
-            state.Feed(BoboState.pursue);
+            //state.Feed(BoboState.pursue);
         }
         else
         {
             Core.Debuging.Console.instance.Print($"{gameObject.name} no ha encontrado a un target válido.", DebugLevel.error);
-            state.Feed(BoboState.idle);
+            //state.Feed(BoboState.idle);
         }
     }
 
@@ -876,7 +876,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         Debug.LogWarning("PLAYER SPOTTED");
         _a_walk = true;
         _a_targetFinded = true;
-        state.Feed(BoboState.pursue);
+        //state.Feed(BoboState.pursue);
         Core.Debuging.Console.instance.Print($"{gameObject.name} ha encontrado al Player!: {_killeableTarget.gameObject.name}", DebugLevel.info);
     }
     IEnumerator FallAndDestroyGameObject()

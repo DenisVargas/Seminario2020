@@ -12,8 +12,11 @@ public class PathFindSolver : MonoBehaviour
     public float _lookUpRange = 10f;
     public float ProximityTreshold = 0.3f;
 
-    [SerializeField] Node OriginNode = null;
-    [SerializeField] Node TargetNode = null;
+    [SerializeField] Node _originNode = null;
+    [SerializeField] Node _targetNode = null;
+
+    public Node Origin { get => _originNode; }
+    public Node Target { get => _targetNode; }
 
     public Queue<Node> currentPath = new Queue<Node>();
 
@@ -32,22 +35,22 @@ public class PathFindSolver : MonoBehaviour
 
     public PathFindSolver SetOrigin(Vector3 OriginNode)
     {
-        this.OriginNode = getCloserNode(OriginNode);
+        _originNode = getCloserNode(OriginNode);
         return this;
     }
     public PathFindSolver SetOrigin(Node OriginNode)
     {
-        this.OriginNode = OriginNode;
+        this._originNode = OriginNode;
         return this;
     }
     public PathFindSolver SetTarget(Vector3 destinyPosition)
     {
-        TargetNode = getCloserNode(destinyPosition);
+        _targetNode = getCloserNode(destinyPosition);
         return this;
     }
     public PathFindSolver SetTarget(Node destinyNode)
     {
-        TargetNode = destinyNode;
+        _targetNode = destinyNode;
         return this;
     }
 
@@ -56,9 +59,12 @@ public class PathFindSolver : MonoBehaviour
     /// </summary>
     public void CalculatePathUsingSettings()
     {
-        if (OriginNode = null) return;
+        if (_originNode == null) return;
+        currentPath.Clear();
 
-        currentPath = getPathToPositionAsQueue(OriginNode);
+        List<Node> path = getPathToPosition(_originNode);
+        foreach (var node in path)
+            currentPath.Enqueue(node);
     }
 
     /// <summary>
@@ -84,7 +90,7 @@ public class PathFindSolver : MonoBehaviour
     /// <returns>Un camino posible entre 2 nodos. Null si no hay camino posible.</returns>
     public List<Node> getPathWithSettings()
     {
-        return getPathToPosition(OriginNode);
+        return getPathToPosition(_originNode);
     }
 
     /// <summary>
@@ -95,12 +101,8 @@ public class PathFindSolver : MonoBehaviour
     /// <returns></returns>
     private List<Node> getPathToPosition(Node startingPoint)
     {
-        IEnumerable<Node> generatedPath = ThetaStar.getPath(startingPoint, isTarget, getNodeConnections, GetHeurístic, hasValidConnection);
-
-        if (generatedPath != null)
-            return generatedPath.ToList();
-
-        return new List<Node>();
+        return ThetaStar.getPath(startingPoint, isTarget, getNodeConnections, GetHeurístic, hasValidConnection)
+                        .ToList();
     }
     private Queue<Node> getPathToPositionAsQueue(Node StartingPoint)
     {
@@ -110,7 +112,7 @@ public class PathFindSolver : MonoBehaviour
     #region PathFinding
     bool isTarget(Node reference)
     {
-        return reference == TargetNode;
+        return reference == _targetNode;
     }
     bool hasValidConnection(Node A, Node B)
     {
@@ -118,7 +120,7 @@ public class PathFindSolver : MonoBehaviour
     }
     float GetHeurístic(Node reference)
     {
-        return Vector3.Distance(reference.transform.position, TargetNode.transform.position);
+        return Vector3.Distance(reference.transform.position, _targetNode.transform.position);
     }
     IEnumerable<Tuple<Node, float>> getNodeConnections(Node reference)
     {

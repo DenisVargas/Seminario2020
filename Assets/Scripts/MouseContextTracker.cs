@@ -49,13 +49,13 @@ public class MouseContextTracker : MonoBehaviour
     MouseContext m_MouseContextDetection()
     {
         MouseContext _context = new MouseContext();
+        int validHits = 0;
 
         //Calculo la posición del mouse en el espacio.
         RaycastHit[] hits;
         Ray mousePositionInWorld = _viewCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x,
                                                           Input.mousePosition.y,
                                                           _viewCamera.transform.position.y));
-
         hits = Physics.RaycastAll(mousePositionInWorld, float.MaxValue, mouseDetectionMask, QueryTriggerInteraction.Collide);
 
         #region DEBUG
@@ -68,9 +68,6 @@ public class MouseContextTracker : MonoBehaviour
 #endif 
         #endregion
 
-        if (hits.Length > 0) //Validación del hit.
-            _context.validHit = true;
-
         for (int i = 0; i < hits.Length; i++)
         {
             var hit = hits[i];
@@ -80,6 +77,7 @@ public class MouseContextTracker : MonoBehaviour
             {
                 _context.interactuableHitted = true;
                 _context.firstInteractionObject = interactableObject;
+                validHits++;
             }
 
             Collider collider = hit.collider;
@@ -87,9 +85,12 @@ public class MouseContextTracker : MonoBehaviour
             {
                 _context.hitPosition = hit.point;
                 _context.closerNode = _solver.getCloserNode(hit.point);
+                validHits++;
             }
             else continue;
         }
+
+        _context.validHit = validHits > 0; //Validación del hit.
 
         return _context;
     }

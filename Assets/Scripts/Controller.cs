@@ -21,6 +21,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
     CommandData Queued_ActivationData = new CommandData();
+    Node QueuedMovementEndPoint = null;
 
     bool PlayerInputEnabled = true;
     bool ClonInputEnabled   = true;
@@ -116,9 +117,12 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
 
-        var closerNode = _solver.getCloserNode(transform.position);
-        transform.position = closerNode.transform.position;
-        _solver.SetOrigin(closerNode);
+        if(_solver.Origin == null)
+        {
+            var closerNode = _solver.getCloserNode(transform.position);
+            transform.position = closerNode.transform.position;
+            _solver.SetOrigin(closerNode);
+        }
 
         //Clon.
         if (Clon != null)
@@ -205,18 +209,23 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
 
     private void AddMovementCommand(MouseContext _mouseContext)
     {
-        _solver.SetOrigin(transform.position)
+        _solver.SetOrigin(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position)
                .SetTarget(_mouseContext.closerNode)
                .CalculatePathUsingSettings();
 
+        if (_solver.currentPath.Count == 0) //Si el solver no halló un camino, no hay camino posible.
+            return;
+
+        QueuedMovementEndPoint = _mouseContext.closerNode;
+
         IQueryComand moveCommand = new cmd_Move
                             (
-                                _mouseContext.closerNode.transform.position,
+                                _mouseContext.closerNode,
                                 _solver.currentPath,
                                 MoveToTarget,
-                                (targetPos) =>
+                                (targetNode) =>
                                 {
-                                    float dst = Vector3.Distance(transform.position, targetPos);
+                                    float dst = Vector3.Distance(transform.position, targetNode.transform.position);
                                     bool completed = dst <= _movementTreshold;
 
                                     if (completed)
@@ -312,16 +321,16 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         BloodStain.Play();
     }
 
-    public bool MoveToTarget(Vector3 destinyPosition)
+    public bool MoveToTarget(Node targetNode)
     {
-        Vector3 dirToTarget = (destinyPosition - transform.position).normalized;
+        Vector3 dirToTarget = (targetNode.transform.position - transform.position).normalized;
         transform.forward = dirToTarget;
 
         if (!_a_Walking)
             _a_Walking = true;
 
         transform.position += dirToTarget * moveSpeed * Time.deltaTime;
-        return Vector3.Distance(transform.position, destinyPosition) <= _movementTreshold;
+        return Vector3.Distance(transform.position, targetNode.transform.position) <= _movementTreshold;
     }
 
     /// <summary>
@@ -336,12 +345,12 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         {
             IQueryComand closeDistance = new cmd_Move
             (
-                safeInteractionPosition,
+                _solver.getCloserNode(safeInteractionPosition),
                 _solver.currentPath,
                 MoveToTarget,
                 (targetPos) =>
                 {
-                    float dst = Vector3.Distance(transform.position, targetPos);
+                    float dst = Vector3.Distance(transform.position, targetPos.transform.position);
                     bool completed = dst <= _movementTreshold;
 
                     if (completed && _a_Walking)
@@ -425,6 +434,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         var _currentC = comandos.Dequeue();
         if (comandos.Count > 0)
         {
+            QueuedMovementEndPoint = null;
             var next = comandos.Peek();
             //print($"Comando {_currentC} Finalizado\nSiguiente comando es {next}");
         }
@@ -435,6 +445,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         {
             command.Cancel();
         }
+        QueuedMovementEndPoint = null;
         comandos.Clear();
     }
     void Die(int KillingAnimType)

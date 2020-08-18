@@ -831,7 +831,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 1592795630}
+  - {fileID: 1992475896}
+  - {fileID: 2052439242}
   area: 0
 --- !u!1 &328956681
 GameObject:
@@ -1200,7 +1203,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 726493202}
+  - {fileID: 1767770806}
+  - {fileID: 1592795630}
+  - {fileID: 1729598698}
+  - {fileID: 1992475896}
   area: 0
 --- !u!4 &456243504 stripped
 Transform:
@@ -7230,7 +7238,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 1767770806}
+  - {fileID: 1729598698}
+  - {fileID: 443226850}
   area: 0
 --- !u!1001 &738791297
 PrefabInstance:
@@ -10212,7 +10223,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 313666794}
+  - {fileID: 1992475896}
+  - {fileID: 2052439242}
+  - {fileID: 1767770806}
+  - {fileID: 443226850}
   area: 0
 --- !u!4 &1639897739 stripped
 Transform:
@@ -10436,7 +10452,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 726493202}
+  - {fileID: 1767770806}
+  - {fileID: 443226850}
   area: 0
 --- !u!1 &1731311882
 GameObject:
@@ -10573,7 +10592,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 1592795630}
+  - {fileID: 443226850}
+  - {fileID: 1992475896}
+  - {fileID: 726493202}
+  - {fileID: 1729598698}
   area: 0
 --- !u!4 &1769662679 stripped
 Transform:
@@ -11068,7 +11092,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 1767770806}
+  - {fileID: 1592795630}
+  - {fileID: 313666794}
+  - {fileID: 443226850}
+  - {fileID: 2052439242}
   area: 0
 --- !u!1 &2002025449
 GameObject:
@@ -16017,7 +16046,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  Connections: []
+  Connections:
+  - {fileID: 1592795630}
+  - {fileID: 313666794}
+  - {fileID: 1992475896}
   area: 0
 --- !u!1001 &2095471611
 PrefabInstance:
@@ -16421,7 +16453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   BloodStain: {fileID: 0}
-  moveSpeed: 6
+  moveSpeed: 3
   _movementTreshold: 0.18
   MouseDebug: {fileID: 0}
   Clon: {fileID: 1012570209}
@@ -16445,8 +16477,8 @@ MonoBehaviour:
     m_Bits: 268435456
   _lookUpRange: 2
   ProximityTreshold: 0.3
-  OriginNode: {fileID: 0}
-  TargetNode: {fileID: 0}
+  _originNode: {fileID: 0}
+  _targetNode: {fileID: 0}
   Debug_DetectionRangeColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &6414858267474483551
 Transform:

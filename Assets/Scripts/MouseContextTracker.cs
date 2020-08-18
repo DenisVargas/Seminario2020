@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using IA.PathFinding;
 
 [Serializable]
 public struct MouseContext
@@ -10,21 +12,28 @@ public struct MouseContext
     public IInteractable firstInteractionObject;
     public bool validHit;
     public Vector3 hitPosition;
+    public Node closerNode;
 }
 
+[RequireComponent(typeof(PathFindSolver))]
 public class MouseContextTracker : MonoBehaviour
 {
     Camera _viewCamera;
+    PathFindSolver _solver;
     [SerializeField] LayerMask mouseDetectionMask = ~0;
+
+    [Header("Cursor Rendering")]
     public Texture2D defaultCursor;
 
 #if UNITY_EDITOR
-    [SerializeField] List<Collider> hited = new List<Collider>(); 
+    [SerializeField] List<Collider> hited = new List<Collider>();
 #endif
 
     private void Awake()
     {
+        _solver = GetComponent<PathFindSolver>();
         _viewCamera = Camera.main;
+
         if (defaultCursor != null)
         {
             Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
@@ -41,10 +50,6 @@ public class MouseContextTracker : MonoBehaviour
     {
         MouseContext _context = new MouseContext();
 
-#if UNITY_EDITOR
-        hited = new List<Collider>(); 
-#endif
-
         //Calculo la posición del mouse en el espacio.
         RaycastHit[] hits;
         Ray mousePositionInWorld = _viewCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x,
@@ -53,14 +58,17 @@ public class MouseContextTracker : MonoBehaviour
 
         hits = Physics.RaycastAll(mousePositionInWorld, float.MaxValue, mouseDetectionMask, QueryTriggerInteraction.Collide);
 
+        #region DEBUG
 #if UNITY_EDITOR
-        for (int i = 0; i < hits.Length; i++)
+        hited = new List<Collider>();
+        for (int i = 0; i < hits.Length; i++) // Lista debug para el inspector.
         {
             hited.Add(hits[i].collider);
-        } 
-#endif
+        }
+#endif 
+        #endregion
 
-        if (hits.Length > 0)
+        if (hits.Length > 0) //Validación del hit.
             _context.validHit = true;
 
         for (int i = 0; i < hits.Length; i++)
@@ -78,13 +86,7 @@ public class MouseContextTracker : MonoBehaviour
             if (collider.transform.CompareTag("NavigationFloor"))
             {
                 _context.hitPosition = hit.point;
-
-                //Nos fijamos el punto mas cercano en el navmesh.
-                NavMeshHit nh;
-                if (NavMesh.SamplePosition(hit.point, out nh, 5, NavMesh.AllAreas))
-                {
-                    _context.hitPosition = nh.position;
-                }
+                _context.closerNode = _solver.getCloserNode(hit.point);
             }
             else continue;
         }

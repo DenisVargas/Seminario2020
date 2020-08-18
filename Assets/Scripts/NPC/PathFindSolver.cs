@@ -15,6 +15,8 @@ public class PathFindSolver : MonoBehaviour
     [SerializeField] Node OriginNode = null;
     [SerializeField] Node TargetNode = null;
 
+    public Queue<Node> currentPath = new Queue<Node>();
+
     #region DEBUG
 #if UNITY_EDITOR
     [Header(" ============== Debug ================")]
@@ -28,21 +30,35 @@ public class PathFindSolver : MonoBehaviour
 #endif
     #endregion
 
-    public void SetOrigin(Vector3 originPosition)
+    public PathFindSolver SetOrigin(Vector3 OriginNode)
     {
-        OriginNode = getCloserNode(originPosition);
+        this.OriginNode = getCloserNode(OriginNode);
+        return this;
     }
-    public void SetOrigin(Node originNode)
+    public PathFindSolver SetOrigin(Node OriginNode)
     {
-        OriginNode = originNode;
+        this.OriginNode = OriginNode;
+        return this;
     }
-    public void SetTarget(Vector3 destinyPosition)
+    public PathFindSolver SetTarget(Vector3 destinyPosition)
     {
         TargetNode = getCloserNode(destinyPosition);
+        return this;
     }
-    public void SetTarget(Node destinyNode)
+    public PathFindSolver SetTarget(Node destinyNode)
     {
         TargetNode = destinyNode;
+        return this;
+    }
+
+    /// <summary>
+    /// Calcula una ruta hasta la posición indicada en los settings.
+    /// </summary>
+    public void CalculatePathUsingSettings()
+    {
+        if (OriginNode = null) return;
+
+        currentPath = getPathToPositionAsQueue(OriginNode);
     }
 
     /// <summary>
@@ -51,10 +67,9 @@ public class PathFindSolver : MonoBehaviour
     /// <returns></returns>
     public Node getCloserNode(Vector3 position)
     {
-        //var nodesObj = Physics.OverlapSphere(transform.position, _lookUpRange, _pathFindingNodeMask);
         var builder = FindObjectOfType<NodeGraphBuilder>();
         var posibleNodes = builder.GetComponentsInChildren<Node>()
-                                  .OrderBy(n => Vector3.Distance(transform.position, n.transform.position));
+                                  .OrderBy(n => Vector3.Distance(position, n.transform.position));
 
         Node closerNode = posibleNodes.First();
         if (closerNode)
@@ -63,30 +78,6 @@ public class PathFindSolver : MonoBehaviour
         return null;
     }
 
-    /// <summary>
-    /// Retorna el camino entre dos posiciones en el mundo.
-    /// </summary>
-    /// <param name="origin">Vector posición de origen.</param>
-    /// <param name="destination">Vector posición de destino.</param>
-    /// <returns>Un camino posible entre la posición origen y destino. Null si no hay camino posible.</returns>
-    public List<Node> getPathTo(Vector3 origin, Vector3 destination)
-    {
-        OriginNode = getCloserNode(origin);
-        TargetNode = getCloserNode(destination);
-        return getPathWithSettings();
-    }
-    /// <summary>
-    /// Retorna el camino entre dos Nodos.
-    /// </summary>
-    /// <param name="origin">Nodo de origen.</param>
-    /// <param name="destination">Nodo de destino.</param>
-    /// <returns>Un camino posible entre los 2 nodos. Null si no hay camino posible.</returns>
-    public List<Node> getPathTo(Node origin, Node destination)
-    {
-        OriginNode = origin;
-        TargetNode = destination;
-        return getPathWithSettings();
-    }
     /// <summary>
     /// Retorna el camino entre dos nodos, usando los settings establecidos en el Componente.
     /// </summary>
@@ -110,6 +101,10 @@ public class PathFindSolver : MonoBehaviour
             return generatedPath.ToList();
 
         return new List<Node>();
+    }
+    private Queue<Node> getPathToPositionAsQueue(Node StartingPoint)
+    {
+        return ThetaStar.getPath(StartingPoint, isTarget, getNodeConnections, GetHeurístic, hasValidConnection) as Queue<Node>;
     }
 
     #region PathFinding

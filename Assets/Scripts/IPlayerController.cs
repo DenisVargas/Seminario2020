@@ -13,7 +13,6 @@ public interface IPlayerController
     void ClonDeactivate();
     void FallInTrap();
     void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod);
-    void MoveToTarget(Vector3 destinyPosition);
     void PlayBlood();
     void QuerySelectedOperation(OperationType operation, IInteractable target);
 }

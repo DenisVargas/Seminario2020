@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core.DamageSystem;
 using System;
+using IA.PathFinding;
 
+[RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
 public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, HitResult>, IInteractor
 {
     //Stats.
@@ -20,7 +22,9 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
     CommandData Queued_ActivationData = new CommandData();
 
-    bool PlayerInputEnabled;
+    bool PlayerInputEnabled = true;
+    bool ClonInputEnabled   = true;
+    bool playerMovementEnabled = true;
     Vector3 velocity;
 
     #region Componentes
@@ -29,7 +33,8 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     Collider _mainCollider = null;
     CanvasController _canvasController = null;
     MouseView _mv;
-    MouseContextTracker _mtracker; 
+    MouseContextTracker _mtracker;
+    PathFindSolver _solver;
     #endregion
     #region Clon
     [Header("Clon")]
@@ -109,6 +114,11 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         _canvasController = FindObjectOfType<CanvasController>();
         _mv = GetComponent<MouseView>();
         _mtracker = GetComponent<MouseContextTracker>();
+        _solver = GetComponent<PathFindSolver>();
+
+        var closerNode = _solver.getCloserNode(transform.position);
+        transform.position = closerNode.transform.position;
+        _solver.SetOrigin(closerNode);
 
         //Clon.
         if (Clon != null)
@@ -129,79 +139,61 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     // Update is called once per frame
     void Update()
     {
-        bool mod1 = Input.GetKey(KeyCode.LeftShift);
-        bool mod2 = Input.GetKey(KeyCode.LeftControl);
-
         #region Input
-        if (PlayerInputEnabled && Input.GetMouseButtonDown(1) && !mod2)
+        if (PlayerInputEnabled)
         {
-            //Hacer un raycast y fijarme si hay un objeto que se interactuable.
-            MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();
-
-            if (!_mouseContext.validHit) return;
-
-            if (_mouseContext.interactuableHitted)
+            // MouseClic Derecho.
+            if (Input.GetMouseButtonDown(1))
             {
-                //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
-                _canvasController.DisplayCommandMenu
-                (
-                    Input.mousePosition,
-                    _mouseContext.firstInteractionObject.GetSuportedInteractionParameters(),
-                    _mouseContext.firstInteractionObject,
-                    QuerySelectedOperation
-                 );
-            }
-            else
-            {
-                if (mod1)
-                    _mv.SetMousePositionAditive(_mouseContext.hitPosition);
+                MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();//Obtengo el contexto del Mouse.
+
+                if (!_mouseContext.validHit) return; //Si no hay hit Válido.
+
+                if (_mouseContext.interactuableHitted)
+                {
+                    //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
+                    _canvasController.DisplayCommandMenu
+                    (
+                        Input.mousePosition,
+                        _mouseContext.firstInteractionObject.GetSuportedInteractionParameters(),
+                        _mouseContext.firstInteractionObject,
+                        QuerySelectedOperation
+                     );
+                }
                 else
                 {
-                    CancelAllCommands();
-                    _mv.SetMousePosition(_mouseContext.hitPosition);
-                }
+                    bool mod1 = Input.GetKey(KeyCode.LeftShift);
+                    bool mod2 = Input.GetKey(KeyCode.LeftControl);
 
-                IQueryComand moveCommand = new cmd_Move
-                (
-                    _mouseContext.hitPosition,
-                    MoveToTarget,
-                    (targetPos) =>
+                    if (mod1) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
                     {
-                        float dst = Vector3.Distance(transform.position, targetPos);
-                        bool completed = dst <= _movementTreshold;
+                        _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
+                        AddMovementCommand(_mouseContext);
+                    }
+                    else
+                    {
+                        CancelAllCommands();
+                        _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
+                        AddMovementCommand(_mouseContext);
+                    }
 
-                        if (completed)
-                            _a_Walking = false;
-
-                        return completed;
-                    },
-                    _disposeCommand
-                );
-                comandos.Enqueue(moveCommand);
+                    if (mod2 && Clon.IsActive)
+                        Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
+                }
             }
         }
-
-        if (PlayerInputEnabled && Input.GetMouseButtonDown(1) && mod2 && Clon.IsActive)
-        {
-            MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();
-
-            if (!_mouseContext.validHit) return;
-
-            if (_mouseContext.validHit)
-                Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
-        }
-
-
         #endregion
-        #region Clon
-        if (PlayerInputEnabled && Input.GetKeyDown(KeyCode.Alpha1) && !Clon.IsActive)
+        #region Clon Input
+        if (ClonInputEnabled)
         {
-            comandos.Clear();
-            _a_Clon = true;
-            PlayerInputEnabled = false;
-            ClonSpawn();
+            if (Input.GetKeyDown(KeyCode.Alpha1) && !Clon.IsActive)
+            {
+                comandos.Clear();
+                _a_Clon = true;
+                PlayerInputEnabled = false;
+                ClonSpawn();
+            }
         }
-
         #endregion
 
         if (comandos.Count > 0)
@@ -209,6 +201,32 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
             IQueryComand current = comandos.Peek();
             current.Execute();
         }
+    }
+
+    private void AddMovementCommand(MouseContext _mouseContext)
+    {
+        _solver.SetOrigin(transform.position)
+               .SetTarget(_mouseContext.closerNode)
+               .CalculatePathUsingSettings();
+
+        IQueryComand moveCommand = new cmd_Move
+                            (
+                                _mouseContext.closerNode.transform.position,
+                                _solver.currentPath,
+                                MoveToTarget,
+                                (targetPos) =>
+                                {
+                                    float dst = Vector3.Distance(transform.position, targetPos);
+                                    bool completed = dst <= _movementTreshold;
+
+                                    if (completed)
+                                        _a_Walking = false;
+
+                                    return completed;
+                                },
+                                _disposeCommand
+                            );
+        comandos.Enqueue(moveCommand);
     }
 
     //================================= Damage System ======================================
@@ -282,33 +300,28 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     public void FallInTrap()
     {
         PlayerInputEnabled = false;
-        //_agent.isStopped = true;
-        //_agent.ResetPath();
-
+        playerMovementEnabled = false;
         comandos.Clear();
 
-        //_agent.enabled = false;
         _rb.useGravity = true;
         _rb.isKinematic = false;
         _mainCollider.isTrigger = true;
     }
-
     public void PlayBlood()
     {
         BloodStain.Play();
     }
 
-    public void MoveToTarget(Vector3 destinyPosition)
+    public bool MoveToTarget(Vector3 destinyPosition)
     {
-        //Vector3 _targetForward = (_agent.steeringTarget - transform.position).normalized.YComponent(0);
-        //transform.forward = _targetForward;
+        Vector3 dirToTarget = (destinyPosition - transform.position).normalized;
+        transform.forward = dirToTarget;
 
-        //if (_currentTargetPos != destinyPosition)
-        //    _currentTargetPos = destinyPosition;
         if (!_a_Walking)
             _a_Walking = true;
 
-        //_agent.destination = destinyPosition;
+        transform.position += dirToTarget * moveSpeed * Time.deltaTime;
+        return Vector3.Distance(transform.position, destinyPosition) <= _movementTreshold;
     }
 
     /// <summary>
@@ -324,6 +337,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
             IQueryComand closeDistance = new cmd_Move
             (
                 safeInteractionPosition,
+                _solver.currentPath,
                 MoveToTarget,
                 (targetPos) =>
                 {
@@ -412,7 +426,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         if (comandos.Count > 0)
         {
             var next = comandos.Peek();
-            //print(string.Format("Comando {0} Finalizado\nSiguiente comando es {1}", _currentC, next));
+            //print($"Comando {_currentC} Finalizado\nSiguiente comando es {next}");
         }
     }
     void CancelAllCommands()
@@ -426,23 +440,18 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     void Die(int KillingAnimType)
     {
         PlayerInputEnabled = false;
-
-        //if (_agent.isActiveAndEnabled)
-        //{
-        //    _agent.isStopped = true;
-        //    _agent.ResetPath();
-        //}
+        playerMovementEnabled = false;
+        Health = 0;
 
         _rb.useGravity = false;
         _rb.velocity = Vector3.zero;
-        //_agent.velocity = Vector3.zero;
-        //_a_KillingMethodID = KillingAnimType;
+        _a_KillingMethodID = KillingAnimType;
 
-        //if (KillingAnimType == 1)
-        //    _a_GetSmashed = true;
+        if (KillingAnimType == 1)
+            _a_GetSmashed = true;
 
-        //_a_Dead = true;
-        //IsAlive = false;
+        _a_Dead = true;
+
         ImDeadBro();
     }
 

@@ -184,7 +184,7 @@ public class Baboso : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEnti
         _trail = GetComponentInChildren<Trail>();
 
         //AutoSet Del Target.
-        var tar = FindObjectOfType<NMA_Controller>();
+        var tar = FindObjectOfType<Controller>();
         if (tar != null)
         {
             _player = tar.transform;

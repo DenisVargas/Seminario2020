@@ -18,7 +18,7 @@ public class CanvasController : MonoBehaviour
     private void Awake()
     {
         _MultiCommandMenu.LoadData();
-        FindObjectOfType<NMA_Controller>().ImDeadBro += DisplayLoose;
+        FindObjectOfType<Controller>().ImDeadBro += DisplayLoose;
         Fade.canvasRenderer.SetAlpha(1);
         StartCoroutine(FadeIn());
     }
@@ -44,7 +44,6 @@ public class CanvasController : MonoBehaviour
     }
     IEnumerator FadeIn()
     {
-        Debug.Log("entre");
         for (int i = 9; i >= 0; i--)
         {
             yield return new WaitForSeconds(0.1f);

@@ -161,23 +161,23 @@ public class NMA_Controller : MonoBehaviour, IPlayerController, IDamageable<Dama
                     _mv.SetMousePosition(_mouseContext.hitPosition);
                 }
 
-                IQueryComand moveCommand = new cmd_Move
-                (
-                    _mouseContext.hitPosition,
-                    MoveToTarget,
-                    (targetPos) =>
-                    {
-                        float dst = Vector3.Distance(transform.position, targetPos);
-                        bool completed = dst <= _movementTreshold;
+                //IQueryComand moveCommand = new cmd_Move
+                //(
+                //    _mouseContext.hitPosition,
+                //    MoveToTarget,
+                //    (targetPos) =>
+                //    {
+                //        float dst = Vector3.Distance(transform.position, targetPos);
+                //        bool completed = dst <= _movementTreshold;
 
-                        if (completed)
-                            _a_Walking = false;
+                //        if (completed)
+                //            _a_Walking = false;
 
-                        return completed;
-                    },
-                    _disposeCommand
-                );
-                comandos.Enqueue(moveCommand);
+                //        return completed;
+                //    },
+                //    _disposeCommand
+                //);
+                //comandos.Enqueue(moveCommand);
             }
         }
 
@@ -234,23 +234,23 @@ public class NMA_Controller : MonoBehaviour, IPlayerController, IDamageable<Dama
         var safeInteractionPosition = target.requestSafeInteractionPosition(this);
         if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
         {
-            IQueryComand closeDistance = new cmd_Move
-            (
-                safeInteractionPosition,
-                MoveToTarget, 
-                (targetPos) => 
-                {
-                    float dst = Vector3.Distance(transform.position, targetPos);
-                    bool completed = dst <= _movementTreshold;
+            //IQueryComand closeDistance = new cmd_Move
+            //(
+            //    safeInteractionPosition,
+            //    MoveToTarget, 
+            //    (targetPos) => 
+            //    {
+            //        float dst = Vector3.Distance(transform.position, targetPos);
+            //        bool completed = dst <= _movementTreshold;
 
-                    if (completed && _a_Walking)
-                        _a_Walking = false;
+            //        if (completed && _a_Walking)
+            //            _a_Walking = false;
 
-                    return completed;
-                },
-                _disposeCommand
-            );
-            comandos.Enqueue(closeDistance);
+            //        return completed;
+            //    },
+            //    _disposeCommand
+            //);
+            //comandos.Enqueue(closeDistance);
             //print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
         }
 

@@ -4,9 +4,12 @@
     dead,
     idle,
     attack,
-    followLeader,
     pursue,
     flee,
     moveTo,
-    alert
+    alert,
+    think,
+    burning,
+    fallTrap,
+    rage,
 }

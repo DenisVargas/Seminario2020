@@ -4,7 +4,7 @@ namespace IA.FSM
 {
     public interface IState<T>
     {
-        T getStateType { get; }
+        T StateType { get; }
         void Begin();
         void Execute();
         void End();

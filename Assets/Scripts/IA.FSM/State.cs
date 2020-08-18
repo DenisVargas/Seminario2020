@@ -4,19 +4,26 @@ using UnityEngine;
 
 namespace IA.FSM
 {
-    [Serializable]
+    [Serializable, RequireComponent(typeof(Animator))]
     public abstract class State : MonoBehaviour, IState<CommonState>
     {
-        [SerializeField] protected Animator _anims;
+        public Action<CommonState> SwitchToState = delegate { };
+
+        protected Animator _anims;
         [SerializeField]
         protected CommonState stateType;
         [SerializeField]
         protected Dictionary<CommonState, Transition> transitions = new Dictionary<CommonState, Transition>();
 
-        public CommonState getStateType
+        public CommonState StateType
         {
             get => stateType;
             private set => stateType = value;
+        }
+
+        public virtual void Awake()
+        {
+            _anims = GetComponent<Animator>();
         }
 
         public virtual void Begin() { }
@@ -26,13 +33,13 @@ namespace IA.FSM
         public IState<CommonState> AddTransition(IState<CommonState> targetState)
         {
             Transition transition = new Transition(targetState, (stateType) => { });
-            transitions.Add(targetState.getStateType, transition);
+            transitions.Add(targetState.StateType, transition);
             return this;
         }
         public IState<CommonState> AddTransition(IState<CommonState> targetState, Action<CommonState> OnTransition)
         {
             Transition transition = new Transition(targetState, OnTransition);
-            transitions.Add(targetState.getStateType, transition);
+            transitions.Add(targetState.StateType, transition);
             return this;
         }
         public IState<CommonState> transitionTo(CommonState input)
@@ -62,7 +69,7 @@ namespace IA.FSM
             FSM.AddState(state);
 
             if (setAsDefault)
-                FSM.SetState(state.getStateType);
+                FSM.SetState(state.StateType);
 
             return state;
         }

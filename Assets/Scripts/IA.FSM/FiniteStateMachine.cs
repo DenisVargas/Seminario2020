@@ -31,7 +31,7 @@ namespace IA.FSM
         }
         public T getCurrentStateType()
         {
-            return currentState.getStateType;
+            return currentState.StateType;
         }
         public void SetState(T input)
         {
@@ -40,10 +40,10 @@ namespace IA.FSM
         }
         public void AddState(IState<T> state)
         {
-            if (States.ContainsKey(state.getStateType))
-                States[state.getStateType] = state;
+            if (States.ContainsKey(state.StateType))
+                States[state.StateType] = state;
             else
-                States.Add(state.getStateType, state);
+                States.Add(state.StateType, state);
         }
     }
 }

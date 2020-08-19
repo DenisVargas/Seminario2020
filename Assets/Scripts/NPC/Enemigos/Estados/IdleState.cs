@@ -6,26 +6,22 @@ using System;
 
 public class IdleState : State
 {
-    public Action checkForPlayerAndClone = delegate { };
-    int walking = 0;
+    public Func<bool> checkForPlayerAndClone = delegate { return false; };
 
     public override void Begin()
     {
-        if (walking == 0) Animator.StringToHash("Walking");
-
         print($"{gameObject.name} entró en Idle");
-        _anims.SetBool(walking, false);
+        _anims.SetBool("Walking", false);
     }
 
     public override void Execute()
     {
-        checkForPlayerAndClone(); //Si el player es encontrado, automáticamente paso al estado correspondiente.
-
-        //Esta parte tiene que estar incluido en checkForPlayerAndClone();
-        //    if ( _killeableTarget != null && _currentState != BoboState.pursue)
-        //    {
-        //        state.Feed(BoboState.pursue);
-        //    }
+        //Si el player es encontrado, automáticamente paso al estado correspondiente.
+        if (checkForPlayerAndClone())
+        {
+            print($"Switch to Pursue!");
+            SwitchToState(CommonState.pursue);
+        }
     }
 
     public override void End()

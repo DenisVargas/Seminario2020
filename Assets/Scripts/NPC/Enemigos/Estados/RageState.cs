@@ -27,6 +27,7 @@ public class RageState : State
     int _hitSecuence = 0;
 
     #region DEBUG
+    [Space(), Header("DEBUG")]
     [SerializeField] bool DEBUG_RageMode_Ranges = true;
     [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
     private void OnDrawGizmos()

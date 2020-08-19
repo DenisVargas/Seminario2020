@@ -7,8 +7,12 @@ namespace IA.LineOfSight
         public LayerMask visibles = ~0;
         public float range = 1f;
         public float angle = 45f;
+        public bool UseCustomOrientation = false;
+        public Transform SightSocket = null;
 
-#region DEBUG
+        Vector3 orientation = Vector3.zero;
+
+        #region DEBUG
 #if UNITY_EDITOR
         [Space, Header("Debug")]
         [SerializeField] bool Debug_LineOfSight = false; 
@@ -19,20 +23,20 @@ namespace IA.LineOfSight
         {
             if (Debug_LineOfSight)
             {
-                //Posición del objetivo.
-                var currentPosition = transform.position;
+                Vector3 normalizedOrientation = SightSocket.forward.YComponent(0).normalized;
+                orientation = UseCustomOrientation && SightSocket != null ? normalizedOrientation : transform.forward;
+                Vector3 origin = transform.position;
 
                 //Rango
                 Gizmos.color = rangeColor;
                 Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
-                Gizmos.DrawWireSphere(transform.position, range);
+                Gizmos.DrawWireSphere(origin, range);
 
                 //Ángulo
                 Gizmos.color = angleColor;
-                Gizmos.DrawLine(currentPosition, currentPosition + Quaternion.Euler(0, angle + 1, 0) * transform.forward * range);
-                Gizmos.DrawLine(currentPosition, currentPosition + Quaternion.Euler(0, -angle - 1, 0) * transform.forward * range);
+                Gizmos.DrawLine(origin, origin + Quaternion.Euler(0, angle + 1, 0) * orientation * range);
+                Gizmos.DrawLine(origin, origin + Quaternion.Euler(0, -angle - 1, 0) * orientation * range);
             }
-
         }
 #endif
 #endregion
@@ -71,10 +75,15 @@ namespace IA.LineOfSight
                 return false;
             }
 
+            if (UseCustomOrientation && SightSocket != null)
+                orientation = SightSocket.forward.YComponent(0).normalized;
+            else
+                orientation = transform.forward;
+
             positionDiference = (target.position - transform.position);
             distanceToTarget = positionDiference.magnitude;
             Vector3 BidimensionalProjection = positionDiference.YComponent(0);
-            angleToTarget = Vector3.Angle(transform.forward, BidimensionalProjection);
+            angleToTarget = Vector3.Angle(orientation, BidimensionalProjection);
             dirToTarget = positionDiference.normalized;
 
             dirToTarget = positionDiference.normalized;

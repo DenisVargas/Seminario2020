@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3402839300879897187}
   - component: {fileID: 8938851973927595494}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Blood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,13 +56,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4158579465343148742}
-  m_LocalRotation: {x: -0.6909733, y: -0, z: -0, w: 0.72288036}
-  m_LocalPosition: {x: -0.155, y: 0.285, z: 0.123}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 397471188853756198}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -87.414, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!198 &3402839300879897187
 ParticleSystem:
   m_ObjectHideFlags: 0

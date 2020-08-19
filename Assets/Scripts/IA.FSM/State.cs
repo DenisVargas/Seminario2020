@@ -32,8 +32,11 @@ namespace IA.FSM
 
         public IState<CommonState> AddTransition(IState<CommonState> targetState)
         {
-            Transition transition = new Transition(targetState, (stateType) => { });
-            transitions.Add(targetState.StateType, transition);
+            if (!transitions.ContainsKey(targetState.StateType))
+            {
+                Transition transition = new Transition(targetState, (stateType) => { });
+                transitions.Add(targetState.StateType, transition);
+            }
             return this;
         }
         public IState<CommonState> AddTransition(IState<CommonState> targetState, Action<CommonState> OnTransition)
@@ -67,6 +70,7 @@ namespace IA.FSM
         public static State AttachTo(this State state, FiniteStateMachine<CommonState> FSM, bool setAsDefault = false)
         {
             FSM.AddState(state);
+            state.SwitchToState = FSM.Feed;
 
             if (setAsDefault)
                 FSM.SetState(state.StateType);

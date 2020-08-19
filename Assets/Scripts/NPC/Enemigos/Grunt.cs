@@ -8,8 +8,9 @@ using IA.FSM;
 using IA.LineOfSight;
 using Core.DamageSystem;
 using Core.Debuging;
+using IA.PathFinding;
 
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Animator), typeof(LineOfSightComponent), typeof(PathFindSolver))]
 public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractable, ILivingEntity
 {
     public Action<GameObject> OnEntityDead = delegate { };
@@ -27,7 +28,6 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [SerializeField] float _maxHealth = 100f;
     [SerializeField] float _attackRange = 2f;
     [SerializeField] float _minDetectionRange = 3f;
-    
 
     [Header("Interaction System")]
     [SerializeField] float _safeInteractionDistance = 5f;
@@ -50,7 +50,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     public Vector3 position => transform.position;
     public Vector3 LookToDirection => transform.forward;
 
-    //------------------------------------ HOOKS --------------------------------------------
+    //--------------------------------- UI HOOKS --------------------------------------------
 
     Action<float> Hook_HealthUpdate = delegate { }; //Un Hook por cada estadística que requiere una UI.
 
@@ -67,6 +67,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     //----------------------------------- Targeting -----------------------------------------
 
+    public Vector3 movementTargetPosition => throw new NotImplementedException();
     IDamageable<Damage, HitResult> AttackTarget = null;
     Controller _player;
     ClonBehaviour _playerClone;
@@ -75,52 +76,18 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     //----------------------------------- Animation -----------------------------------------
 
     private Animator _anim = null;
-    int[] _animHash = new int[6];
-    bool _a_walk
-    {
-        get => _anim.GetBool(_animHash[0]);
-        set => _anim.SetBool(_animHash[0], value);
-    }
-    bool _a_Burning
-    {
-        get => _anim.GetBool(_animHash[1]);
-        set => _anim.SetBool(_animHash[1], value);
-    }
-    bool _a_GetHit
-    {
-        get => _anim.GetBool(_animHash[2]);
-        set => _anim.SetBool(_animHash[2], value);
-    }
-    bool _a_Attack
-    {
-        get => _anim.GetBool(_animHash[3]);
-        set => _anim.SetBool(_animHash[3], value);
-    }
-    bool _a_SmashDown
-    {
-        get => _anim.GetBool(_animHash[4]);
-        set => _anim.SetBool(_animHash[4], value);
-    }
-    bool _a_Dead
-    {
-        get => _anim.GetBool(_animHash[5]);
-        set => _anim.SetBool(_animHash[5], value);
-    }
-    bool _a_targetFinded
-    {
-        get => _anim.GetBool(_animHash[6]);
-        set => _anim.SetBool(_animHash[6], value);
-    }
 
     public bool IsAlive { get; private set; } = (true);
     public bool IsCurrentlyInteractable { get; private set; } = (true);
     public int InteractionsAmmount => _suportedOperations.Count;
+
 
     //----------------------------------- Components ----------------------------------------
 
     private Rigidbody _rb = null;
     private Collider _mainCollider = null;
     LineOfSightComponent _sight = null;
+    PathFindSolver _solver = null;
 
     #region DEBUG
 #if UNITY_EDITOR
@@ -128,6 +95,8 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
     [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
     [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
+    [SerializeField] TMPro.TMP_Text DebugText_View;
+    string debugText;
 
     private void OnDrawGizmos()
     {
@@ -146,12 +115,18 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 #endif 
     #endregion
 
-    //=======================================================================================
+    //================================ Unity Engine =========================================
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _mainCollider = GetComponent<Collider>();
+        _sight = GetComponent<LineOfSightComponent>();
+        _solver = GetComponent<PathFindSolver>();
+        _anim = GetComponent<Animator>();
+
+        Node _currentCloserNode = _solver.getCloserNode(transform.position);
+        transform.position = _currentCloserNode.transform.position;
 
         _health = _maxHealth;
 
@@ -185,9 +160,16 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         rage.AttachTo(_states);
 
         PursueState pursue = GetComponent<PursueState>();
+        pursue.checkDistanceToTarget = TargetIsInAttackRange;
+        pursue.getDestinyNode = getCloserNodeToAttackTarget;
+        pursue.MoveToTarget = MoveToNode;
         pursue.AttachTo(_states);
 
         AttackState attack = GetComponent<AttackState>();
+        attack.LookAtAttackTarget = LookAtAttackTarget;
+        attack.StunAttackTarget = StunTarget;
+        attack.KillAttackTarget = KillAttackTarget;
+        attack.Think = EvaluateSituation;
         attack.AttachTo(_states);
 
         DeadState dead = GetComponent<DeadState>();
@@ -196,7 +178,6 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         dead.AttachTo(_states);
 
         #endregion
-
         #region Set de Transiciones.
         idle.AddTransition(dead)
             .AddTransition(rage)
@@ -236,24 +217,54 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
     void Update()
     {
         _states.Update();
+
+        #if UNITY_EDITOR
+            debugText = "";
+            debugText += $"Estado: {_states.getCurrentStateType().ToString()}\n";
+            debugText += $"Jugador encontrado: {_player != null}\n";
+            debugText += $"Clon encontrado: {_playerClone != null}\n";
+            DebugText_View.text = debugText; 
+        #endif
     }
 
     //=================================== Private Memeber Funcs =============================
 
+    /// <summary>
+    /// Resetea el estado de la vida de esta entidad a su estado originial.
+    /// </summary>
     void ResetSetUp()
     {
         _health = _maxHealth;
         IsAlive = true;
     }
-    void MoveToTarget(Vector3 targetPosition)
+    /// <summary>
+    /// Mueve a la unidad hasta un nodo determinado con la velocidad específicada.
+    /// </summary>
+    /// <param name="targetNode">Nodo objetivo al que se quiere moverse.</param>
+    /// <param name="movementSpeed">Velocidad del movimiento</param>
+    /// <returns>Retorna false si no alcanzó al objetivo, de lo contrario, retorna verdadero si alcanzó al objetivo dentro del treshold correspondiente.</returns>
+    bool MoveToNode(Node targetNode, float movementSpeed)
     {
-        transform.forward = (Vector3.Normalize((targetPosition - transform.position).YComponent(0)));
+        Vector3 targetDir = (targetNode.transform.position - transform.position).normalized;
+        transform.forward = (targetDir.YComponent(0)); //Orientación
+        transform.position += targetDir * movementSpeed * Time.deltaTime; //Cambio de posición.
 
-        //if (targetPosition != _agent.destination)
-        //    _agent.SetDestination(targetPosition);
+        //Chequeo la distancia al objetivo actual
+        return Vector3.Distance(targetNode.transform.position, transform.position) < _solver.ProximityTreshold;
     }
-
-    void LookAtAttackTarget() { }
+    /// <summary>
+    /// Cambia la orientación del NPC para que mire en dirección de su objetivo de ataque.
+    /// </summary>
+    void LookAtAttackTarget()
+    {
+        if (AttackTarget != null && AttackTarget.IsAlive)
+            transform.forward = (AttackTarget.transform.position - transform.position).normalized;
+    }
+    void StunTarget()
+    {
+        if (AttackTarget != null && AttackTarget.IsAlive)
+            AttackTarget.GetStun(transform.position, 1);
+    }
     void KillAttackTarget()
     {
         if (AttackTarget != null && AttackTarget.IsAlive)
@@ -261,38 +272,88 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
             FeedDamageResult(AttackTarget.GetHit(new Damage() { instaKill = true, type = DamageType.piercing, KillAnimationType = 1 }));
         }
     }
-    void checkForPlayerOrClone()
+    /// <summary>
+    /// Evalúa un cambio de estado en base a la situación actual.
+    /// </summary>
+    void EvaluateSituation()
     {
-        if (_player != null && _playerClone != null)
+        var _currentState = _states.currentState.StateType;
+
+        //Actualizo el estado del player/Clone.
+        if (checkForPlayerOrClone()) 
         {
-            float distToPlayer = (_player.transform.position - transform.position).magnitude;
-            float distToClone = (_playerClone.transform.position - transform.position).magnitude;
-            float mindist = float.MaxValue;
-            IDamageable<Damage, HitResult> closerTarget = null;
-
-            if (_player.IsAlive)
-            {
-                if (_sight.IsInSight(_player.transform) && distToPlayer < mindist
-                    || distToPlayer < _minDetectionRange)
-                        closerTarget = _player;
-            }
-
-            if (_playerClone.IsAlive)
-            {
-                if (_sight.IsInSight(_playerClone.transform) && distToClone < mindist ||
-                    distToClone < _minDetectionRange)
-                        closerTarget = _playerClone;
-            }
-
-            if (closerTarget != null)
-            {
-                var currentTarget = closerTarget;
-                if (currentTarget != null)
-                    AttackTarget = currentTarget;
-                else
-                    Debug.LogError("La cagaste, el objetivo no es Damageable");
-            }
+            float distanceToTarget = Vector3.Distance(transform.position, AttackTarget.transform.position);
+            _states.Feed(distanceToTarget < _attackRange ? CommonState.attack : CommonState.pursue);
         }
+        else
+        {
+            _states.Feed(CommonState.idle);
+        }
+    }
+    /// <summary>
+    /// Chequea si el jugador y su clon estan en rango de visión.
+    /// Si se cumple la condición, setea el más cercano como target de Ataque.
+    /// </summary>
+    bool checkForPlayerOrClone()
+    {
+        IDamageable<Damage, HitResult> closerTarget = null;
+        float distToPlayer = float.MaxValue;
+        float distToClone  = float.MaxValue;
+
+        if (_player != null && _player.IsAlive)
+        {
+            distToPlayer = (_player.transform.position - transform.position).magnitude;
+            if (_sight.IsInSight(_player.transform) || distToPlayer < _minDetectionRange)
+                closerTarget = _player;
+        }
+
+        if (_playerClone != null && _playerClone.IsAlive && _playerClone.isActiveAndEnabled)
+        {
+            distToClone = (_playerClone.transform.position - transform.position).magnitude;
+
+            if (_sight.IsInSight(_playerClone.transform) && distToClone < distToPlayer ||
+                    distToClone < _minDetectionRange)
+                closerTarget = _playerClone;
+        }
+
+        if (closerTarget != null)
+        {
+            var currentTarget = closerTarget;
+            if (currentTarget != null)
+            {
+                AttackTarget = currentTarget;
+                return true;
+            }
+            else
+                Debug.LogError("La cagaste, el objetivo no es Damageable");
+        }
+
+        return false;
+    }
+    /// <summary>
+    /// Chequea si el objetivo de ataque esta en rago de ataque.
+    /// </summary>
+    /// <returns>True si el objetivo esta en rango de ataque. Falso si el target esta muerto o fuera de rango.</returns>
+    bool TargetIsInAttackRange()
+    {
+        if (AttackTarget == null || !AttackTarget.IsAlive) return false;
+        //Si la distancia de ataque es menor al rago de ataque.
+        float DistanceToTarget = (AttackTarget.transform.position - transform.position).magnitude;
+        return DistanceToTarget < _attackRange;
+    }
+    /// <summary>
+    /// Retorna el nodo mas cercano al objetivo actual de Ataque.
+    /// </summary>
+    /// <returns>Null si no existe objetivo o si ya esta muerto.</returns>
+    Node getCloserNodeToAttackTarget()
+    {
+        if ((AttackTarget != null && AttackTarget.IsAlive))
+        {
+            //Calculamos el nodo al que nos queremos mover.
+            Node TargetNode = _solver.getCloserNode(AttackTarget.transform.position);
+            return TargetNode;
+        }
+        return null;
     }
 
     //============================== State Machine Acces ====================================
@@ -336,7 +397,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         if (result.conected && result.fatalDamage)
         {
             Core.Debuging.Console.instance.Print($"{gameObject.name} ha conectado un golpe directo y ha matado a su objetivo", DebugLevel.info);
-            _a_targetFinded = false;
+            _anim.SetBool("TargetFinded", false);
             AttackTarget = null;
         }
     }
@@ -393,40 +454,9 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
 
     //============================== Animation Events =======================================
 
-    void AV_AttackStart()
-    {
-    }
-    void AV_Attack_Hit()
-    {
-        KillAttackTarget();
-        _a_Attack = false;
-    }
-    void AV_Attack_Ended()
-    {
-        var _currentState = _states.currentState.StateType;
-
-        if (_currentState == CommonState.rage)
-        {
-            //state.Feed(BoboState.idle);
-        }
-
-        if (_currentState == CommonState.attack)
-        {
-            checkForPlayerOrClone();
-            if (AttackTarget == null || !AttackTarget.IsAlive)
-            {
-                //state.Feed(BoboState.idle);
-            }
-            else
-            {
-                //float distanceToTarget = Vector3.Distance(transform.position, _killeableTarget.transform.position);
-                //state.Feed(distanceToTarget < _attackRange ? BoboState.attack : BoboState.pursue);
-            }
-        }
-    }
     void AV_HitReact_End()
     {
-        _a_GetHit = false;
+        _anim.SetBool("GetHited", false);
     }
     void AV_TurnArround_Start()
     {

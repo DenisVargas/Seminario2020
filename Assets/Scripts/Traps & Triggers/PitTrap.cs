@@ -42,7 +42,7 @@ public class PitTrap : MonoBehaviour
                 falling = true;
             }
 
-            var player = coll.GetComponent<NMA_Controller>();
+            var player = coll.GetComponent<Controller>();
             if (player != null)
             {
                 //Le digo al player que valió verga :D
@@ -82,12 +82,15 @@ public class PitTrap : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //print($"{other.gameObject.name} entro a la trampa");
-        var agent = other.GetComponent<NavMeshAgent>();
-        if (agent != null)
+        var grunt = other.GetComponent<Grunt>();
+        var Baboso = other.GetComponent<Baboso>();
+
+        if (grunt != null || Baboso != null)
         {
             OnTop.Add(other);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         //print($"{other.gameObject.name} Salió de la trampa");

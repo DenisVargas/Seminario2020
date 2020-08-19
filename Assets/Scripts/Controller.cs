@@ -24,7 +24,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     Node QueuedMovementEndPoint = null;
 
     bool PlayerInputEnabled = true;
-    bool ClonInputEnabled   = true;
+    bool ClonInputEnabled = true;
     bool playerMovementEnabled = true;
     Vector3 velocity;
 
@@ -43,7 +43,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     [SerializeField] float _clonLife = 20f;
     [SerializeField] float _clonCooldown = 4f;
     [SerializeField] float _ClonMovementTreshold = 0.1f;
-    bool _canCastAClon = true; 
+    bool _canCastAClon = true;
     #endregion
     #region Animaciones
     Animator _anims;
@@ -117,7 +117,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
 
-        if(_solver.Origin == null)
+        if (_solver.Origin == null)
         {
             var closerNode = _solver.getCloserNode(transform.position);
             transform.position = closerNode.transform.position;

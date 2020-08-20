@@ -21,7 +21,7 @@ public class CommandMenu : MonoBehaviour
     [SerializeField] Vector2 posOffset = new Vector2(0, 0);
 
     [SerializeField]
-    public CommandMenuItemData[] presetDataBase = new CommandMenuItemData[0];
+    public List<CommandMenuItemData> presetDataBase = new List<CommandMenuItemData>();
     public Dictionary<OperationType, GameObject> display = new Dictionary<OperationType, GameObject>();
 
     [Header("Estado del contexto")]

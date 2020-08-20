@@ -35,14 +35,12 @@ class CommandMenuEditor : Editor
 
         EditorGUILayout.Space();
 
-        if (EditorGUI.EndChangeCheck())
-        {
-            serializedObject.ApplyModifiedProperties();
-        }
-
         //Dibujamos el editor de la database personalizado.
         DrawDatabaseDisplay();
         DrawDatabaseEditor();
+
+        if (EditorGUI.EndChangeCheck())
+            serializedObject.ApplyModifiedProperties();
     }
 
     private void DrawDatabaseDisplay()
@@ -52,12 +50,10 @@ class CommandMenuEditor : Editor
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         showDataBase = EditorGUILayout.BeginFoldoutHeaderGroup(showDataBase, "Database");
 
-
-        if (ins.presetDataBase == null || ins.presetDataBase.Length == 0)
+        if (ins.presetDataBase == null || ins.presetDataBase.Count == 0)
         {
             EditorGUILayout.HelpBox("The Databse is empty", MessageType.Info);
         }
-
 
         if (showDataBase)
         {
@@ -67,7 +63,7 @@ class CommandMenuEditor : Editor
             GUILayoutOption[] labelDisplayOp = new GUILayoutOption[] { GUILayout.MaxWidth(80f), GUILayout.Height(16f) };
             GUILayoutOption[] heightCorrection = new GUILayoutOption[] { GUILayout.Height(16f) };
 
-            if (ins.presetDataBase.Length > 0)
+            if (ins.presetDataBase.Count > 0)
             {
                 foreach (var item in ins.presetDataBase)
                 {
@@ -108,37 +104,18 @@ class CommandMenuEditor : Editor
         itemData = EditorGUILayout.ObjectField(itemData, typeof(CommandMenuItemData), false) as CommandMenuItemData;
         GUI.color = Color.green;
 
-        EditorGUILayout.IntField("Valores actuales", ins.presetDataBase.Length);
+        EditorGUILayout.IntField("Valores actuales", ins.presetDataBase.Count);
 
         if (GUILayout.Button("Add individual"))
         {
             Undo.RecordObject(ins, "Added value");
-            if (ins.presetDataBase.Length == 0)
-            {
-                ins.presetDataBase = new CommandMenuItemData[] { itemData };
-            }
-            else
-            {
-                //Chequear esto.
-                var newValueS = new CommandMenuItemData[ins.presetDataBase.Length + 1];
-
-                newValueS[newValueS.Length - 1] = itemData;
-                for (int i = 0; i < newValueS.Length - 1; i++)
-                {
-                    newValueS[i] = ins.presetDataBase[i];
-                }
-
-                ins.presetDataBase = newValueS;
-            }
+            if (ins.presetDataBase.Count == 0)
+                ins.presetDataBase = new List<CommandMenuItemData>() { itemData };
+            else ins.presetDataBase.Add(itemData);
 
             //value = OperationOptions.Activate;
         }
         GUI.color = Color.white;
-
-        //if (EditorGUI.EndChangeCheck())
-        //{
-        //    serializedObject.ApplyModifiedProperties();
-        //}
         EditorGUILayout.Space();
 
         //------------------------------------------------- Load Element -----------------------------------------------------
@@ -156,17 +133,13 @@ class CommandMenuEditor : Editor
             //Relleno _menuFreeContent con 1 prefab de cada comando disponible.
             if (loadedAssets != null && loadedAssets.Length > 0)
             {
-                ins.presetDataBase = new CommandMenuItemData[loadedAssets.Length];
+                ins.presetDataBase = new List<CommandMenuItemData>();
                 for (int i = 0; i < loadedAssets.Length; i++)
-                {
-                    ins.presetDataBase[i] = loadedAssets[i];
-                }
-                Repaint();
+                    ins.presetDataBase.Add(loadedAssets[i]);
+                EditorUtility.SetDirty(ins);
             }
             else
-            {
                 EditorGUILayout.HelpBox("The Database Folder is Empty", MessageType.Info);
-            }
         }
         GUI.color = Color.white;
         EditorGUILayout.EndHorizontal();
@@ -182,7 +155,7 @@ class CommandMenuEditor : Editor
         if (GUILayout.Button("Remove at Index", remove_Button_LayoutOptions))
         {
             Undo.RecordObject(ins, "Removed Value at index");
-            ins.presetDataBase = new CommandMenuItemData[0];
+            ins.presetDataBase.RemoveAt(toRemoveIndex);
         }
         EditorGUILayout.EndHorizontal();
 
@@ -190,7 +163,7 @@ class CommandMenuEditor : Editor
         if (GUILayout.Button("Clear All"))
         {
             Undo.RecordObject(ins, "Cleared Database");
-            ins.presetDataBase = new CommandMenuItemData[0];
+            ins.presetDataBase = new List<CommandMenuItemData>();
         }
     }
 

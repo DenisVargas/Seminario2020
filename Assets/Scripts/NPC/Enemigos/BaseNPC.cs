@@ -186,6 +186,7 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     /// Chequea si el jugador y su clon estan en rango de visión.
     /// Si se cumple la condición, setea el más cercano como target de Ataque.
     /// </summary>
+    /// <returns>Retorna Verdadero si el jugador o el clon fueron encontrados!</returns>
     protected bool checkForPlayerOrClone()
     {
         IDamageable<Damage, HitResult> closerTarget = null;

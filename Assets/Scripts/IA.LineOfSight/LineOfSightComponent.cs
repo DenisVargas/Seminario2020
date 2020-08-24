@@ -15,28 +15,26 @@ namespace IA.LineOfSight
         #region DEBUG
 #if UNITY_EDITOR
         [Space, Header("Debug")]
-        [SerializeField] bool Debug_LineOfSight = false; 
         [SerializeField] Color rangeColor = Color.white;
         [SerializeField] Color angleColor = Color.white;
 
         void OnDrawGizmosSelected()
         {
-            if (Debug_LineOfSight)
-            {
-                Vector3 normalizedOrientation = SightSocket.forward.YComponent(0).normalized;
-                orientation = UseCustomOrientation && SightSocket != null ? normalizedOrientation : transform.forward;
-                Vector3 origin = transform.position;
+            if (SightSocket && UseCustomOrientation)
+                orientation = SightSocket.forward.YComponent(0).normalized;
+            else
+                orientation = transform.forward;
+            Vector3 origin = transform.position;
 
-                //Rango
-                Gizmos.color = rangeColor;
-                Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
-                Gizmos.DrawWireSphere(origin, range);
+            //Rango
+            Gizmos.color = rangeColor;
+            Gizmos.matrix *= Matrix4x4.Scale(new Vector3(1, 0, 1));
+            Gizmos.DrawWireSphere(origin, range);
 
-                //Ángulo
-                Gizmos.color = angleColor;
-                Gizmos.DrawLine(origin, origin + Quaternion.Euler(0, angle + 1, 0) * orientation * range);
-                Gizmos.DrawLine(origin, origin + Quaternion.Euler(0, -angle - 1, 0) * orientation * range);
-            }
+            //Ángulo
+            Gizmos.color = angleColor;
+            Gizmos.DrawLine(origin, origin + Quaternion.Euler(0, angle + 1, 0) * orientation * range);
+            Gizmos.DrawLine(origin, origin + Quaternion.Euler(0, -angle - 1, 0) * orientation * range);
         }
 #endif
 #endregion

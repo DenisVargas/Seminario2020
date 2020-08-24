@@ -34,7 +34,10 @@ namespace IA.FSM
         public void SetState(T input)
         {
             if(States.ContainsKey(input))
+            {
                 currentState = States[input];
+                currentState.Begin();
+            }
         }
         public void AddState(IState<T> state)
         {

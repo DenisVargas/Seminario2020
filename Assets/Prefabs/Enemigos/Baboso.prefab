@@ -4994,7 +4994,6 @@ MonoBehaviour:
   angle: 45
   UseCustomOrientation: 0
   SightSocket: {fileID: 0}
-  Debug_LineOfSight: 0
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   angleColor: {r: 1, g: 1, b: 1, a: 1}
   positionDiference: {x: 0, y: 0, z: 0}
@@ -5105,8 +5104,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateType: 5
   patrolPoints: {fileID: 0}
-  _patrollSpeed: 5
+  _patrollSpeed: 3
   _stopTime: 1.5
+  _nextWayPointNode: {fileID: 0}
+  _nextNode: {fileID: 0}
+  _currentNode: {fileID: 0}
 --- !u!114 &8251683944114023230
 MonoBehaviour:
   m_ObjectHideFlags: 0

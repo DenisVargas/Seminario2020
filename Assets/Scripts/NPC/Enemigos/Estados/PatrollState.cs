@@ -18,17 +18,21 @@ public class PatrollState : State
     int _PositionsMoved      = 0;
     float _remainingStopTime = 0.0f;
 
-    PathFindSolver _solver = null;
-    List<Node> _waypointNodes = new List<Node>();
+    PathFindSolver _solver     = null;
+
+    List<Node> _waypointNodes  = new List<Node>();
+    Node _nextWayPointNode = null;
     Node _nextNode         = null;
+    Node _currentNode      = null;
 
     public override void Begin()
     {
         //Obtengo referencias.
         if (_solver == null)
             _solver = GetComponent<PathFindSolver>();
+        if (_anims == null)
+            _anims = GetComponent<Animator>();
 
-        _waypointNodes = new List<Node>();
         ConvertWaypointsToNodeWaypoints();
 
         //Seteo la animacion.
@@ -37,45 +41,68 @@ public class PatrollState : State
 
         _stoping = false;
 
+        //Asigno los nodos de referencia.
+        _currentNode = _solver.getCloserNode(transform.position); //Empezamos y consumimos el primero.
+        if (_currentNode == _waypointNodes[0])
+            _PositionsMoved = 1;
+        _nextWayPointNode = _waypointNodes[_PositionsMoved];
+
         //Calculo el camino.
-        _solver.SetOrigin(transform.position)
-               .SetTarget(_nextNode)
+        _solver.SetOrigin(_currentNode)
+               .SetTarget(_nextWayPointNode)
                .CalculatePathUsingSettings();
+
+        //Me aseguro de que el próximo nodo no sea el mismo que el current.
+        _nextNode = _solver.currentPath.Dequeue();
+        if (_nextNode == _currentNode)
+            _nextNode = _solver.currentPath.Dequeue();
     }
 
     public override void Execute()
     {
-        //Si la distancia es menor al treshold
-        if (Vector3.Distance(_nextNode.transform.position, transform.position) < _solver.ProximityTreshold)
-        {
-            _PositionsMoved++;
-            if (patrolPoints.points.Count < _PositionsMoved)
-                _PositionsMoved = 0;
-            //_stoping = _positionsmoved >= _tostoppositions;
-            _nextNode = _solver.getCloserNode(patrolPoints.getNextPosition(_PositionsMoved));
-            _stoping = true;
-        }
-        else
-        {
-            //Me muevo hacia el objetivo actual.
-            moveToNode(_nextNode, _patrollSpeed);
-        }
+        if(checkForPlayer()) return;
 
-        //Timing.
         if (_stoping)
         {
-            //Debug.Log("entre al stopping");
             _remainingStopTime -= Time.deltaTime;
 
             if (_remainingStopTime <= 0)
             {
-                //Debug.Log("Entre Al desstoping");
                 _remainingStopTime = _stopTime;
                 _stoping = false;
             }
+            return;
         }
 
-        checkForPlayer();
+        //Si la distancia es menor al treshold
+        if (Vector3.Distance(_nextNode.transform.position, transform.position) < _solver.ProximityTreshold)
+        {
+            //Si alcanzamos nuestro nextPoint y este es el siguiente nodo del Waypoint.
+            if (_nextNode == _nextWayPointNode)
+            {
+                _PositionsMoved++;
+
+                if (_PositionsMoved >= patrolPoints.points.Count)
+                    _PositionsMoved = 0;
+
+                _currentNode = _nextWayPointNode;
+                _nextWayPointNode = _waypointNodes[_PositionsMoved];
+
+
+                _solver.SetOrigin(_currentNode)
+                       .SetTarget(_nextWayPointNode)
+                       .CalculatePathUsingSettings();
+
+                _nextNode = _solver.currentPath.Dequeue();
+                _nextNode = _solver.currentPath.Dequeue();
+
+                _stoping = true;
+            }
+            else
+                _nextNode = _solver.currentPath.Dequeue();//Si alcanzamos el siguiente nodo del camino actual.
+        }
+
+        moveToNode(_nextNode, _patrollSpeed); //Me muevo hacia el objetivo actual.
     }
 
     public override void End()
@@ -83,9 +110,12 @@ public class PatrollState : State
         _anims.SetBool("Walking", false);
     }
 
+    /// <summary>
+    /// Convierte los waypoints en ruta de nodos.
+    /// </summary>
     void ConvertWaypointsToNodeWaypoints()
     {
-        //Convierte los waypoints en ruta de nodos.
+        _waypointNodes = new List<Node>();
         int _index = 0;
         foreach (var item in patrolPoints.points)
         {

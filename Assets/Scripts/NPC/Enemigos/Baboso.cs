@@ -79,6 +79,7 @@ public class Baboso : BaseNPC
 
         PatrollState patroll = GetComponent<PatrollState>();
         patroll.checkForPlayer = checkForPlayerOrClone;
+        patroll.moveToNode = MoveToNode;
         patroll.AttachTo(_states);
 
         if (startPatrolling)
@@ -136,12 +137,11 @@ public class Baboso : BaseNPC
             .AddTransition(explode)
             .AddTransition(falling);
 
-        //patroll.AddTransition(BabosoState.pursue, pursue)
-        //       .AddTransition(BabosoState.falligTrap, falling)
-        //       .AddTransition(BabosoState.burning, burning)
-        //       .AddTransition(BabosoState.explode, explode)
-        //       //.AddTransition(BabosoState.think, think)
-        //       .AddTransition(BabosoState.dead, dead);
+        patroll.AddTransition(pursue)
+               .AddTransition(falling)
+               .AddTransition(burning)
+               .AddTransition(explode)
+               .AddTransition(dead);
 
         explode.AddTransition(dead);
 
@@ -158,7 +158,7 @@ public class Baboso : BaseNPC
               .AddTransition(burning)
               .AddTransition(falling)
               .AddTransition(explode)
-              //.AddTransition(patroll)
+              .AddTransition(patroll)
               .AddTransition(idle);
 
         burning.AddTransition(falling)
@@ -167,8 +167,8 @@ public class Baboso : BaseNPC
 
         dead.AddTransition(falling)
             .AddTransition(idle)
-            .AddTransition(explode);
-            //.AddTransition(patroll);
+            .AddTransition(explode)
+            .AddTransition(patroll);
 
         #endregion
     }

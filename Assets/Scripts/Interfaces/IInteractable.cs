@@ -31,7 +31,7 @@ public interface IInteractable
     bool IsCurrentlyInteractable { get; }
     int InteractionsAmmount { get; }
 
-    Vector3 position { get; }
+    Transform transform { get; }
     Vector3 LookToDirection { get; }
 
     Vector3 requestSafeInteractionPosition(IInteractor requester);

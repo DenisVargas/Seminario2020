@@ -38,7 +38,7 @@ public class PitTrap : MonoBehaviour
             var slug = coll.GetComponent<Baboso>();
             if (slug != null)
             {
-                slug.FallInTrap();
+                slug.ChangeStateTo(CommonState.fallTrap);
                 falling = true;
             }
 

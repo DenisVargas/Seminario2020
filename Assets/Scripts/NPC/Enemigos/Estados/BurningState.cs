@@ -1,15 +1,17 @@
 ﻿using IA.FSM;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 public class BurningState : State
 {
+    public Action OnBurning = delegate { };
+
     public override void Begin()
     {
         //Seteo la animación.
         print($"{gameObject.name} está entrando a Burning");
         _anims.SetBool("Burning", true);
+
+        OnBurning();
     }
 
     public override void Execute()

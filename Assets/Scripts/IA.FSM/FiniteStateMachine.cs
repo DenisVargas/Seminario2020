@@ -8,6 +8,8 @@ namespace IA.FSM
     public class FiniteStateMachine<T>
     {
         public IState<T> currentState;
+        public T CurrentStateType => currentState.StateType;
+
         [SerializeField] Dictionary<T, IState<T>> States = new Dictionary<T, IState<T>>();
 
         public FiniteStateMachine()
@@ -28,10 +30,6 @@ namespace IA.FSM
             currentState = currentState.transitionTo(input);
             if (currentState == null)
                 SetState(fallback);
-        }
-        public T getCurrentStateType()
-        {
-            return currentState.StateType;
         }
         public void SetState(T input)
         {

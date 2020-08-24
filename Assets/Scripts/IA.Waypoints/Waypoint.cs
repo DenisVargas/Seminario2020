@@ -7,11 +7,8 @@ public class Waypoint : MonoBehaviour
     public GameObject pointPrefab;
     public List<Transform> points = new List<Transform>();
 
-    int currentPosition = 0;
-
-    public Vector3 getNextPosition()
+    public Vector3 getNextPosition(int currentPosition)
     {
-        currentPosition++;
         if (currentPosition >= points.Count)
             currentPosition = 0;
 
@@ -36,8 +33,6 @@ public class Waypoint : MonoBehaviour
         //    Debug.LogError(message);
         //}
     //}
-
-    // Update is called once per frame
 
     #region Lerping
     public static Vector2 Lerp(Vector2 a, Vector2 b, float t)

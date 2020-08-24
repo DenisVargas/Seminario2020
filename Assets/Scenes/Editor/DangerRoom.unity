@@ -3982,19 +3982,6 @@ MonoBehaviour:
   points:
   - {fileID: 344455418}
   - {fileID: 1108649495}
---- !u!65 &1216488120
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856897688108627731}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.3047228, z: 0.8020064}
-  m_Center: {x: -3.8951172e-11, y: 0.6071143, z: 0.01862943}
 --- !u!1 &1230536586
 GameObject:
   m_ObjectHideFlags: 0
@@ -11070,10 +11057,18 @@ GameObject:
   - component: {fileID: 856897688108627733}
   - component: {fileID: 1151818777848107717}
   - component: {fileID: 4990763126621226415}
-  - component: {fileID: 856897688108627732}
   - component: {fileID: 5993281819344987854}
   - component: {fileID: 3149757821655484470}
-  - component: {fileID: 1216488120}
+  - component: {fileID: 856897688108627732}
+  - component: {fileID: 856897688108627742}
+  - component: {fileID: 856897688108627741}
+  - component: {fileID: 856897688108627740}
+  - component: {fileID: 856897688108627739}
+  - component: {fileID: 856897688108627738}
+  - component: {fileID: 856897688108627737}
+  - component: {fileID: 856897688108627736}
+  - component: {fileID: 856897688108627735}
+  - component: {fileID: 856897688108627734}
   m_Layer: 30
   m_Name: Baboso
   m_TagString: Untagged
@@ -11094,15 +11089,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 10
+  _maxHealth: 100
   _attackRange: 1.5
-  _explodeRange: 5
   _minDetectionRange: 3
-  weaknesses: []
+  Weaknesses: []
   resistances: []
+  _safeInteractionDistance: 5
+  _suportedOperations: 
+  _explodeRange: 5
   _desapearEffectDelay: 4
   _timeToDesapear: 4
-  startPatrolling: 1
   _burnTime: 3
+  startPatrolling: 1
   targetPosition: {x: 0, y: 0, z: 0}
   patrolPoints: {fileID: 1185035781}
   stopTime: 1
@@ -11113,7 +11111,6 @@ MonoBehaviour:
   _StaineableMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  _currentState: 0
   DEBUG_ATACKRANGE: 0
   DEBUG_AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
   DEBUG_EXPLODERANGE: 0
@@ -11142,6 +11139,148 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 45.681004, z: 0}
+--- !u!114 &856897688108627734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67e9d5aa6993614a9275cc3ed90e412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateType: 10
+--- !u!114 &856897688108627735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14557ecdad887c640a79a9995f37b7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateType: 5
+--- !u!114 &856897688108627736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7620ac8243984854a9d39e74a535b7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateType: 11
+  _mainCollider: {fileID: 0}
+--- !u!114 &856897688108627737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51dbdafbfc5c92e47b7f3bddc2f47660, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateType: 3
+--- !u!114 &856897688108627738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09300798e3c8d794680c7bac08c11845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateType: 4
+  _pursueMovementSpeed: 3
+  _minDistanceToAttack: 3
+--- !u!114 &856897688108627739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9db4df334b63cd4fa024c9fadfc4adb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateType: 1
+  _desapearEffectDelay: 4
+  _timeToDesapear: 2
+--- !u!114 &856897688108627740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322ec8ab0b7f0ac4fb959012ac0ffb96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateType: 2
+--- !u!114 &856897688108627741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0b16fad223797840a5c0c09ff92eb72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pathFindingNodeMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  _lookUpRange: 10
+  ProximityTreshold: 0.3
+  _originNode: {fileID: 0}
+  _targetNode: {fileID: 0}
+  Debug_DetectionRangeColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &856897688108627742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688108627731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e794691249b9a284485574d012359c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibles:
+    serializedVersion: 2
+    m_Bits: 3221225473
+  range: 1
+  angle: 45
+  UseCustomOrientation: 0
+  SightSocket: {fileID: 0}
+  Debug_LineOfSight: 0
+  rangeColor: {r: 1, g: 1, b: 1, a: 1}
+  angleColor: {r: 1, g: 1, b: 1, a: 1}
+  positionDiference: {x: 0, y: 0, z: 0}
+  dirToTarget: {x: 0, y: 0, z: 0}
+  angleToTarget: 0
+  distanceToTarget: 0
 --- !u!1 &856897688771656074
 GameObject:
   m_ObjectHideFlags: 0

@@ -416,7 +416,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
                        () =>
                        {
                            _a_ThrowRock = true;
-                           transform.forward = (target.position - transform.position).normalized;
+                           transform.forward = (target.transform.position - transform.position).normalized;
                            Queued_ActivationData = _currentOperationData;
                        },
                        _disposeCommand

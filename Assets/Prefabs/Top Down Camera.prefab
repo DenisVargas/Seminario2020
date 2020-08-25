@@ -209,8 +209,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  Target: {fileID: 0}
+  _target: {fileID: 0}
   freeCamera: 1
+  locked: 0
   mousePanBorderThickness: 20
   navigationLimits: {x: 100, y: 0, z: 100}
   panSpeed: 20

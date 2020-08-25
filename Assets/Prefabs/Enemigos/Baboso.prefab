@@ -5089,7 +5089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateType: 11
-  _mainCollider: {fileID: 0}
+  _mainCollider: {fileID: 5993281819839330285}
 --- !u!114 &8251683944114023231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5106,9 +5106,6 @@ MonoBehaviour:
   patrolPoints: {fileID: 0}
   _patrollSpeed: 3
   _stopTime: 1.5
-  _nextWayPointNode: {fileID: 0}
-  _nextNode: {fileID: 0}
-  _currentNode: {fileID: 0}
 --- !u!114 &8251683944114023230
 MonoBehaviour:
   m_ObjectHideFlags: 0

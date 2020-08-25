@@ -71,8 +71,7 @@ public class Baboso : BaseNPC
         _hurtbox = GetComponentInChildren<HurtBox>();
         _trail = GetComponentInChildren<Trail>();
 
-        //State Machine
-
+        #region State Machine: Estados
         IdleState idle = GetComponent<IdleState>();
         idle.checkForPlayerAndClone = checkForPlayerOrClone;
         idle.AttachTo(_states);
@@ -121,15 +120,15 @@ public class Baboso : BaseNPC
         burning.AttachTo(_states);
 
         ExplodeState explode = GetComponent<ExplodeState>();
-        explode.DeactivateComponents = () => 
+        explode.DeactivateComponents = () =>
         {
             _rb.useGravity = false;
             _rb.velocity = Vector3.zero;
             _mainCollider.enabled = false;
             _trail.DisableTrailEmission();
         };
-        explode.AttachTo(_states);
-
+        explode.AttachTo(_states); 
+        #endregion
         #region Transiciones
         idle.AddTransition(dead)
             .AddTransition(pursue)

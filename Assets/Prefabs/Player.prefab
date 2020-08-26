@@ -255,6 +255,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1073741825
   defaultCursor: {fileID: 2800000, guid: 1f9f8bba5217d064a8c63720188a3279, type: 3}
+  InteractiveCursor: {fileID: 2800000, guid: 4921ee5eb03c8a240926e72d7e383e83, type: 3}
   hited: []
 --- !u!114 &4294857582440551377
 MonoBehaviour:

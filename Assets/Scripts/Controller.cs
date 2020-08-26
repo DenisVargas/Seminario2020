@@ -341,8 +341,19 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     public void QuerySelectedOperation(OperationType operation, IInteractable target)
     {
         var safeInteractionPosition = target.requestSafeInteractionPosition(this);
+        Node targetNode = _solver.getCloserNode(safeInteractionPosition);
+
         if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
         {
+            _solver.SetOrigin(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position)
+               .SetTarget(targetNode)
+               .CalculatePathUsingSettings();
+
+            if (_solver.currentPath.Count == 0) //Si el solver no halló un camino, no hay camino posible.
+                return;
+
+            QueuedMovementEndPoint = targetNode;
+
             IQueryComand closeDistance = new cmd_Move
             (
                 _solver.getCloserNode(safeInteractionPosition),

@@ -60,7 +60,12 @@ public class PatrollState : State
 
     public override void Execute()
     {
-        if(checkForPlayer()) return;
+        if (checkForPlayer())
+        {
+            SwitchToState(CommonState.pursue);
+            return;
+        }
+
 
         if (_stoping)
         {

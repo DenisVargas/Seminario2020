@@ -12,6 +12,7 @@ public class Baboso : BaseNPC
     [SerializeField] float _burnTime            = 3f;
     private float _remainingBurnTime            = 0f;
     [SerializeField] bool startPatrolling       = false;
+    [SerializeField] CommonState _currentState = CommonState.none;
 
     [Header("References")]
     [SerializeField] GameObject[] burnParticles   = new GameObject[2];
@@ -174,6 +175,7 @@ public class Baboso : BaseNPC
     protected override void Update()
     {
         base.Update();
+        _currentState = _states.CurrentStateType;
     }
 
     //========================================== Sistema de Daño ==============================================

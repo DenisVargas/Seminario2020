@@ -182,7 +182,7 @@ public class Baboso : BaseNPC
 
     public override HitResult GetHit(Damage damage)
     {
-
+        Debug.Log("Recibió daño.");
         HitResult result = new HitResult()
         {
             conected = true,
@@ -199,9 +199,9 @@ public class Baboso : BaseNPC
             {
                 _states.Feed(CommonState.burning);
             }
-            if (damage.type == DamageType.blunt && _currentState != CommonState.crushed)
+            if (damage.type == DamageType.blunt && _currentState != CommonState.explode)
             {
-                _states.Feed(CommonState.crushed);
+                _states.Feed(CommonState.explode);
             }
             if (damage.type == DamageType.piercing && _currentState != CommonState.dead)
             {

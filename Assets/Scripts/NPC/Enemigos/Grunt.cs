@@ -6,7 +6,6 @@ using IA.PathFinding;
 
 public class Grunt : BaseNPC
 {
-    private bool _playerFound      = false;
     private Collider _mainCollider = null;
 
     public float Health
@@ -26,7 +25,7 @@ public class Grunt : BaseNPC
     [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
     [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
     [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
-    [SerializeField] TMPro.TMP_Text DebugText_View;
+    [SerializeField] TMPro.TMP_Text DebugText_View = null;
     string debugText;
 
     private void OnDrawGizmos()

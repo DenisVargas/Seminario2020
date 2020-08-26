@@ -7,11 +7,7 @@ using IA.FSM;
 public class Baboso : BaseNPC
 {
     [Header("Aditional Options")]
-    [SerializeField] float _desapearEffectDelay = 4f;
-    [SerializeField] float _timeToDesapear      = 4f;
-    [SerializeField] float _burnTime            = 3f;
-    private float _remainingBurnTime            = 0f;
-    [SerializeField] bool startPatrolling       = false;
+    [SerializeField] bool startPatrolling      = false;
     [SerializeField] CommonState _currentState = CommonState.none;
 
     [Header("References")]
@@ -19,7 +15,6 @@ public class Baboso : BaseNPC
 
     Collider _mainCollider      = null;
     HurtBox _hurtbox            = null;
-    HitBox _hitbox              = null;
     Damage _damageState         = new Damage();
     Trail _trail                = null;
 

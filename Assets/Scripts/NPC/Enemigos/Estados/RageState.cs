@@ -16,7 +16,7 @@ public class RageState : State
     [SerializeField] float _detectionDelay = 0.5f;
 
     bool _otherKilleableTargetFounded = false;
-    bool _otherDestructibleFounded = false;
+    bool _otherDestructibleFounded    = false;
     bool _playerFound;
 
     IDamageable<Damage, HitResult> _killeableTarget;

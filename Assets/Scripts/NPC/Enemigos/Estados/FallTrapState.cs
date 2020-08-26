@@ -13,7 +13,7 @@ public class FallTrapState : State
     Collider _mainCollider = null;
 
     Rigidbody _rb = null;
-    PathFindSolver _solver = null;
+    //PathFindSolver _solver = null;
 
     public override void Begin()
     {

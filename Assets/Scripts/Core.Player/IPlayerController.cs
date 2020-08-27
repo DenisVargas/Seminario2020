@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Core.Interaction;
 
 public interface IPlayerController
 {
@@ -14,5 +15,5 @@ public interface IPlayerController
     void FallInTrap();
     void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod);
     void PlayBlood();
-    void QuerySelectedOperation(OperationType operation, IInteractable target);
+    void QuerySelectedOperation(IInteractionComponent target);
 }

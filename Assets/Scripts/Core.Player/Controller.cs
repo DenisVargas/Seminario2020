@@ -4,6 +4,7 @@ using UnityEngine;
 using Core.DamageSystem;
 using System;
 using IA.PathFinding;
+using Core.Interaction;
 
 [RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
 public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, HitResult>, IInteractor
@@ -20,12 +21,12 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     public Transform MouseDebug;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
-    CommandData Queued_ActivationData = new CommandData();
+    IInteractionComponent Queued_TargetInteractionComponent = null;
     Node QueuedMovementEndPoint = null;
 
     bool PlayerInputEnabled = true;
     bool ClonInputEnabled = true;
-    bool playerMovementEnabled = true;
+    //bool playerMovementEnabled = true;
     Vector3 velocity;
 
     #region Componentes
@@ -159,8 +160,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
                     _canvasController.DisplayCommandMenu
                     (
                         Input.mousePosition,
-                        _mouseContext.firstInteractionObject.GetSuportedInteractionParameters(),
-                        _mouseContext.firstInteractionObject,
+                        _mouseContext.InteractionHandler,
                         QuerySelectedOperation
                      );
                 }
@@ -203,7 +203,10 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         if (comandos.Count > 0)
         {
             IQueryComand current = comandos.Peek();
-            current.Execute();
+            if (!current.isReady)
+                current.SetUp();
+            if (!current.cashed)
+                current.Execute();
         }
     }
 
@@ -309,7 +312,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     public void FallInTrap()
     {
         PlayerInputEnabled = false;
-        playerMovementEnabled = false;
+        //playerMovementEnabled = false;
         comandos.Clear();
 
         _rb.useGravity = true;
@@ -336,11 +339,10 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     /// <summary>
     /// Callback que se llama cuando seleccionamos una acción a realizar sobre un objeto interactuable desde el panel de comandos.
     /// </summary>
-    /// <param name="operation">La operación que queremos realizar</param>
-    /// <param name="target">El objetivo de dicha operación</param>
-    public void QuerySelectedOperation(OperationType operation, IInteractable target)
+    /// <param name="target">El objetivo de dicha operación. Es un interaction Component que contiene dentro de si el tipo de la operación.</param>
+    public void QuerySelectedOperation(IInteractionComponent target)
     {
-        var safeInteractionPosition = target.requestSafeInteractionPosition(this);
+        var safeInteractionPosition = target.requestSafeInteractionPosition(transform.position);
         Node targetNode = _solver.getCloserNode(safeInteractionPosition);
 
         if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
@@ -372,49 +374,26 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
                 _disposeCommand
             );
             comandos.Enqueue(closeDistance);
-            //print("Comando CloseDistance añadido. Hay " + comandos.Count + " comandos");
         }
 
         //añado el comando correspondiente a la query.
         IQueryComand _toActivateCommand;
-        CommandData _currentOperationData = new CommandData()
-        {
-            target = target,
-            operationOptions = operation
-        };
-        switch (operation)
+        switch (target.OperationType)
         {
             case OperationType.Take:
                 break;
 
             case OperationType.Ignite:
 
-                target.OnConfirmInput(OperationType.Ignite);
-                _toActivateCommand = new cmd_Ignite(
-                                                      _currentOperationData,
-                                                      () =>
-                                                      {
-                                                          _a_Ignite = true;
-                                                          Queued_ActivationData = _currentOperationData;
-                                                      },
-                                                      _disposeCommand
-                                                   );
+                target.ExecuteOperation();
+                _toActivateCommand = new cmd_Ignite( target,() => { _a_Ignite = true; });
                 comandos.Enqueue(_toActivateCommand);
 
                 break;
 
             case OperationType.Activate:
 
-                _toActivateCommand = new cmd_Activate
-                    (
-                        _currentOperationData,
-                        () =>
-                        {
-                            _a_LeverPull = true;
-                            Queued_ActivationData = _currentOperationData;
-                        },
-                        _disposeCommand
-                    );
+                _toActivateCommand = new cmd_Activate ( target, () => { _a_LeverPull = true; });
                 comandos.Enqueue(_toActivateCommand);
                 break;
 
@@ -423,14 +402,12 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
             case OperationType.TrowRock:
                 _toActivateCommand = new cmd_TrowRock
                     (
-                       _currentOperationData,
+                       target,
                        () =>
                        {
                            _a_ThrowRock = true;
                            transform.forward = (target.transform.position - transform.position).normalized;
-                           Queued_ActivationData = _currentOperationData;
-                       },
-                       _disposeCommand
+                       }
                     );
                 comandos.Enqueue(_toActivateCommand);
                 break;
@@ -462,7 +439,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     void Die(int KillingAnimType)
     {
         PlayerInputEnabled = false;
-        playerMovementEnabled = false;
+        //playerMovementEnabled = false;
         Health = 0;
 
         _rb.useGravity = false;
@@ -483,21 +460,17 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     {
         PlayerInputEnabled = false;
 
-        if (Queued_ActivationData.target != null)
+        if (Queued_TargetInteractionComponent != null)
         {
-            transform.forward = Queued_ActivationData.target.LookToDirection;
+            transform.forward = Queued_TargetInteractionComponent.LookToDirection;
         }
     }
     void AE_PullLeverEnded()
     {
         PlayerInputEnabled = true;
         _a_LeverPull = false;
-
-        if (Queued_ActivationData.target != null)
-        {
-            Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
-            Queued_ActivationData = new CommandData();
-        }
+        comandos.Peek().Execute();
+        _disposeCommand();
     }
     void AE_Ignite_Start()
     {
@@ -508,20 +481,20 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         PlayerInputEnabled = true;
         _a_Ignite = false;
 
-        if (Queued_ActivationData.target != null)
+        if (Queued_TargetInteractionComponent != null)
         {
-            Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
-            Queued_ActivationData = new CommandData();
+            Queued_TargetInteractionComponent.ExecuteOperation();
+            comandos.Dequeue().Execute();
         }
     }
     void AE_TrowRock_Ended()
     {
         _a_ThrowRock = false;
 
-        if (Queued_ActivationData.target != null)
+        if (Queued_TargetInteractionComponent != null)
         {
-            Queued_ActivationData.target.OnOperate(Queued_ActivationData.operationOptions);
-            Queued_ActivationData = new CommandData();
+            Queued_TargetInteractionComponent.ExecuteOperation();
+            comandos.Dequeue().Execute();
         }
     }
 }

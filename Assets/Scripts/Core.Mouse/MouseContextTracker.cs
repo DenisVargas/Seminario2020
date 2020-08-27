@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using IA.PathFinding;
+using Core.Interaction;
 
 [Serializable]
 public struct MouseContext
 {
     public bool interactuableHitted;
-    public IInteractable firstInteractionObject;
+    public IInteractable InteractionHandler;
     public bool validHit;
     public Vector3 hitPosition;
     public Node closerNode;
@@ -96,7 +97,7 @@ public class MouseContextTracker : MonoBehaviour
             if (interactableObject != null && interactableObject.InteractionsAmmount > 0)
             {
                 _context.interactuableHitted = true;
-                _context.firstInteractionObject = interactableObject;
+                _context.InteractionHandler = interactableObject;
                 validHits++;
             }
 

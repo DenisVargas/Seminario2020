@@ -2,27 +2,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Core.Interaction;
 
 public class cmd_Activate : IQueryComand
 {
-    Action _animationTrigger = delegate { };
-    Action _dispose = delegate { };
-    CommandData _data;
+    Action TriggerAnimation = delegate { };
+    IInteractionComponent CommandTarget;
 
     public bool completed { get; private set; } = false;
+    public bool cashed => true;
+    public bool isReady { get; private set; } = false;
 
-    public cmd_Activate(CommandData data, Action AnimationTrigger, Action dispose)
+    public cmd_Activate(IInteractionComponent CommandTarget, Action TriggerAnimation)
     {
-        _data = data;
-        _dispose = dispose;
-        _animationTrigger = AnimationTrigger;
+        this.CommandTarget = CommandTarget;
+        this.TriggerAnimation = TriggerAnimation;
     }
 
+    public void SetUp()
+    {
+        TriggerAnimation();
+        isReady = true;
+    }
     public void Execute()
     {
-        //Ejecuto el comando.
-        _animationTrigger();
-        _dispose();
+        //Ejecuto el comando en el target.
+        CommandTarget.ExecuteOperation();
+        completed = true;
     }
-    public void Cancel() { }
+    public void Cancel()
+    {
+        CommandTarget.CancelOperation();
+    }
 }

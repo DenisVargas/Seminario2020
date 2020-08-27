@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using Core.Interaction;
 
 [Serializable, CreateAssetMenu( fileName = "Command Menu Item", menuName = "Command Menu/Command Preset", order = 1)]
 public class CommandMenuItemData : ScriptableObject

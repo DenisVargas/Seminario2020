@@ -20,29 +20,23 @@ public class Grunt : BaseNPC
     }
 
     #region DEBUG
-#if UNITY_EDITOR
+    #if UNITY_EDITOR
     [Space(), Header("DEBUG GIZMOS")]
     [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
     [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
-    [SerializeField] bool DEBUG_INTERACTION_RAIDUS = true;
     [SerializeField] TMPro.TMP_Text DebugText_View = null;
     string debugText;
 
     private void OnDrawGizmos()
     {
         Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
-        if (DEBUG_INTERACTION_RAIDUS)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, _safeInteractionDistance);
-        }
         if (DEBUG_MINDETECTIONRANGE)
         {
             Gizmos.color = DEBUG_MINDETECTIONRANGE_COLOR;
             Gizmos.DrawWireSphere(transform.position, _minDetectionRange);
         }
     }
-#endif 
+    #endif 
     #endregion
 
     //================================ Unity Engine =========================================
@@ -188,21 +182,6 @@ public class Grunt : BaseNPC
         }
     }
     public override void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod){}
-
-    //================================ Interaction System ===================================
-
-    public override Vector3 requestSafeInteractionPosition(IInteractor requester)
-    {
-        return transform.position + ((requester.position - transform.position).normalized * _safeInteractionDistance);
-    }
-    public override void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
-    {
-        //Acá podemos bloquear su comportamiento quizás.
-    }
-    public override void OnCancelOperation(OperationType operation, params object[] optionalParams)
-    {
-        //Esto se llama cuando se cancela la operación.
-    }
 
     //============================== Animation Events =======================================
 

@@ -15,8 +15,8 @@ public class RageState : State
     [SerializeField] float _rageMode_TargetDetectionRange = 5;
     [SerializeField] float _detectionDelay = 0.5f;
 
-    bool _otherKilleableTargetFounded = false;
-    bool _otherDestructibleFounded    = false;
+    //bool _otherKilleableTargetFounded = false;
+    //bool _otherDestructibleFounded    = false;
     bool _playerFound;
 
     IDamageable<Damage, HitResult> _killeableTarget;
@@ -63,7 +63,7 @@ public class RageState : State
     {
         _anims.SetBool("GetHited", false);
         _hitSecuence = 0;
-        _otherKilleableTargetFounded = false;
+        //_otherKilleableTargetFounded = false;
         _targetsfounded = new List<Transform>();
         _playerFound = false;
     }
@@ -95,8 +95,8 @@ public class RageState : State
                     StartCoroutine(DelayedDetection());
                     break;
                 }
-                else
-                    _otherKilleableTargetFounded = true;
+                //else
+                //    _otherKilleableTargetFounded = true;
 
                 continue;
             }
@@ -105,7 +105,7 @@ public class RageState : State
             var Destructible = item.GetComponent<IDestructible>();
             if (Destructible != null && _sight.IsInSight(item.transform))
             {
-                _otherDestructibleFounded = true;
+                //_otherDestructibleFounded = true;
                 OnSight_Destructibles.Add(Destructible);
             }
         }

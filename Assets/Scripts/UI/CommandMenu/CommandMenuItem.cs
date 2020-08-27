@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using Core.Interaction;
 
 public class CommandMenuItem : MonoBehaviour
 {
@@ -21,7 +22,6 @@ public class CommandMenuItem : MonoBehaviour
     [SerializeField] Color _hoverColor   = Color.white;
     [SerializeField] Color _pressedColor = Color.white;
 
-
     public CommandMenuItemData Data
     {
         get => data;
@@ -38,13 +38,11 @@ public class CommandMenuItem : MonoBehaviour
         }
     }
 
-
     public void OnMouseHoverStart()
     {
         //Si ponemos el mouse encima.
         _backGroundImage.color = _hoverColor;
     }
-
     public void OnMOuseClickDown()
     {
         //Si hacemos clic.
@@ -52,12 +50,10 @@ public class CommandMenuItem : MonoBehaviour
         //Ejecutamos nuestro delegado.
         OnOperationSelected(data.Operation);
     }
-
     public void OnMouseClickUp()
     {
         _backGroundImage.color = _hoverColor;
     }
-
     public void OnMouseHoverEnd()
     {
         //Si sacamos el mouse de encima.

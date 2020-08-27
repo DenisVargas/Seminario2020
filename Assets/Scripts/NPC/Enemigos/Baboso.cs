@@ -177,7 +177,7 @@ public class Baboso : BaseNPC
 
     public override HitResult GetHit(Damage damage)
     {
-        Debug.Log("Recibió daño.");
+        //Debug.Log("Recibió daño.");
         HitResult result = new HitResult()
         {
             conected = true,

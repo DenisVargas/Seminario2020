@@ -10,7 +10,7 @@ public class IdleState : State
 
     public override void Begin()
     {
-        print($"{gameObject.name} entró en Idle");
+        //print($"{gameObject.name} entró en Idle");
         _anims.SetBool("Walking", false);
     }
 

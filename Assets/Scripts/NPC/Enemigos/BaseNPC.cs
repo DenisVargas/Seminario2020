@@ -7,7 +7,7 @@ using IA.FSM;
 using IA.PathFinding;
 
 [RequireComponent(typeof(Animator), typeof(LineOfSightComponent), typeof(PathFindSolver))]
-public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractable, ILivingEntity
+public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEntity
 {
     //================================ Basic Variables ===============================================
 
@@ -76,51 +76,6 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     }
 
     //================================ Interaction System ============================================
-
-    [Header("Interaction System")]
-    [SerializeField] protected float _safeInteractionDistance          = 5f;
-    [SerializeField] protected List<OperationType> _suportedOperations = new List<OperationType>();
-
-    public bool IsCurrentlyInteractable { get; protected set; } = (true);
-    public int InteractionsAmmount => _suportedOperations.Count;
-
-    public virtual Vector3 LookToDirection => transform.forward;
-
-    public virtual Vector3 requestSafeInteractionPosition(IInteractor requester)
-    {
-        //Tiene que ser implementado en cada NPC.
-        throw new NotImplementedException();
-    }
-    public virtual InteractionParameters GetSuportedInteractionParameters()
-    {
-        return new InteractionParameters()
-        {
-            LimitedDisplay = false,
-            SuportedOperations = _suportedOperations
-        };
-    }
-    public virtual void OnConfirmInput(OperationType selectedOperation, params object[] optionalParams)
-    {
-        throw new NotImplementedException();
-    }
-    public virtual void OnCancelOperation(OperationType operation, params object[] optionalParams)
-    {
-        throw new NotImplementedException();
-    }
-    public virtual void OnOperate(OperationType selectedOperation, params object[] optionalParams)
-    {
-        switch (selectedOperation)
-        {
-            case OperationType.Ignite:
-                OnIgnite(optionalParams);
-                break;
-            case OperationType.TrowRock:
-                OnHitWithRock(optionalParams);
-                break;
-            default:
-                break;
-        }
-    }
 
     private void OnIgnite(object[] optionalParams)
     {
@@ -281,5 +236,9 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     {
         //Update de la State Machine.
         _states.Update();
+    }
+    private void OnDestroy()
+    {
+        OnEntityDead(gameObject);
     }
 }

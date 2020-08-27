@@ -6,14 +6,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Core.Interaction;
 
 public class CanvasController : MonoBehaviour
 {
     [Header("Multi-Comand Menu")]
     [SerializeField] CommandMenu _MultiCommandMenu = null;
     public Image Fade;
-   
-
 
     private void Awake()
     {
@@ -23,10 +22,10 @@ public class CanvasController : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    public void DisplayCommandMenu(Vector2 mouseScreenPosition, InteractionParameters displayOptions, IInteractable interactionTarget, Action<OperationType, IInteractable> callback)
+    public void DisplayCommandMenu(Vector2 mouseScreenPosition, IInteractable interactionTarget, Action<IInteractionComponent> callback)
     {
         //Le paso las nuevas opciones disponibles.
-        _MultiCommandMenu.FillOptions(displayOptions, interactionTarget, callback);
+        _MultiCommandMenu.FillOptions( interactionTarget, callback);
         //Lo posiciono en donde debe estar.
         _MultiCommandMenu.Emplace(mouseScreenPosition);
         //Lo activo en el canvas.

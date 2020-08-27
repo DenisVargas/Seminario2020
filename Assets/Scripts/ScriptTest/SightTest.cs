@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
 public class SightTest : MonoBehaviour
 {
     [SerializeField] LayerMask visibles = ~0;
-    [SerializeField] float range = 1f;
-    [SerializeField] float angle = 45f;
-    [SerializeField] Transform Target;
+    [SerializeField] float range        = 1f;
+    [SerializeField] float angle        = 45f;
+    [SerializeField] Transform Target   = null;
 
 #if UNITY_EDITOR
     [Space, Header("Debug")]

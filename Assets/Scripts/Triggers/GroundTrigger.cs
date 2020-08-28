@@ -28,7 +28,7 @@ public class GroundTrigger : MonoBehaviour
         if (toRemove != null && OnTop.Contains(toRemove))
         {
             OnTop.Remove(toRemove);
-            if (OnTop.Count <= 0)
+            if (OnTop.Count <= 0 && _anims != null)
             {
                 _anims.SetBool("Pressed", false);
                 OnDeActivate.Invoke();

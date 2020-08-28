@@ -1,22 +1,26 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace IA.PathFinding
 {
+    //Navigation Area es una etiqueta.
     public enum NavigationArea
     {
-        nonNavegable = 0,
-        Navegable
+        Navegable = 0,
+        blocked
     }
 
     public class Node : MonoBehaviour
     {
-        public int ID = 0;      //ID del nodo dentro de una Graph.
-        public List<Node> Connections; //Referencias a los nodos a los que estoy conectado, usado por PathFinding.
-        public int area = 0; //Esto lo vamos a usar para detectar si es navegable o no.
+        public event Action<NavigationArea> OnAreaWeightChanged = delegate { }; //Esto es un evento de navegación.
 
-    #if UNITY_EDITOR
+        public int ID = 0;      //ID del nodo dentro de una Graph.
+        public List<Node> Connections = new List<Node>(); //Referencias a los nodos a los que estoy conectado, usado por PathFinding.
+        public NavigationArea area = 0; //Esto lo vamos a usar para detectar si es navegable o no.
+
+        #region DEBUG
+        #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             //Esto es horrible por si las dudas!
@@ -31,7 +35,14 @@ namespace IA.PathFinding
                 }
             }
         }
-    #endif
+        #endif 
+        #endregion
+
+        public void ChangeNodeState(NavigationArea state)
+        {
+            area = state;
+            OnAreaWeightChanged(area);
+        }
     }
 }
 

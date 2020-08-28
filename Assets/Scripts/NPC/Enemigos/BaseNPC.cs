@@ -77,12 +77,12 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
 
     //================================ Interaction System ============================================
 
-    private void OnIgnite(object[] optionalParams)
+    public virtual void OnIgnite(object[] optionalParams)
     {
         //Si recibe daño igniteante, este puede prenderse fuego.
         _states.Feed(CommonState.burning);
     }
-    private void OnHitWithRock(object[] optionalParams)
+    public virtual void OnHitWithRock(object[] optionalParams)
     {
         //Si es atacado por una roca, entra en rageMode.
         print("Me han pegado con una roca, hijos de puta!");

@@ -103,6 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 206088919360502991}
   - component: {fileID: 206088919360502986}
+  - component: {fileID: 6094009159771956726}
   - component: {fileID: 206088919360502987}
   m_Layer: 0
   m_Name: FiringThing
@@ -143,6 +144,20 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &6094009159771956726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206088919360503028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionCollider: {fileID: 206088919360502986}
+  _interactionEnabled: 1
 --- !u!114 &206088919360502987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,21 +170,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ae44cd37b81bd48987e5ca0cd3b6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireParticle: {fileID: 4255842031857750274}
-  _suportedInteractions: 01000000
-  _ignitableSearchRadius: 1.5
-  _interactionRadius: 2.2
+  _chainReactionDelay: 0.5
+  fireParticles:
+  - {fileID: 4255842031857750274}
   efectTargets:
     serializedVersion: 2
     m_Bits: 1
+  _ignitableSearchRadius: 1.5
+  _safeInteractionDistance: 2
+  _remainingLifeTime: 0
+  _trapHitBox: {fileID: 3289302911783658168}
   myMesh: {fileID: 8835212789124928482}
   myMaterials:
   - {fileID: 2100000, guid: 0d15e9c5d54cd6d43900fea4969bbdb8, type: 2}
   - {fileID: 2100000, guid: 9943f33052d9b994db37508c6e613e7d, type: 2}
   - {fileID: 2100000, guid: eb03c59d75f8b914a98519bbfa32e727, type: 2}
-  _interactionCollider: {fileID: 206088919360502986}
-  _trapHitBox: {fileID: 3289302911783658168}
-  _remainingLifeTime: 0
 --- !u!1 &206088919451261376
 GameObject:
   m_ObjectHideFlags: 0

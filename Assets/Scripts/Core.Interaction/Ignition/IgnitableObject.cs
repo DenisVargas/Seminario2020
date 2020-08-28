@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using Core.Interaction;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Collider), typeof(InteractionHandler))]
 public class IgnitableObject : MonoBehaviour, IIgnitableObject
 {
     public Action OnDisable = delegate { };
@@ -197,14 +197,9 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     {
         if (!Burning)
         {
-            //print(gameObject.name + " IS IGNITED");
-
             // Desactivo las interacciones.
             foreach (var item in fireParticles)
-            {
-                //Activo las particulas!.
                 item.SetActive(true);
-            }
             _trapHitBox.IsActive = true;
 
             StartCoroutine(DelayedOtherIgnition(_chainReactionDelay));

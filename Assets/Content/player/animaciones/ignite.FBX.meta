@@ -62,7 +62,7 @@ ModelImporter:
       - time: 0
         functionName: AE_Ignite_Start
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+        objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
           type: 3}
         floatParameter: 0
         intParameter: 0
@@ -70,7 +70,7 @@ ModelImporter:
       - time: 0.9093301
         functionName: AE_Ignite_End
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 298ad09b090a0dc438ee1aeb1d99492d,
+        objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
           type: 3}
         floatParameter: 0
         intParameter: 0

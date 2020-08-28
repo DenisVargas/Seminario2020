@@ -386,7 +386,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
             case OperationType.Ignite:
 
-                target.ExecuteOperation();
                 _toActivateCommand = new cmd_Ignite( target,() => { _a_Ignite = true; });
                 comandos.Enqueue(_toActivateCommand);
 
@@ -472,11 +471,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         PlayerInputEnabled = true;
         _a_Ignite = false;
 
-        if (Queued_TargetInteractionComponent != null)
-        {
-            Queued_TargetInteractionComponent.ExecuteOperation();
-            comandos.Dequeue().Execute();
-        }
+        comandos.Dequeue().Execute();
     }
     void AE_TrowRock_Ended()
     {

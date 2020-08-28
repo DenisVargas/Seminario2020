@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Core.Interaction;
 
 public class cmd_TrowRock : IQueryComand

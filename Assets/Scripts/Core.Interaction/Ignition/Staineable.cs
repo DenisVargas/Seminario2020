@@ -68,10 +68,10 @@ public class Staineable : MonoBehaviour//, IIgnitableObject
     public bool lockInteraction => false;
     public Vector3 LookToDirection => -transform.forward;
 
-    public Vector3 requestSafeInteractionPosition(IInteractor requester)
-    {
-        return transform.position + (((requester.position - transform.position).normalized) * _safeInteractionDistance);
-    }
+    //public Vector3 requestSafeInteractionPosition(IInteractor requester)
+    //{
+    //    return transform.position + (((requester.position - transform.position).normalized) * _safeInteractionDistance);
+    //}
     public void InputConfirmed(params object[] optionalParams) { }
     public void Execute(params object[] optionalParams)
     {

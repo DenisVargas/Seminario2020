@@ -264,7 +264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1546326008612498239
 RectTransform:
   m_ObjectHideFlags: 0
@@ -549,7 +549,6 @@ MonoBehaviour:
   angle: 45
   UseCustomOrientation: 1
   SightSocket: {fileID: 2600450864647600134}
-  Debug_LineOfSight: 1
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   angleColor: {r: 1, g: 1, b: 1, a: 1}
   positionDiference: {x: 0, y: 0, z: 0}
@@ -572,13 +571,10 @@ MonoBehaviour:
   _maxHealth: 100
   _attackRange: 2
   _minDetectionRange: 3
-  _safeInteractionDistance: 3.5
-  _suportedOperations: 04000000
   Weaknesses: []
   resistances: []
   DEBUG_MINDETECTIONRANGE: 0
   DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 1, b: 1, a: 1}
-  DEBUG_INTERACTION_RAIDUS: 0
   DebugText_View: {fileID: 1546326007849555790}
 --- !u!114 &7780291179722826361
 MonoBehaviour:

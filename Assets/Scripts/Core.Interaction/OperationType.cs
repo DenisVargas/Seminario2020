@@ -7,6 +7,6 @@
         Ignite,
         Activate,
         Equip,
-        TrowRock
-    } 
+        Throw
+    }
 }

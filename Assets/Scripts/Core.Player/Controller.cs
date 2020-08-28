@@ -7,7 +7,7 @@ using IA.PathFinding;
 using Core.Interaction;
 
 [RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
-public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, HitResult>, IInteractor
+public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 {
     //Stats.
     public int Health = 100;
@@ -106,10 +106,6 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     }
     #endregion
 
-    //================================= Interaction ========================================
-
-    public Vector3 position => transform.position;
-
     //================================= UnityEngine ========================================
 
     private void Awake()
@@ -145,8 +141,6 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
     }
-
-    // Update is called once per frame
     void Update()
     {
         #region Input
@@ -241,7 +235,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
 
                                     return completed;
                                 },
-                                _disposeCommand
+                                () => { comandos.Dequeue(); }
                             );
         comandos.Enqueue(moveCommand);
     }
@@ -376,7 +370,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
 
                     return completed;
                 },
-                _disposeCommand
+                () => { comandos.Dequeue(); }
             );
             comandos.Enqueue(closeDistance);
         }
@@ -406,7 +400,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
 
             case OperationType.Equip:
                 break;
-            case OperationType.TrowRock:
+            case OperationType.Throw:
                 _toActivateCommand = new cmd_TrowRock
                     (
                        target,
@@ -424,16 +418,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     }
 
     //========================================================================================
-    void _disposeCommand()
-    {
-        var _currentC = comandos.Dequeue();
-        if (comandos.Count > 0)
-        {
-            QueuedMovementEndPoint = null;
-            var next = comandos.Peek();
-            //print($"Comando {_currentC} Finalizado\nSiguiente comando es {next}");
-        }
-    }
+
     void CancelAllCommands()
     {
         foreach (var command in comandos)
@@ -476,8 +461,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     {
         PlayerInputEnabled = true;
         _a_LeverPull = false;
-        comandos.Peek().Execute();
-        _disposeCommand();
+        comandos.Dequeue().Execute();
     }
     void AE_Ignite_Start()
     {
@@ -512,12 +496,9 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     {
         _a_Grabing = false;
 
-        if (Queued_TargetInteractionComponent != null)
-        {
-            Queued_TargetInteractionComponent.ExecuteOperation();
-            comandos.Dequeue().Execute();
-        }
-        _disposeCommand();
+        //if (Queued_TargetInteractionComponent != null)
+        //    Queued_TargetInteractionComponent.ExecuteOperation();
+        comandos.Dequeue().Execute();
+        PlayerInputEnabled = true;
     }
-
  }

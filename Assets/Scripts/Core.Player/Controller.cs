@@ -13,7 +13,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
     public int Health = 100;
 
     public event Action ImDeadBro;
-
+    public Transform manitodumacaco;
     public ParticleSystem BloodStain;
 
     public float moveSpeed = 6;
@@ -99,6 +99,11 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         get => _anims.GetBool(animHash[9]);
         set => _anims.SetBool(animHash[9], value);
     }
+    bool _a_Grabing
+    {
+        get => _anims.GetBool(animHash[10]);
+        set => _anims.SetBool(animHash[10], value);
+    }
     #endregion
 
     //================================= Interaction ========================================
@@ -135,7 +140,7 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
 
         //Animaciones.
         _anims = GetComponent<Animator>();
-        animHash = new int[10];
+        animHash = new int[11];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -381,6 +386,8 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
         switch (target.OperationType)
         {
             case OperationType.Take:
+                _toActivateCommand = new cmd_Take(target, manitodumacaco, () => { _a_Grabing = true; });
+                comandos.Enqueue(_toActivateCommand);
                 break;
 
             case OperationType.Ignite:
@@ -497,4 +504,20 @@ public class Controller : MonoBehaviour, IPlayerController, IDamageable<Damage, 
             comandos.Dequeue().Execute();
         }
     }
-}
+    void AE_Grab_Star()
+    {
+        PlayerInputEnabled = false;
+    }
+    void AE_Grab_End()
+    {
+        _a_Grabing = false;
+
+        if (Queued_TargetInteractionComponent != null)
+        {
+            Queued_TargetInteractionComponent.ExecuteOperation();
+            comandos.Dequeue().Execute();
+        }
+        _disposeCommand();
+    }
+
+ }

@@ -13,9 +13,14 @@ public class NodeInspector : Editor
     private void OnEnable()
     {
         inspectedNode = target as Node;
+
+        inspectedNodes = new List<Node>();
+
+        if (targets.Length == 1)
+            inspectedNodes.Add(inspectedNode);
+
         if (targets.Length > 1)
         {
-            inspectedNodes = new List<Node>();
             foreach (var ins in targets)
                 inspectedNodes.Add((Node)ins);
         }
@@ -40,6 +45,7 @@ public class NodeInspector : Editor
                 }
             }
         }
+
         GUI.color = Color.yellow;
         if (GUILayout.Button("Remove selected connections", bops))
         {
@@ -54,18 +60,14 @@ public class NodeInspector : Editor
             }
         }
         GUI.color = Color.red;
-        if (GUILayout.Button("Clear Connections"))
-        {
+        if (GUILayout.Button("Clear Selected Connections"))
             ClearInspectedConnections();
-        }
-        GUI.color = Color.red;
-        if (GUILayout.Button("Delete Node"))
-        {
-            ClearInspectedConnections();
-            DestroyImmediate(inspectedNode.gameObject);
-        }
-        GUI.color = Color.white;
 
+        GUI.color = Color.red;
+        if (GUILayout.Button("Delete Selected Nodes"))
+            DeleteSelectedNodes();
+
+        GUI.color = Color.white;
         if (inspectedNodes != null && inspectedNodes.Count == 2)
         {
             if (GUILayout.Button("Subdivide"))
@@ -96,11 +98,50 @@ public class NodeInspector : Editor
 
     private void ClearInspectedConnections()
     {
-        foreach (var node in inspectedNode.Connections)
+        if (inspectedNodes.Count > 1)
         {
-            if (node)
-                node.Connections.Remove(inspectedNode);
+            Undo.RecordObjects(inspectedNodes.ToArray(), "Cleared Selected Connections");
+            foreach (var node in inspectedNodes)
+            {
+                ClearNodeConnection(node);
+            }
         }
-        inspectedNode.Connections.Clear();
+        if (inspectedNodes.Count == 1)
+        {
+            Undo.RecordObject(inspectedNode, "Cleared Connections");
+            ClearNodeConnection(inspectedNode);
+        }
+    }
+    private void ClearNodeConnection(Node node)
+    {
+        Undo.RecordObject(node, "Clear Removed Connections");
+        foreach (var connection in node.Connections)
+        {
+            if (connection.Connections.Contains(node))
+            {
+                Undo.RecordObject(connection, "Removed Connection");
+                connection.Connections.Remove(node);
+            }
+        }
+        node.Connections.Clear();
+    }
+    void DeleteSelectedNodes()
+    {
+        if (inspectedNodes.Count == 1)
+        {
+            ClearNodeConnection(inspectedNode);
+            Undo.DestroyObjectImmediate(inspectedNode.gameObject);
+        }
+        if (inspectedNodes.Count > 1)
+        {
+            ClearInspectedConnections();
+
+            foreach (var node in inspectedNodes)
+            {
+                var toDelete = node.gameObject;
+                //toDestroy.Add(node.gameObject);
+                Undo.DestroyObjectImmediate(toDelete);
+            }
+        }
     }
 }

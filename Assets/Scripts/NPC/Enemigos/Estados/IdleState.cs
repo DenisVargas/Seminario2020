@@ -26,6 +26,6 @@ public class IdleState : State
 
     public override void End()
     {
-        print($"{gameObject.name} salió de Idle");
+        //print($"{gameObject.name} salió de Idle");
     }
 }

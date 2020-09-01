@@ -9,6 +9,7 @@ namespace Core.DamageSystem
         //Componentes
         GameObject gameObject { get; }
         Transform transform { get; }
+        T GetComponent<T>();
 
         output GetHit(Input damage);
         void FeedDamageResult(output result);

@@ -13,6 +13,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     public int Health = 100;
 
     public event Action ImDeadBro;
+    public event Action OnMovementChange = delegate { };
+
     public Transform manitodumacaco;
     public ParticleSystem BloodStain;
 
@@ -224,6 +226,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                             (
                                 _mouseContext.closerNode,
                                 _solver.currentPath,
+                                () => { OnMovementChange(); },
                                 MoveToTarget,
                                 (targetNode) =>
                                 {
@@ -359,6 +362,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
             (
                 _solver.getCloserNode(safeInteractionPosition),
                 _solver.currentPath,
+                () => { OnMovementChange(); },
                 MoveToTarget,
                 (targetPos) =>
                 {

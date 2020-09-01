@@ -11,6 +11,8 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
 {
     //================================ Basic Variables ===============================================
 
+    public bool checkVisionInUpdate = false;
+
     [Header("Stats")]
     [SerializeField] protected float _health      = 100f;
     [SerializeField] protected float _maxHealth   = 100f;
@@ -144,6 +146,11 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     /// <returns>Retorna Verdadero si el jugador o el clon fueron encontrados!</returns>
     protected bool checkForPlayerOrClone()
     {
+        //if (checkVisionInUpdate)
+        //{
+        //    print("we");
+        //}
+
         IDamageable<Damage, HitResult> closerTarget = null;
         float distToPlayer = float.MaxValue;
         float distToClone = float.MaxValue;
@@ -202,6 +209,10 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
             return TargetNode;
         }
         return null;
+    }
+    protected IDamageable<Damage, HitResult> getAttackTarget()
+    {
+        return _attackTarget;
     }
 
     //======================================= Unity Engine ===========================================

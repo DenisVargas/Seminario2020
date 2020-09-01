@@ -10,15 +10,17 @@ public class cmd_Move : IQueryComand
     public Func<Node, bool> _moveFunction = delegate { return false; };
     public Func<Node, bool> _checkCondition = delegate { return false; };
     public Action _dispose = delegate { };
+    public Action OnChangePath = delegate { };
     public Queue<Node> _pathToTarget = new Queue<Node>();
 
     Node _currentTarget = null;
     Node _targetNode = null;
 
-    public cmd_Move(Node TargetNode, Queue<Node> pathToTarget, Func<Node, bool> moveFunction, Func<Node, bool> checkCondition, Action Dispose)
+    public cmd_Move(Node TargetNode, Queue<Node> pathToTarget, Action OnChangePath, Func<Node, bool> moveFunction, Func<Node, bool> checkCondition, Action Dispose)
     {
         _targetNode = TargetNode;
         _pathToTarget = new Queue<Node>(pathToTarget);
+        this.OnChangePath = OnChangePath;
         _currentTarget = _pathToTarget.Dequeue();
         _moveFunction = moveFunction;
         _checkCondition = checkCondition;
@@ -32,6 +34,8 @@ public class cmd_Move : IQueryComand
     public void SetUp()
     {
         //Move no es un comando Casheado. Por lo que tiene una ejecución contínua.
+        OnChangePath();
+        isReady = true;
     }
     public void Execute()
     {

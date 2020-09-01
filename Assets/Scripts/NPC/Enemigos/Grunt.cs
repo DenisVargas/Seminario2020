@@ -65,6 +65,7 @@ public class Grunt : BaseNPC
         pursue.checkDistanceToTarget = TargetIsInAttackRange;
         pursue.getDestinyNode = getCloserNodeToAttackTarget;
         pursue.MoveToTarget = MoveToNode;
+        pursue.getTarget = getAttackTarget;
         pursue.AttachTo(_states);
 
         AttackState attack = GetComponent<AttackState>();

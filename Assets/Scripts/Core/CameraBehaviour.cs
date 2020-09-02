@@ -10,6 +10,7 @@ public class CameraBehaviour : MonoBehaviour
 
     [SerializeField] public Transform _target = null;
     [SerializeField] public bool freeCamera = true;
+    [SerializeField] public bool locked = false;
 
     //[SerializeField] float zoomVelocity = 10f;
     [SerializeField] float mousePanBorderThickness = 10f;
@@ -45,18 +46,18 @@ public class CameraBehaviour : MonoBehaviour
                 freeCamera = true;
         }
         else
-        {
             transform.position = _target.transform.position;
-        }
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
         if (Input.GetKey(KeyCode.Space))
-            freeCamera = false;
+            locked = true;
         if (Input.GetKeyUp(KeyCode.Space))
-            freeCamera = true;
+            locked = false;
+        if (Input.GetKeyDown(KeyCode.I))
+            freeCamera = false;
 
         //Vector3 position = transform.position;
         //position.y = Target.transform.position.y;
@@ -64,7 +65,7 @@ public class CameraBehaviour : MonoBehaviour
 
         #region Movimiento
 
-        if (freeCamera)
+        if (freeCamera && !locked)
         {
             Vector3 inputPos = Vector3.zero;
 
@@ -104,7 +105,6 @@ public class CameraBehaviour : MonoBehaviour
             Quaternion B = transform.rotation; //Valor que será modificado(necesario para tener los valores orig).
             B = Quaternion.Euler(B.eulerAngles.x, B.eulerAngles.y + rotationSpeed, B.eulerAngles.z);
             transform.rotation = Quaternion.Slerp(A, B, rotationSpeed * Time.deltaTime);
-
         }
 
         if (Input.GetKey(KeyCode.Q))

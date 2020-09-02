@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Core.Interaction;
 
 public class CommandMenu : MonoBehaviour
 {
-    public event Action<OperationType, IInteractable> executeCommand = delegate { };
+    public event Action<IInteractionComponent> executeCommand = delegate { };
     [HideInInspector]
     public IInteractable interactionTarget;
 
@@ -21,7 +22,7 @@ public class CommandMenu : MonoBehaviour
     [SerializeField] Vector2 posOffset = new Vector2(0, 0);
 
     [SerializeField]
-    public CommandMenuItemData[] presetDataBase = new CommandMenuItemData[0];
+    public List<CommandMenuItemData> presetDataBase = new List<CommandMenuItemData>();
     public Dictionary<OperationType, GameObject> display = new Dictionary<OperationType, GameObject>();
 
     [Header("Estado del contexto")]
@@ -89,25 +90,27 @@ public class CommandMenu : MonoBehaviour
     {
         //print(string.Format("Activo el comando {0}", command.ToString()));
         //Aquí es donde ejecutamos la acción en si.
-        executeCommand(command, interactionTarget);
+        executeCommand(interactionTarget.GetInteractionComponent(command));
         //Limpiamos los residuos.
         executeCommand = delegate { };
         interactionTarget = null;
         gameObject.SetActive(false);
     }
 
-    public void FillOptions(InteractionParameters Interaction, IInteractable interactionTarget, Action<OperationType, IInteractable> callBack)
+    public void FillOptions( IInteractable interactionTarget, Action<IInteractionComponent> callBack)
     {
         executeCommand += callBack;
         this.interactionTarget = interactionTarget;
-        _limitedActive = Interaction.LimitedDisplay;
+
+        var DisplaySettings = interactionTarget.GetInteractionDisplaySettings();
+        _limitedActive = DisplaySettings.LimitedDisplay;
         if (_limitedActive)
         {
-            _remainingActiveTime = Interaction.ActiveTime;
+            _remainingActiveTime = DisplaySettings.ActiveTime;
         }
         _verticalScroll.size = 1;
         foreach (var item in display)
-            item.Value.SetActive(Interaction.SuportedOperations.Contains(item.Key));
+            item.Value.SetActive(DisplaySettings.SuportedOperations.Contains(item.Key));
     }
 
     public void OnSliderContext(bool isInsideSlider)
@@ -128,7 +131,5 @@ public class CommandMenu : MonoBehaviour
             interactionTarget = null;
             gameObject.SetActive(false);
         }
-
-        //print(string.Format("Viewport context is {0}", isInsideViewport ? "On" : "off"));
     }
 }

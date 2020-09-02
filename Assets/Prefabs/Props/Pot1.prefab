@@ -87,10 +87,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6166973791329150873}
-  - component: {fileID: 5934663646724499241}
   - component: {fileID: 6577388921664595059}
   - component: {fileID: 3368151637086442004}
   - component: {fileID: 6727484321925916080}
+  - component: {fileID: 3056718570059588423}
+  - component: {fileID: 6073832535511449024}
   m_Layer: 0
   m_Name: Pot1
   m_TagString: Untagged
@@ -115,22 +116,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!208 &5934663646724499241
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132736032666455958}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!65 &6577388921664595059
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -170,7 +155,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5934663646724499241}
+      - m_Target: {fileID: 0}
         m_MethodName: set_enabled
         m_Mode: 6
         m_Arguments:
@@ -199,15 +184,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed6555e1b7904599ccb413b263ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _operationType: 1
   StainedMaterial: {fileID: 2100000, guid: bd200d7dffd8f6f4992d0350dc4ec5a3, type: 2}
   ignitionParticle: {fileID: 8289813161853492346}
-  isStained: 0
   _suportedOperations: 01000000
   _interactionCollider: {fileID: 6577388921664595059}
   _safeInteractionDistance: 2
-  _otherFiringDelayTime: 0.8
   DEBUG_safeInteractionDistance: 0
   DEBUG_safeInteractionDistance_Color: {r: 0.20624185, g: 1, b: 0, a: 0.43529412}
+--- !u!114 &3056718570059588423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132736032666455958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionCollider: {fileID: 6577388921664595059}
+  _interactionEnabled: 1
+--- !u!114 &6073832535511449024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132736032666455958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc3386fad3f0134a91068bdaacc1ccc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8533157546496340820
 GameObject:
   m_ObjectHideFlags: 0

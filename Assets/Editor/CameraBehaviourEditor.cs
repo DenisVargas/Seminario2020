@@ -9,6 +9,7 @@ public class CameraBehaviourEditor : Editor
     CameraBehaviour ins;
     //bool EditLimitsOn = false;
     int selected = 0;
+    int currentSelection = 0;
 
     //Distance Slider Editor.
     Transform childCamera;
@@ -19,7 +20,9 @@ public class CameraBehaviourEditor : Editor
     private void OnEnable()
     {
         ins = target as CameraBehaviour;
-        ins.freeCamera = true;
+        //ins.freeCamera = true;
+        currentSelection = ins.freeCamera ? 0 : 1;
+        selected = currentSelection;
     }
 
     public override void OnInspectorGUI()
@@ -31,55 +34,58 @@ public class CameraBehaviourEditor : Editor
         GUIStyle BoldText = new GUIStyle();
         BoldText.fontStyle = FontStyle.Bold;
 
-        //GUILayout.Space(20f);
+        GUILayout.Space(20f);
 
         //Esto no esta funcionando correctamente, el resultado no se serializa.
         //Al salir del PlayMode la referencias se pierden.
-        //EditorGUILayout.LabelField("Camera Locking", BoldText);
-        //string[] options = { "Free Camera", "Locked To Target" };
-        //int currentSelection = ins.freeCamera ? 0 : 1;
-        //selected = GUILayout.SelectionGrid(selected, options, 2);
-        //if (selected != currentSelection)
-        //{
-        //    Undo.RecordObject(ins, "Switched DefaultMode");
-        //    switch (selected)
-        //    {
-        //        case 0:
-        //            ins.freeCamera = true;
-        //            break;
-        //        case 1:
-        //            ins.freeCamera = false;
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+        EditorGUILayout.LabelField("Camera Locking", BoldText);
+        string[] options = { "Free Camera", "Locked To Target" };
+        selected = GUILayout.SelectionGrid(selected, options, 2);
+        if (selected != currentSelection)
+        {
+            Undo.RecordObject(ins, "Switched DefaultMode");
+            EditorUtility.SetDirty(ins);
+            switch (selected)
+            {
+                case 0:
+                    ins.freeCamera = true;
+                    break;
+                case 1:
+                    ins.freeCamera = false;
+                    break;
+                default:
+                    break;
+            }
+            //serializedObject.ApplyModifiedProperties();
+        }
 
-        //if (ins._target != null)
-        //{
-        //    EditorGUILayout.LabelField($"Current target is: {ins._target.gameObject.name}", BoldText);
-        //}
-        //else
-        //{
-        //    GUI.color = Color.red;
-        //    EditorGUILayout.LabelField("Current target has not been setted.", BoldText);
-        //    GUI.color = Color.white;
-        //    if (GUILayout.Button("Pick First Player Controller in Scene"))
-        //    {
-        //        var finded = GameObject.Find("Player");
-        //        if (!finded) Debug.LogError("Player has not been found");
-        //        else
-        //        {
-        //            Undo.RecordObject(ins, "Player Setted");
-        //            ins._target = finded.transform;
-        //        }
-        //    }
-        //}
+        if (ins._target != null)
+        {
+            EditorGUILayout.LabelField($"Current target is: {ins._target.gameObject.name}", BoldText);
+        }
+        else
+        {
+            GUI.color = Color.red;
+            EditorGUILayout.LabelField("Current target has not been setted.", BoldText);
+            GUI.color = Color.white;
+            if (GUILayout.Button("Pick First Player Controller in Scene"))
+            {
+                var finded = GameObject.Find("Player");
+                if (!finded) Debug.LogError("Player has not been found");
+                else
+                {
+                    Undo.RecordObject(ins, "Player Setted");
+                    EditorUtility.SetDirty(ins);
+                    ins._target = finded.transform;
+                }
+            }
+        }
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_target"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("freeCamera"));
+        //EditorGUILayout.PropertyField(serializedObject.FindProperty("_target"));
+        //EditorGUILayout.PropertyField(serializedObject.FindProperty("freeCamera"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("locked"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("groundMask"));
 
         EditorGUILayout.LabelField("Velocities", BoldText);

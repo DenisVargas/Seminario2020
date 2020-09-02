@@ -10,9 +10,9 @@ public class CheckPoint
     public List<Baboso> babosos = new List<Baboso>();
     public List<Grunt> grunts = new List<Grunt>();
     public List<IgnitableObject> ignitableObjects = new List<IgnitableObject>();
-    public NMA_Controller playerData;
+    public Controller playerData = null;
 
-    public void SetCheckPoint(Level level, NMA_Controller playerController)
+    public void SetCheckPoint(Level level, Controller playerController)
     {
         playerData = playerController;
         babosos = level.babosos;

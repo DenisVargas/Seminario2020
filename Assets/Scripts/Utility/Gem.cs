@@ -26,7 +26,7 @@ public class Gem : MonoBehaviour, IInteractionComponent
     public void InputConfirmed(params object[] optionalParams) { Debug.Log($"{gameObject.name}: input Confirmado."); }
     public void ExecuteOperation(params object[] optionalParams)
     {
-        GetComponent<restartLevel>().Restart();
+        GetComponent<LevelTesting>().Restart();
     }
     public void CancelOperation(params object[] optionalParams) { Debug.Log($"{gameObject.name}: Operación cancelada"); }
 }

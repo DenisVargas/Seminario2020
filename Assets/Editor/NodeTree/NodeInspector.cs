@@ -30,9 +30,35 @@ public class NodeInspector : Editor
     {
         base.OnInspectorGUI();
 
+        GUILayoutOption[] bops = new GUILayoutOption[] { GUILayout.Height(50) };
+
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Set as Navegable",bops))
+        {
+            Undo.RecordObjects(inspectedNodes.ToArray(), "Setted selected nodes as Navegable");
+            serializedObject.Update();
+            foreach (var node in inspectedNodes)
+            {
+                node.area = NavigationArea.Navegable;
+            }
+        }
+
+        if (GUILayout.Button("Set as blocked", bops))
+        {
+            Undo.RecordObjects(inspectedNodes.ToArray(), "Setted selected nodes as Blocked");
+            serializedObject.Update();
+            foreach (var node in inspectedNodes)
+            {
+                node.area = NavigationArea.blocked;
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+
         EditorGUILayout.LabelField("Custom Node Editor");
         GUI.color = Color.green;
-        GUILayoutOption[] bops = new GUILayoutOption[] { GUILayout.Height(50)};
+        
         if (GUILayout.Button("Connect Selection to this", bops))
         {
             foreach (var go in Selection.gameObjects)

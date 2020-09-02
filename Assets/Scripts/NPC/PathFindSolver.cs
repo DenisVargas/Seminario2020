@@ -128,8 +128,15 @@ public class PathFindSolver : MonoBehaviour
 
         foreach (var connection in reference.Connections)
         {
-            var tuple = Tuple.Create(connection, Vector3.Distance(reference.transform.position, connection.transform.position));
-            NodeConnections.Add(tuple);
+
+            //Aqui, el segundo elemento de la tupla es el peso/costo, por ahora solo determinado por la distancia.
+
+            //Si el nodo es navegable.
+            if (connection.area == NavigationArea.Navegable)
+            {
+                var tuple = Tuple.Create(connection, Vector3.Distance(reference.transform.position, connection.transform.position));
+                NodeConnections.Add(tuple);
+            }
         }
 
         return NodeConnections;

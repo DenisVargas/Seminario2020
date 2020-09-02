@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using IA.PathFinding;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,6 +11,7 @@ public class destroyme : MonoBehaviour, IDestructible
     [SerializeField] GameObject mainViewMesh = null;
     [SerializeField] GameObject destructedVersion = null;
     [SerializeField] float destroyForce = 30f;
+    [SerializeField] Node[] AffectedNodes = new Node[0];
     Rigidbody[] Rigidbodies;
 
     Collider _mainCollider;
@@ -62,6 +64,14 @@ public class destroyme : MonoBehaviour, IDestructible
         {
             Rigidbodies[i].isKinematic = true;
             Rigidbodies[i].gameObject.GetComponent<Collider>().enabled = false;
+        }
+
+        if (AffectedNodes.Length > 0)
+        {
+            foreach (var node in AffectedNodes)
+            {
+                node.ChangeNodeState(NavigationArea.Navegable);
+            }
         }
 
         OnDestroy.Invoke();

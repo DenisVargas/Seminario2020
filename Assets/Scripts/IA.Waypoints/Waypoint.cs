@@ -15,29 +15,29 @@ public class Waypoint : MonoBehaviour
 
         return points[currentPosition].position;
     }
-    public Vector3 getNextPosition(int from)
-    {
-        from++;
-        if (from >= points.Count)
-            from = 0;
+    //public Vector3 getNextPosition(int from)
+    //{
+    //    from++;
+    //    if (from >= points.Count)
+    //        from = 0;
+    //}
 
     //public void GetNextPoints()
     //{
-        //var childs = transform.GetComponentsInChildren<Transform>();
-        //if (childs != null && childs.Length > 0)
-        //{
-        //    for (int i = 1; i < childs.Length; i++)
-        //    {
-        //        Vector3 position = (childs[i]).position;
-        //        if (!point.Contains(position))
-        //            point.Add(position);
-        //    }
-        //}
-        //else
-        //{
-        //    string message = childs != null ? "El resultado es nulo" : "El count es 0";
-        //    Debug.LogError(message);
-        //}
+    //var childs = transform.GetComponentsInChildren<Transform>();
+    //if (childs != null && childs.Length > 0)
+    //{
+    //    for (int i = 1; i < childs.Length; i++)
+    //    {
+    //        Vector3 position = (childs[i]).position;
+    //        if (!point.Contains(position))
+    //            point.Add(position);
+    //    }
+    //}
+    //else
+    //{
+    //    string message = childs != null ? "El resultado es nulo" : "El count es 0";
+    //    Debug.LogError(message);
     //}
 
     #region Lerping

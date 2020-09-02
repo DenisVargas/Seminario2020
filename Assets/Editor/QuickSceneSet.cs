@@ -50,7 +50,7 @@ public class QuickSceneSet : EditorWindow
     {
         GameObject playerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(playerPrefabPath, typeof(GameObject));
         var instantiatedPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-        NMA_Controller controller = instantiatedPlayer.GetComponent<NMA_Controller>();
+        Controller controller = instantiatedPlayer.GetComponent<Controller>();
 
         GameObject clonPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(playerClonePrefabPath, typeof(GameObject));
         var instantiatedClone = Instantiate(clonPrefab, Vector3.zero, Quaternion.identity);

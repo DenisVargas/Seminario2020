@@ -170,16 +170,21 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                     bool mod1 = Input.GetKey(KeyCode.LeftShift);
                     bool mod2 = Input.GetKey(KeyCode.LeftControl);
 
+                    Node targetNode = _mouseContext.closerNode;
+                    Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
+
                     if (mod1) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
                     {
-                        _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
-                        AddMovementCommand(_mouseContext);
+                        if (AddMovementCommand(origin, targetNode))
+                            _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
                     }
-                    else
+                    else //Si no presiono nada, es una acción normal, sobreescribimos todos los comandos!.
                     {
                         CancelAllCommands();
-                        _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
-                        AddMovementCommand(_mouseContext);
+                        if (AddMovementCommand(origin, targetNode))
+                        {
+                            _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
+                        }
                     }
 
                     if (mod2 && Clon.IsActive)
@@ -203,6 +208,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         if (comandos.Count > 0)
         {
+            print($"Comandos activados: {comandos.Count}");
+
             IQueryComand current = comandos.Peek();
             if (!current.isReady)
                 current.SetUp();
@@ -211,20 +218,30 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         }
     }
 
-    private void AddMovementCommand(MouseContext _mouseContext)
+    /// <summary>
+    /// Añade un comando Move si hay un camino posible entre los 2 nodos dados por parámetros. Si no hay uno, el comando es ignorado.
+    /// </summary>
+    /// <param name="OriginNode">El nodo mas cercano al agente.</param>
+    /// <param name="TargetNode">El nodo objetivo al que se quiere desplazar.</param>
+    /// <returns></returns>
+    private bool AddMovementCommand(Node OriginNode, Node TargetNode)
     {
-        _solver.SetOrigin(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position)
-               .SetTarget(_mouseContext.closerNode)
+        //_solver.SetOrigin(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position)
+        _solver.SetOrigin(OriginNode)
+               .SetTarget(TargetNode)
                .CalculatePathUsingSettings();
 
         if (_solver.currentPath.Count == 0) //Si el solver no halló un camino, no hay camino posible.
-            return;
+        {
+            print("No hay camino Posible");
+            return false;
+        }
 
-        QueuedMovementEndPoint = _mouseContext.closerNode;
+        QueuedMovementEndPoint = TargetNode;
 
         IQueryComand moveCommand = new cmd_Move
                             (
-                                _mouseContext.closerNode,
+                                TargetNode,
                                 _solver.currentPath,
                                 () => { OnMovementChange(); },
                                 MoveToTarget,
@@ -241,6 +258,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                                 () => { comandos.Dequeue(); }
                             );
         comandos.Enqueue(moveCommand);
+        return true;
     }
 
     //================================= Damage System ======================================
@@ -346,38 +364,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         var safeInteractionPosition = target.requestSafeInteractionPosition(transform.position);
         Node targetNode = _solver.getCloserNode(safeInteractionPosition);
+        Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
 
         if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
-        {
-            _solver.SetOrigin(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position)
-               .SetTarget(targetNode)
-               .CalculatePathUsingSettings();
-
-            if (_solver.currentPath.Count == 0) //Si el solver no halló un camino, no hay camino posible.
+            if(!AddMovementCommand(origin, targetNode))
+            {
+                print("No se pudo añadir un camino posible, el camino está obstruído");
                 return;
-
-            QueuedMovementEndPoint = targetNode;
-
-            IQueryComand closeDistance = new cmd_Move
-            (
-                _solver.getCloserNode(safeInteractionPosition),
-                _solver.currentPath,
-                () => { OnMovementChange(); },
-                MoveToTarget,
-                (targetPos) =>
-                {
-                    float dst = Vector3.Distance(transform.position, targetPos.transform.position);
-                    bool completed = dst <= _movementTreshold;
-
-                    if (completed && _a_Walking)
-                        _a_Walking = false;
-
-                    return completed;
-                },
-                () => { comandos.Dequeue(); }
-            );
-            comandos.Enqueue(closeDistance);
-        }
+            }
 
         //añado el comando correspondiente a la query.
         IQueryComand _toActivateCommand;

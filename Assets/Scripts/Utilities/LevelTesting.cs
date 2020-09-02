@@ -3,8 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class restartLevel : MonoBehaviour
+public class LevelTesting : MonoBehaviour
 {
+
+    /// <summary>
+    /// Guarda el estado actual de la escena!
+    /// </summary>
+    public void CheckPoint()
+    {
+
+    }
+    /// <summary>
+    /// Carga el último CheckPoint Guardado!
+    /// </summary>
+    public void LoadLastCheckPoint()
+    {
+
+    }
+
     // Start is called before the first frame update
    public void Restart()
     {

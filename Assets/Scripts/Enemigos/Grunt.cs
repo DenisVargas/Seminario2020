@@ -343,7 +343,7 @@ public class Grunt : MonoBehaviour, IDamageable<Damage, HitResult>, IInteractabl
         {
             checkForPlayerOrClone();
 
-            print(_sight.distanceToTarget);
+            //print(_sight.distanceToTarget);
             if ( _killeableTarget != null && _currentState != BoboState.pursue)
             {
                 state.Feed(BoboState.pursue);

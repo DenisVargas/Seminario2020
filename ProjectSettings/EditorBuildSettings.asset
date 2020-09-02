@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/lvl1.unity
     guid: ed537174cb3e856488aa12a06d033027
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Editor/DangerRoom2.unity
     guid: 85c2c730d8eee4a4ea06c43fc66efc93
   m_configObjects: {}

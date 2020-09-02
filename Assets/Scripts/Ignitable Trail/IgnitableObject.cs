@@ -38,6 +38,26 @@ public class IgnitableObject : MonoBehaviour, IInteractable, IIgnitableObject
 
     public bool IsActive => gameObject.activeSelf;
 
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
+        Gizmos.DrawWireSphere(transform.position, _ignitableSearchRadius);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _interactionRadius);
+    }
+#endif
+
+    void Awake()
+    {
+        for (int i = 0; i < myMaterials.Count; i++)
+        {
+            MySelectedMatirial.Add(i, myMaterials[i]);
+        }
+    }
+
     public bool isFreezed
     {
         get => _freezeInPlace;
@@ -240,27 +260,7 @@ public IgnitableObject SetDirection(Vector3 Dir)
     }
     public IgnitableObject SetMaterial(int Key)
     {
-        
         myMesh.material = MySelectedMatirial[Key];
         return this;
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.matrix = Matrix4x4.Scale(new Vector3(1, 0, 1));
-        Gizmos.DrawWireSphere(transform.position, _ignitableSearchRadius);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _interactionRadius);
-    }
-    void Awake()
-    {
-        for (int i = 0; i < myMaterials.Count; i++)
-        {
-            MySelectedMatirial.Add(i, myMaterials[i]);
-        }
-    }
-#endif
 }

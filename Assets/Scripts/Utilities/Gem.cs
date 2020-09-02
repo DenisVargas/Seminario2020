@@ -68,6 +68,6 @@ public class Gem : MonoBehaviour, IInteractable
 
     public void Restart()
     {
-        GetComponent<restartLevel>().Restart();
+        GetComponent<LevelTesting>().Restart();
     }
 }

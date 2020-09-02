@@ -103,18 +103,17 @@ public class WaypointCustomInspector : Editor
                 if (evt.type == EventType.DragPerform)
                 {
                     DragAndDrop.AcceptDrag();
-
-                    Debug.Log("Acepto la wea");
-
+                    EditorUtility.SetDirty(inspected);
+                    Undo.RecordObject(inspected, "AddTransforms to List");
                     foreach (Object dragged_object in DragAndDrop.objectReferences)
                     {
                         if (dragged_object.GetType().Equals(typeof(GameObject)))
                         {
-                            Undo.RecordObject(inspected, "AddTransform to List");
                             inspected.points.Add(((GameObject)dragged_object).transform);
                         }
                         // Do On Drag Stuff here
                     }
+                    serializedObject.ApplyModifiedProperties();
                 }
                 break;
         }

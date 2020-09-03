@@ -96,12 +96,12 @@ public class PitTrap : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //print($"{other.gameObject.name} entro a la trampa");
-        var grunt = other.GetComponent<Grunt>();
-        var Baboso = other.GetComponent<Baboso>();
+        var npc = other.GetComponent<BaseNPC>();
 
-        if (grunt != null || Baboso != null)
+        if (npc != null)
         {
             OnTop.Add(other);
+            npc.SubscribeToLifeCicleDependency(OnEntityDieForExternSource);
         }
     }
 
@@ -109,6 +109,19 @@ public class PitTrap : MonoBehaviour
     {
         //print($"{other.gameObject.name} Salió de la trampa");
         if (OnTop.Contains(other))
+        {
+            var npc = other.GetComponent<BaseNPC>();
+            npc.UnsuscribeToLifeCicleDependency(OnEntityDieForExternSource);
             OnTop.Remove(other);
+        }
+    }
+
+    void OnEntityDieForExternSource(GameObject go)
+    {
+        Collider mainCol = go.GetComponent<Collider>();
+        if (OnTop.Contains(mainCol))
+        {
+            OnTop.Remove(mainCol);
+        }
     }
 }

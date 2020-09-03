@@ -120,7 +120,13 @@ public class PathFindSolver : MonoBehaviour
     }
     float GetHeurístic(Node reference)
     {
-        return Vector3.Distance(reference.transform.position, _targetNode.transform.position);
+        if (_targetNode != null)
+            return Vector3.Distance(reference.transform.position, _targetNode.transform.position);
+        else
+        {
+            Debug.LogWarning("Referencia a \"TargetNode\" no esta seteada");
+            return float.MaxValue;
+        }
     }
     IEnumerable<Tuple<Node, float>> getNodeConnections(Node reference)
     {

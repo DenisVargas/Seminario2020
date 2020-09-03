@@ -193,6 +193,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                             QuerySelectedOperation
                          );
                     }
+                    return;
                 }
 
                 if (Input.GetKey(KeyCode.LeftControl) && Clon.IsActive)
@@ -201,6 +202,12 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 {
                     Node targetNode = _mouseContext.closerNode;
                     Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
+
+                    if (targetNode == null || origin == null)
+                    {
+                        Debug.LogError("targetNode o origin node es nulo");
+                        return;
+                    }
 
                     if (Input.GetKey(KeyCode.LeftShift)) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
                     {

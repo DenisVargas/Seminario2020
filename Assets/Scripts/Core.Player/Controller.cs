@@ -5,6 +5,7 @@ using Core.DamageSystem;
 using System;
 using IA.PathFinding;
 using Core.Interaction;
+using TMPro;
 
 [RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
 public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
@@ -15,6 +16,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     public event Action ImDeadBro;
     public event Action OnMovementChange = delegate { };
 
+    public event Action Grabing;
     public Transform manitodumacaco;
     public ParticleSystem BloodStain;
 
@@ -26,6 +28,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     IInteractionComponent Queued_TargetInteractionComponent = null;
     Node QueuedMovementEndPoint = null;
 
+    Grab Objgrabed;
     bool PlayerInputEnabled = true;
     bool ClonInputEnabled = true;
     //bool playerMovementEnabled = true;
@@ -39,6 +42,9 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     MouseView _mv;
     MouseContextTracker _mtracker;
     PathFindSolver _solver;
+    MouseContext _mouseContext;
+    float checkRate = 0.1f;
+    bool _Aiming;
     #endregion
     #region Clon
     [Header("Clon")]
@@ -118,7 +124,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
         _mv = GetComponent<MouseView>();
-        _mtracker = GetComponent<MouseContextTracker>();
+       _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
 
         if (_solver.Origin == null)
@@ -145,25 +151,49 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     }
     void Update()
     {
+        #region mouse
+        checkRate -= Time.deltaTime;
+        if (checkRate <= 0)
+        {
+           _mouseContext = _mtracker.GetCurrentMouseContext();
+            if(!_Aiming)
+            {
+                if (_mouseContext.interactuableHitted)
+                {
+                    _mtracker.ChangeCursorView(2);
+                }
+                else
+                {
+                    _mtracker.ChangeCursorView(1);
+                }
+                checkRate = 0.1f;
+            }
+            
+        }
+        #endregion
         #region Input
         if (PlayerInputEnabled)
         {
             // MouseClic Derecho.
             if (Input.GetMouseButtonDown(1))
             {
-                MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();//Obtengo el contexto del Mouse.
+                //MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();//Obtengo el contexto del Mouse.
 
                 if (!_mouseContext.validHit) return; //Si no hay hit Válido.
 
                 if (_mouseContext.interactuableHitted)
                 {
-                    //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
+                    if(!_Aiming)
+                    {
+
                     _canvasController.DisplayCommandMenu
                     (
                         Input.mousePosition,
                         _mouseContext.InteractionHandler,
                         QuerySelectedOperation
                      );
+                    //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
+                    }
                 }
                 else
                 {
@@ -189,6 +219,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
                     if (mod2 && Clon.IsActive)
                         Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
+                    _Aiming = false;
                 }
             }
         }
@@ -203,9 +234,23 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 PlayerInputEnabled = false;
                 ClonSpawn();
             }
-        }
+        }   
         #endregion
 
+        if(Objgrabed != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha2)&& !_Aiming)
+            {
+                _mtracker.ChangeCursorView(3);
+                _Aiming = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && _Aiming)
+            {
+                _mtracker.ChangeCursorView(1);
+                _Aiming = false;
+            }
+
+        }
         if (comandos.Count > 0)
         {
             print($"Comandos activados: {comandos.Count}");
@@ -356,6 +401,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         return Vector3.Distance(transform.position, targetNode.transform.position) <= _movementTreshold;
     }
 
+   
+
     /// <summary>
     /// Callback que se llama cuando seleccionamos una acción a realizar sobre un objeto interactuable desde el panel de comandos.
     /// </summary>
@@ -378,8 +425,13 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         switch (target.OperationType)
         {
             case OperationType.Take:
+                if(!Objgrabed)
+                {
                 _toActivateCommand = new cmd_Take(target, manitodumacaco, () => { _a_Grabing = true; });
                 comandos.Enqueue(_toActivateCommand);
+                    Objgrabed = (Grab)target;
+                    Debug.Log(Objgrabed);
+                }
                 break;
 
             case OperationType.Ignite:
@@ -489,8 +541,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         _a_Grabing = false;
 
-        //if (Queued_TargetInteractionComponent != null)
-        //    Queued_TargetInteractionComponent.ExecuteOperation();
+        Grabing();
         comandos.Dequeue().Execute();
         PlayerInputEnabled = true;
     }

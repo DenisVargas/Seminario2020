@@ -22,12 +22,13 @@ public class MouseContextTracker : MonoBehaviour
     Camera _viewCamera;
     PathFindSolver _solver;
     [SerializeField] LayerMask mouseDetectionMask = ~0;
-    float checkRate = 0.1f;
-    MouseContext _mouseContext;
+    //float checkRate = 0.1f;
+   
 
   [Header("Cursor Rendering")]
     public Texture2D defaultCursor;
     public Texture2D InteractiveCursor;
+    public Texture2D AimCursor;
 
 #if UNITY_EDITOR
     [SerializeField] List<Collider> hited = new List<Collider>();
@@ -45,23 +46,24 @@ public class MouseContextTracker : MonoBehaviour
         }
         
     }
-    public void Update()
+ 
+    public void ChangeCursorView(int index)
     {
-        checkRate -= Time.deltaTime;
-        if(checkRate<=0)
+        switch (index)
         {
-            _mouseContext = GetCurrentMouseContext();
-            if(_mouseContext.interactuableHitted)
-            {
-                Cursor.SetCursor(InteractiveCursor, Vector2.zero, CursorMode.Auto);
-            }
-            else
-            {
+            case 1:
                 Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
-            }
-            checkRate = 0.1f;
+                break;
+            case 2:
+                Cursor.SetCursor(InteractiveCursor, Vector2.zero, CursorMode.Auto);
+                break;
+            case 3:
+                Cursor.SetCursor(AimCursor, new Vector2(AimCursor.width/2, AimCursor.height/2), CursorMode.Auto);
+                break;
         }
     }
+
+    
     public MouseContext GetCurrentMouseContext()
     {
         return m_MouseContextDetection();

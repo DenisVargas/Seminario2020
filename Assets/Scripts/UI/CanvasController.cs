@@ -13,12 +13,16 @@ public class CanvasController : MonoBehaviour
     [Header("Multi-Comand Menu")]
     [SerializeField] CommandMenu _MultiCommandMenu = null;
     public Image Fade;
+    public Image ThrwImg;
 
     private void Awake()
     {
         _MultiCommandMenu.LoadData();
-        FindObjectOfType<Controller>().ImDeadBro += DisplayLoose;
+        Controller Con = FindObjectOfType<Controller>();
+        Con.ImDeadBro += DisplayLoose;
+        Con.Grabing += DisplayThrow;
         Fade.canvasRenderer.SetAlpha(1);
+        ThrwImg.canvasRenderer.SetAlpha(0);
         StartCoroutine(FadeIn());
     }
 
@@ -34,6 +38,10 @@ public class CanvasController : MonoBehaviour
     void DisplayLoose()
     {
         StartCoroutine(Rutina());
+    }
+    void DisplayThrow()
+    {
+       ThrwImg.canvasRenderer.SetAlpha(1);
     }
     IEnumerator Rutina()
     {

@@ -40,7 +40,6 @@ namespace IA.PathFinding
 
         public void ChangeNodeState(NavigationArea state)
         {
-            print($"{gameObject.name}: estado de navegación cambiado de {area} a {state}");
             area = state;
             OnAreaWeightChanged(area);
         }

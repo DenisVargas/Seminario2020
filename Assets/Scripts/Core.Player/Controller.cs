@@ -185,25 +185,24 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 {
                     if(!_Aiming)
                     {
-
-                    _canvasController.DisplayCommandMenu
-                    (
-                        Input.mousePosition,
-                        _mouseContext.InteractionHandler,
-                        QuerySelectedOperation
-                     );
-                    //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
+                        //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
+                        _canvasController.DisplayCommandMenu
+                        (
+                            Input.mousePosition,
+                            _mouseContext.InteractionHandler,
+                            QuerySelectedOperation
+                         );
                     }
                 }
+
+                if (Input.GetKey(KeyCode.LeftControl) && Clon.IsActive)
+                    Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
                 else
                 {
-                    bool mod1 = Input.GetKey(KeyCode.LeftShift);
-                    bool mod2 = Input.GetKey(KeyCode.LeftControl);
-
                     Node targetNode = _mouseContext.closerNode;
                     Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
 
-                    if (mod1) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
+                    if (Input.GetKey(KeyCode.LeftShift)) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
                     {
                         if (AddMovementCommand(origin, targetNode))
                             _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
@@ -215,11 +214,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                         {
                             _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
                         }
+                        _Aiming = false;
                     }
-
-                    if (mod2 && Clon.IsActive)
-                        Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
-                    _Aiming = false;
                 }
             }
         }

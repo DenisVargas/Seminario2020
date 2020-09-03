@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AI;
 using Core.DamageSystem;
+using IA.PathFinding;
 
 [RequireComponent(typeof(BoxCollider))]
 public class PitTrap : MonoBehaviour
@@ -17,6 +18,7 @@ public class PitTrap : MonoBehaviour
     BoxCollider _col;
 
     [SerializeField] List<Collider> OnTop = new List<Collider>();
+    [SerializeField] Node[] AffectedNodes = new Node[0];
 
     private void Awake()
     {
@@ -68,6 +70,12 @@ public class PitTrap : MonoBehaviour
         _anims.SetBool("Activate", true);
         OnActivate.Invoke();
 
+        if (AffectedNodes.Length > 0)
+        {
+            foreach (var node in AffectedNodes)
+                node.ChangeNodeState(NavigationArea.blocked);
+        }
+
         isActive = true;
         killOnTopEntities();
     }
@@ -75,6 +83,12 @@ public class PitTrap : MonoBehaviour
     {
         _anims.SetBool("Activate", false);
         OnDeActivate.Invoke();
+
+        if (AffectedNodes.Length > 0)
+        {
+            foreach (var node in AffectedNodes)
+                node.ChangeNodeState(NavigationArea.Navegable);
+        }
 
         isActive = false;
     }

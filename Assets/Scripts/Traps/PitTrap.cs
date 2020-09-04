@@ -103,6 +103,12 @@ public class PitTrap : MonoBehaviour
             OnTop.Add(other);
             npc.SubscribeToLifeCicleDependency(OnEntityDieForExternSource);
         }
+
+        var player = other.GetComponent<Controller>();
+        if (player != null)
+        {
+            OnTop.Add(other);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -111,8 +117,17 @@ public class PitTrap : MonoBehaviour
         if (OnTop.Contains(other))
         {
             var npc = other.GetComponent<BaseNPC>();
-            npc.UnsuscribeToLifeCicleDependency(OnEntityDieForExternSource);
-            OnTop.Remove(other);
+            if (npc != null)
+            {
+                npc.UnsuscribeToLifeCicleDependency(OnEntityDieForExternSource);
+                OnTop.Remove(other);
+            }
+
+            var player = other.GetComponent<Controller>();
+            if (npc != null)
+            {
+                OnTop.Remove(other);
+            }
         }
     }
 

@@ -124,7 +124,7 @@ public class PitTrap : MonoBehaviour
             }
 
             var player = other.GetComponent<Controller>();
-            if (npc != null)
+            if (player != null)
             {
                 OnTop.Remove(other);
             }

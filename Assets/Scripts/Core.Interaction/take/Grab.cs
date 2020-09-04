@@ -28,4 +28,9 @@ public class Grab : MonoBehaviour , IInteractionComponent
     {
 
     }
+    public void Throwed(Transform target)
+    {
+        //uso para tirar
+        transform.SetParent(null);
+    }
 }

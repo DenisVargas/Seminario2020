@@ -45,6 +45,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     MouseContext _mouseContext;
     float checkRate = 0.1f;
     bool _Aiming;
+    Transform throwTarget;
     #endregion
     #region Clon
     [Header("Clon")]
@@ -57,6 +58,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     #region Animaciones
     Animator _anims;
     int[] animHash = new int[4];
+    public float TRWRange;
+
     bool _a_Walking
     {
         get => _anims.GetBool(animHash[0]);
@@ -170,6 +173,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
             }
             
         }
+
         #endregion
         #region Input
         if (PlayerInputEnabled)
@@ -226,6 +230,90 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 }
             }
         }
+        if (Objgrabed != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha2) && !_Aiming)
+            {
+                _mtracker.ChangeCursorView(3);
+                _Aiming = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && _Aiming)
+            {
+                _mtracker.ChangeCursorView(1);
+                _Aiming = false;
+            }
+
+            if(Input.GetMouseButtonDown(0) && _Aiming)
+            {
+                _Aiming = false;
+                Node targetNode = _mouseContext.closerNode;
+                Node origin = _solver.getCloserNode(transform.position);
+                float dist = (targetNode.transform.position - origin.transform.position).magnitude;
+                if (dist > TRWRange)
+                {
+                    _solver.SetOrigin(origin).SetTarget(targetNode).CalculatePathUsingSettings();
+                    if (_solver.currentPath.Count > 0)
+                    {
+                        Node FinalNode = null;
+
+                        while (FinalNode == null)
+                        {
+                            Node currentNode = _solver.currentPath.Dequeue();
+                            if ((targetNode.transform.position - currentNode.transform.position).magnitude < TRWRange)
+                            {
+                                FinalNode = currentNode;
+                            }
+
+                        }
+                        AddMovementCommand(origin, FinalNode);
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+                }
+                if (_mouseContext.interactuableHitted)
+                {
+                    IInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw);
+
+                    IQueryComand _ActivateCommand = new cmd_TrowRock(target
+                  ,
+                  () =>
+                  {
+                      _a_ThrowRock = true;
+                      transform.forward = (target.transform.position - transform.position).normalized;
+                  },
+                  false, _mouseContext.closerNode
+                  );
+                    comandos.Enqueue(_ActivateCommand);
+                    throwTarget = target.transform;
+
+
+
+                }
+                else
+                {
+                    Node finalNode = _mouseContext.closerNode;
+
+                    IQueryComand _toActivateCommand = new cmd_TrowRock
+                    (
+                        null,
+                        () =>
+                        {
+                            _a_ThrowRock = true;
+                            transform.forward = (finalNode.transform.position - transform.position).normalized;
+                        }, true, finalNode
+                        );
+                    comandos.Enqueue(_toActivateCommand);
+                    throwTarget = finalNode.transform;
+
+
+                }
+
+            }
+
+        }
         #endregion
         #region Clon Input
         if (ClonInputEnabled)
@@ -240,20 +328,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         }   
         #endregion
 
-        if(Objgrabed != null)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha2)&& !_Aiming)
-            {
-                _mtracker.ChangeCursorView(3);
-                _Aiming = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && _Aiming)
-            {
-                _mtracker.ChangeCursorView(1);
-                _Aiming = false;
-            }
-
-        }
+    
         if (comandos.Count > 0)
         {
             print($"Comandos activados: {comandos.Count}");
@@ -452,18 +527,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
             case OperationType.Equip:
                 break;
-            case OperationType.Throw:
-                _toActivateCommand = new cmd_TrowRock
-                    (
-                       target,
-                       () =>
-                       {
-                           _a_ThrowRock = true;
-                           transform.forward = (target.transform.position - transform.position).normalized;
-                       }
-                    );
-                comandos.Enqueue(_toActivateCommand);
-                break;
+            
             default:
                 break;
         }
@@ -526,6 +590,16 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         comandos.Dequeue().Execute();
     }
+    void AE_Throw_Start()
+    {
+        PlayerInputEnabled = false;
+    }
+    void AE_Throw_Excecute()
+    {
+        Objgrabed.Throwed(throwTarget);
+        throwTarget = null;
+        Objgrabed = null;
+    }
     void AE_TrowRock_Ended()
     {
         _a_ThrowRock = false;
@@ -535,6 +609,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
             Queued_TargetInteractionComponent.ExecuteOperation();
             comandos.Dequeue().Execute();
         }
+        PlayerInputEnabled = true;
     }
     void AE_Grab_Star()
     {

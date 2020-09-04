@@ -330,6 +330,7 @@ MonoBehaviour:
   _clonLife: 20
   _clonCooldown: 4
   _ClonMovementTreshold: 0.1
+  TRWRange: 10
 --- !u!114 &4551022286508861444
 MonoBehaviour:
   m_ObjectHideFlags: 0

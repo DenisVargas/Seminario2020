@@ -42,7 +42,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 39
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -62,8 +62,24 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.8304498
+      - time: 0
+        functionName: AE_Throw_Start
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
         functionName: AE_TrowRock_Ended
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.62431276
+        functionName: AE_Throw_Excecute
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
           type: 3}

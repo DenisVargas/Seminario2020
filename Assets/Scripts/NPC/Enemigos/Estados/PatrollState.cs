@@ -15,6 +15,7 @@ public class PatrollState : State
     [SerializeField] float _stopTime       = 1.5f;
 
     bool _stoping            = false;
+    bool _waitForPosibleRoute = false;
     int _PositionsMoved      = 0;
     float _remainingStopTime = 0.0f;
 
@@ -66,7 +67,6 @@ public class PatrollState : State
             return;
         }
 
-
         if (_stoping)
         {
             _remainingStopTime -= Time.deltaTime;
@@ -98,13 +98,23 @@ public class PatrollState : State
                        .SetTarget(_nextWayPointNode)
                        .CalculatePathUsingSettings();
 
+                if (_solver.currentPath.Count == 0)
+                {
+                    _waitForPosibleRoute = true;
+                    return;
+                }
+
                 _nextNode = _solver.currentPath.Dequeue();
                 _nextNode = _solver.currentPath.Dequeue();
 
                 _stoping = true;
             }
             else
+            {
+                if (_solver.currentPath.Count == 0)
+                    return;
                 _nextNode = _solver.currentPath.Dequeue();//Si alcanzamos el siguiente nodo del camino actual.
+            }
         }
 
         moveToNode(_nextNode, _patrollSpeed); //Me muevo hacia el objetivo actual.

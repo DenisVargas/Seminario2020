@@ -260,37 +260,31 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                         {
                             Node currentNode = _solver.currentPath.Dequeue();
                             if ((targetNode.transform.position - currentNode.transform.position).magnitude < TRWRange)
-                            {
                                 FinalNode = currentNode;
-                            }
 
                         }
                         AddMovementCommand(origin, FinalNode);
                     }
-                    else
-                    {
-                        return;
-                    }
-
+                    else return;
                 }
+
                 if (_mouseContext.interactuableHitted)
                 {
                     IInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw);
 
-                    IQueryComand _ActivateCommand = new cmd_TrowRock(target
-                  ,
-                  () =>
-                  {
-                      _a_ThrowRock = true;
-                      transform.forward = (target.transform.position - transform.position).normalized;
-                  },
-                  false, _mouseContext.closerNode
-                  );
+                    IQueryComand _ActivateCommand = new cmd_TrowRock
+                        (
+                            target,
+                            () =>
+                            {
+                                _a_ThrowRock = true;
+                                transform.forward = (target.transform.position - transform.position).normalized;
+                            },
+                            false,
+                            _mouseContext.closerNode
+                          );
                     comandos.Enqueue(_ActivateCommand);
                     throwTarget = target.transform;
-
-
-
                 }
                 else
                 {
@@ -603,12 +597,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     void AE_TrowRock_Ended()
     {
         _a_ThrowRock = false;
-
-        if (Queued_TargetInteractionComponent != null)
-        {
-            Queued_TargetInteractionComponent.ExecuteOperation();
-            comandos.Dequeue().Execute();
-        }
+        comandos.Dequeue().Execute();
         PlayerInputEnabled = true;
     }
     void AE_Grab_Star()

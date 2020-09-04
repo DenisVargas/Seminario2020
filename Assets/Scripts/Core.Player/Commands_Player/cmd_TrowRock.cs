@@ -6,23 +6,20 @@ public class cmd_TrowRock : IQueryComand
 {
     Action TriggerAnimation = delegate { };
 
-    IInteractionComponent CommandTarget;
+    IInteractionComponent CommandTarget = null;
+    Node TargetNode = null;
 
-    Node targetNode;
-
-    bool IsNode;
+    bool IsNode = false;
 
     public bool completed { get; private set; } = false;
     public bool isReady { get; private set; } = false;
     public bool cashed => true;
 
-    public cmd_TrowRock(IInteractionComponent CommandTarget, Action TriggerAnimation,bool nodebool, Node NodeTarget)
+    public cmd_TrowRock(IInteractionComponent CommandTarget, Action TriggerAnimation,bool IsNode, Node targetNode)
     {
-        if (!nodebool)
-            this.CommandTarget = CommandTarget;
-        else
-            targetNode = NodeTarget;
-        
+        this.IsNode = IsNode;
+        this.CommandTarget = CommandTarget;
+        this.TargetNode = targetNode;
         this.TriggerAnimation = TriggerAnimation;
     }
 
@@ -34,7 +31,12 @@ public class cmd_TrowRock : IQueryComand
     public void Execute()
     {
         //Ejecuto el comando.
-        CommandTarget.ExecuteOperation();
+        if (IsNode)
+        {
+            //Si es un nodo/transform.
+        }
+        else
+            CommandTarget.ExecuteOperation();
         completed = true;
     }
     public void Cancel()

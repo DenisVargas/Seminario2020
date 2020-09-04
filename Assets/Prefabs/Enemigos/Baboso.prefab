@@ -4845,6 +4845,8 @@ GameObject:
   - component: {fileID: 8251683944114023231}
   - component: {fileID: 8251683944114023230}
   - component: {fileID: 7953084887562519665}
+  - component: {fileID: 5252996617626958907}
+  - component: {fileID: 8864136173436380833}
   m_Layer: 30
   m_Name: Baboso
   m_TagString: Untagged
@@ -4956,18 +4958,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace8e4810fdadff4790a0b7006c4b3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkVisionInUpdate: 0
   _health: 10
   _maxHealth: 100
   _attackRange: 1.5
   _minDetectionRange: 3
   Weaknesses: []
   resistances: []
-  _safeInteractionDistance: 5
-  _suportedOperations: 
-  _desapearEffectDelay: 4
-  _timeToDesapear: 4
-  _burnTime: 3
   startPatrolling: 1
+  _currentState: 0
   burnParticles:
   - {fileID: 7412281337090766946}
   - {fileID: 3674265384410545395}
@@ -5138,6 +5137,32 @@ MonoBehaviour:
     m_Bits: 1
   _explodeRange: 5
   DEBUG_ExplodeRangeColor: {r: 1, g: 0.52990127, b: 0, a: 1}
+--- !u!114 &5252996617626958907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688738227760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionCollider: {fileID: 5993281819839330285}
+  _interactionEnabled: 1
+--- !u!114 &8864136173436380833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856897688738227760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdbe8838549912c4b8e264faddf357da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1891348988577855661
 GameObject:
   m_ObjectHideFlags: 0

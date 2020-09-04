@@ -8,6 +8,7 @@ public class Grab : MonoBehaviour , IInteractionComponent
 {
     public OperationType OperationType => OperationType.Take;
     public Vector3 LookToDirection => transform.position;
+    Vector3 firstPosition;
 
     public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
     {
@@ -32,5 +33,19 @@ public class Grab : MonoBehaviour , IInteractionComponent
     {
         //uso para tirar
         transform.SetParent(null);
+        firstPosition = transform.position;
+        StartCoroutine(ParabolicMove(target));
+
+
+    }
+    IEnumerator ParabolicMove(Transform target)
+    {
+        for (float i = 0; i < 1; i+=0.1f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            transform.position = Vector3.Slerp(firstPosition, target.transform.position, i);
+
+        }
+       
     }
 }

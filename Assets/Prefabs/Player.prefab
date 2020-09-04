@@ -323,7 +323,7 @@ MonoBehaviour:
   Health: 100
   manitodumacaco: {fileID: 1128369514105645132}
   BloodStain: {fileID: 4679681811783056356}
-  moveSpeed: 3
+  moveSpeed: 4
   _movementTreshold: 0.18
   MouseDebug: {fileID: 0}
   Clon: {fileID: 0}

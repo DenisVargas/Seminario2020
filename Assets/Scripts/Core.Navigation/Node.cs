@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Core.Interaction;
 
 namespace IA.PathFinding
 {
@@ -11,6 +12,7 @@ namespace IA.PathFinding
         blocked
     }
 
+    [Serializable]
     public class Node : MonoBehaviour
     {
         public event Action<NavigationArea> OnAreaWeightChanged = delegate { }; //Esto es un evento de navegación.
@@ -18,6 +20,7 @@ namespace IA.PathFinding
         public int ID = 0;      //ID del nodo dentro de una Graph.
         public List<Node> Connections = new List<Node>(); //Referencias a los nodos a los que estoy conectado, usado por PathFinding.
         public NavigationArea area = 0; //Esto lo vamos a usar para detectar si es navegable o no.
+        public IInteractable AviableInteractor { get; set; } = null; //Esto es una propiedad que nos va a permitir añadir una referencia a un interaction handler.
 
         #region DEBUG
         #if UNITY_EDITOR

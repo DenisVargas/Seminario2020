@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 
-[CustomEditor(typeof(Waypoint))]
+[CustomEditor(typeof(VectorWaypoint))]
 public class WaypointCustomInspector : Editor
 {
-    Waypoint inspected;
+    VectorWaypoint inspected;
     private ReorderableList list;
     int positionIndex = 0;
 
     private void OnEnable()
     {
-        inspected = target as Waypoint;
+        inspected = target as VectorWaypoint;
 
         list = new ReorderableList(serializedObject, serializedObject.FindProperty("points"), true, true, true, true);
         list.drawHeaderCallback = DrawListHeader;
@@ -51,7 +51,7 @@ public class WaypointCustomInspector : Editor
             }
 
             EditorGUILayout.BeginHorizontal();
-            
+
             positionIndex = EditorGUILayout.IntField(positionIndex, new GUILayoutOption[]{ GUILayout.MaxWidth(50f) });
 
             if (GUILayout.Button("Allign Object to Position at Index"))

@@ -59,9 +59,9 @@ namespace Core.Interaction
             var icomp = GetComponentsInChildren<IInteractionComponent>();
             foreach (var comp in icomp)
             {
-                interactionComponents.Add(comp.OperationType, comp);
+                if (!interactionComponents.ContainsKey(comp.OperationType))
+                    interactionComponents.Add(comp.OperationType, comp);
             }
         }
-
     }
 }

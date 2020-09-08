@@ -301,12 +301,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                         );
                     comandos.Enqueue(_toActivateCommand);
                     throwTarget = finalNode.transform;
-
-
                 }
-
             }
-
         }
         #endregion
         #region Clon Input

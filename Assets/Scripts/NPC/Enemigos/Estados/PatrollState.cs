@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using IA.FSM;
 using IA.PathFinding;
-using System.Collections.Generic;
+using IA.Waypoints;
 
-[RequireComponent(typeof(PathFindSolver), typeof(Waypoint))]
+[RequireComponent(typeof(PathFindSolver), typeof(NodeWaypoint))]
 public class PatrollState : State
 {
     public Func<bool> checkForPlayer = delegate { return false; };
     public Func<Node, float, bool> moveToNode = delegate { return false; };
 
-    [SerializeField] Waypoint patrolPoints = null;
+    [SerializeField] NodeWaypoint patrolPoints = null;
     [SerializeField] float _patrollSpeed   = 5f;
     [SerializeField] float _stopTime       = 1.5f;
 
@@ -26,6 +27,9 @@ public class PatrollState : State
     Node _nextNode         = null;
     Node _currentNode      = null;
 
+    List<Node> primaryRoute = new List<Node>();
+    List<Node> alternativeRoute = new List<Node>();
+
     public override void Begin()
     {
         //Obtengo referencias.
@@ -33,8 +37,12 @@ public class PatrollState : State
             _solver = GetComponent<PathFindSolver>();
         if (_anims == null)
             _anims = GetComponent<Animator>();
+        if (patrolPoints == null)
+            patrolPoints = GetComponent<NodeWaypoint>();
 
-        ConvertWaypointsToNodeWaypoints();
+        _waypointNodes = new List<Node>();
+        foreach (var item in patrolPoints.points)
+            _waypointNodes.Add(item);
 
         //Seteo la animacion.
         _anims.SetBool("Walking", true);
@@ -123,19 +131,5 @@ public class PatrollState : State
     public override void End()
     {
         _anims.SetBool("Walking", false);
-    }
-
-    /// <summary>
-    /// Convierte los waypoints en ruta de nodos.
-    /// </summary>
-    void ConvertWaypointsToNodeWaypoints()
-    {
-        _waypointNodes = new List<Node>();
-        int _index = 0;
-        foreach (var item in patrolPoints.points)
-        {
-            _waypointNodes.Add(_solver.getCloserNode(patrolPoints.getNextPosition(_index)));
-            _index++;
-        }
     }
 }

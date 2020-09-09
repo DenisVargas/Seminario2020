@@ -11,18 +11,22 @@ public class PatrollState : State
     public Func<bool> checkForPlayer = delegate { return false; };
     public Func<Node, float, bool> moveToNode = delegate { return false; };
 
-    [SerializeField] NodeWaypoint patrolPoints = null;
     [SerializeField] float _patrollSpeed   = 5f;
     [SerializeField] float _stopTime       = 1.5f;
 
+#if UNITY_EDITOR
+    [Header("Testing")]
+    [SerializeField] bool debugMessages = false;
+#endif
+
     bool _stoping            = false;
     bool _waitForPosibleRoute = false;
-    int _PositionsMoved      = 0;
+    int _waypointPositionsMoved = 0;
     float _remainingStopTime = 0.0f;
 
+    NodeWaypoint _patrolPoints = null;
     PathFindSolver _solver     = null;
 
-    List<Node> _waypointNodes  = new List<Node>();
     Node _nextWayPointNode = null;
     Node _nextNode         = null;
     Node _currentNode      = null;
@@ -30,19 +34,23 @@ public class PatrollState : State
     List<Node> primaryRoute = new List<Node>();
     List<Node> alternativeRoute = new List<Node>();
 
+    private bool _hasToReevaluatePath = false;
+    private bool _useSecondaryRoute = false;
+
     public override void Begin()
     {
+        if (debugMessages)
+        {
+            Debug.Log("=========== Begin ==========");
+        }
+
         //Obtengo referencias.
         if (_solver == null)
             _solver = GetComponent<PathFindSolver>();
         if (_anims == null)
             _anims = GetComponent<Animator>();
-        if (patrolPoints == null)
-            patrolPoints = GetComponent<NodeWaypoint>();
-
-        _waypointNodes = new List<Node>();
-        foreach (var item in patrolPoints.points)
-            _waypointNodes.Add(item);
+        if (_patrolPoints == null)
+            _patrolPoints = GetComponent<NodeWaypoint>();
 
         //Seteo la animacion.
         _anims.SetBool("Walking", true);
@@ -52,14 +60,14 @@ public class PatrollState : State
 
         //Asigno los nodos de referencia.
         _currentNode = _solver.getCloserNode(transform.position); //Empezamos y consumimos el primero.
-        if (_currentNode == _waypointNodes[0])
-            _PositionsMoved = 1;
-        _nextWayPointNode = _waypointNodes[_PositionsMoved];
+        if (_currentNode == _patrolPoints.points[0])
+            _waypointPositionsMoved = 1;
+        _nextWayPointNode = _patrolPoints.points[_waypointPositionsMoved];
 
-        //Calculo el camino.
-        _solver.SetOrigin(_currentNode)
-               .SetTarget(_nextWayPointNode)
-               .CalculatePathUsingSettings();
+        CalculatePrimaryRoute(_currentNode, _nextWayPointNode, true);
+
+        if (debugMessages)
+            Debug.Log($"selected current node is {_currentNode.ID} and its area is { _currentNode.area}");
 
         //Me aseguro de que el próximo nodo no sea el mismo que el current.
         _nextNode = _solver.currentPath.Dequeue();
@@ -69,12 +77,13 @@ public class PatrollState : State
 
     public override void Execute()
     {
+        //Esto es para chequear un cambio de estado posible.
         if (checkForPlayer())
         {
             SwitchToState(CommonState.pursue);
             return;
         }
-
+        //Timer que se ejecuta cuando estoy en stoping.
         if (_stoping)
         {
             _remainingStopTime -= Time.deltaTime;
@@ -87,42 +96,54 @@ public class PatrollState : State
             return;
         }
 
-        //Si la distancia es menor al treshold
-        if (Vector3.Distance(_nextNode.transform.position, transform.position) < _solver.ProximityTreshold)
+        //Comprobación de recalculo de camino.
+
+        Debug.Log("=========== Excecute==========");
+        Debug.Log($"Current is {_currentNode.area.ToString()}");
+        Debug.Log($"Next is {_nextNode.area.ToString()}");
+
+        if (_hasToReevaluatePath)
         {
-            //Si alcanzamos nuestro nextPoint y este es el siguiente nodo del Waypoint.
-            if (_nextNode == _nextWayPointNode)
+            //Chequear si mi nodo objetivo esta bloqueado. Caso 1.
+            if (_nextWayPointNode.area == NavigationArea.blocked)
             {
-                _PositionsMoved++;
+                ReevaluateCaseOne();
+            }
+            else//Si no, Caso 2
+            {
+                ReevaluateCaseTwo();
+            }
+            _hasToReevaluatePath = false;
+            return;
+        }
 
-                if (_PositionsMoved >= patrolPoints.points.Count)
-                    _PositionsMoved = 0;
+        if (_waitForPosibleRoute && _nextNode.area == NavigationArea.blocked)
+            return;
 
-                _currentNode = _nextWayPointNode;
-                _nextWayPointNode = _waypointNodes[_PositionsMoved];
+        //Comprobación de llegada.
+        if (Vector3.Distance(_nextNode.transform.position, transform.position) < _solver.ProximityTreshold) //Si la distancia es menor al treshold.
+        {
+            _currentNode = _nextNode;
+            //Encontrar siguiente nodo.
 
+            if (_currentNode == _nextWayPointNode)//Si llegamos al nodo objetivo.
+            {
+                WaypointPositionReached();
 
-                _solver.SetOrigin(_currentNode)
-                       .SetTarget(_nextWayPointNode)
-                       .CalculatePathUsingSettings();
+                //Recalcular el camino.
+                CalculatePrimaryRoute(_currentNode, _nextWayPointNode, _nextWayPointNode.area == NavigationArea.blocked);
 
-                if (_solver.currentPath.Count == 0)
-                {
-                    _waitForPosibleRoute = true;
-                    return;
-                }
-
+                //Setear nextNode. Usando PrimaryRoute.
                 _nextNode = _solver.currentPath.Dequeue();
                 _nextNode = _solver.currentPath.Dequeue();
 
+                //Como llegamos al final seteamos stoping y salimos con un return.
                 _stoping = true;
+                return;
             }
-            else
-            {
-                if (_solver.currentPath.Count == 0)
-                    return;
-                _nextNode = _solver.currentPath.Dequeue();//Si alcanzamos el siguiente nodo del camino actual.
-            }
+
+            //Si no llegue al nodo Waypoint Objetivo. Pongo en la cola el siguiente nodo dentro del camino actual.
+            _nextNode = _solver.currentPath.Dequeue(); //Acá esto siempre tiene que estar completo.
         }
 
         moveToNode(_nextNode, _patrollSpeed); //Me muevo hacia el objetivo actual.
@@ -131,5 +152,145 @@ public class PatrollState : State
     public override void End()
     {
         _anims.SetBool("Walking", false);
+        ClearPrimaryRoute();
+        ClearSecondaryRoute();
+    }
+
+    void ClearPrimaryRoute()
+    {
+        foreach (var node in primaryRoute)
+            node.OnAreaWeightChanged -= OnNodeLavelChanged;
+        primaryRoute.Clear();
+    }
+    void ClearSecondaryRoute()
+    {
+        foreach (var node in alternativeRoute)
+            node.OnAreaWeightChanged -= OnNodeLavelChanged;
+        alternativeRoute.Clear();
+    }
+
+    private void ReevaluateCaseOne()
+    {
+        if (debugMessages)
+        {
+            print("Caso 1");
+        }
+
+        //El nodo objetivo está bloqueado.
+        //Encuentro el nodo navegable mas cercano al objetivo posible.
+        Node closerNodeToTarget = null;
+        for (int i = primaryRoute.Count - 1; i >= 0; i--)
+        {
+            if (primaryRoute[i].area == NavigationArea.Navegable)
+            {
+                closerNodeToTarget = primaryRoute[i];
+                break;
+            }
+        }
+
+        //Calculo alternativeRoute.
+        CalculateSecondaryRoute(_currentNode, closerNodeToTarget);
+        _useSecondaryRoute = true;
+
+        //Reasigno los nodos necesarios para que me pueda mover al closerNodeToTarget.
+        //Reasigno CurrentNode y nextNode;
+
+        _currentNode = _solver.currentPath.Dequeue();
+        _nextNode = _solver.currentPath.Dequeue();
+
+        //Si llego al nodo mas cercano al target, y el camino está bloqueado, espero hasta que se desbloquee. ¿Cómo?
+        _waitForPosibleRoute = true;
+    }
+    private void ReevaluateCaseTwo()
+    {
+        if (debugMessages)
+        {
+            print("Caso 2");
+        }
+        //El objetivo sigue siendo navegable, así que tenemos que recalcular Primary Route.
+        //Recalculamos el camino principal, ignorando los nodos bloqueados.
+        _useSecondaryRoute = false;
+        CalculatePrimaryRoute(_currentNode, _nextWayPointNode, false);
+        ClearSecondaryRoute();
+        //Reasignamos el camino actual.
+        _currentNode = _solver.currentPath.Dequeue();
+        _nextNode = _solver.currentPath.Dequeue();
+    }
+
+    void WaypointPositionReached()
+    {
+        _waypointPositionsMoved++; //Nos movimos un nodo de posición.
+        if (_waypointPositionsMoved >= _patrolPoints.points.Count)
+            _waypointPositionsMoved = 0;
+        _nextWayPointNode = _patrolPoints.points[_waypointPositionsMoved]; //Seteamos el siguiente _nextWaypointNode;
+    }
+
+    //Calcula un camino posible desde mi posición Actual(Nodo) al siguiente punto del waypoint, ignorando nodos bloqueados.
+    void CalculatePrimaryRoute(Node origin, Node Target, bool ignoreBloqued)
+    {
+        //Preseteos.
+        _solver.ignoreBloquedNodes(ignoreBloqued); //Calculo el camino ignorando los nodos bloqueados.
+
+        //Limpio todos los settings anteriores para calcular uno totalmente limpio.
+        if (primaryRoute.Count != 0)
+            ClearPrimaryRoute();
+
+        //Calculo el camino.
+        _solver.SetOrigin(origin)
+               .SetTarget(Target)
+               .CalculatePathUsingSettings();
+
+        //Guardar el resultado en primaryRoute.
+        foreach (var node in _solver.currentPath)
+        {
+            primaryRoute.Add(node);
+            node.OnAreaWeightChanged += OnNodeLavelChanged; //Suscribirme a los eventos de cada nodo.
+        }
+
+        //PostSeteos.
+        _solver.ignoreBloquedNodes(false);
+    }
+    void CalculateSecondaryRoute(Node origin, Node temporalTarget)
+    {
+        if (alternativeRoute.Count != 0)
+            ClearSecondaryRoute(); //Limpio la ruta secundaria antes de usar uno nuevo.
+
+        Node closerNodeToTarget = null;
+        for (int i = primaryRoute.Count - 1; i >= 0; i--)
+        {
+            if (primaryRoute[i].area == NavigationArea.Navegable)
+            {
+                closerNodeToTarget = primaryRoute[i];
+                break;
+            }
+        }
+
+        _solver.SetOrigin(_currentNode)
+               .SetTarget(closerNodeToTarget)
+               .CalculatePathUsingSettings();
+    }
+
+    //Si el nodo cambia de modo, ejecutamos esta función.
+    void OnNodeLavelChanged (Node source)
+    {
+        //Comparar el nodo original a nuestro nodo final de la ruta primaria.
+        if (source == _nextWayPointNode)
+        {
+            if (source.area == NavigationArea.Navegable)
+            {
+                _waitForPosibleRoute = false;
+            }
+            if (source.area == NavigationArea.blocked)
+            {
+                _waitForPosibleRoute = true;
+            }
+        }
+
+        _hasToReevaluatePath = true;
+
+        if (debugMessages && source.area == NavigationArea.blocked)
+        {
+            print($"Has to reevaluate Path cuz {source.ID} has changed his state to {source.area.ToString()}");
+        }
     }
 }

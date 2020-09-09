@@ -15,7 +15,7 @@ namespace IA.PathFinding
     [Serializable]
     public class Node : MonoBehaviour
     {
-        public event Action<NavigationArea> OnAreaWeightChanged = delegate { }; //Esto es un evento de navegación.
+        public event Action<Node> OnAreaWeightChanged = delegate { }; //Esto es un evento de navegación.
 
         public int ID = 0;      //ID del nodo dentro de una Graph.
         public List<Node> Connections = new List<Node>(); //Referencias a los nodos a los que estoy conectado, usado por PathFinding.
@@ -23,7 +23,7 @@ namespace IA.PathFinding
         public IInteractable AviableInteractor { get; set; } = null; //Esto es una propiedad que nos va a permitir añadir una referencia a un interaction handler.
 
         #region DEBUG
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             //Esto es horrible por si las dudas!
@@ -44,7 +44,7 @@ namespace IA.PathFinding
         public void ChangeNodeState(NavigationArea state)
         {
             area = state;
-            OnAreaWeightChanged(area);
+            OnAreaWeightChanged(this);
         }
     }
 }

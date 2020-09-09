@@ -15,6 +15,8 @@ public class PathFindSolver : MonoBehaviour
     [SerializeField] Node _originNode = null;
     [SerializeField] Node _targetNode = null;
 
+    bool _enableBlockedNodes = false;
+
     public Node Origin { get => _originNode; }
     public Node Target { get => _targetNode; }
 
@@ -109,6 +111,16 @@ public class PathFindSolver : MonoBehaviour
         return ThetaStar.getPath(StartingPoint, isTarget, getNodeConnections, GetHeurístic, hasValidConnection) as Queue<Node>;
     }
 
+    /// <summary>
+    /// Permite ignorar etiquetas "bloqueadas" para el cálculo de camino.
+    /// </summary>
+    /// <returns>Valor final del bloqueo de nodos.</returns>
+    public bool ignoreBloquedNodes(bool blockedNodesEnabled)
+    {
+        _enableBlockedNodes = blockedNodesEnabled;
+        return _enableBlockedNodes;
+    }
+
     #region PathFinding
     bool isTarget(Node reference)
     {
@@ -134,11 +146,11 @@ public class PathFindSolver : MonoBehaviour
 
         foreach (var connection in reference.Connections)
         {
-
             //Aqui, el segundo elemento de la tupla es el peso/costo, por ahora solo determinado por la distancia.
 
             //Si el nodo es navegable.
-            if (connection.area == NavigationArea.Navegable)
+            if (connection.area == NavigationArea.Navegable ||
+               (connection.area == NavigationArea.blocked && _enableBlockedNodes))
             {
                 var tuple = Tuple.Create(connection, Vector3.Distance(reference.transform.position, connection.transform.position));
                 NodeConnections.Add(tuple);

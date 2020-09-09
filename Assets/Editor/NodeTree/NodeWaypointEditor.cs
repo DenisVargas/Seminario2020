@@ -115,7 +115,6 @@ public class NodeWaypointEditor : Editor
                         insp.points.Add(Node);
                     }
                 }
-                //Debug.Log(item.name);
             }
         }
 

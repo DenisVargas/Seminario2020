@@ -42,7 +42,7 @@ Light:
   serializedVersion: 9
   m_Type: 2
   m_Color: {r: 0.9811321, g: 0.4248431, b: 0.124955505, a: 1}
-  m_Intensity: 8.37
+  m_Intensity: 2
   m_Range: 10.18
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -19051,6 +19051,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5092059917863435391}
   - component: {fileID: 5092059917874550207}
+  - component: {fileID: 8965043911852767993}
+  - component: {fileID: 4201812468131215330}
+  - component: {fileID: 5813786655879453983}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Untagged
@@ -19093,3 +19096,42 @@ MonoBehaviour:
   Fumee: {fileID: 5092059917849278777}
   MaxLightIntensity: 3
   IntensityLight: 2
+--- !u!65 &8965043911852767993
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092059917863788639}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.24919602, y: 0.49186584, z: 0.096458435}
+  m_Center: {x: -0.01626264, y: 0.08417759, z: -0.006362915}
+--- !u!114 &4201812468131215330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092059917863788639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionCollider: {fileID: 8965043911852767993}
+  _interactionEnabled: 1
+--- !u!114 &5813786655879453983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092059917863788639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc3386fad3f0134a91068bdaacc1ccc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

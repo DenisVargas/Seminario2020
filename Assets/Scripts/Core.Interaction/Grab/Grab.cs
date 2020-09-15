@@ -4,7 +4,7 @@ using UnityEngine;
 using Core.Interaction;
 
 [RequireComponent(typeof(InteractionHandler))]
-public class Grab : MonoBehaviour , IInteractionComponent
+public class Grab : MonoBehaviour , IStaticInteractionComponent
 {
     public OperationType OperationType => OperationType.Take;
     public Vector3 LookToDirection => transform.position;

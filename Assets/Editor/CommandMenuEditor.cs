@@ -128,7 +128,8 @@ class CommandMenuEditor : Editor
         {
             Undo.RecordObject(ins, "Added All Values");
             //Cargo los scriptable objects.
-            var loadedAssets = GetAllAssetPathsAt<CommandMenuItemData>(_comandDataPath);
+
+            var loadedAssets = CustomEditorUtilities.GetAllAssetPathsAt<CommandMenuItemData>(_comandDataPath);
 
             //Relleno _menuFreeContent con 1 prefab de cada comando disponible.
             if (loadedAssets != null && loadedAssets.Length > 0)
@@ -165,29 +166,5 @@ class CommandMenuEditor : Editor
             Undo.RecordObject(ins, "Cleared Database");
             ins.presetDataBase = new List<CommandMenuItemData>();
         }
-    }
-
-    private T[] GetAllAssetPathsAt<T>(string relativePath)
-    {
-        string[] fileEntries = Directory.GetFiles(string.Format("{0}/{1}", Application.dataPath, relativePath));
-        List<T> outputAssets = new List<T>();
-
-        foreach (var FileName in fileEntries)
-        {
-            if (FileName.EndsWith(".meta")) continue;
-
-            string temp = FileName.Replace("\\", "/");
-            int index = temp.LastIndexOf("/");
-            string localPath = "Assets/" + relativePath;
-
-            if (index > 0)
-                localPath += temp.Substring(index);
-
-            object loadedAsset = AssetDatabase.LoadAssetAtPath(localPath, typeof(T));
-
-            if (loadedAsset != null)
-                outputAssets.Add((T)loadedAsset);
-        }
-        return outputAssets.ToArray();
     }
 }

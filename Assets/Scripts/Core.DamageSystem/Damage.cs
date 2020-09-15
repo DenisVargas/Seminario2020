@@ -1,4 +1,5 @@
-﻿public struct Damage
+﻿[System.Serializable]
+public struct Damage
 {
     public DamageType type;
     public float Ammount;

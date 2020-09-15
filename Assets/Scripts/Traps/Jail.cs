@@ -72,12 +72,5 @@ public class Jail : MonoBehaviour
         PullUp();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        var myhitedObject = other.GetComponent<IDestructible>();
-        if (myhitedObject != null)
-        {
-            myhitedObject.destroyMe();
-        }
-    }
+   
 }

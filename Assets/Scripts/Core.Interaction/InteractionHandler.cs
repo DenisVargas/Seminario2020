@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Core.InventorySystem;
 
 namespace Core.Interaction
 {
@@ -18,8 +19,10 @@ namespace Core.Interaction
     {
         [SerializeField] Collider _interactionCollider = null;
         [SerializeField] InteractionDisplaySettings displayOptions = new InteractionDisplaySettings();
+        //Item attacheado a este handler.
+        Item item;
         //Lista de interacciones posibles.
-        Dictionary<OperationType, IInteractionComponent> interactionComponents;
+        Dictionary<OperationType, IStaticInteractionComponent> interactionComponents;
 
         //Bloquea la interactividad.
         [SerializeField] bool _interactionEnabled = true;
@@ -37,14 +40,21 @@ namespace Core.Interaction
         /// Retorna las opciones de display para este objeto, contemplando los tiempos del display y las operaciones disponibles.
         /// </summary>
         /// <returns>All suported Operation and </returns>
-        public InteractionDisplaySettings GetInteractionDisplaySettings()
+        public InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters)
         {
+            ItemData ActiveItem = null;
+            if (aditionalParameters.Length > 0)
+                ActiveItem = (ItemData)aditionalParameters[0];
+
             InteractionDisplaySettings ip = new InteractionDisplaySettings(displayOptions);
             ip.SuportedOperations = interactionComponents.Keys.ToList();
+            if (item != null)
+                ip.SuportedOperations.AddRange(item.GetAllOperations(ActiveItem));
+
             return ip;
         }
 
-        public IInteractionComponent GetInteractionComponent(OperationType operation)
+        public IStaticInteractionComponent GetInteractionComponent(OperationType operation)
         {
             if (interactionComponents.ContainsKey(operation))
                 return interactionComponents[operation];
@@ -54,13 +64,19 @@ namespace Core.Interaction
 
         private void Awake()
         {
-            interactionComponents = new Dictionary<OperationType, IInteractionComponent>();
+            interactionComponents = new Dictionary<OperationType, IStaticInteractionComponent>();
 
-            var icomp = GetComponentsInChildren<IInteractionComponent>();
+            var icomp = GetComponentsInChildren<IStaticInteractionComponent>();
             foreach (var comp in icomp)
             {
                 if (!interactionComponents.ContainsKey(comp.OperationType))
                     interactionComponents.Add(comp.OperationType, comp);
+            }
+
+            var attachedItem = GetComponent<Item>();
+            if (attachedItem != null)
+            {
+                item = attachedItem;
             }
         }
     }

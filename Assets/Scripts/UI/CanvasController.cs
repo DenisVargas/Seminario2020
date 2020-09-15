@@ -26,7 +26,7 @@ public class CanvasController : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    public void DisplayCommandMenu(Vector2 mouseScreenPosition, IInteractable interactionTarget, Action<IInteractionComponent> callback)
+    public void DisplayCommandMenu(Vector2 mouseScreenPosition, IInteractable interactionTarget, Action<IStaticInteractionComponent> callback)
     {
         //Le paso las nuevas opciones disponibles.
         _MultiCommandMenu.FillOptions( interactionTarget, callback);

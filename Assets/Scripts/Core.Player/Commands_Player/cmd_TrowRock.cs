@@ -6,7 +6,7 @@ public class cmd_TrowRock : IQueryComand
 {
     Action TriggerAnimation = delegate { };
 
-    IInteractionComponent CommandTarget = null;
+    IStaticInteractionComponent CommandTarget = null;
     Node TargetNode = null;
 
     bool IsNode = false;
@@ -15,7 +15,7 @@ public class cmd_TrowRock : IQueryComand
     public bool isReady { get; private set; } = false;
     public bool cashed => true;
 
-    public cmd_TrowRock(IInteractionComponent CommandTarget, Action TriggerAnimation,bool IsNode, Node targetNode)
+    public cmd_TrowRock(IStaticInteractionComponent CommandTarget, Action TriggerAnimation,bool IsNode, Node targetNode)
     {
         this.IsNode = IsNode;
         this.CommandTarget = CommandTarget;

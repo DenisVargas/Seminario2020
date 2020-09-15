@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using Core.Interaction;
 
 [RequireComponent(typeof(BoxCollider))]
-public class GroundLever : MonoBehaviour, IInteractionComponent
+public class GroundLever : MonoBehaviour, IStaticInteractionComponent
 {
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
     [SerializeField] UnityEvent OnDeActivate = new UnityEvent();

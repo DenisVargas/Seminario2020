@@ -7,13 +7,13 @@ using Core.Interaction;
 public class cmd_Activate : IQueryComand
 {
     Action TriggerAnimation = delegate { };
-    IInteractionComponent CommandTarget;
+    IStaticInteractionComponent CommandTarget;
 
     public bool completed { get; private set; } = false;
     public bool cashed => true;
     public bool isReady { get; private set; } = false;
 
-    public cmd_Activate(IInteractionComponent CommandTarget, Action TriggerAnimation)
+    public cmd_Activate(IStaticInteractionComponent CommandTarget, Action TriggerAnimation)
     {
         this.CommandTarget = CommandTarget;
         this.TriggerAnimation = TriggerAnimation;

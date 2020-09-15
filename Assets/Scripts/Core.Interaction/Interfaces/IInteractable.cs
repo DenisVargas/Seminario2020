@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Core.InventorySystem;
 
 namespace Core.Interaction
 {
@@ -25,8 +26,8 @@ namespace Core.Interaction
         bool InteractionEnabled { get; set; }
         int InteractionsAmmount { get; }
 
-        InteractionDisplaySettings GetInteractionDisplaySettings();
-        IInteractionComponent GetInteractionComponent(OperationType operation);
+        InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters);
+        IStaticInteractionComponent GetInteractionComponent(OperationType operation);
         //Contemplar: Añadir componentes --> Activar o desactivar componentes.
     }
 }

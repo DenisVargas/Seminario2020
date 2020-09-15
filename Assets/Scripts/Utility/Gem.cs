@@ -2,7 +2,7 @@
 using Core.Interaction;
 
 [RequireComponent(typeof(InteractionHandler))]
-public class Gem : MonoBehaviour, IInteractionComponent
+public class Gem : MonoBehaviour, IStaticInteractionComponent
 {
     [SerializeField] int SpeedRot                 = 2;
     [SerializeField] Transform ActivationPosition = null;

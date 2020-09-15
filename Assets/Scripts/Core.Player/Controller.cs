@@ -25,7 +25,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     public Transform MouseDebug;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
-    IInteractionComponent Queued_TargetInteractionComponent = null;
+    IStaticInteractionComponent Queued_TargetInteractionComponent = null;
     Node QueuedMovementEndPoint = null;
 
     Grab Objgrabed;
@@ -270,7 +270,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
                 if (_mouseContext.interactuableHitted)
                 {
-                    IInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw);
+                    IStaticInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw);
 
                     IQueryComand _ActivateCommand = new cmd_TrowRock
                         (
@@ -469,13 +469,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         return Vector3.Distance(transform.position, targetNode.transform.position) <= _movementTreshold;
     }
 
-   
-
     /// <summary>
     /// Callback que se llama cuando seleccionamos una acción a realizar sobre un objeto interactuable desde el panel de comandos.
     /// </summary>
     /// <param name="target">El objetivo de dicha operación. Es un interaction Component que contiene dentro de si el tipo de la operación.</param>
-    public void QuerySelectedOperation(IInteractionComponent target)
+    public void QuerySelectedOperation(IStaticInteractionComponent target)
     {
         var safeInteractionPosition = target.requestSafeInteractionPosition(transform.position);
         Node targetNode = _solver.getCloserNode(safeInteractionPosition);

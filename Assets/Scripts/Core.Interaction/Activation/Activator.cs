@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using Core.Interaction;
 
 [RequireComponent(typeof(InteractionHandler))]
-public class Activator : MonoBehaviour, IInteractionComponent
+public class Activator : MonoBehaviour, IStaticInteractionComponent
 {
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
 

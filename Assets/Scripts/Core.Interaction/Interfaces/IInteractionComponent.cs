@@ -3,7 +3,7 @@
 namespace Core.Interaction
 {
     //Los componentes deberían desactivar su interacción.
-    public interface IInteractionComponent
+    public interface IStaticInteractionComponent
     {
         OperationType OperationType { get; }
         Vector3 LookToDirection { get; }

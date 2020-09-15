@@ -7,6 +7,11 @@
         Ignite,
         Activate,
         Equip,
-        Throw
+        Throw,
+        inspect,
+        Combine,
+        Exchange,
+        Drop,
+        use,
     }
 }

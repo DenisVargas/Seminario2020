@@ -2,7 +2,7 @@
 
 namespace Core.Interaction
 {
-    public interface IIgnitableObject : IInteractionComponent
+    public interface IIgnitableObject : IStaticInteractionComponent
     {
         bool lockInteraction { get; }
         bool isFreezed { get; set; }

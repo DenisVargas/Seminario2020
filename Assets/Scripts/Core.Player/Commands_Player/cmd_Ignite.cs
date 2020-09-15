@@ -8,13 +8,13 @@ public class cmd_Ignite : IQueryComand
 {
     Action TriggerAnimation = delegate { };
 
-    IInteractionComponent target;
+    IStaticInteractionComponent target;
 
     public bool completed { get; private set; } = (false);
     public bool isReady { get; private set; } = false;
     public bool cashed => true;
 
-    public cmd_Ignite(IInteractionComponent target, Action TriggerAnimation)
+    public cmd_Ignite(IStaticInteractionComponent target, Action TriggerAnimation)
     {
         this.TriggerAnimation = TriggerAnimation;
         this.target = target;

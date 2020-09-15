@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Core.Interaction;
 
-public class WorldObject : MonoBehaviour, IInteractionComponent
+public class WorldObject : MonoBehaviour, IStaticInteractionComponent
 {
     [SerializeField] Material onEnterMat = null;
     [SerializeField] Material onExitMat = null;

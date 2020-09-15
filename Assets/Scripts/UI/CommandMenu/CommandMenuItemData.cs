@@ -8,5 +8,4 @@ public class CommandMenuItemData : ScriptableObject
     public OperationType Operation;
     public Sprite Icon;
     public string CommandName;
-    public string CommandDescription;
 }

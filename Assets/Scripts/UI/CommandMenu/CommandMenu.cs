@@ -7,7 +7,7 @@ using Core.Interaction;
 
 public class CommandMenu : MonoBehaviour
 {
-    public event Action<IInteractionComponent> executeCommand = delegate { };
+    public event Action<IStaticInteractionComponent> executeCommand = delegate { };
     [HideInInspector]
     public IInteractable interactionTarget;
 
@@ -97,7 +97,7 @@ public class CommandMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void FillOptions( IInteractable interactionTarget, Action<IInteractionComponent> callBack)
+    public void FillOptions( IInteractable interactionTarget, Action<IStaticInteractionComponent> callBack)
     {
         executeCommand += callBack;
         this.interactionTarget = interactionTarget;

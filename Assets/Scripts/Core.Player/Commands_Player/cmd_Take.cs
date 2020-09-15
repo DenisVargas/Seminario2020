@@ -11,9 +11,9 @@ public class cmd_Take : IQueryComand
     Action TriggerAnimation = delegate { };
     Transform mano;
 
-    IInteractionComponent target;
+    IStaticInteractionComponent target;
 
-    public cmd_Take(IInteractionComponent target, Transform mano, Action TriggerAnimation)
+    public cmd_Take(IStaticInteractionComponent target, Transform mano, Action TriggerAnimation)
     {
         this.TriggerAnimation = TriggerAnimation;
         this.mano = mano;

@@ -15,5 +15,5 @@ public interface IPlayerController
     void FallInTrap();
     void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod);
     void PlayBlood();
-    void QuerySelectedOperation(IInteractionComponent target);
+    void QuerySelectedOperation(IStaticInteractionComponent target);
 }

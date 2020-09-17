@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f33aad851a6c1469db81570415f92a, type: 3}
   m_Name: Recipes
   m_EditorClassIdentifier: 
-  combinations: []
+  combinations:
+  - A: 0
+    B: 3
+    Result: 5

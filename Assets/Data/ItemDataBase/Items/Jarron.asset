@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Jarron
   m_EditorClassIdentifier: 
   ID: 0
-  Name: 
-  Description: 
+  Name: "Jarr\xF3n Vac\xEDo"
+  Description: "Un Jarr\xF3n vac\xEDo. \xBFPodr\xE1 caber algo dentro?\n"
   Icon: {fileID: 0}
-  inGamePrefab: {fileID: 0}
-  isCombinable: 0
-  isDropeable: 0
-  isTrowable: 0
+  inGamePrefab:
+  - {fileID: 8132736032666455958, guid: f0a7256d8d735d34dadf71a28bd917fe, type: 3}
+  isCombinable: 1
+  isDropeable: 1
+  isTrowable: 1
   isConsumable: 0

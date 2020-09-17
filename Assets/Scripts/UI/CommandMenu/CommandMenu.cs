@@ -4,10 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Core.Interaction;
+using Core.InventorySystem;
+
+/*
+ * TODO: Utilizar un pool para el display.
+ */
 
 public class CommandMenu : MonoBehaviour
 {
-    public event Action<IStaticInteractionComponent> executeCommand = delegate { };
+    public Action<OperationType, IInteractionComponent> commandCallback = delegate { };
     [HideInInspector]
     public IInteractable interactionTarget;
 
@@ -37,8 +42,6 @@ public class CommandMenu : MonoBehaviour
         if (_limitedActive)
         {
             _remainingActiveTime -= Time.deltaTime;
-            //print("Remaining Active Time = " + _remainingActiveTime);
-
             if (_remainingActiveTime <= 0)
             {
                 _remainingActiveTime = 0;
@@ -86,31 +89,39 @@ public class CommandMenu : MonoBehaviour
         //TODO: Reposicionar el menu, si se sale de la pantalla.
     }
 
-    public void ActivateCommand(OperationType command)
+    /// <summary>
+    /// Activate Command se llama al presionar el botón de interacción específico.
+    /// </summary>
+    /// <param name="operation">Es el tipo de operación que se va a ejecutar</param>
+    /// <param name="component">Una referencia al componente seleccionado</param>
+    public void ActivateCommand(OperationType operation, IInteractionComponent component)
     {
-        //print(string.Format("Activo el comando {0}", command.ToString()));
-        //Aquí es donde ejecutamos la acción en si.
-        executeCommand(interactionTarget.GetInteractionComponent(command));
-        //Limpiamos los residuos.
-        executeCommand = delegate { };
+        commandCallback(operation, component);
+        commandCallback = delegate { };
         interactionTarget = null;
         gameObject.SetActive(false);
     }
 
-    public void FillOptions( IInteractable interactionTarget, Action<IStaticInteractionComponent> callBack)
+    public void FillOptions
+    ( 
+      IInteractable interactionTarget,
+      Inventory inventory,
+      Action<OperationType, IInteractionComponent> callback
+    )
     {
-        executeCommand += callBack;
+        commandCallback += callback;
         this.interactionTarget = interactionTarget;
 
-        var DisplaySettings = interactionTarget.GetInteractionDisplaySettings();
+        //Tomamos nuestro target y le pedimos los displaySettings de acuerdo a nuestro inventario.
+        var DisplaySettings = interactionTarget.GetInteractionDisplaySettings(inventory);
         _limitedActive = DisplaySettings.LimitedDisplay;
         if (_limitedActive)
         {
             _remainingActiveTime = DisplaySettings.ActiveTime;
         }
         _verticalScroll.size = 1;
-        foreach (var item in display)
-            item.Value.SetActive(DisplaySettings.SuportedOperations.Contains(item.Key));
+        foreach (var pair in display)
+            pair.Value.SetActive(DisplaySettings.SuportedOperations.Contains(pair.Key));
     }
 
     public void OnSliderContext(bool isInsideSlider)
@@ -127,7 +138,7 @@ public class CommandMenu : MonoBehaviour
 
         if (!_viewportContextOn)
         {
-            executeCommand = delegate { };
+            commandCallback = delegate { };
             interactionTarget = null;
             gameObject.SetActive(false);
         }

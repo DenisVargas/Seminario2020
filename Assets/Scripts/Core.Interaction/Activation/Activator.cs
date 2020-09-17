@@ -2,28 +2,40 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Core.Interaction;
+using Core.InventorySystem;
+using System;
 
 [RequireComponent(typeof(InteractionHandler))]
-public class Activator : MonoBehaviour, IStaticInteractionComponent
+public class Activator : MonoBehaviour, IInteractionComponent
 {
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
 
     public Transform ActivationPosition;
-    public Vector3 position { get => ActivationPosition.position; }
     public Vector3 LookToDirection { get => ActivationPosition.forward; }
-
-    public OperationType OperationType => OperationType.Activate;
-    public bool IsCurrentlyInteractable { get; private set; } = (true);
-    public bool InteractionEnabled { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public bool isDynamic => false;
 
     public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
     {
         return ActivationPosition.position;
     }
-    public void InputConfirmed(params object[] optionalParams) { }
-    public void ExecuteOperation(params object[] optionalParams)
+
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    {
+        return new List<Tuple<OperationType, IInteractionComponent>>()
+        {
+            new Tuple<OperationType, IInteractionComponent>(OperationType.Activate, this)
+        };
+    }
+    public void InputConfirmed(OperationType operation, params object[] optionalParams)
+    {
+        throw new NotImplementedException();
+    }
+    public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
         OnActivate.Invoke();
     }
-    public void CancelOperation(params object[] optionalParams) { }
+    public void CancelOperation(OperationType operation, params object[] optionalParams)
+    {
+        
+    }
 }

@@ -5,18 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Core.InventorySystem;
 
 public class cmd_Take : IQueryComand
 {
     Action TriggerAnimation = delegate { };
-    Transform mano;
+    Action<Item> equipItem = delegate { };
 
-    IStaticInteractionComponent target;
+    Item target;
 
-    public cmd_Take(IStaticInteractionComponent target, Transform mano, Action TriggerAnimation)
+    public cmd_Take(Item target, Action<Item> equipItem, Action TriggerAnimation)
     {
         this.TriggerAnimation = TriggerAnimation;
-        this.mano = mano;
+        this.equipItem = equipItem;
         this.target = target;
     }
     public bool completed { get; private set; } = false;
@@ -30,7 +31,7 @@ public class cmd_Take : IQueryComand
     }
     public void Execute()
     {
-        target.ExecuteOperation(mano);
+        equipItem(target);
         completed = true;
     }
     public void Cancel() { }

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f599546c6b7ce40802bf2098abefb6, type: 3}
   m_Name: Baba
   m_EditorClassIdentifier: 
-  ID: 0
-  Name: 
-  Description: 
+  ID: 2
+  Name: Baba Inflamable
+  Description: "\xA1Asqueroso!. Huele a queros\xE9n."
   Icon: {fileID: 0}
-  inGamePrefab: {fileID: 0}
-  isCombinable: 0
-  isDropeable: 0
-  isTrowable: 0
+  inGamePrefab: []
+  isCombinable: 1
+  isDropeable: 1
+  isTrowable: 1
   isConsumable: 0

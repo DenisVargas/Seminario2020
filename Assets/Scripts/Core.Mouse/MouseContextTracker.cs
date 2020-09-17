@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using IA.PathFinding;
 using Core.Interaction;
+using Core.InventorySystem;
 
 [Serializable]
 public struct MouseContext

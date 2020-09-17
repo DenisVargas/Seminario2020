@@ -37,47 +37,62 @@ public class RecipesDataBaseEditor : Editor
 
     public void DrawCombinationEditor()
     {
-        //Manual Add.
+        //Manual Add && Item Search and Add.
 
-        GUIStyle tx = new GUIStyle();
+        GUIStyle tx = new GUIStyle(); //Text Styling.
         tx.alignment = TextAnchor.MiddleCenter;
         tx.normal.textColor = Color.white;
 
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Item ID A", tx);
-        EditorGUILayout.LabelField("Item ID B", tx);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        a = EditorGUILayout.IntField(a);
-        b = EditorGUILayout.IntField(b);
-        EditorGUILayout.EndHorizontal();
-        result = EditorGUILayout.IntField("Result ID:", result);
+        float maxWidth = Screen.width / 3;
+        GUILayoutOption[] renderingOptions = new GUILayoutOption[]
+        {
+            GUILayout.ExpandWidth(true),
+            GUILayout.MaxWidth(maxWidth - 10),
+        };
 
+        //  Label  ||  Label   ||  Label
+        //    ID   ||    ID    ||    ID 
+        //   Pick  ||   Pick   ||   Pick
 
-        //Item Search and Add.
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Pick Item A"))
+
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.LabelField("Item ID A", tx, renderingOptions);
+        a = EditorGUILayout.IntField(a, renderingOptions);
+        if (GUILayout.Button("Pick", renderingOptions))
         {
             selection = 1;
             int id = EditorGUIUtility.GetControlID(FocusType.Passive);
             EditorGUIUtility.ShowObjectPicker<ItemData>(null, false, "", id);
             pickerID = id;
         }
-        if (GUILayout.Button("Pick Item B"))
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.LabelField("Item ID B", tx, renderingOptions);
+        b = EditorGUILayout.IntField(b, renderingOptions);
+        if (GUILayout.Button("Pick", renderingOptions))
         {
             selection = 2;
             int id = EditorGUIUtility.GetControlID(FocusType.Passive);
             EditorGUIUtility.ShowObjectPicker<ItemData>(null, false, "", id);
             pickerID = id;
         }
-        EditorGUILayout.EndHorizontal();
-        if (GUILayout.Button("Pick Result Item"))
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.LabelField("Result ID B", tx, renderingOptions);
+        result = EditorGUILayout.IntField(result, renderingOptions);
+        if (GUILayout.Button("Pick", renderingOptions))
         {
             selection = 3;
             int id = EditorGUIUtility.GetControlID(FocusType.Passive);
             EditorGUIUtility.ShowObjectPicker<ItemData>(null, false, "", id);
             pickerID = id;
         }
+        EditorGUILayout.EndVertical();
+        
+        EditorGUILayout.EndHorizontal();
 
         string commandName = Event.current.commandName;
         if (commandName == "ObjectSelectorUpdated")
@@ -106,21 +121,22 @@ public class RecipesDataBaseEditor : Editor
             EditorGUIUtility.GetObjectPickerControlID();
             selectedInPicker = null;
         }
+
         if (GUILayout.Button("Add Combination"))
         {
-            if (a == 0)
+            if (a == -1)
             { 
-                Debug.LogWarning("El ID A es 0. No se admiten valores menores a 1.");
+                Debug.LogWarning("El ID A es 0. No se admiten valores menores a 0.");
                 return;
             }
-            if (b == 0)
+            if (b == -1)
             {
-                Debug.LogWarning("El ID B es 0. No se admiten valores menores a 1.");
+                Debug.LogWarning("El ID B es 0. No se admiten valores menores a 0.");
                 return;
             }
-            if (result == 0)
+            if (result == -1)
             {
-                Debug.LogWarning("El resultado es inválido. No se admiten valores menores a 1.");
+                Debug.LogWarning("El resultado es inválido. No se admiten valores menores a 0.");
                 return;
             }
 

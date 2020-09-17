@@ -1,19 +1,22 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Core.InventorySystem;
 
 namespace Core.Interaction
 {
-    //Los componentes deberían desactivar su interacción.
-    public interface IStaticInteractionComponent
+    public interface IInteractionComponent
     {
-        OperationType OperationType { get; }
-        Vector3 LookToDirection { get; }
+        bool isDynamic { get; }
 
         Transform transform { get; }
         T GetComponent<T>();
+        Vector3 LookToDirection { get; }
 
         Vector3 requestSafeInteractionPosition(Vector3 requesterPosition);
-        void InputConfirmed(params object[] optionalParams);
-        void ExecuteOperation(params object[] optionalParams);
-        void CancelOperation(params object[] optionalParams);
+        List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory);
+        void InputConfirmed(OperationType operation, params object[] optionalParams);
+        void ExecuteOperation(OperationType operation, params object[] optionalParams);
+        void CancelOperation(OperationType operation, params object[] optionalParams);
     }
 }

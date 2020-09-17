@@ -9,9 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce9270b8e46476e45b8ee5873d4955b4, type: 3}
-  m_Name: Drop
+  m_Script: {fileID: 11500000, guid: 90f599546c6b7ce40802bf2098abefb6, type: 3}
+  m_Name: Antorcha
   m_EditorClassIdentifier: 
-  Operation: 8
+  ID: 1
+  Name: Antorcha
+  Description: Una simple Antorcha.
   Icon: {fileID: 0}
-  CommandName: Drop
+  inGamePrefab: []
+  isCombinable: 1
+  isDropeable: 1
+  isTrowable: 1
+  isConsumable: 0

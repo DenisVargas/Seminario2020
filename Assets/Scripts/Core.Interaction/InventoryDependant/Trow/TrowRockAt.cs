@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Core.Interaction;
+using Core.InventorySystem;
+using System;
 
 [RequireComponent(typeof(InteractionHandler))]
-public class TrowRockAt : MonoBehaviour, IStaticInteractionComponent
+public class TrowRockAt : MonoBehaviour, IInteractionComponent
 {
-    public OperationType OperationType => OperationType.Throw;
     public Vector3 LookToDirection => transform.position;
+    public bool isDynamic => false;
 
     BaseNPC npc = null;
 
@@ -20,16 +22,21 @@ public class TrowRockAt : MonoBehaviour, IStaticInteractionComponent
     {
         return npc.transform.position;
     }
-    public void InputConfirmed(params object[] optionalParams)
+    public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
         print("Input Confirmado");
     }
-    public void ExecuteOperation(params object[] optionalParams)
+    public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
         npc.OnHitWithRock(optionalParams);
     }
-    public void CancelOperation(params object[] optionalParams)
+    public void CancelOperation(OperationType operation, params object[] optionalParams)
     {
         print("Input Cancelado");
+    }
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    {
+        return new List<Tuple<OperationType, IInteractionComponent>>()
+        { new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this)};
     }
 }

@@ -13,11 +13,25 @@ namespace Core.InventorySystem
         public string Description = "";
         public Texture2D Icon = null;
 
-        public GameObject inGamePrefab = null;
+        public GameObject[] inGamePrefab = new GameObject[1];
 
         public bool isCombinable = false;
         public bool isDropeable = false;
         public bool isTrowable = false;
         public bool isConsumable = false;
-    } 
+
+        public GameObject GetRandomInGamePrefab()
+        {
+            if (inGamePrefab.Length == 1)
+                return inGamePrefab[0];
+
+            if (inGamePrefab.Length > 1)
+            {
+                int resultIndex = UnityEngine.Random.Range(0, inGamePrefab.Length);
+                return inGamePrefab[resultIndex];
+            }
+
+            return null;
+        }
+    }
 }

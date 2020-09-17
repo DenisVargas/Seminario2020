@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90f599546c6b7ce40802bf2098abefb6, type: 3}
-  m_Name: Fuego
+  m_Name: "Jarr\xF3nPesado"
   m_EditorClassIdentifier: 
-  ID: 0
-  Name: 
-  Description: 
+  ID: 5
+  Name: Jarron Pesado
+  Description: Un jarron lleno de piedras!
   Icon: {fileID: 0}
-  inGamePrefab: {fileID: 0}
+  inGamePrefab:
+  - {fileID: 8132736032666455958, guid: 110dab6a03331d9478c72b6bd22f7616, type: 3}
   isCombinable: 0
-  isDropeable: 0
-  isTrowable: 0
+  isDropeable: 1
+  isTrowable: 1
   isConsumable: 0

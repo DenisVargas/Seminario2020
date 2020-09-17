@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Core.Interaction;
+using Core.InventorySystem;
 
 [RequireComponent(typeof(Collider), typeof(InteractionHandler))]
 public class IgnitableObject : MonoBehaviour, IIgnitableObject
@@ -163,7 +164,6 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
 
     //======================================= Ingnition System ====================================================
 
-    public OperationType OperationType => OperationType.Ignite;
     public Vector3 LookToDirection => transform.forward;
     public bool IsActive => gameObject.activeSelf;
     public bool Burning { get; private set; } = (false);
@@ -180,6 +180,8 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     public bool IsCurrentlyInteractable { get; private set; } = (true);
     public bool lockInteraction { get; set; } = (false);
 
+    public bool isDynamic => false;
+
     public void StainObjectWithSlime()
     {
         //Cambio los materiales a los que corresponden con el stain.
@@ -189,11 +191,18 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     {
         return (transform.position + ((requesterPosition - transform.position).normalized) * _safeInteractionDistance);
     }
-    public void InputConfirmed(params object[] optionalParams)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    {
+        return new List<Tuple<OperationType, IInteractionComponent>>()
+        {
+            new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
+        };
+    }
+    public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
         isFreezed = true;
     }
-    public void ExecuteOperation(params object[] optionalParams)
+    public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
         if (!Burning)
         {
@@ -208,11 +217,10 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
             Burning = true;
         }
     }
-    public void CancelOperation(params object[] optionalParams)
+    public void CancelOperation(OperationType operation, params object[] optionalParams)
     {
         _freezeInPlace = false;
     }
-    public void StartChainReaction() { }
 
     //======================================= Corrutines ==========================================================
 
@@ -224,7 +232,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         foreach (var item in toIgnite)
         {
             if (!item.Burning)
-                item.ExecuteOperation();
+                item.ExecuteOperation(OperationType.Ignite);
         }
         toIgnite.Clear();
     }

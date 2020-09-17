@@ -2,48 +2,159 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core.Interaction;
+using System;
 
 namespace Core.InventorySystem
 {
-    //Item es una clase que utilizaremos para identificar los objetos dentro de un inventario.
-    //Nos permite realizar acciones sobre ella.
-    //Es una clase especial de Interactuable que admite multiples comandos, y es dinámico.
-    //Por dinamico, me refiero a que dependiendo de los items que estén a manod el jugador, este podría desbloquear mas iteracciones.
+    //Item es una clase que utilizaremos para identificar  realizar operaciones sobre los objetos que pueden entrar dentro de un inventario.
+    //Es una clase especial de Interactuable que admite multiples comandos, y es dinámico:
+    //  Dependiendo de los items que estén a mano del jugador, este podría desbloquear mas iteracciones.
     [RequireComponent(typeof(InteractionHandler))]
-    public class Item : MonoBehaviour
+    public class Item : MonoBehaviour, IInteractionComponent
     {
-        [SerializeField] ItemData data;
+        public int ID = 0;
+        public string ItemName = "";
+        public string Description = "";
+        public Texture2D Icon = null;
+
+        public bool isCombinable, isThroweable, isConsumable = false;
 
         //Operaciones estáticas son aquellas que siempre están disponibles.
-        List<OperationType> staticOperations = new List<OperationType>();
+        List<OperationType> Operations = new List<OperationType>();
+
+        public bool isDynamic => true;
+        public Vector3 LookToDirection => transform.position;
 
         private void Awake()
         {
-            staticOperations.Add(OperationType.inspect);
-            staticOperations.Add(OperationType.Drop);
+            SetData(ItemDataBase.Manager.getItemData(ID));
+
+            Operations.Add(OperationType.inspect);
+            Operations.Add(OperationType.Drop);
         }
 
-        public List<OperationType> GetAllOperations(ItemData CurrentInventory)
+        /// <summary>
+        /// Permite setear manualmente la data de este item.
+        /// </summary>
+        /// <param name="data"></param>
+        public void SetData(ItemData data)
+        {
+            ID = (int)data.ID;
+            ItemName = data.name;
+            Description = data.Description;
+            Icon = data.Icon;
+
+            isCombinable = data.isCombinable;
+            isThroweable = data.isTrowable;
+            isConsumable = data.isConsumable;
+        }
+
+        //============================== Interaction System ============================================================
+
+        public virtual List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory CurrentInventory = null)
         {
             //Operaciones dinamicas son aquellas que dependen del inventario actual.
-            List<OperationType> dinamicOperations = new List<OperationType>();
+            List<Tuple<OperationType, IInteractionComponent>> _myOperations = new List<Tuple<OperationType, IInteractionComponent>>();
 
-            if (CurrentInventory == null)
-                dinamicOperations.Add(OperationType.Take);
+            //Si no se específica un inventario, se añaden todas las operaciones correspondientes.
+            if (CurrentInventory == null)//Añadidos en base al inventario.
+            {
+                //Take es condicional de acuerdo al inventario del jugador.
+                _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Take, this));
+            }
             else
             {
                 // Es intercambiable?.
-                dinamicOperations.Add(OperationType.Exchange);
+                _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Exchange, this));
                 // Es combinable?
-                if (data.isCombinable) dinamicOperations.Add(OperationType.Combine);
+                if (isCombinable)
+                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Combine, this));
                 // Es tirable?.
-                if (data.isTrowable) dinamicOperations.Add(OperationType.Throw);
+                if (isThroweable)
+                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this));
                 //Es consumible?.
-                if (data.isConsumable) dinamicOperations.Add(OperationType.use);
+                if (isConsumable)
+                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.use, this));
             }
 
-            dinamicOperations.AddRange(staticOperations);
-            return dinamicOperations;
+            return _myOperations;
         }
+
+        public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
+        {
+            return transform.position;
+        }
+        public virtual void InputConfirmed(OperationType operation, params object[] optionalParams) { }
+        public virtual void ExecuteOperation(OperationType operation, params object[] optionalParams)
+        {
+            //Esto va a requerir una revisitada mas adelante.
+
+            switch (operation)
+            {
+                case OperationType.Take:
+                    //LLamar OnTake.
+                    break;
+                case OperationType.Ignite:
+                    //Chequear si hay un componente IIgniteable y prenderlo fuego.
+                    break;
+                case OperationType.Activate:
+                    //Llama Use.
+                    break;
+                case OperationType.Equip:
+                    //Innecesario porque equip es más una funcionalidad del player.
+                    break;
+                case OperationType.Throw:
+                    StartCoroutine(ParabolicMove((Transform)optionalParams[0]));
+                    break;
+                case OperationType.inspect:
+                    //La UI no requiere del objeto.
+                    break;
+                case OperationType.Combine:
+                    //Esta funcionalidad va por fuera del objeto. El objeto desconoce las combinaciones.
+                    break;
+                case OperationType.Exchange:
+                    //Esta Operación se hace en el player.
+                    break;
+                case OperationType.Drop:
+                    Drop(optionalParams); //Estándar fijo.
+                    break;
+                case OperationType.use:
+                    Use(optionalParams); //Estándar fijo.
+                    break;
+                default:
+                    break;
+            }
+        }
+        public virtual void CancelOperation(OperationType operation, params object[] optionalParams) { }
+
+        //==============================================================================================================
+        //==================================== Operaciones =============================================================
+
+        /*
+         * Notas: la idea de estas operaciones es que sean llamadas desde un operador si es necesario.
+         * Hay opraciones que no requieren una implementación, pues los efectos se hacen externos al item.
+        */
+
+        public virtual void Drop(params object[] optionalParams)
+        {
+            //Rehabilitar interacción.
+            if (optionalParams != null && optionalParams.Length > 0)
+                transform.position = (Vector3)optionalParams[0];
+        }
+        public virtual void Use(params object[] optionalParams) { }
+
+        //==================================== Corrutinas ==============================================================
+
+        IEnumerator ParabolicMove(Transform target)
+        {
+            Vector3 firstPosition = transform.position;
+            for (float i = 0; i < 1; i += 0.1f)
+            {
+                yield return new WaitForSeconds(0.01f);
+                //transform.position = Vector3.Slerp(firstPosition, target.transform.position, i);
+                transform.position = new Vector3(Mathf.Lerp(firstPosition.x, target.transform.position.x, i), Mathf.Lerp(firstPosition.y, target.position.y, i) + Mathf.Sin(i * Mathf.PI) * 5, Mathf.Lerp(firstPosition.z, target.transform.position.z, i));
+            }
+        }
+
     }
 }

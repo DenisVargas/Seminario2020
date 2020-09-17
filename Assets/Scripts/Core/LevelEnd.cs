@@ -7,7 +7,7 @@ public class LevelEnd : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponentInParent<NMA_Controller>() != null)
+        if (other.GetComponentInParent<Controller>() != null)
         {
             SceneManager.LoadScene(0);
         }

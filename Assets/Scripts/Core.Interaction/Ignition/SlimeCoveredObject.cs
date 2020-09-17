@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Core.Interaction;
+using Core.InventorySystem;
+using System;
 
 [RequireComponent(typeof(Collider), typeof(InteractionHandler))]
 public class SlimeCoveredObject : MonoBehaviour, IIgnitableObject
@@ -42,24 +44,19 @@ public class SlimeCoveredObject : MonoBehaviour, IIgnitableObject
     public bool IsActive => gameObject.activeSelf;
     public Vector3 LookToDirection { get => transform.forward; }
 
+    public bool isDynamic => false;
+
     public void StainObjectWithSlime() { }
 
     public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
     {
         return (transform.position + ((requesterPosition - transform.position).normalized *_safeInteractionDistance));
     }
-    public void StartChainReaction() { }
-    public void InputConfirmed(params object[] optionalParams) { }
-    public void ExecuteOperation(params object[] optionalParams)
-    {
-        StartCoroutine(Burn());
-    }
-    public void CancelOperation(params object[] optionalParams) { }
 
     IEnumerator Burn()
     {
         _col.enabled = false; //Para que no pueda seguir siendo interactuable.
-        StartChainReaction();
+        //StartChainReaction();
         yield return new WaitForSeconds(0.8f);
         burnParticles[0].SetActive(true);
         yield return new WaitForSeconds(0.8f);
@@ -76,4 +73,18 @@ public class SlimeCoveredObject : MonoBehaviour, IIgnitableObject
         Destroy(gameObject);
     }
 
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    {
+        return new List<Tuple<OperationType, IInteractionComponent>>()
+        {
+            new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
+        };
+    }
+
+    public void InputConfirmed(OperationType operation, params object[] optionalParams) { }
+    public void ExecuteOperation(OperationType operation, params object[] optionalParams)
+    {
+        StartCoroutine(Burn());
+    }
+    public void CancelOperation(OperationType operation, params object[] optionalParams) { }
 }

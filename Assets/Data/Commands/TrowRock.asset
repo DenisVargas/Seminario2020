@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Operation: 4
   Icon: {fileID: 21300000, guid: 21acc49fee4fd4146963367b5cb36f79, type: 3}
-  CommandName: Trow Rock
-  CommandDescription: 
+  CommandName: Throw

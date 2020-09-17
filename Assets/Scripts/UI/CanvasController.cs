@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Core.Interaction;
+using Core.InventorySystem;
 
 public class CanvasController : MonoBehaviour
 {
@@ -26,10 +27,10 @@ public class CanvasController : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    public void DisplayCommandMenu(Vector2 mouseScreenPosition, IInteractable interactionTarget, Action<IStaticInteractionComponent> callback)
+    public void DisplayCommandMenu(Vector2 mouseScreenPosition, IInteractable interactionTarget, Inventory inventory, Action<OperationType, IInteractionComponent> callback)
     {
         //Le paso las nuevas opciones disponibles.
-        _MultiCommandMenu.FillOptions( interactionTarget, callback);
+        _MultiCommandMenu.FillOptions( interactionTarget, inventory, callback);
         //Lo posiciono en donde debe estar.
         _MultiCommandMenu.Emplace(mouseScreenPosition);
         //Lo activo en el canvas.

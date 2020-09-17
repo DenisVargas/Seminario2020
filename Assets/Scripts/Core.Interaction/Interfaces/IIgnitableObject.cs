@@ -2,7 +2,7 @@
 
 namespace Core.Interaction
 {
-    public interface IIgnitableObject : IStaticInteractionComponent
+    public interface IIgnitableObject : IInteractionComponent
     {
         bool lockInteraction { get; }
         bool isFreezed { get; set; }
@@ -12,7 +12,7 @@ namespace Core.Interaction
         GameObject gameObject { get; }
 
         //El objeto igniteable debería iniciar un efecto en cadena al activarse.
-        void StartChainReaction();
+        //void StartChainReaction();
         //Debería encargarse del renderizado también. 
         //Para ello se debería encargar de stainear el objeto.
         void StainObjectWithSlime();

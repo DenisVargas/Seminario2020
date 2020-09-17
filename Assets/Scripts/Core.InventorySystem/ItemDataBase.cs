@@ -9,9 +9,9 @@ namespace Core.InventorySystem
 {
     public class ItemDataBase : MonoBehaviour
     {
-        ItemDataBase _instance;
+        static ItemDataBase _instance;
 
-        public ItemDataBase Manager
+        public static ItemDataBase Manager
         {
             get
             {
@@ -19,28 +19,26 @@ namespace Core.InventorySystem
                 {
                     _instance = FindObjectOfType<ItemDataBase>();
                     if (_instance == null)
-                    {
                         _instance = new GameObject("ItemDataBase").AddComponent<ItemDataBase>();
-                    }
-                    _instance.Init();
-                    DontDestroyOnLoad(_instance.gameObject);
                 }
 
+                _instance.Init();
+                DontDestroyOnLoad(_instance.gameObject);
                 return _instance;
             }
         }
 
         [SerializeField] ItemDataCollection collection = null;
-        [SerializeField] Recipes _combinations = null;
+        [SerializeField] Recipes _recipes = null;
 
         Dictionary<int, ItemData> _dataBase = new Dictionary<int, ItemData>();
 
         public void Init()
         {
             if (collection == null)
-                collection = ScriptableObject.CreateInstance<ItemDataCollection>();
-            if (_combinations == null)
-                _combinations = ScriptableObject.CreateInstance<Recipes>();
+                collection = Resources.FindObjectsOfTypeAll<ItemDataCollection>()[0];
+            if (_recipes == null)
+                _recipes = Resources.FindObjectsOfTypeAll<Recipes>()[0];
 
             _dataBase = new Dictionary<int, ItemData>();
 
@@ -65,11 +63,41 @@ namespace Core.InventorySystem
             return null;
         }
 
-        //FactoryMethod. Retorna un prefab dado una combinación de Objetos, si eso es posible. 
-        //Es la base de las combinaciones.
+        /// <summary>
+        /// Combina 2 items dados los ID´s y retorna un prefab del Item resultante.
+        /// </summary>
+        /// <param name="a">Identificador del primer Item</param>
+        /// <param name="b">Identificador del segundo Item</param>
+        /// <returns>Null si no hay una combinación válida</returns>
+        public GameObject Combine(int a, int b)
+        {
+            if (CanCombineWith(a,b))
+            {
+                //Busco entre las combinaciones aquel que coíncida.
+                var foundCombination = _recipes.combinations
+                                       .Where(x => x.checkIn(a, b))
+                                       .First();
 
+                if (foundCombination.Result != -1)
+                {
+                    //obtengo el ID resultante y busco el item que corresponda.
+                    //Retorno el item.
+                    return _dataBase[foundCombination.Result].GetRandomInGamePrefab();
+                }
+            }
 
-        //Checker. Chequea si existe la combinación entre 2 objetos devolviendo true o false.
-
+            return null;
+        }
+        /// <summary>
+        /// Chequea si existe la combinación entre 2 objetos
+        /// </summary>
+        /// <param name="a">Identificador del item A</param>
+        /// <param name="b">Identificador del item A</param>
+        /// <returns>false si no es posible combinar los items con los ID´s dados</returns>
+        public bool CanCombineWith(int a, int b)
+        {
+            int combinationsPosible = _recipes.combinations.Count(x => x.checkIn(a, b));
+            return combinationsPosible > 0;
+        }
     }
 }

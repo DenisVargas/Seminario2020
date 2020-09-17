@@ -26,8 +26,8 @@ namespace Core.Interaction
         bool InteractionEnabled { get; set; }
         int InteractionsAmmount { get; }
 
-        InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters);
-        IStaticInteractionComponent GetInteractionComponent(OperationType operation);
         //Contemplar: Añadir componentes --> Activar o desactivar componentes.
+        InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters);
+        IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic);
     }
 }

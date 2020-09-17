@@ -2,9 +2,12 @@
 {
     public enum ItemID : int
     {
+        basura = -1,
         Jarron = 0,
-        Fuego,
+        Antorcha,
         Baba,
-        Piedra
+        Piedra,
+        JarronExplosivo,
+        JarronPesado
     }
 }

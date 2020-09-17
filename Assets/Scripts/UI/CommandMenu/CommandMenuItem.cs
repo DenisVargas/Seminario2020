@@ -8,10 +8,12 @@ using Core.Interaction;
 
 public class CommandMenuItem : MonoBehaviour
 {
-    public event Action<OperationType> OnOperationSelected = delegate { };
+    public event Action<OperationType, IInteractionComponent> OnOperationSelected = delegate { };
 
     [SerializeField]
     CommandMenuItemData data = null;
+
+    public IInteractionComponent referenceComponent = null;
 
     //Componentes que queremos modificar.
     [SerializeField] TMP_Text _text = null;
@@ -48,7 +50,7 @@ public class CommandMenuItem : MonoBehaviour
         //Si hacemos clic.
         _backGroundImage.color = _pressedColor;
         //Ejecutamos nuestro delegado.
-        OnOperationSelected(data.Operation);
+        OnOperationSelected(data.Operation, referenceComponent);
     }
     public void OnMouseClickUp()
     {

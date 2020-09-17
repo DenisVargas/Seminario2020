@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9270b8e46476e45b8ee5873d4955b4, type: 3}
   m_Name: Exchange
   m_EditorClassIdentifier: 
-  Operation: 0
+  Operation: 7
   Icon: {fileID: 0}
-  CommandName: 
-  CommandDescription: 
+  CommandName: Exchange

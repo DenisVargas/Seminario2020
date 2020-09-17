@@ -19,10 +19,9 @@ namespace Core.Interaction
     {
         [SerializeField] Collider _interactionCollider = null;
         [SerializeField] InteractionDisplaySettings displayOptions = new InteractionDisplaySettings();
-        //Item attacheado a este handler.
-        Item item;
+
         //Lista de interacciones posibles.
-        Dictionary<OperationType, IStaticInteractionComponent> interactionComponents;
+        Dictionary<OperationType, List<IInteractionComponent>> interactionComponents;
 
         //Bloquea la interactividad.
         [SerializeField] bool _interactionEnabled = true;
@@ -42,41 +41,58 @@ namespace Core.Interaction
         /// <returns>All suported Operation and </returns>
         public InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters)
         {
-            ItemData ActiveItem = null;
-            if (aditionalParameters.Length > 0)
-                ActiveItem = (ItemData)aditionalParameters[0];
+            Inventory ActiveItem = null;
+            if (aditionalParameters != null && aditionalParameters.Length > 0)
+                ActiveItem = (Inventory)aditionalParameters[0];
 
             InteractionDisplaySettings ip = new InteractionDisplaySettings(displayOptions);
             ip.SuportedOperations = interactionComponents.Keys.ToList();
-            if (item != null)
-                ip.SuportedOperations.AddRange(item.GetAllOperations(ActiveItem));
+            //if (item != null)
+            //    ip.SuportedOperations.AddRange(item.GetAllOperations(ActiveItem));
 
             return ip;
         }
 
-        public IStaticInteractionComponent GetInteractionComponent(OperationType operation)
+        /// <summary>
+        /// key en 0 es un componente Estático. Mientras que 1 es un componente dinámico.
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic)
         {
             if (interactionComponents.ContainsKey(operation))
-                return interactionComponents[operation];
+            {
+                var comp = interactionComponents[operation]
+                           .Where(x => x.isDynamic == isDynamic)
+                           .FirstOrDefault(null);
+
+                return comp;
+            }
 
             return null;
         }
 
         private void Awake()
         {
-            interactionComponents = new Dictionary<OperationType, IStaticInteractionComponent>();
+            interactionComponents = new Dictionary<OperationType, List<IInteractionComponent>>();
 
-            var icomp = GetComponentsInChildren<IStaticInteractionComponent>();
+            //Buscar todos los componentes y listarlos.
+            var icomp = GetComponentsInChildren<IInteractionComponent>();
             foreach (var comp in icomp)
             {
-                if (!interactionComponents.ContainsKey(comp.OperationType))
-                    interactionComponents.Add(comp.OperationType, comp);
-            }
+                var pairs = comp.GetAllOperations(null);
+                foreach (var pair in pairs)
+                {
+                    if (!interactionComponents.ContainsKey(pair.Item1))
+                    {
+                        if (interactionComponents[pair.Item1] == null ||
+                            interactionComponents[pair.Item1].Count == 0)
+                            interactionComponents[pair.Item1] = new List<IInteractionComponent>();
 
-            var attachedItem = GetComponent<Item>();
-            if (attachedItem != null)
-            {
-                item = attachedItem;
+                        interactionComponents[pair.Item1].Add(pair.Item2);
+                    }
+                }
             }
         }
     }

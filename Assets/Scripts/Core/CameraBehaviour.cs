@@ -36,7 +36,7 @@ public class CameraBehaviour : MonoBehaviour
         OperativeCamera = Camera.main.transform;
         if (_target == null)
         {
-            var Player = FindObjectOfType<NMA_Controller>();
+            var Player = FindObjectOfType<Controller>();
             if (Player != null)
             {
                 _target = Player.transform;

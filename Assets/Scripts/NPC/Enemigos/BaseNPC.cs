@@ -146,10 +146,10 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     /// <returns>Retorna Verdadero si el jugador o el clon fueron encontrados!</returns>
     protected bool checkForPlayerOrClone()
     {
-        //if (checkVisionInUpdate)
-        //{
-        //    print("we");
-        //}
+        if (checkVisionInUpdate)
+        {
+            print("we");
+        }
 
         IDamageable<Damage, HitResult> closerTarget = null;
         float distToPlayer = float.MaxValue;

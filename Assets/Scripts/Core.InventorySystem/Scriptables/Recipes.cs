@@ -14,6 +14,12 @@ namespace Core.InventorySystem
         public int B;
         public int Result;
 
+        /// <summary>
+        /// Chequea si ambos ID están contenidos.
+        /// </summary>
+        /// <param name="A">ID item A</param>
+        /// <param name="B">ID item B</param>
+        /// <returns>Retorna true si ambos ID coínciden</returns>
         public bool checkIn(int A, int B)
         {
             return this.A == A && this.B == B || this.A == B && this.B == A;

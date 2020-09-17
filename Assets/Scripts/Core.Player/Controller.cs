@@ -5,6 +5,7 @@ using Core.DamageSystem;
 using System;
 using IA.PathFinding;
 using Core.Interaction;
+using Core.InventorySystem;
 using TMPro;
 
 [RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
@@ -25,10 +26,12 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     public Transform MouseDebug;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
-    IStaticInteractionComponent Queued_TargetInteractionComponent = null;
+    IInteractionComponent Queued_TargetInteractionComponent = null;
     Node QueuedMovementEndPoint = null;
 
-    Grab Objgrabed;
+    [SerializeField] Inventory _inventory;
+
+    //Grab Objgrabed;
     bool PlayerInputEnabled = true;
     bool ClonInputEnabled = true;
     //bool playerMovementEnabled = true;
@@ -194,6 +197,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                         (
                             Input.mousePosition,
                             _mouseContext.InteractionHandler,
+                            _inventory,
                             QuerySelectedOperation
                          );
                     }
@@ -230,7 +234,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 }
             }
         }
-        if (Objgrabed != null)
+        if (_inventory.equiped != null)
         {
             if (Input.GetKeyDown(KeyCode.Alpha2) && !_Aiming)
             {
@@ -270,7 +274,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
                 if (_mouseContext.interactuableHitted)
                 {
-                    IStaticInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw);
+                    IInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw, false);
 
                     IQueryComand _ActivateCommand = new cmd_TrowRock
                         (
@@ -318,7 +322,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         }   
         #endregion
 
-    
         if (comandos.Count > 0)
         {
             print($"Comandos activados: {comandos.Count}");
@@ -442,6 +445,22 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     } 
     #endregion
 
+    public void AttachItemToHand(Item item)
+    {
+        //Presuponemos que el objeto es troweable.
+        //Emparentamos el item al transform correspondiente.
+        item.transform.SetParent(manitodumacaco);
+        item.transform.localPosition = Vector3.zero;
+        _inventory.EquipItem(item);
+    }
+    public Item ReleaseEquipedItemFromHand()
+    {
+        //Desemparentamos el item equipado de la mano.
+        Item released = _inventory.UnEquipItem();
+        released.transform.SetParent(null);
+        return released;
+    }
+
     public void FallInTrap()
     {
         PlayerInputEnabled = false;
@@ -473,13 +492,26 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     /// Callback que se llama cuando seleccionamos una acción a realizar sobre un objeto interactuable desde el panel de comandos.
     /// </summary>
     /// <param name="target">El objetivo de dicha operación. Es un interaction Component que contiene dentro de si el tipo de la operación.</param>
-    public void QuerySelectedOperation(IStaticInteractionComponent target)
+    public void QuerySelectedOperation(OperationType operation, IInteractionComponent target)
     {
-        var safeInteractionPosition = target.requestSafeInteractionPosition(transform.position);
-        Node targetNode = _solver.getCloserNode(safeInteractionPosition);
         Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
+        Node targetNode = null;
 
-        if (Vector3.Distance(transform.position, safeInteractionPosition) > _movementTreshold)
+        //IInteractuable tendría que tener una lista de "targets" dado a una operación.
+        if (target.isDynamic)
+        {
+            //var targetComp = target.GetDinamicInteractionComponent(operation);
+            //targetNode = _solver.getCloserNode(targetComp.transform.position);
+        }
+        else
+        {
+            //Chequear distancia de acercamineto.
+            //var safeInteractionPosition = target.GetStaticInteractionComponent(operation)
+            //                                    .requestSafeInteractionPosition(transform.position);
+            //targetNode = _solver.getCloserNode(safeInteractionPosition);
+        }
+
+        if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
             if(!AddMovementCommand(origin, targetNode))
             {
                 print("No se pudo añadir un camino posible, el camino está obstruído");
@@ -488,34 +520,29 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         //añado el comando correspondiente a la query.
         IQueryComand _toActivateCommand;
-        switch (target.OperationType)
+        switch (operation)
         {
-            case OperationType.Take:
-                if(!Objgrabed)
-                {
-                _toActivateCommand = new cmd_Take(target, manitodumacaco, () => { _a_Grabing = true; });
-                comandos.Enqueue(_toActivateCommand);
-                    Objgrabed = (Grab)target;
-                    Debug.Log(Objgrabed);
-                }
-                break;
-
             case OperationType.Ignite:
-
-                _toActivateCommand = new cmd_Ignite( target,() => { _a_Ignite = true; });
+                _toActivateCommand = new cmd_Ignite( target, operation,() => { _a_Ignite = true; });
                 comandos.Enqueue(_toActivateCommand);
-
                 break;
 
             case OperationType.Activate:
-
-                _toActivateCommand = new cmd_Activate ( target, () => { _a_LeverPull = true; });
+                _toActivateCommand = new cmd_Activate ( target, operation, () => { _a_LeverPull = true; });
                 comandos.Enqueue(_toActivateCommand);
                 break;
 
             case OperationType.Equip:
                 break;
-            
+
+            case OperationType.Take:
+                if (_inventory.equiped == null)
+                {
+                    _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
+                    comandos.Enqueue(_toActivateCommand);
+                }
+                break;
+
             default:
                 break;
         }
@@ -584,9 +611,9 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     }
     void AE_Throw_Excecute()
     {
-        Objgrabed.Throwed(throwTarget);
+        ReleaseEquipedItemFromHand()
+        .ExecuteOperation(OperationType.Throw, throwTarget);
         throwTarget = null;
-        Objgrabed = null;
     }
     void AE_TrowRock_Ended()
     {

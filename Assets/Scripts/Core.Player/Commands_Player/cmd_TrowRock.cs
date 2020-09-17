@@ -6,7 +6,7 @@ public class cmd_TrowRock : IQueryComand
 {
     Action TriggerAnimation = delegate { };
 
-    IStaticInteractionComponent CommandTarget = null;
+    IInteractionComponent CommandTarget = null;
     Node TargetNode = null;
 
     bool IsNode = false;
@@ -15,7 +15,7 @@ public class cmd_TrowRock : IQueryComand
     public bool isReady { get; private set; } = false;
     public bool cashed => true;
 
-    public cmd_TrowRock(IStaticInteractionComponent CommandTarget, Action TriggerAnimation,bool IsNode, Node targetNode)
+    public cmd_TrowRock(IInteractionComponent CommandTarget, Action TriggerAnimation,bool IsNode, Node targetNode)
     {
         this.IsNode = IsNode;
         this.CommandTarget = CommandTarget;
@@ -36,11 +36,11 @@ public class cmd_TrowRock : IQueryComand
             //Si es un nodo/transform.
         }
         else
-            CommandTarget.ExecuteOperation();
+            CommandTarget.ExecuteOperation(OperationType.Throw);
         completed = true;
     }
     public void Cancel()
     {
-        CommandTarget.CancelOperation();
+        CommandTarget.CancelOperation(OperationType.Throw);
     }
 }

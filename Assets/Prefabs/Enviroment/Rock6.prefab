@@ -2664,6 +2664,8 @@ GameObject:
   - component: {fileID: 3456647685098316669}
   - component: {fileID: 1714221187}
   - component: {fileID: 3273072656839198129}
+  - component: {fileID: 1963990917940396391}
+  - component: {fileID: 4903890022063469045}
   m_Layer: 0
   m_Name: Rock6
   m_TagString: Untagged
@@ -2736,6 +2738,40 @@ MonoBehaviour:
     criticalMultiplier: 0
     instaKill: 0
     KillAnimationType: 0
+--- !u!114 &1963990917940396391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5676370560699738303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionCollider: {fileID: 0}
+  _interactionEnabled: 1
+--- !u!114 &4903890022063469045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5676370560699738303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc47aebd681c4c740bd8a31280d47d2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 3
+  ItemName: 
+  Description: 
+  Icon: {fileID: 0}
+  isCombinable: 0
+  isThroweable: 0
+  isConsumable: 0
+  _physicCollider: {fileID: 3456647685098316669}
 --- !u!1 &5909229345970230364
 GameObject:
   m_ObjectHideFlags: 0

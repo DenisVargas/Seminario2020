@@ -74,7 +74,7 @@ public class RageState : State
         var posibleTargets = Physics.OverlapSphere(transform.position, _rageMode_TargetDetectionRange, _targeteables);
         List<IDamageable<Damage, HitResult>> OnSight_Killeables = new List<IDamageable<Damage, HitResult>>();
         //Si no hay unidades vidas seleccionamos el target destructible mas cercano.
-        List<IDestructible> OnSight_Destructibles = new List<IDestructible>();
+       
 
         foreach (var item in posibleTargets)
         {
@@ -102,12 +102,12 @@ public class RageState : State
             }
 
             //Chequeo por IDestructible.
-            var Destructible = item.GetComponent<IDestructible>();
-            if (Destructible != null && _sight.IsInSight(item.transform))
-            {
-                //_otherDestructibleFounded = true;
-                OnSight_Destructibles.Add(Destructible);
-            }
+            //var Destructible = item.GetComponent<IDestructible>();
+            //if (Destructible != null && _sight.IsInSight(item.transform))
+            //{
+            //    //_otherDestructibleFounded = true;
+            //    OnSight_Destructibles.Add(Destructible);
+            //}
         }
 
         if (OnSight_Killeables.Count > 0)
@@ -125,21 +125,21 @@ public class RageState : State
             if (!_targetsfounded.Contains(CloserTarget))
                 _targetsfounded.Add(CloserTarget);
         }
-        else if (OnSight_Destructibles.Count > 0)
-        {
-            //Si no hay objetivos killeables, chequeo los destructibles...
-            var CloserTarget = OnSight_Destructibles
-                .OrderBy(destructible =>
-                {
-                    return Vector3.Distance(transform.position, destructible.position);
-                })
-                .First()
-                .transform;
+        //else if (OnSight_Destructibles.Count > 0)
+        //{
+        //    //Si no hay objetivos killeables, chequeo los destructibles...
+        //    var CloserTarget = OnSight_Destructibles
+        //        .OrderBy(destructible =>
+        //        {
+        //            return Vector3.Distance(transform.position, destructible.position);
+        //        })
+        //        .First()
+        //        .transform;
 
-            if (!_targetsfounded.Contains(CloserTarget))
-                _targetsfounded.Add(CloserTarget);
-        }
-        print($"{gameObject.name}::CheckNearVisible");
+        //    if (!_targetsfounded.Contains(CloserTarget))
+        //        _targetsfounded.Add(CloserTarget);
+        //}
+        //print($"{gameObject.name}::CheckNearVisible");
     }
 
     IEnumerator DelayedDetection()

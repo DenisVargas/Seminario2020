@@ -3,5 +3,7 @@
     e_fire,
     cutting,
     blunt,
-    piercing
+    piercing,
+    explotion,
+    hit
 }

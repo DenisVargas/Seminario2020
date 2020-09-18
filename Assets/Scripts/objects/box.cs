@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using Core.DamageSystem;
+using IA.PathFinding;
+
 public class box :  destroyable
 {
-    
-    public Damage MyDamage;
+    [SerializeField] Damage MyDamage;
+    [SerializeField] Node[] AffectedNodes = new Node[0];
 
-   
     private void OnTriggerEnter(Collider collision)
     {
         var damagecomponent = collision.GetComponent<IDamageable<Damage, HitResult>>();
         if(damagecomponent != null)
         {
-            
            GetHit(damagecomponent.GetDamageStats());
             damagecomponent.GetHit(GetDamageStats());
         }
@@ -26,12 +26,11 @@ public class box :  destroyable
         {
             destroyedObject.SetActive(true);
             notDestroyedObject.SetActive(false);
-            Debug.Log("me rompi");
-
+            foreach (var node in AffectedNodes)
+                node.ChangeNodeState(NavigationArea.Navegable);
         }
         //if(damage.type == DamageType.e_fire)
         //{
-
         //    // aca pasa algo
         //}
 

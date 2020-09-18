@@ -153,8 +153,11 @@ namespace Core.InventorySystem
 
         private void OnTake()
         {
-            _rb.useGravity = false;
-            _rb.velocity = Vector3.zero;
+            if (_rb != null)
+            {
+                _rb.useGravity = false;
+                _rb.velocity = Vector3.zero;
+            }
             _physicCollider.enabled = false;
         }
         public virtual void Drop(params object[] optionalParams)
@@ -163,7 +166,8 @@ namespace Core.InventorySystem
             if (optionalParams != null && optionalParams.Length > 0)
                 transform.position = (Vector3)optionalParams[0];
 
-            _rb.useGravity = true;
+            if (_rb)
+                _rb.useGravity = true;
             _physicCollider.enabled = true;
         }
         public virtual void Use(params object[] optionalParams) { }

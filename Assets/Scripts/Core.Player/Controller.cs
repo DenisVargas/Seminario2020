@@ -14,10 +14,10 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     //Stats.
     public int Health = 100;
 
-    public event Action ImDeadBro;
+    public event Action ImDeadBro = delegate { };
     public event Action OnMovementChange = delegate { };
+    public event Action<Item> CheckItemDislayUI = delegate { };
 
-    public event Action Grabing;
     public Transform manitodumacaco;
     public ParticleSystem BloodStain;
 
@@ -454,11 +454,15 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         item.ExecuteOperation(OperationType.Take);
         _inventory.EquipItem(item);
     }
-    public Item ReleaseEquipedItemFromHand()
+    public Item ReleaseEquipedItemFromHand(bool setToDefaultPosition = false, params object[] options)
     {
         //Desemparentamos el item equipado de la mano.
         Item released = _inventory.UnEquipItem();
-        released.ExecuteOperation(OperationType.Drop);
+
+        if (setToDefaultPosition)
+            released.ExecuteOperation(OperationType.Drop);
+        else
+            released.ExecuteOperation(OperationType.Drop, options[0]);
         released.transform.SetParent(null);
         return released;
     }
@@ -507,17 +511,15 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
             }
 
         //añado el comando correspondiente a la query.
-        IQueryComand _toActivateCommand;
+        IQueryComand _toActivateCommand = null;
         switch (operation)
         {
             case OperationType.Ignite:
                 _toActivateCommand = new cmd_Ignite( target, operation,() => { _a_Ignite = true; });
-                comandos.Enqueue(_toActivateCommand);
                 break;
 
             case OperationType.Activate:
                 _toActivateCommand = new cmd_Activate ( target, operation, () => { _a_LeverPull = true; });
-                comandos.Enqueue(_toActivateCommand);
                 break;
 
             case OperationType.Equip:
@@ -525,15 +527,18 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
             case OperationType.Take:
                 if (_inventory.equiped == null)
-                {
                     _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
-                    comandos.Enqueue(_toActivateCommand);
-                }
+                break;
+            case OperationType.Exchange:
+                _toActivateCommand = new cmd_Exchange((Item)target, _inventory, ReleaseEquipedItemFromHand, AttachItemToHand, () => { _a_Grabing = true; });
                 break;
 
             default:
                 break;
         }
+
+        if (_toActivateCommand != null)
+            comandos.Enqueue(_toActivateCommand);
     }
 
     //========================================================================================
@@ -617,7 +622,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         _a_Grabing = false;
 
-        Grabing();
+        CheckItemDislayUI(_inventory.equiped);
         comandos.Dequeue().Execute();
         PlayerInputEnabled = true;
     }

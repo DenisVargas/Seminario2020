@@ -21,7 +21,7 @@ public class CanvasController : MonoBehaviour
         _MultiCommandMenu.LoadData();
         Controller Con = FindObjectOfType<Controller>();
         Con.ImDeadBro += DisplayLoose;
-        Con.Grabing += DisplayThrow;
+        Con.CheckItemDislayUI += DisplayThrow;
         Fade.canvasRenderer.SetAlpha(1);
         ThrwImg.canvasRenderer.SetAlpha(0);
         StartCoroutine(FadeIn());
@@ -40,9 +40,10 @@ public class CanvasController : MonoBehaviour
     {
         StartCoroutine(Rutina());
     }
-    void DisplayThrow()
+    void DisplayThrow(Item equipedItem)
     {
-       ThrwImg.canvasRenderer.SetAlpha(1);
+        if (equipedItem != null && equipedItem.isThroweable)
+            ThrwImg.canvasRenderer.SetAlpha(1);
     }
     IEnumerator Rutina()
     {

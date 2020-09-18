@@ -714,7 +714,7 @@ GameObject:
   - component: {fileID: 5843813996725546343}
   - component: {fileID: 5357538780707443480}
   m_Layer: 0
-  m_Name: Rock6
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
@@ -3328,7 +3328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6108430486926837128}
   m_Layer: 0
-  m_Name: breackRock3
+  m_Name: DestroyedMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

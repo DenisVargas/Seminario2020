@@ -451,12 +451,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         //Emparentamos el item al transform correspondiente.
         item.transform.SetParent(manitodumacaco);
         item.transform.localPosition = Vector3.zero;
+        item.ExecuteOperation(OperationType.Take);
         _inventory.EquipItem(item);
     }
     public Item ReleaseEquipedItemFromHand()
     {
         //Desemparentamos el item equipado de la mano.
         Item released = _inventory.UnEquipItem();
+        released.ExecuteOperation(OperationType.Drop);
         released.transform.SetParent(null);
         return released;
     }
@@ -495,21 +497,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     public void QuerySelectedOperation(OperationType operation, IInteractionComponent target)
     {
         Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
-        Node targetNode = null;
-
-        //IInteractuable tendría que tener una lista de "targets" dado a una operación.
-        if (target.isDynamic)
-        {
-            //var targetComp = target.GetDinamicInteractionComponent(operation);
-            //targetNode = _solver.getCloserNode(targetComp.transform.position);
-        }
-        else
-        {
-            //Chequear distancia de acercamineto.
-            //var safeInteractionPosition = target.GetStaticInteractionComponent(operation)
-            //                                    .requestSafeInteractionPosition(transform.position);
-            //targetNode = _solver.getCloserNode(safeInteractionPosition);
-        }
+        Node targetNode = _solver.getCloserNode(target.requestSafeInteractionPosition(transform.position));
 
         if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
             if(!AddMovementCommand(origin, targetNode))

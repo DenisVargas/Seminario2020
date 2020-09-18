@@ -8,9 +8,15 @@ public class IdleState : State
 {
     public Func<bool> checkForPlayerAndClone = delegate { return false; };
 
+    public override void Awake()
+    {
+        base.Awake();
+    }
+
     public override void Begin()
     {
-        //print($"{gameObject.name} entró en Idle");
+        if (_anims == null)
+            _anims = GetComponent<Animator>();
         _anims.SetBool("Walking", false);
     }
 
@@ -19,7 +25,7 @@ public class IdleState : State
         //Si el player es encontrado, automáticamente paso al estado correspondiente.
         if (checkForPlayerAndClone())
         {
-            print($"Switch to Pursue!");
+            //print($"Switch to Pursue!");
             SwitchToState(CommonState.pursue);
         }
     }

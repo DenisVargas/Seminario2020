@@ -39,10 +39,12 @@ public class PatrollState : State
 
     public override void Begin()
     {
-        if (debugMessages)
-        {
-            Debug.Log("=========== Begin ==========");
-        }
+//#if UNITY_EDITOR
+//        if (debugMessages)
+//        {
+//            Debug.Log("=========== Begin ==========");
+//        } 
+//#endif
 
         //Obtengo referencias.
         if (_solver == null)
@@ -66,8 +68,10 @@ public class PatrollState : State
 
         CalculatePrimaryRoute(_currentNode, _nextWayPointNode, true);
 
-        if (debugMessages)
-            Debug.Log($"selected current node is {_currentNode.ID} and its area is { _currentNode.area}");
+//#if UNITY_EDITOR
+//        if (debugMessages)
+//            Debug.Log($"selected current node is {_currentNode.ID} and its area is { _currentNode.area}"); 
+//#endif
 
         //Me aseguro de que el próximo nodo no sea el mismo que el current.
         _nextNode = _solver.currentPath.Dequeue();
@@ -98,9 +102,9 @@ public class PatrollState : State
 
         //Comprobación de recalculo de camino.
 
-        Debug.Log("=========== Excecute==========");
-        Debug.Log($"Current is {_currentNode.area.ToString()}");
-        Debug.Log($"Next is {_nextNode.area.ToString()}");
+        //Debug.Log("=========== Excecute==========");
+        //Debug.Log($"Current is {_currentNode.area.ToString()}");
+        //Debug.Log($"Next is {_nextNode.area.ToString()}");
 
         if (_hasToReevaluatePath)
         {
@@ -171,10 +175,12 @@ public class PatrollState : State
 
     private void ReevaluateCaseOne()
     {
+#if unity_editor
         if (debugMessages)
         {
             print("Caso 1");
-        }
+        } 
+#endif
 
         //El nodo objetivo está bloqueado.
         //Encuentro el nodo navegable mas cercano al objetivo posible.
@@ -203,10 +209,12 @@ public class PatrollState : State
     }
     private void ReevaluateCaseTwo()
     {
-        if (debugMessages)
-        {
-            print("Caso 2");
-        }
+//#if UNITY_EDITOR
+//        if (debugMessages)
+//        {
+//            print("Caso 2");
+//        } 
+//#endif
         //El objetivo sigue siendo navegable, así que tenemos que recalcular Primary Route.
         //Recalculamos el camino principal, ignorando los nodos bloqueados.
         _useSecondaryRoute = false;
@@ -288,9 +296,11 @@ public class PatrollState : State
 
         _hasToReevaluatePath = true;
 
-        if (debugMessages && source.area == NavigationArea.blocked)
-        {
-            print($"Has to reevaluate Path cuz {source.ID} has changed his state to {source.area.ToString()}");
-        }
+//#if UNITY_EDITOR
+//        if (debugMessages && source.area == NavigationArea.blocked)
+//        {
+//            print($"Has to reevaluate Path cuz {source.ID} has changed his state to {source.area.ToString()}");
+//        } 
+//#endif
     }
 }

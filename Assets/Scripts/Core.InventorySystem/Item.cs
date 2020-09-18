@@ -25,8 +25,13 @@ namespace Core.InventorySystem
         public bool isDynamic => true;
         public Vector3 LookToDirection => transform.position;
 
+        [SerializeField] Collider _physicCollider;
+        Rigidbody _rb = null;
+
         private void Awake()
         {
+            _rb = GetComponent<Rigidbody>();
+
             SetData(ItemDataBase.Manager.getItemData(ID));
 
             Operations.Add(OperationType.inspect);
@@ -56,26 +61,34 @@ namespace Core.InventorySystem
             //Operaciones dinamicas son aquellas que dependen del inventario actual.
             List<Tuple<OperationType, IInteractionComponent>> _myOperations = new List<Tuple<OperationType, IInteractionComponent>>();
 
-            //Si no se específica un inventario, se añaden todas las operaciones correspondientes.
-            if (CurrentInventory == null)//Añadidos en base al inventario.
+            if (CurrentInventory != null)//Si el inventario está específicado.
             {
-                //Take es condicional de acuerdo al inventario del jugador.
+                if (CurrentInventory.equiped == null)
+                {
+                    //Take es condicional de acuerdo al inventario del jugador.
+                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Take, this));
+                }
+                else
+                {
+                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Exchange, this));
+
+                    // Es combinable? Añado la operación si el equipado tiene una combinación con este item.
+                    if (isCombinable && ItemDataBase.Manager.CanCombineItems(ID, CurrentInventory.equiped.ID))
+                        _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Combine, this));
+                }
+            }
+            else //Si no se específica un inventario, se añaden todas las operaciones por defecto.
+            {
                 _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Take, this));
             }
-            else
-            {
-                // Es intercambiable?.
-                _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Exchange, this));
-                // Es combinable?
-                if (isCombinable)
-                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Combine, this));
-                // Es tirable?.
-                if (isThroweable)
-                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this));
-                //Es consumible?.
-                if (isConsumable)
-                    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.use, this));
-            }
+
+            // Es tirable?. Este objeto no se puede tirar, si no es equipado primero.La secuencia es Take>Throw.
+            //if (isThroweable)
+            //    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this));
+
+            //Es consumible?.
+            if (isConsumable)
+                _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.use, this));
 
             return _myOperations;
         }
@@ -93,6 +106,7 @@ namespace Core.InventorySystem
             {
                 case OperationType.Take:
                     //LLamar OnTake.
+                    OnTake();
                     break;
                 case OperationType.Ignite:
                     //Chequear si hay un componente IIgniteable y prenderlo fuego.
@@ -125,6 +139,8 @@ namespace Core.InventorySystem
                     break;
             }
         }
+
+
         public virtual void CancelOperation(OperationType operation, params object[] optionalParams) { }
 
         //==============================================================================================================
@@ -135,11 +151,20 @@ namespace Core.InventorySystem
          * Hay opraciones que no requieren una implementación, pues los efectos se hacen externos al item.
         */
 
+        private void OnTake()
+        {
+            _rb.useGravity = false;
+            _rb.velocity = Vector3.zero;
+            _physicCollider.enabled = false;
+        }
         public virtual void Drop(params object[] optionalParams)
         {
             //Rehabilitar interacción.
             if (optionalParams != null && optionalParams.Length > 0)
                 transform.position = (Vector3)optionalParams[0];
+
+            _rb.useGravity = true;
+            _physicCollider.enabled = true;
         }
         public virtual void Use(params object[] optionalParams) { }
 

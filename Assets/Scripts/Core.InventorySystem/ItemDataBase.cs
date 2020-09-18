@@ -36,9 +36,9 @@ namespace Core.InventorySystem
         public void Init()
         {
             if (collection == null)
-                collection = Resources.FindObjectsOfTypeAll<ItemDataCollection>()[0];
+                collection = ScriptableObject.CreateInstance<ItemDataCollection>();
             if (_recipes == null)
-                _recipes = Resources.FindObjectsOfTypeAll<Recipes>()[0];
+                _recipes = ScriptableObject.CreateInstance<Recipes>();
 
             _dataBase = new Dictionary<int, ItemData>();
 
@@ -71,7 +71,7 @@ namespace Core.InventorySystem
         /// <returns>Null si no hay una combinación válida</returns>
         public GameObject Combine(int a, int b)
         {
-            if (CanCombineWith(a,b))
+            if (CanCombineItems(a,b))
             {
                 //Busco entre las combinaciones aquel que coíncida.
                 var foundCombination = _recipes.combinations
@@ -94,7 +94,7 @@ namespace Core.InventorySystem
         /// <param name="a">Identificador del item A</param>
         /// <param name="b">Identificador del item A</param>
         /// <returns>false si no es posible combinar los items con los ID´s dados</returns>
-        public bool CanCombineWith(int a, int b)
+        public bool CanCombineItems(int a, int b)
         {
             int combinationsPosible = _recipes.combinations.Count(x => x.checkIn(a, b));
             return combinationsPosible > 0;

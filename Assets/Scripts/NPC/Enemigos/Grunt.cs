@@ -46,6 +46,9 @@ public class Grunt : BaseNPC
         base.Awake();
         _mainCollider = GetComponent<Collider>();
 
+        if (_states == null)
+            _states = new FiniteStateMachine<CommonState>();
+
         #region Declaración y Set de Estados
 
         IdleState idle = GetComponent<IdleState>();

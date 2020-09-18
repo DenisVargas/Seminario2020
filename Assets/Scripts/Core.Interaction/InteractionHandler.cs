@@ -21,7 +21,7 @@ namespace Core.Interaction
         [SerializeField] InteractionDisplaySettings displayOptions = new InteractionDisplaySettings();
 
         //Lista de interacciones posibles.
-        Dictionary<OperationType, List<IInteractionComponent>> interactionComponents;
+        List<Tuple<OperationType, IInteractionComponent>> interactionComponents;
 
         //Bloquea la interactividad.
         [SerializeField] bool _interactionEnabled = true;
@@ -34,21 +34,30 @@ namespace Core.Interaction
                 _interactionCollider.enabled = _interactionEnabled;
             }
         }
-        public int InteractionsAmmount => interactionComponents.Count;
+        int _interactionsListed = -1;
+        public int InteractionsAmmount
+        {
+            get
+            {
+                if (_interactionsListed == -1)
+                    GetInteractionsAbviable();
+
+                return _interactionsListed;
+            }
+        }
+
         /// <summary>
         /// Retorna las opciones de display para este objeto, contemplando los tiempos del display y las operaciones disponibles.
         /// </summary>
         /// <returns>All suported Operation and </returns>
         public InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters)
         {
-            Inventory ActiveItem = null;
+            Inventory ActiveInventory = null;
             if (aditionalParameters != null && aditionalParameters.Length > 0)
-                ActiveItem = (Inventory)aditionalParameters[0];
+                ActiveInventory = (Inventory)aditionalParameters[0];
 
             InteractionDisplaySettings ip = new InteractionDisplaySettings(displayOptions);
-            ip.SuportedOperations = interactionComponents.Keys.ToList();
-            //if (item != null)
-            //    ip.SuportedOperations.AddRange(item.GetAllOperations(ActiveItem));
+            ip.SuportedOperations = GetInteractionsAbviable(ActiveInventory);
 
             return ip;
         }
@@ -61,39 +70,30 @@ namespace Core.Interaction
         /// <returns></returns>
         public IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic)
         {
-            if (interactionComponents.ContainsKey(operation))
-            {
-                var comp = interactionComponents[operation]
-                           .Where(x => x.isDynamic == isDynamic)
-                           .FirstOrDefault(null);
-
-                return comp;
-            }
-
-            return null;
+            return GetInteractionsAbviable().Where(x => x.Item1 == operation && x.Item2.isDynamic == isDynamic)
+                                            .Select(x => x.Item2)
+                                            .FirstOrDefault();
         }
 
-        private void Awake()
+        private List<Tuple<OperationType, IInteractionComponent>> GetInteractionsAbviable(Inventory inventory = null)
         {
-            interactionComponents = new Dictionary<OperationType, List<IInteractionComponent>>();
+            interactionComponents = new List<Tuple<OperationType, IInteractionComponent>>();
 
             //Buscar todos los componentes y listarlos.
             var icomp = GetComponentsInChildren<IInteractionComponent>();
+
             foreach (var comp in icomp)
             {
-                var pairs = comp.GetAllOperations(null);
+                var pairs = comp.GetAllOperations(inventory);
                 foreach (var pair in pairs)
                 {
-                    if (!interactionComponents.ContainsKey(pair.Item1))
-                    {
-                        if (interactionComponents[pair.Item1] == null ||
-                            interactionComponents[pair.Item1].Count == 0)
-                            interactionComponents[pair.Item1] = new List<IInteractionComponent>();
-
-                        interactionComponents[pair.Item1].Add(pair.Item2);
-                    }
+                    if (!interactionComponents.Contains(pair))
+                        interactionComponents.Add(pair);
                 }
             }
+
+            _interactionsListed = interactionComponents.Count;
+            return interactionComponents;
         }
     }
 }

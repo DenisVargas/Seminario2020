@@ -5,10 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Core.Interaction;
 using Core.InventorySystem;
-
-/*
- * TODO: Utilizar un pool para el display.
- */
+using Utility.ObjectPools.Generic;
 
 public class CommandMenu : MonoBehaviour
 {
@@ -28,7 +25,9 @@ public class CommandMenu : MonoBehaviour
 
     [SerializeField]
     public List<CommandMenuItemData> presetDataBase = new List<CommandMenuItemData>();
-    public Dictionary<OperationType, GameObject> display = new Dictionary<OperationType, GameObject>();
+    public GenericPool<GameObject> AbviableDisplay = null;
+
+    List<GameObject> _currentDisplay = new List<GameObject>();
 
     [Header("Estado del contexto")]
     [SerializeField] bool _sliderContextOn           = false;
@@ -52,19 +51,39 @@ public class CommandMenu : MonoBehaviour
 
     public void LoadData()
     {
-        //Cargo la data y instancio el preset visual por cada uno.
-        foreach (var data in presetDataBase)
-        {
-            var presetInstance = Instantiate(_optionPrefab);
-            presetInstance.transform.SetParent(_Content);
-            presetInstance.transform.localPosition = Vector3.zero;
+        //Inicializo el displayPool. el pool presupone que el factory inicializa los objetos como desactivados.
+        AbviableDisplay = new GenericPool<GameObject>
+        (
+            presetDataBase.Count,
+            createDisplayPreset,
+            enableDisplayPreset,
+            disableDisplayPreset,
+            true
+        );
+    }
 
-            var commandItem = presetInstance.GetComponent<CommandMenuItem>();
-            commandItem.Data = data;
-            commandItem.OnOperationSelected += ActivateCommand;
+    public GameObject createDisplayPreset()
+    {
+        var presetInstance = Instantiate(_optionPrefab);
+        presetInstance.transform.SetParent(_Content);
+        presetInstance.transform.localPosition = Vector3.zero;
 
-            display.Add(commandItem.Data.Operation, presetInstance);
-        }
+        var commandItem = presetInstance.GetComponent<CommandMenuItem>();
+        commandItem.OnOperationSelected += ActivateCommand;
+
+        presetInstance.SetActive(false);
+
+        return presetInstance;
+    }
+    public void enableDisplayPreset(GameObject selectedPreset)
+    {
+        //Básicamente muestra el preset.
+        selectedPreset.SetActive(true);
+    }
+    public void disableDisplayPreset(GameObject selectedPreset)
+    {
+        //Oculta el preset.
+        selectedPreset.SetActive(false);
     }
 
     public void Emplace(Vector2 mouseScreenPosition)
@@ -99,6 +118,12 @@ public class CommandMenu : MonoBehaviour
         commandCallback(operation, component);
         commandCallback = delegate { };
         interactionTarget = null;
+
+        foreach (var obj in _currentDisplay)
+            AbviableDisplay.DisablePoolObject(obj);
+
+        _currentDisplay = new List<GameObject>();
+
         gameObject.SetActive(false);
     }
 
@@ -116,22 +141,29 @@ public class CommandMenu : MonoBehaviour
         var DisplaySettings = interactionTarget.GetInteractionDisplaySettings(inventory);
         _limitedActive = DisplaySettings.LimitedDisplay;
         if (_limitedActive)
-        {
             _remainingActiveTime = DisplaySettings.ActiveTime;
-        }
+
         _verticalScroll.size = 1;
-        foreach (var pair in display)
-            pair.Value.SetActive(DisplaySettings.SuportedOperations.Contains(pair.Key));
+
+        foreach (var pair in DisplaySettings.SuportedOperations)
+        {
+            var display = AbviableDisplay.GetObjectFromPool();
+            var displaySetting = display.GetComponent<CommandMenuItem>();
+
+            displaySetting.Data = presetDataBase.Find(x => x.Operation == pair.Item1);
+            displaySetting.referenceComponent = pair.Item2;
+            _currentDisplay.Add(display);
+        }
     }
 
-    public void OnSliderContext(bool isInsideSlider)
+    public void OnMouseOver_SliderContext(bool isInsideSlider)
     {
         _sliderContextOn = isInsideSlider;
         _viewportContextOn = !isInsideSlider;
         print(string.Format("Slider context is {0}", isInsideSlider ? "On" : "off"));
     }
 
-    public void OnViewportContext(bool isInsideViewport)
+    public void OnMouseOver_Viewport(bool isInsideViewport)
     {
         _viewportContextOn = isInsideViewport;
         _sliderContextOn = !isInsideViewport;
@@ -140,6 +172,11 @@ public class CommandMenu : MonoBehaviour
         {
             commandCallback = delegate { };
             interactionTarget = null;
+
+            foreach (var obj in _currentDisplay)
+                AbviableDisplay.DisablePoolObject(obj);
+            _currentDisplay = new List<GameObject>();
+
             gameObject.SetActive(false);
         }
     }

@@ -215,7 +215,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 4311034634319012248}
-          m_MethodName: OnViewportContext
+          m_MethodName: OnMouseOver_Viewport
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -230,7 +230,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 4311034634319012248}
-          m_MethodName: OnViewportContext
+          m_MethodName: OnMouseOver_Viewport
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -575,6 +575,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0075e84d1fa58ae49a1b9111d6a7a4f5, type: 2}
   _sliderContextOn: 0
   _viewportContextOn: 0
+  _remainingActiveTime: 5
 --- !u!1 &4311034634873860627
 GameObject:
   m_ObjectHideFlags: 0

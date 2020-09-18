@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Core.InventorySystem;
+using System;
 
 namespace Core.Interaction
 {
@@ -12,12 +13,12 @@ namespace Core.Interaction
         public float ActiveTime;
         //Los tipos de acciones que son soportadas. Se rellena automáticamente.
         [HideInInspector]
-        public List<OperationType> SuportedOperations;
+        public List<Tuple<OperationType, IInteractionComponent>> SuportedOperations;
         public InteractionDisplaySettings(InteractionDisplaySettings toCopy)
         {
-            this.LimitedDisplay = toCopy.LimitedDisplay;
-            this.ActiveTime = toCopy.ActiveTime;
-            this.SuportedOperations = new List<OperationType>();
+            LimitedDisplay = toCopy.LimitedDisplay;
+            ActiveTime = toCopy.ActiveTime;
+            SuportedOperations = new List<Tuple<OperationType, IInteractionComponent>>();
         }
     }
 

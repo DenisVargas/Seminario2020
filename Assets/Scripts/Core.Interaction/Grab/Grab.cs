@@ -19,7 +19,7 @@ public class Grab : MonoBehaviour , IInteractionComponent
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
         {
-            new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this)
+            //new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this)
         };
     }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)

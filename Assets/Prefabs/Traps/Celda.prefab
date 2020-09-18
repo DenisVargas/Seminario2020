@@ -366,6 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663c78ff2bfb9364097c871ada428803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hitbox: {fileID: 1253485110}
   Smash: {fileID: 5605506385674310829}
   deactivateDelay: 1
   autoDeactivate: 1

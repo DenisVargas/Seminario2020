@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using Core.DamageSystem;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 public class Jail : MonoBehaviour
 {
     Animator _anims;
-    TrapHitBox _hitbox = null;
+    //TrapHitBox _hitbox = null;
+    Damage _dmg = new Damage();
+    public CapsuleCollider _hitbox;
     Collider _destructibleHitbox = null;
     public GameObject Smash;
 
@@ -23,11 +26,12 @@ public class Jail : MonoBehaviour
         _anims = GetComponent<Animator>();
         _destructibleHitbox = GetComponent<Collider>();
         _destructibleHitbox.isTrigger = true;
-        _hitbox = GetComponentInChildren<TrapHitBox>();
-        if (_hitbox != null)
-        {
-            _hitbox.SetTrapHitbox(_instaKill, _damageType, _ammount, _criticalMultiplier);
-        }
+     
+        //_hitbox = GetComponentInChildren<TrapHitBox>();
+        //if (_hitbox != null)
+        //{
+        //    _hitbox.SetTrapHitbox(_instaKill, _damageType, _ammount, _criticalMultiplier);
+        //}
     }
 
     public void Drop()
@@ -39,7 +43,7 @@ public class Jail : MonoBehaviour
         _anims.SetBool("Activated", false);
         if (_hitbox != null)
         {
-            _hitbox.IsActive = false;
+            _hitbox.enabled = false;
         }
         if (_destructibleHitbox != null)
         {
@@ -53,7 +57,7 @@ public class Jail : MonoBehaviour
         Smash.SetActive(true);
         if (_hitbox != null)
         {
-            _hitbox.IsActive = true;
+            _hitbox.enabled = true;
         }
         if (_destructibleHitbox != null)
         {
@@ -71,6 +75,15 @@ public class Jail : MonoBehaviour
         yield return new WaitForSeconds(deactivateDelay);
         PullUp();
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        var hurtBox = other.GetComponent<IDamageable<Damage,HitResult>>();
+        if (hurtBox != null)
+        {
+            _dmg.type = DamageType.blunt;
+            hurtBox.GetHit(_dmg);
+        }
+    }
 
-   
+
 }

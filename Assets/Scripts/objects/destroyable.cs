@@ -26,20 +26,23 @@ public class destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
         return new Damage();
     }
 
-    public HitResult GetHit(Damage damage)
+    public virtual HitResult GetHit(Damage damage)
     {
-        if(damage.type == DamageType.blunt)
-        {
-            destroyedObject.SetActive(true);
-            notDestroyedObject.SetActive(false);
-            Debug.Log("me rompi por tocarme");
-            
-        }
-        if(damage.type == DamageType.e_fire)
-        {
+        destroyedObject.SetActive(true);
+        notDestroyedObject.SetActive(false);
+        Debug.Log("me rompi");
+        //if(damage.type == DamageType.blunt)
+        //{
+        //    destroyedObject.SetActive(true);
+        //    notDestroyedObject.SetActive(false);
+        //    Debug.Log("me rompi");
 
-            // aca pasa algo
-        }
+        //}
+        //if(damage.type == DamageType.e_fire)
+        //{
+
+        //    // aca pasa algo
+        //}
 
         return new HitResult() { conected = true, fatalDamage = true };
     }

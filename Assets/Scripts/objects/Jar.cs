@@ -27,8 +27,7 @@ public class Jar : destroyable
         {
             destroyedObject.SetActive(true);
             notDestroyedObject.SetActive(false);
-            Debug.Log("me rompi");
-
+            //Debug.Log("me rompi");
         }
         //if(damage.type == DamageType.e_fire)
         //{

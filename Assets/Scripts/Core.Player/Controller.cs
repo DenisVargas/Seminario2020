@@ -324,8 +324,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         if (comandos.Count > 0)
         {
-            print($"Comandos activados: {comandos.Count}");
-
+            //print($"Comandos activados: {comandos.Count}");
             IQueryComand current = comandos.Peek();
             if (!current.isReady)
                 current.SetUp();
@@ -349,7 +348,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         if (_solver.currentPath.Count == 0) //Si el solver no halló un camino, no hay camino posible.
         {
-            print("No hay camino Posible");
+            //print("No hay camino Posible");
             return false;
         }
 

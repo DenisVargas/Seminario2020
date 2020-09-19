@@ -126,21 +126,7 @@ class CommandMenuEditor : Editor
         GUI.color = Color.green;
         if (GUILayout.Button("Load all Data from Data Folder"))
         {
-            Undo.RecordObject(ins, "Added All Values");
-            //Cargo los scriptable objects.
-
-            var loadedAssets = CustomEditorUtilities.GetAllAssetPathsAt<CommandMenuItemData>(_comandDataPath);
-
-            //Relleno _menuFreeContent con 1 prefab de cada comando disponible.
-            if (loadedAssets != null && loadedAssets.Length > 0)
-            {
-                ins.presetDataBase = new List<CommandMenuItemData>();
-                for (int i = 0; i < loadedAssets.Length; i++)
-                    ins.presetDataBase.Add(loadedAssets[i]);
-                EditorUtility.SetDirty(ins);
-            }
-            else
-                EditorGUILayout.HelpBox("The Database Folder is Empty", MessageType.Info);
+            LoadAllDataFromFolder();
         }
         GUI.color = Color.white;
         EditorGUILayout.EndHorizontal();
@@ -166,5 +152,30 @@ class CommandMenuEditor : Editor
             Undo.RecordObject(ins, "Cleared Database");
             ins.presetDataBase = new List<CommandMenuItemData>();
         }
+    }
+
+    private void LoadAllDataFromFolder()
+    {
+        Undo.RecordObject(ins, "Added All Values");
+        //Cargo los scriptable objects.
+
+        var loadedAssets = CustomEditorUtilities.GetAllAssetPathsAt<CommandMenuItemData>(_comandDataPath);
+
+        //Relleno _menuFreeContent con 1 prefab de cada comando disponible.
+        if (loadedAssets != null && loadedAssets.Length > 0)
+        {
+            ins.presetDataBase = new List<CommandMenuItemData>();
+            for (int i = 0; i < loadedAssets.Length; i++)
+                ins.presetDataBase.Add(loadedAssets[i]);
+            EditorUtility.SetDirty(ins);
+        }
+        else
+            EditorGUILayout.HelpBox("The Database Folder is Empty", MessageType.Info);
+    }
+
+    [MenuItem("Utility/Select Command Menu Database")]
+    public static void SelectCommandMenuDatabase()
+    {
+        Selection.activeGameObject = Resources.FindObjectsOfTypeAll<CommandMenu>()[0].gameObject;
     }
 }

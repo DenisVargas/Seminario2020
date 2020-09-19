@@ -529,8 +529,13 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 if (_inventory.equiped == null)
                     _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
                 break;
+
             case OperationType.Exchange:
                 _toActivateCommand = new cmd_Exchange((Item)target, _inventory, ReleaseEquipedItemFromHand, AttachItemToHand, () => { _a_Grabing = true; });
+                break;
+
+            case OperationType.Combine:
+                _toActivateCommand = new cmd_Combine((Item)target, _inventory, AttachItemToHand, () => { _a_Grabing = true; });
                 break;
 
             default:
@@ -622,8 +627,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         _a_Grabing = false;
 
-        CheckItemDislayUI(_inventory.equiped);
         comandos.Dequeue().Execute();
         PlayerInputEnabled = true;
+        CheckItemDislayUI(_inventory.equiped);
     }
  }

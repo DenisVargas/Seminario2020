@@ -4,7 +4,7 @@
     bool isReady { get; }
     bool cashed { get; }
 
-    void SetUp();
-    void Execute();
     void Cancel();
+    void Execute();
+    void SetUp();
 }

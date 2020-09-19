@@ -90,10 +90,9 @@ GameObject:
   - component: {fileID: 6166973791329150873}
   - component: {fileID: 6577388921664595059}
   - component: {fileID: 4066176473498133583}
+  - component: {fileID: 3056718570059588423}
   - component: {fileID: 7626484008270180163}
   - component: {fileID: 6727484321925916080}
-  - component: {fileID: 3056718570059588423}
-  - component: {fileID: 6073832535511449024}
   m_Layer: 0
   m_Name: HeavyPot
   m_TagString: Untagged
@@ -143,6 +142,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e2a0ff93a0ce24ba0be7646b88a29a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3056718570059588423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132736032666455958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionCollider: {fileID: 6577388921664595059}
+  _interactionEnabled: 1
 --- !u!114 &7626484008270180163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,14 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc47aebd681c4c740bd8a31280d47d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 5
   ItemName: 
   Description: 
   Icon: {fileID: 0}
   isCombinable: 0
-  isThroweable: 0
+  isThroweable: 1
   isConsumable: 0
-  _physicCollider: {fileID: 0}
+  _physicCollider: {fileID: 6577388921664595059}
 --- !u!114 &6727484321925916080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,32 +196,6 @@ MonoBehaviour:
   _safeInteractionDistance: 2
   DEBUG_safeInteractionDistance: 0
   DEBUG_safeInteractionDistance_Color: {r: 0.20624185, g: 1, b: 0, a: 0.43529412}
---- !u!114 &3056718570059588423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132736032666455958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionCollider: {fileID: 6577388921664595059}
-  _interactionEnabled: 1
---- !u!114 &6073832535511449024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132736032666455958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cc3386fad3f0134a91068bdaacc1ccc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8533157546496340820
 GameObject:
   m_ObjectHideFlags: 0

@@ -69,7 +69,7 @@ namespace Core.InventorySystem
         /// <param name="a">Identificador del primer Item</param>
         /// <param name="b">Identificador del segundo Item</param>
         /// <returns>Null si no hay una combinación válida</returns>
-        public GameObject Combine(int a, int b)
+        public GameObject Combine(int a, int b, out ItemData resultData)
         {
             if (CanCombineItems(a,b))
             {
@@ -82,10 +82,13 @@ namespace Core.InventorySystem
                 {
                     //obtengo el ID resultante y busco el item que corresponda.
                     //Retorno el item.
+
+                    resultData = getItemData(foundCombination.Result);
                     return _dataBase[foundCombination.Result].GetRandomInGamePrefab();
                 }
             }
 
+            resultData = null;
             return null;
         }
         /// <summary>

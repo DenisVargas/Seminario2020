@@ -10,6 +10,7 @@ public class PatrollState : State
 {
     public Func<bool> checkForPlayer = delegate { return false; };
     public Func<Node, float, bool> moveToNode = delegate { return false; };
+    public Action<Node> OnUpdateCurrentNode = delegate { };
 
     [SerializeField] float _patrollSpeed   = 5f;
     [SerializeField] float _stopTime       = 1.5f;
@@ -62,6 +63,7 @@ public class PatrollState : State
 
         //Asigno los nodos de referencia.
         _currentNode = _solver.getCloserNode(transform.position); //Empezamos y consumimos el primero.
+        OnUpdateCurrentNode(_currentNode);
         if (_currentNode == _patrolPoints.points[0])
             _waypointPositionsMoved = 1;
         _nextWayPointNode = _patrolPoints.points[_waypointPositionsMoved];
@@ -128,8 +130,9 @@ public class PatrollState : State
         if (Vector3.Distance(_nextNode.transform.position, transform.position) < _solver.ProximityTreshold) //Si la distancia es menor al treshold.
         {
             _currentNode = _nextNode;
-            //Encontrar siguiente nodo.
+            OnUpdateCurrentNode(_currentNode);
 
+            //Encontrar siguiente nodo.
             if (_currentNode == _nextWayPointNode)//Si llegamos al nodo objetivo.
             {
                 WaypointPositionReached();

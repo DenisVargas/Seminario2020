@@ -4938,10 +4938,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d20f6aaa108a748a625d93b6a0cb82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fireTrailParent: {fileID: 0}
   _spawnDistance: 0.4
   _spawnOverlapTreshold: 0.4
-  _ignitionSystemPrefab: {fileID: 206088919360503028, guid: 705c5073aec01c04fb84ee42dee48421,
+  _ignitionPoint_Prefab: {fileID: 206088919360503028, guid: 705c5073aec01c04fb84ee42dee48421,
+    type: 3}
+  _slimePatch_Prefab: {fileID: 206088919360503028, guid: ffefb0dc500170f4589488b675dc59e1,
     type: 3}
   _activeTime: 15
   _burningTime: 5
@@ -5103,9 +5104,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateType: 5
-  patrolPoints: {fileID: 0}
   _patrollSpeed: 3
   _stopTime: 1.5
+  debugMessages: 0
 --- !u!114 &8251683944114023230
 MonoBehaviour:
   m_ObjectHideFlags: 0

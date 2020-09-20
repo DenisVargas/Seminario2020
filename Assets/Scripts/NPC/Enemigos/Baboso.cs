@@ -75,12 +75,13 @@ public class Baboso : BaseNPC
         PatrollState patroll = GetComponent<PatrollState>();
         patroll.checkForPlayer = checkForPlayerOrClone;
         patroll.moveToNode = MoveToNode;
+        patroll.OnUpdateCurrentNode = _trail.OnCloserNodeChanged;
         patroll.AttachTo(_states);
 
         if (startPatrolling)
         {
+            _trail.Emit = true; //Es obligatorio que esto pase primero.
             _states.SetState(CommonState.patroll);
-            _trail.EnableEmission();
         }
         else _states.SetState(CommonState.idle);
 
@@ -90,6 +91,7 @@ public class Baboso : BaseNPC
         dead.AttachTo(_states);
 
         PursueState pursue = GetComponent<PursueState>();
+        pursue.OnUpdateCurrentNode = _trail.OnCloserNodeChanged;
         pursue.checkDistanceToTarget = TargetIsInAttackRange;
         pursue.getDestinyNode = getCloserNodeToAttackTarget;
         pursue.MoveToTarget = MoveToNode;
@@ -111,7 +113,7 @@ public class Baboso : BaseNPC
             StartCoroutine(Burn());
 
             //Dejamos de emitir baba.
-            _trail.DisableTrailEmission();
+            _trail.Emit = false;
         };
         burning.AttachTo(_states);
 
@@ -121,7 +123,7 @@ public class Baboso : BaseNPC
             _rb.useGravity = false;
             _rb.velocity = Vector3.zero;
             _mainCollider.enabled = false;
-            _trail.DisableTrailEmission();
+            _trail.Emit = false;
         };
         explode.AttachTo(_states); 
         #endregion

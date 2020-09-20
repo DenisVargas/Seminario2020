@@ -10,6 +10,7 @@ using Core.DamageSystem;
 public class PursueState : State
 {
     public Action StopMovement = delegate { };
+    public Action<Node> OnUpdateCurrentNode = delegate { };
     public Func<Node,float, bool> MoveToTarget = delegate { return false; };
     public Func<bool> checkDistanceToTarget = delegate { return false; };
     public Func<Node> getDestinyNode = delegate { return null; };
@@ -41,7 +42,7 @@ public class PursueState : State
             var player = target.GetComponent<Controller>();
             if (player != null) //Si es el jugador...
             {
-                player.OnMovementChange += RecalculateAndAssignValidPath; //guardo el evento de movimiento
+                player.OnMovementChange += RecalculateValidPathToTarget; //guardo el evento de movimiento
             }
         }
     }
@@ -52,9 +53,6 @@ public class PursueState : State
         if (_current == null && _next == null)
         {
             RecalculateValidPathToTarget();
-
-            _solver.currentPath.Dequeue();
-            _next = _solver.currentPath.Peek();
         }
 
         //Me muevo en dirección al objetivo.
@@ -63,9 +61,6 @@ public class PursueState : State
         {
             if (_solver.currentPath.Count < 2)
                 RecalculateValidPathToTarget();
-
-            _current = _solver.currentPath.Dequeue();
-            _next = _solver.currentPath.Peek();
         }
 
         if (checkDistanceToTarget())
@@ -87,7 +82,7 @@ public class PursueState : State
             var player = target.GetComponent<Controller>();
             if (player != null) //Si es el jugador...
             {
-                player.OnMovementChange -= RecalculateAndAssignValidPath; //guardo el evento de movimiento
+                player.OnMovementChange -= RecalculateValidPathToTarget; //guardo el evento de movimiento
             }
         }
     }
@@ -102,14 +97,10 @@ public class PursueState : State
         {
             _solver.SetTarget(getDestinyNode())
                    .CalculatePathUsingSettings();
+
+            _current = _solver.currentPath.Dequeue();
+            OnUpdateCurrentNode(_current);
+            _next = _solver.currentPath.Peek();
         }
-    }
-
-    void RecalculateAndAssignValidPath()
-    {
-        RecalculateValidPathToTarget();
-
-        _current = _solver.currentPath.Dequeue();
-        _next = _solver.currentPath.Peek();
     }
 }

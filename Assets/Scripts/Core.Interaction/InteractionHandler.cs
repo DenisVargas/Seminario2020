@@ -95,5 +95,22 @@ namespace Core.Interaction
             _interactionsListed = interactionComponents.Count;
             return interactionComponents;
         }
+        /// <summary>
+        /// Chequea si hay un componente estático para una determinada operación.
+        /// </summary>
+        /// <param name="operation">El tipo de operación relacionada al componente que estamos buscando.</param>
+        /// <returns>False si no hay ningún componente que cumpla con dicho requerimiento.</returns>
+        public bool HasStaticInteractionOfType(OperationType operation)
+        {
+            var aviableInteractions = GetInteractionsAbviable();
+
+            foreach (var pair in aviableInteractions)
+            {
+                if (pair.Item1 == operation && pair.Item2.isDynamic == false)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

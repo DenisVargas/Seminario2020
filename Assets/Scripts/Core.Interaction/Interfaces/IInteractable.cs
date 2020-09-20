@@ -30,5 +30,6 @@ namespace Core.Interaction
         //Contemplar: Añadir componentes --> Activar o desactivar componentes.
         InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters);
         IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic);
+        bool HasStaticInteractionOfType(OperationType operation);
     }
 }

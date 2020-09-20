@@ -20,7 +20,8 @@ namespace IA.PathFinding
         public int ID = 0;      //ID del nodo dentro de una Graph.
         public List<Node> Connections = new List<Node>(); //Referencias a los nodos a los que estoy conectado, usado por PathFinding.
         public NavigationArea area = 0; //Esto lo vamos a usar para detectar si es navegable o no.
-        public IInteractable AviableInteractor { get; set; } = null; //Esto es una propiedad que nos va a permitir añadir una referencia a un interaction handler.
+        public IInteractable handler = null;
+        public IInteractable EntityInteractor { get; set; } = null; //Esto es una propiedad que nos va a permitir añadir una referencia a un interaction handler.
 
         #region DEBUG
 #if UNITY_EDITOR

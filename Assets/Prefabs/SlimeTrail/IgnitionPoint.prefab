@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0d15e9c5d54cd6d43900fea4969bbdb8, type: 2}
+  - {fileID: 2100000, guid: ddfebf6d51cac4c48a1d0b348365a03c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 6094009159771956726}
   - component: {fileID: 206088919360502987}
   m_Layer: 0
-  m_Name: FiringThing
+  m_Name: IgnitionPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,9 +166,7 @@ MonoBehaviour:
   _trapHitBox: {fileID: 3289302911783658168}
   myMesh: {fileID: 8835212789124928482}
   myMaterials:
-  - {fileID: 2100000, guid: 0d15e9c5d54cd6d43900fea4969bbdb8, type: 2}
-  - {fileID: 2100000, guid: 9943f33052d9b994db37508c6e613e7d, type: 2}
-  - {fileID: 2100000, guid: eb03c59d75f8b914a98519bbfa32e727, type: 2}
+  - {fileID: 2100000, guid: ddfebf6d51cac4c48a1d0b348365a03c, type: 2}
 --- !u!1 &206088919451261376
 GameObject:
   m_ObjectHideFlags: 0
@@ -4939,8 +4937,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 595b1cd83f05c4045a578a496b92b97e, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: ddfebf6d51cac4c48a1d0b348365a03c, type: 2}
+  - {fileID: 2100000, guid: ddfebf6d51cac4c48a1d0b348365a03c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

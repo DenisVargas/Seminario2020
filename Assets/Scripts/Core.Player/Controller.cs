@@ -46,6 +46,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     MouseContextTracker _mtracker;
     PathFindSolver _solver;
     MouseContext _mouseContext;
+    TrowManagement _tm;
     float checkRate = 0.1f;
     bool _Aiming;
     Transform throwTarget;
@@ -132,6 +133,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         _mv = GetComponent<MouseView>();
        _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
+        _tm = GetComponent<TrowManagement>();
 
         if (_solver.Origin == null)
         {
@@ -185,7 +187,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
             if (Input.GetMouseButtonDown(1))
             {
                 //MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();//Obtengo el contexto del Mouse.
-
                 if (!_mouseContext.validHit) return; //Si no hay hit Válido.
 
                 if (_mouseContext.interactuableHitted)
@@ -233,78 +234,92 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                     }
                 }
             }
-        }
-        if (_inventory.equiped != null)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha2) && !_Aiming)
-            {
-                _mtracker.ChangeCursorView(3);
-                _Aiming = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && _Aiming)
-            {
-                _mtracker.ChangeCursorView(1);
-                _Aiming = false;
-            }
 
-            if(Input.GetMouseButtonDown(0) && _Aiming)
+            if (_inventory.equiped != null)
             {
-                _Aiming = false;
-                Node targetNode = _mouseContext.closerNode;
-                Node origin = _solver.getCloserNode(transform.position);
-                float dist = (targetNode.transform.position - origin.transform.position).magnitude;
-                if (dist > TRWRange)
+                if (Input.GetKeyDown(KeyCode.Alpha2) && !_Aiming)
                 {
-                    _solver.SetOrigin(origin).SetTarget(targetNode).CalculatePathUsingSettings();
-                    if (_solver.currentPath.Count > 0)
+                    _mtracker.ChangeCursorView(3);
+                    _Aiming = true;
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha2) && _Aiming)
+                {
+                    _mtracker.ChangeCursorView(1);
+                    _Aiming = false;
+                }
+
+                if (Input.GetMouseButtonDown(0) && _Aiming)
+                {
+                    _Aiming = false;
+                    Node targetNode = _mouseContext.closerNode;//El objetivo.
+                    //Node origin = _solver.getCloserNode(transform.position); //El origen debería ser la manito.
+                    Vector3 origin = manitodumacaco.position;
+
+                    //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
+                    var command = new cmd_ThrowEquipment(1f, manitodumacaco, targetNode, _tm, ReleaseEquipedItemFromHand, () => 
                     {
-                        Node FinalNode = null;
+                        _a_ThrowRock = true;
+                        transform.forward = (targetNode.transform.position - transform.position).normalized;
+                    });
+                    comandos.Enqueue(command);
 
-                        while (FinalNode == null)
-                        {
-                            Node currentNode = _solver.currentPath.Dequeue();
-                            if ((targetNode.transform.position - currentNode.transform.position).magnitude < TRWRange)
-                                FinalNode = currentNode;
+                    //Es posible que en el Trowmanager debamos construir la mecánica.
+                    //Es decir la parte visual.
 
-                        }
-                        AddMovementCommand(origin, FinalNode);
-                    }
-                    else return;
-                }
+                    //La distancia debería limitarse al entrar en modo de selección.
+                    //float dist = (targetNode.transform.position - origin.transform.position).magnitude;
+                    //if (dist > TRWRange)
+                    //{
+                    //    _solver.SetOrigin(origin).SetTarget(targetNode).CalculatePathUsingSettings();
+                    //    if (_solver.currentPath.Count > 0)
+                    //    {
+                    //        Node FinalNode = null;
 
-                if (_mouseContext.interactuableHitted)
-                {
-                    IInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw, false);
+                    //        while (FinalNode == null)
+                    //        {
+                    //            Node currentNode = _solver.currentPath.Dequeue();
+                    //            if ((targetNode.transform.position - currentNode.transform.position).magnitude < TRWRange)
+                    //                FinalNode = currentNode;
+                    //        }
+                    //        AddMovementCommand(origin, FinalNode);
+                    //    }
+                    //    else return;
+                    //}
 
-                    IQueryComand _ActivateCommand = new cmd_TrowRock
-                        (
-                            target,
-                            () =>
-                            {
-                                _a_ThrowRock = true;
-                                transform.forward = (target.transform.position - transform.position).normalized;
-                            },
-                            false,
-                            _mouseContext.closerNode
-                          );
-                    comandos.Enqueue(_ActivateCommand);
-                    throwTarget = target.transform;
-                }
-                else
-                {
-                    Node finalNode = _mouseContext.closerNode;
+                    //if (_mouseContext.interactuableHitted)
+                    //{
+                    //    IInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw, false);
 
-                    IQueryComand _toActivateCommand = new cmd_TrowRock
-                    (
-                        null,
-                        () =>
-                        {
-                            _a_ThrowRock = true;
-                            transform.forward = (finalNode.transform.position - transform.position).normalized;
-                        }, true, finalNode
-                        );
-                    comandos.Enqueue(_toActivateCommand);
-                    throwTarget = finalNode.transform;
+                    //    IQueryComand _ActivateCommand = new cmd_TrowRock
+                    //        (
+                    //            target,
+                    //            () =>
+                    //            {
+                    //                _a_ThrowRock = true;
+                    //                transform.forward = (target.transform.position - transform.position).normalized;
+                    //            },
+                    //            false,
+                    //            _mouseContext.closerNode
+                    //          );
+                    //    comandos.Enqueue(_ActivateCommand);
+                    //    throwTarget = target.transform;
+                    //}
+                    //else
+                    //{
+                    //    Node finalNode = _mouseContext.closerNode;
+
+                    //    IQueryComand _toActivateCommand = new cmd_TrowRock
+                    //    (
+                    //        null,
+                    //        () =>
+                    //        {
+                    //            _a_ThrowRock = true;
+                    //            transform.forward = (finalNode.transform.position - transform.position).normalized;
+                    //        }, true, finalNode
+                    //        );
+                    //    comandos.Enqueue(_toActivateCommand);
+                    //    throwTarget = finalNode.transform;
+                    //}
                 }
             }
         }
@@ -451,6 +466,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         item.transform.SetParent(manitodumacaco);
         item.transform.localPosition = Vector3.zero;
         item.ExecuteOperation(OperationType.Take);
+        item.SetPhysicsProperties(false, Vector3.zero);
         _inventory.EquipItem(item);
     }
     public Item ReleaseEquipedItemFromHand(bool setToDefaultPosition = false, params object[] options)
@@ -462,6 +478,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
             released.ExecuteOperation(OperationType.Drop);
         else
             released.ExecuteOperation(OperationType.Drop, options[0]);
+        released.SetPhysicsProperties(true, Vector3.zero);
         released.transform.SetParent(null);
         return released;
     }
@@ -608,15 +625,16 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     }
     void AE_Throw_Excecute()
     {
-        ReleaseEquipedItemFromHand()
-        .ExecuteOperation(OperationType.Throw, throwTarget);
-        throwTarget = null;
+        //ReleaseEquipedItemFromHand()
+        //.ExecuteOperation(OperationType.Throw, throwTarget);
+        comandos.Peek().Execute();
+        //throwTarget = null;
     }
     void AE_TrowRock_Ended()
     {
-        _a_ThrowRock = false;
-        comandos.Dequeue().Execute();
         PlayerInputEnabled = true;
+        _a_ThrowRock = false;
+        comandos.Dequeue();
     }
     void AE_Grab_Star()
     {

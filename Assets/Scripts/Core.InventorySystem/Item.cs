@@ -82,7 +82,7 @@ namespace Core.InventorySystem
                 _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Take, this));
             }
 
-            // Es tirable?. Este objeto no se puede tirar, si no es equipado primero.La secuencia es Take>Throw.
+            //Este objeto no se puede tirar, si no es equipado primero.La secuencia es Take>Throw.
             //if (isThroweable)
             //    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this));
 
@@ -118,7 +118,8 @@ namespace Core.InventorySystem
                     //Innecesario porque equip es más una funcionalidad del player.
                     break;
                 case OperationType.Throw:
-                    StartCoroutine(ParabolicMove((Transform)optionalParams[0]));
+                    OnThrow();
+                    //StartCoroutine(ParabolicMove((Transform)optionalParams[0]));
                     break;
                 case OperationType.inspect:
                     //La UI no requiere del objeto.
@@ -144,6 +145,17 @@ namespace Core.InventorySystem
         public virtual void CancelOperation(OperationType operation, params object[] optionalParams) { }
 
         //==============================================================================================================
+
+        public void SetPhysicsProperties(bool state, Vector3 velocity)
+        { 
+            if (_rb != null)
+            {
+                _rb.useGravity = state;
+                _rb.velocity = velocity;
+            }
+            _physicCollider.enabled = state;
+        }
+
         //==================================== Operaciones =============================================================
 
         /*
@@ -151,26 +163,26 @@ namespace Core.InventorySystem
          * Hay opraciones que no requieren una implementación, pues los efectos se hacen externos al item.
         */
 
-        private void OnTake()
+        protected virtual void OnTake()
         {
-            if (_rb != null)
-            {
-                _rb.useGravity = false;
-                _rb.velocity = Vector3.zero;
-            }
-            _physicCollider.enabled = false;
+            print($"Take Executed in item {gameObject.name}");
         }
-        public virtual void Drop(params object[] optionalParams)
+        protected virtual void Drop(params object[] optionalParams)
         {
+            print($"Drop Executed in item {gameObject.name}");
+
             //Rehabilitar interacción.
             if (optionalParams != null && optionalParams.Length > 0)
                 transform.position = (Vector3)optionalParams[0];
-
-            if (_rb)
-                _rb.useGravity = true;
-            _physicCollider.enabled = true;
         }
-        public virtual void Use(params object[] optionalParams) { }
+        protected virtual void OnThrow()
+        {
+            print($"Throw Executed in item {gameObject.name}");
+        }
+        protected virtual void Use(params object[] optionalParams)
+        {
+            print($"Use Executed in item {gameObject.name}");
+        }
 
         //==================================== Corrutinas ==============================================================
 

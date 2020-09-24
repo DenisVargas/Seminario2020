@@ -36,6 +36,11 @@ public class CanvasController : MonoBehaviour
         //Lo activo en el canvas.
         _MultiCommandMenu.gameObject.SetActive(true);
     }
+    public void CloseCommandMenu()
+    {
+        _MultiCommandMenu.gameObject.SetActive(false);
+    }
+
     void DisplayLoose()
     {
         StartCoroutine(Rutina());

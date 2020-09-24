@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
     public event Action ImDeadBro = delegate { };
     public event Action OnMovementChange = delegate { };
+    public event Action OnInputLocked = delegate { };
     public event Action<Item> CheckItemDislayUI = delegate { };
 
     public Transform manitodumacaco;
@@ -32,7 +33,17 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     [SerializeField] Inventory _inventory;
 
     //Grab Objgrabed;
-    bool PlayerInputEnabled = true;
+    bool _input = true;
+    bool PlayerInputEnabled
+    {
+        get => _input;
+        set
+        {
+            _input = value;
+            if (!value)
+                OnInputLocked();
+        }
+    }
     bool ClonInputEnabled = true;
     //bool playerMovementEnabled = true;
     Vector3 velocity;
@@ -130,6 +141,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         _mainCollider = GetComponent<Collider>();
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
+        OnInputLocked += _canvasController.CloseCommandMenu;
         _mv = GetComponent<MouseView>();
        _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
@@ -516,50 +528,53 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     /// <param name="target">El objetivo de dicha operación. Es un interaction Component que contiene dentro de si el tipo de la operación.</param>
     public void QuerySelectedOperation(OperationType operation, IInteractionComponent target)
     {
-        Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
-        Node targetNode = _solver.getCloserNode(target.requestSafeInteractionPosition(transform.position));
+        if (PlayerInputEnabled)
+        {
+            Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
+            Node targetNode = _solver.getCloserNode(target.requestSafeInteractionPosition(transform.position));
 
-        if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
-            if(!AddMovementCommand(origin, targetNode))
+            if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
+                if (!AddMovementCommand(origin, targetNode))
+                {
+                    print("No se pudo añadir un camino posible, el camino está obstruído");
+                    return;
+                }
+
+            //añado el comando correspondiente a la query.
+            IQueryComand _toActivateCommand = null;
+            switch (operation)
             {
-                print("No se pudo añadir un camino posible, el camino está obstruído");
-                return;
+                case OperationType.Ignite:
+                    _toActivateCommand = new cmd_Ignite(target, operation, () => { _a_Ignite = true; });
+                    break;
+
+                case OperationType.Activate:
+                    _toActivateCommand = new cmd_Activate(target, operation, () => { _a_LeverPull = true; });
+                    break;
+
+                case OperationType.Equip:
+                    break;
+
+                case OperationType.Take:
+                    if (_inventory.equiped == null)
+                        _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
+                    break;
+
+                case OperationType.Exchange:
+                    _toActivateCommand = new cmd_Exchange((Item)target, _inventory, ReleaseEquipedItemFromHand, AttachItemToHand, () => { _a_Grabing = true; });
+                    break;
+
+                case OperationType.Combine:
+                    _toActivateCommand = new cmd_Combine((Item)target, _inventory, AttachItemToHand, () => { _a_Grabing = true; });
+                    break;
+
+                default:
+                    break;
             }
 
-        //añado el comando correspondiente a la query.
-        IQueryComand _toActivateCommand = null;
-        switch (operation)
-        {
-            case OperationType.Ignite:
-                _toActivateCommand = new cmd_Ignite( target, operation,() => { _a_Ignite = true; });
-                break;
-
-            case OperationType.Activate:
-                _toActivateCommand = new cmd_Activate ( target, operation, () => { _a_LeverPull = true; });
-                break;
-
-            case OperationType.Equip:
-                break;
-
-            case OperationType.Take:
-                if (_inventory.equiped == null)
-                    _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
-                break;
-
-            case OperationType.Exchange:
-                _toActivateCommand = new cmd_Exchange((Item)target, _inventory, ReleaseEquipedItemFromHand, AttachItemToHand, () => { _a_Grabing = true; });
-                break;
-
-            case OperationType.Combine:
-                _toActivateCommand = new cmd_Combine((Item)target, _inventory, AttachItemToHand, () => { _a_Grabing = true; });
-                break;
-
-            default:
-                break;
+            if (_toActivateCommand != null)
+                comandos.Enqueue(_toActivateCommand);
         }
-
-        if (_toActivateCommand != null)
-            comandos.Enqueue(_toActivateCommand);
     }
 
     //========================================================================================

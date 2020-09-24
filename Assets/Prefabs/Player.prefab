@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 4294857582440551377}
   - component: {fileID: 4294857582440551378}
   - component: {fileID: 4551022286508861444}
+  - component: {fileID: 754281532246487131}
   m_Layer: 30
   m_Name: Player
   m_TagString: Player
@@ -326,6 +327,10 @@ MonoBehaviour:
   moveSpeed: 4
   _movementTreshold: 0.18
   MouseDebug: {fileID: 0}
+  _inventory:
+    _maxItemsSlots: 3
+    _slots: []
+    equiped: {fileID: 0}
   Clon: {fileID: 0}
   _clonLife: 20
   _clonCooldown: 4
@@ -348,6 +353,18 @@ MonoBehaviour:
   Prefab_MousePosition: {fileID: 7291510980280904594, guid: 8a74721c20717864d85e0d2efbdfff59,
     type: 3}
   _spawnedPositions: []
+--- !u!114 &754281532246487131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6414858267132625105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d4c519554e8f2448bfc91f7af2ad19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7754093151426026515
 PrefabInstance:
   m_ObjectHideFlags: 0

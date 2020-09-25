@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.InventorySystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,6 +48,10 @@ public class GroundTrigger : MonoBehaviour
             if (LiveEntity != null)
                 LiveEntity.SubscribeToLifeCicleDependency(RemoveColliderFromActivationList);
 
+            var item = other.GetComponent<Item>();
+            if (item != null)
+                item.OnPickDepedency += RemoveColliderFromActivationList;
+
             OnActivate.Invoke();
         }
     }
@@ -61,6 +66,10 @@ public class GroundTrigger : MonoBehaviour
             var LiveEntity = other.GetComponent<ILivingEntity>();
             if (LiveEntity != null)
                 LiveEntity.UnsuscribeToLifeCicleDependency(RemoveColliderFromActivationList);
+
+            var item = other.GetComponent<Item>();
+            if (item != null)
+                item.OnPickDepedency -= RemoveColliderFromActivationList;
 
             if (OnTop.Count <= 0 )
             {

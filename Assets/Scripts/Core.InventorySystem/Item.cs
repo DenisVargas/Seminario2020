@@ -12,6 +12,8 @@ namespace Core.InventorySystem
     [RequireComponent(typeof(InteractionHandler))]
     public class Item : MonoBehaviour, IInteractionComponent
     {
+        public Action<GameObject> OnPickDepedency = delegate { };
+
         public int ID = 0;
         public string ItemName = "";
         public string Description = "";
@@ -166,6 +168,7 @@ namespace Core.InventorySystem
         protected virtual void OnTake()
         {
             print($"Take Executed in item {gameObject.name}");
+            OnPickDepedency(gameObject);
         }
         protected virtual void Drop(params object[] optionalParams)
         {

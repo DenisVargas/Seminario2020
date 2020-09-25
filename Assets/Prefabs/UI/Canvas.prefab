@@ -1645,7 +1645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6371003933212254647
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2041,6 +2041,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7249967578328894439}
     m_Modifications:
+    - target: {fileID: 4311034633402977638, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311034633402977638, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311034633739306965, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_ShowMaskGraphic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311034633739306966, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311034633739306966, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311034633739306966, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311034633842690942, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
         type: 3}
       propertyPath: presetDataBase.Array.size
@@ -2088,6 +2123,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 0075e84d1fa58ae49a1b9111d6a7a4f5,
         type: 2}
+    - target: {fileID: 4311034634319012250, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4311034634319012252, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2197,6 +2237,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MultiCommandMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311034634319012253, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81e5e6f7bae441b4cb6aada0728ce0d5, type: 3}

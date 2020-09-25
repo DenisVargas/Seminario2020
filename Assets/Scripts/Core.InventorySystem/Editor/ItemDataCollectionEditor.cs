@@ -30,8 +30,11 @@ public class ItemDataCollectionEditor : Editor
 
         if (itemcoll != null && files != null)
         {
+            Undo.RecordObject(itemcoll, "Updated the Database");
+            //EditorUtility.SetDirty(itemcoll);
             itemcoll.existingItemData.Clear();
             itemcoll.existingItemData.AddRange(files);
+            AssetDatabase.SaveAssets();
         }
     }
 }

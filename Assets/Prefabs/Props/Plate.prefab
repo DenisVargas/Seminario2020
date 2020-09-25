@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4381199802632950916}
   - component: {fileID: 7153797380296860519}
-  - component: {fileID: 2065518690119488132}
-  - component: {fileID: 2340141585045233648}
   - component: {fileID: 8177407837346020372}
   m_Layer: 0
   m_Name: Plate
@@ -50,65 +48,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.0001044, z: 1}
   m_Center: {x: 0, y: 0.4983542, z: 0}
---- !u!208 &2065518690119488132
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4857210228324765813}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
-  m_TimeToStationary: 0.5
---- !u!114 &2340141585045233648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4857210228324765813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb20f03da788ad242a0dd835f2bd9176, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnDestroy:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8177407837346020372}
-        m_MethodName: DisableInteraction
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2065518690119488132}
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnReset:
-    m_PersistentCalls:
-      m_Calls: []
-  mainViewMesh: {fileID: 7692039810280222421}
-  destructedVersion: {fileID: 4161597776514980552}
-  destroyForce: 30
 --- !u!114 &8177407837346020372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,13 +60,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ed6555e1b7904599ccb413b263ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _operationType: 1
   StainedMaterial: {fileID: 2100000, guid: bd200d7dffd8f6f4992d0350dc4ec5a3, type: 2}
   ignitionParticle: {fileID: 3840357739387768515}
-  isStained: 0
   _suportedOperations: 01000000
   _interactionCollider: {fileID: 7153797380296860519}
   _safeInteractionDistance: 2
-  _otherFiringDelayTime: 0.8
   DEBUG_safeInteractionDistance: 0
   DEBUG_safeInteractionDistance_Color: {r: 0.20508075, g: 1, b: 0, a: 0.4}
 --- !u!1 &7454266843819087384
@@ -5335,12 +5273,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e3d40f1cfa1fdd47b1d80c66308809f, type: 3}
---- !u!1 &4161597776514980552 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5714134540750205314, guid: 3e3d40f1cfa1fdd47b1d80c66308809f,
-    type: 3}
-  m_PrefabInstance: {fileID: 8542299590270888778}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4161597776514980555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5714134540750205313, guid: 3e3d40f1cfa1fdd47b1d80c66308809f,

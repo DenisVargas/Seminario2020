@@ -4846,7 +4846,6 @@ GameObject:
   - component: {fileID: 8251683944114023230}
   - component: {fileID: 7953084887562519665}
   - component: {fileID: 5252996617626958907}
-  - component: {fileID: 8864136173436380833}
   - component: {fileID: 2058752778299249203}
   m_Layer: 30
   m_Name: Baboso
@@ -4938,16 +4937,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d20f6aaa108a748a625d93b6a0cb82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnDistance: 0.4
-  _spawnOverlapTreshold: 0.4
   _ignitionPoint_Prefab: {fileID: 206088919360503028, guid: 705c5073aec01c04fb84ee42dee48421,
     type: 3}
   _slimePatch_Prefab: {fileID: 206088919360503028, guid: ffefb0dc500170f4589488b675dc59e1,
     type: 3}
-  _activeTime: 15
-  _burningTime: 5
-  _expansionDelayTime: 0.3
-  _inputWaitTime: 2
 --- !u!114 &856897688738227767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5153,18 +5146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionCollider: {fileID: 5993281819839330285}
   _interactionEnabled: 1
---- !u!114 &8864136173436380833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856897688738227760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdbe8838549912c4b8e264faddf357da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2058752778299249203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19887,15 +19868,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
---- !u!4 &3668744219480888281 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9,
-    type: 3}
-  m_PrefabInstance: {fileID: 3673230164828487661}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3674265384410545395 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1253142483436318, guid: 89956e675b749204c8e10395ce2b5fb9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3673230164828487661}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3668744219480888281 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9,
     type: 3}
   m_PrefabInstance: {fileID: 3673230164828487661}
   m_PrefabAsset: {fileID: 0}

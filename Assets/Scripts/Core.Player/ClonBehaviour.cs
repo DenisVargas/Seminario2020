@@ -1,23 +1,25 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using Core.DamageSystem;
+using IA.PathFinding;
 
 public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
 {
     public event Action OnRecast = delegate { };
 
     Animator _anims = null;
-    NavMeshAgent _agent = null;
-    Vector3 _currentTargetPosition;
+    PathFindSolver _solver = null;
 
+    [SerializeField] float _moveSpeed = 3;
     [SerializeField] float _maxLifeTime;
-    [SerializeField] float _ClonMovementTreshold = 0.1f;
+    [SerializeField] float _movementTreshold = 0.1f;
 
     float remainingLifeTime = 0f;
     bool canMove = false;
+
+    Node _current = null;
+    Node _Next = null;
+    Node _targetNode = null;
 
     public bool IsActive
     {
@@ -37,20 +39,26 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
     public void Awake()
     {
         _anims = GetComponent<Animator>();
-        _agent = GetComponent<NavMeshAgent>();
+        _solver = GetComponent<PathFindSolver>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (canMove)
+        if (canMove && _Next != null)
         {
-            float dst = Vector3.Distance(transform.position, _currentTargetPosition);
-            if (dst < _ClonMovementTreshold)
+            //Me muevo a mi objetivo. Si completo el path terminé de moverme.
+            if (Move(_Next))
             {
-                _a_Walking = false;
-                _agent.isStopped = true;
-                _agent.ResetPath();
+                if (_Next == _targetNode)
+                {
+                    canMove = false;
+                    _a_Walking = false;
+                    return;
+                }
+
+                _current = _Next;
+                _Next = _solver.currentPath.Dequeue();
             }
         }
 
@@ -63,34 +71,53 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         _maxLifeTime = maxLifeTime;
         remainingLifeTime = maxLifeTime;
-        _ClonMovementTreshold = MovementTreshold;
+        _movementTreshold = MovementTreshold;
         canMove = false;
     }
-    public void SetMovementDestinyPosition(Vector3 destinyPosition)
+    public void SetMovementDestinyPosition(Node destinyPosition)
     {
-        _currentTargetPosition = destinyPosition;
-        Vector3 _targetForward = (destinyPosition -transform.position).normalized.YComponent(0);
-        transform.forward = _targetForward;
+        canMove = true;
+        _targetNode = destinyPosition;
 
-        _a_Walking = true;
+        //Calculo las posiciones!
+        _solver.SetOrigin(_solver.getCloserNode(transform.position))
+               .SetTarget(destinyPosition)
+               .CalculatePathUsingSettings();
 
-        if (_agent.isStopped)
-            _agent.isStopped = false;
-        _agent.destination = destinyPosition;
+        _current = _solver.currentPath.Dequeue();
+        _Next = _solver.currentPath.Dequeue();
     }
-    public void InvokeClon(Vector3 position, Vector3 forward)
+    public bool Move(Node targetNode)
     {
-        transform.position = position;
+        Vector3 dirToTarget = (targetNode.transform.position - transform.position).normalized;
+        transform.forward = dirToTarget;
+
+        if (!_a_Walking)
+            _a_Walking = true;
+
+        transform.position += dirToTarget * _moveSpeed * Time.deltaTime;
+        return Vector3.Distance(transform.position, targetNode.transform.position) <= _movementTreshold;
+    }
+    public void InvokeClon(Node node, Vector3 forward)
+    {
+        transform.position = node.transform.position;
         transform.forward = forward;
         IsAlive = true;
+        canMove = false;
         gameObject.SetActive(true);
     }
     public void RecastClon()
     {
+        _solver.currentPath.Clear();
         gameObject.SetActive(false);
         remainingLifeTime = _maxLifeTime;
         canMove = false;
         IsAlive = false;
+
+        _current = null;
+        _Next = null;
+        _targetNode = null;
+
         OnRecast();
     }
 
@@ -116,7 +143,6 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
         };
 
         RecastClon(); //Podriamos animarlo pero ALV.
-
         return result;
     }
 
@@ -129,7 +155,7 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
 
     public void GetStun(Vector3 AgressorPosition, int PosibleKillingID)
     {
-        _agent.isStopped = true;
-        _agent.ResetPath();
+        canMove = false; //Bloqueo el camino we.
+        //Quizás reproducir una animación.
     }
 }

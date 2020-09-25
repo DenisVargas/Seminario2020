@@ -218,7 +218,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 }
 
                 if (Input.GetKey(KeyCode.LeftControl) && Clon.IsActive)
-                    Clon.SetMovementDestinyPosition(_mouseContext.hitPosition);
+                    Clon.SetMovementDestinyPosition(_mouseContext.closerNode);
                 else
                 {
                     Node targetNode = _mouseContext.closerNode;
@@ -438,8 +438,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         PlayerInputEnabled = false;
         comandos.Clear();
-        //_agent.isStopped = true;
-        //_agent.ResetPath();
     }
 
     //================================== Player Controller =================================
@@ -449,7 +447,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         if (!Clon.IsActive && _canCastAClon)
         {
-            Clon.InvokeClon(transform.position + transform.forward * 1.5f, -transform.forward);
+            Node position = _solver.getCloserNode(transform.position + transform.forward * 1.5f);
+            Clon.InvokeClon(position, -transform.forward);
             _canCastAClon = false;
         }
     }

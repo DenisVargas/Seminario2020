@@ -134,6 +134,8 @@ public class CommandMenu : MonoBehaviour
       Action<OperationType, IInteractionComponent> callback
     )
     {
+        ClearCurrentDisplay();
+
         commandCallback += callback;
         this.interactionTarget = interactionTarget;
 
@@ -172,12 +174,19 @@ public class CommandMenu : MonoBehaviour
         {
             commandCallback = delegate { };
             interactionTarget = null;
-
-            foreach (var obj in _currentDisplay)
-                AbviableDisplay.DisablePoolObject(obj);
-            _currentDisplay = new List<GameObject>();
+            ClearCurrentDisplay();
 
             gameObject.SetActive(false);
         }
+    }
+
+    public void ClearCurrentDisplay()
+    {
+        if (_currentDisplay.Count == 0)
+            return;
+
+        foreach (var obj in _currentDisplay)
+            AbviableDisplay.DisablePoolObject(obj);
+        _currentDisplay = new List<GameObject>();
     }
 }

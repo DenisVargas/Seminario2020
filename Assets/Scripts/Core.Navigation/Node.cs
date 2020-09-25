@@ -23,6 +23,11 @@ namespace IA.PathFinding
         public IInteractable handler = null;
         public IInteractable EntityInteractor { get; set; } = null; //Esto es una propiedad que nos va a permitir añadir una referencia a un interaction handler.
 
+        public void clearHandler()
+        {
+            handler = null;
+        }
+
         #region DEBUG
 #if UNITY_EDITOR
         private void OnDrawGizmos()

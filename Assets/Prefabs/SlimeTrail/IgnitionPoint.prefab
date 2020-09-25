@@ -157,6 +157,7 @@ MonoBehaviour:
   _chainReactionDelay: 0.5
   fireParticles:
   - {fileID: 4255842031857750274}
+  _root: {fileID: 206088919360503028}
   efectTargets:
     serializedVersion: 2
     m_Bits: 1

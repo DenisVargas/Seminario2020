@@ -13,11 +13,19 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
 
     [SerializeField] float _chainReactionDelay = 0.1f;
     [SerializeField] GameObject[] fireParticles = null;
+    [SerializeField] GameObject _root = null;
     [SerializeField] LayerMask efectTargets = ~0;
     [SerializeField] float _ignitableSearchRadius = 5f;
     [SerializeField] float _safeInteractionDistance = 3;
     [SerializeField] float _remainingLifeTime = 0;
     [SerializeField] TrapHitBox _trapHitBox = null; //Se encarga de administrar daño por fuego.
+    public List<GameObject> patches = new List<GameObject>();
+
+    public GameObject RootGameObject
+    {
+        get => _root;
+        set => _root = value;
+    }
 
     public List<IIgnitableObject> toIgnite = new List<IIgnitableObject>();
 
@@ -52,23 +60,19 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     #endregion
     void Update()
     {
-        if (!_freezeInPlace)
+        if(Burning)
         {
-            reduxHealth();
-        }
-        else if(Burning)
-        {
-            reduxHealth();
+            if (_remainingLifeTime <= 0)
+            {
+                OnDisable();
+                KillIngnitableObject();
+                return;
+            }
+
+            _remainingLifeTime -= Time.deltaTime;
         }
     }
 
-    void reduxHealth()
-    {
-        if (_remainingLifeTime <= 0)
-            OnDisable();
-        else
-            _remainingLifeTime -= Time.deltaTime;
-    }
     void FreezeAll()
     {
         checkSurroundingIgnitionObjects();
@@ -94,6 +98,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         }
     }
 
+    //Esto se llamaba desde Trail.
     public void OnSpawn(float LifeTime, float IgnitionLifeTime, float InputWaitTime, float ExpansionDelayTime = 0.8f)
     {
         //Iniciamos los contadores.
@@ -105,8 +110,9 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         StopAllCoroutines();
     }
 
-    public void OnDie()
+    public void KillIngnitableObject()
     {
+        print($"{gameObject.name} la baba se apaga ignite");
         Burning = false;
         // Desactivamos la interacción x ignite.
         // Desactivamos las particulas de fuego
@@ -114,6 +120,9 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         _freezeInPlace = false;
         CancelInputs();
         CancelInputs = delegate { };
+        foreach (var item in patches)
+            Destroy(item);
+        Destroy(_root);
     }
     void checkSurroundingIgnitionObjects()
     {
@@ -204,8 +213,9 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     }
     public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
-        if (!Burning)
+        if (!Burning && operation == OperationType.Ignite)
         {
+            print($"{gameObject.name} empezo la operación ignite");
             // Desactivo las interacciones.
             foreach (var item in fireParticles)
                 item.SetActive(true);

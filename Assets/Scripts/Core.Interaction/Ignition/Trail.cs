@@ -30,6 +30,9 @@ public class Trail : MonoBehaviour
                 ignition.transform.localPosition = Vector3.zero;
 
                 var ignitionInteractionHandler = ignition.GetComponent<IInteractable>();
+                var igniteObject = ignition.GetComponentInChildren<IgnitableObject>();
+                if (igniteObject.RootGameObject == null) igniteObject.RootGameObject = ignition;
+                igniteObject.OnDisable += current.clearHandler;
                 current.handler = ignitionInteractionHandler;
                 //handler.markAsDirty(); //Función que utilizamos para decirle a un InteractionHandler que tiene que serializarse (Sistema de guardado).
 
@@ -42,6 +45,9 @@ public class Trail : MonoBehaviour
                         Vector3 center = Vector3.Lerp(current.transform.position, connection.transform.position, 0.5f);
                         var patch = Instantiate(_slimePatch_Prefab,center, Quaternion.identity);
                         patch.transform.forward = dir;
+
+                        var ignite = connection.GetComponentInChildren<IgnitableObject>();
+                        ignite.patches.Add(patch);
                     }
                 }
             }

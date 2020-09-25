@@ -3,6 +3,7 @@ using Core.Interaction;
 using Core.InventorySystem;
 using System;
 using System.Collections.Generic;
+using IA.PathFinding;
 
 [RequireComponent(typeof(InteractionHandler))]
 public class Gem : MonoBehaviour, IInteractionComponent
@@ -13,7 +14,6 @@ public class Gem : MonoBehaviour, IInteractionComponent
 
     public bool IsCurrentlyInteractable => isActiveAndEnabled;
     public Vector3 position => transform.position;
-    public Vector3 LookToDirection => ActivationPosition.forward;
 
     public bool isDynamic => false;
 
@@ -23,10 +23,6 @@ public class Gem : MonoBehaviour, IInteractionComponent
         GemaView.transform.Rotate(new Vector3(0, SpeedRot, 0));
     }
 
-    public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
-    {
-        return ActivationPosition.position;
-    }
     public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
@@ -45,5 +41,18 @@ public class Gem : MonoBehaviour, IInteractionComponent
     public void CancelOperation(OperationType operation, params object[] optionalParams)
     {
         Debug.Log($"{gameObject.name}: Operación cancelada");
+    }
+
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
+    {
+        NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
+
+        //Estaría bueno tener un par de puntos de referencia que podriamos utilizar como posiciones.
+        //Seleccionamos la posicion cuya distancia es menor al requester y luego obtenemos dicho nodos y se lo devolvemos.
+
+        Node SafePosition = PathFindSolver.getCloserNodeInGraph(ActivationPosition.position, graph);
+        Vector3 directionToMe = ( transform.position - SafePosition.transform.position).normalized.YComponent(0);
+
+        return new InteractionParameters(SafePosition, directionToMe);
     }
 }

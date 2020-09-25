@@ -5,10 +5,11 @@ using Core.Interaction;
 using Core.InventorySystem;
 using System;
 
+//Grab podría ser un componente único para objetos consumibles que se activan al momento!
+
 [RequireComponent(typeof(InteractionHandler))]
 public class Grab : MonoBehaviour , IInteractionComponent
 {
-    public Vector3 LookToDirection => transform.position;
     public bool isDynamic => false;
 
     public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
@@ -54,5 +55,14 @@ public class Grab : MonoBehaviour , IInteractionComponent
             //transform.position = Vector3.Slerp(firstPosition, target.transform.position, i);
             transform.position = new Vector3(Mathf.Lerp(firstPosition.x, target.transform.position.x, i), Mathf.Lerp(firstPosition.y, target.position.y, i) + Mathf.Sin(i * Mathf.PI) * 5, Mathf.Lerp(firstPosition.z, target.transform.position.z, i));
         }
+    }
+
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
+    {
+        var graph = FindObjectOfType<NodeGraphBuilder>();
+        var node = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
+        Vector3 lookAtDir = (transform.position - node.transform.position).normalized;
+
+        return new InteractionParameters(node, lookAtDir);
     }
 }

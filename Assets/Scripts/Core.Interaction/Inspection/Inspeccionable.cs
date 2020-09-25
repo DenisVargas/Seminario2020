@@ -15,12 +15,15 @@ namespace Core.Interaction
         [SerializeField, TextArea]
         string description = "An irrelevant Object.";
 
-        public Vector3 LookToDirection => transform.position;
         public bool isDynamic => false;
 
-        public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
+        public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
         {
-            return transform.position;
+            var graph = FindObjectOfType<NodeGraphBuilder>();
+            var pickNode = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
+            Vector3 LookToDirection = (transform.position - pickNode.transform.position).normalized.YComponent(0);
+
+            return new InteractionParameters(pickNode, LookToDirection);
         }
         public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
         {

@@ -38,4 +38,13 @@ public class Activator : MonoBehaviour, IInteractionComponent
     {
         
     }
+
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
+    {
+        var graph = FindObjectOfType<NodeGraphBuilder>();
+        var pickNode = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
+        Vector3 LookToDirection = (transform.position - pickNode.transform.position).normalized.YComponent(0);
+
+        return new InteractionParameters(pickNode, LookToDirection);
+    }
 }

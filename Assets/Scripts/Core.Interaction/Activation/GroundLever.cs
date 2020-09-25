@@ -16,7 +16,7 @@ public class GroundLever : MonoBehaviour, IInteractionComponent
 
     Collider _col = null;
 
-    public Vector3 LookToDirection => _activationPosition.forward;
+    
     public bool isDynamic => false;
 
     private void Awake()
@@ -32,10 +32,6 @@ public class GroundLever : MonoBehaviour, IInteractionComponent
             new Tuple<OperationType, IInteractionComponent>(OperationType.Activate, this)
         };
     }
-    public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
-    {
-        return _activationPosition.position;
-    }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
         
@@ -48,5 +44,16 @@ public class GroundLever : MonoBehaviour, IInteractionComponent
     public void CancelOperation(OperationType operation, params object[] optionalParams)
     {
         
+    }
+
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
+    {
+        NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
+
+        IA.PathFinding.Node SafePosition = PathFindSolver.getCloserNodeInGraph(_activationPosition.position, graph);
+        Vector3 directionToMe = _activationPosition.forward;
+        //Vector3 directionToMe = (transform.position - SafePosition.transform.position).normalized.YComponent(0);
+
+        return new InteractionParameters(SafePosition, directionToMe);
     }
 }

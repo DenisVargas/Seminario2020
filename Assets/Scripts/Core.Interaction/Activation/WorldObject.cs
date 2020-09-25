@@ -12,9 +12,6 @@ public class WorldObject : MonoBehaviour,   IInteractionComponent
     Material _normalMat = null;
     Renderer _renderer = null;
 
-    //public bool IsCurrentlyInteractable { get; private set; } = (true);
-
-    public Vector3 LookToDirection => transform.forward;
     public bool isDynamic => false;
 
     private void Awake()
@@ -31,9 +28,15 @@ public class WorldObject : MonoBehaviour,   IInteractionComponent
         _renderer.material = onExitMat;
     }
 
-    public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
     {
-        return transform.position;
+        NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
+
+        IA.PathFinding.Node SafePosition = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
+        Vector3 directionToMe = transform.forward;
+        //Vector3 directionToMe = (transform.position - SafePosition.transform.position).normalized.YComponent(0);
+
+        return new InteractionParameters(SafePosition, directionToMe);
     }
     public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
     {

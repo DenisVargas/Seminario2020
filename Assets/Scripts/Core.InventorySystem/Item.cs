@@ -23,9 +23,7 @@ namespace Core.InventorySystem
 
         //Operaciones estáticas son aquellas que siempre están disponibles.
         List<OperationType> Operations = new List<OperationType>();
-
         public bool isDynamic => true;
-        public Vector3 LookToDirection => transform.position;
 
         [SerializeField] Collider _physicCollider;
         Rigidbody _rb = null;
@@ -95,9 +93,13 @@ namespace Core.InventorySystem
             return _myOperations;
         }
 
-        public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
+        public virtual InteractionParameters getInteractionParameters(Vector3 requesterPosition)
         {
-            return transform.position;
+            var graph = FindObjectOfType<NodeGraphBuilder>();
+            var pickNode = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
+            Vector3 LookToDirection = (transform.position - pickNode.transform.position).normalized.YComponent(0);
+
+            return new InteractionParameters(pickNode, LookToDirection);
         }
         public virtual void InputConfirmed(OperationType operation, params object[] optionalParams) { }
         public virtual void ExecuteOperation(OperationType operation, params object[] optionalParams)
@@ -200,5 +202,6 @@ namespace Core.InventorySystem
             }
         }
 
+        
     }
 }

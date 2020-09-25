@@ -29,5 +29,14 @@ public class Torch : Item
         
     }
 
+    protected override void Use(params object[] optionalParams)
+    {
+        base.Use(optionalParams); //Printea que se ha utilizado el objeto.
+        //Deberíamos castear optional params para determinar que acción queremos hacer con este objeto.
+        //testemaos un bool para saber si queremos prender la antorcha.
+        if (optionalParams.Length > 1)
+            isBurning = (bool) optionalParams[0];
+    }
+
     //Colisiones. Si este objeto colisiona con un igniteable. Ejecuta su comando ignite, y luego se destruye.
 }

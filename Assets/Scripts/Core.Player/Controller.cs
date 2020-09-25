@@ -529,8 +529,10 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         if (PlayerInputEnabled)
         {
+            var parameters = target.getInteractionParameters(transform.position);
+
             Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
-            Node targetNode = _solver.getCloserNode(target.requestSafeInteractionPosition(transform.position));
+            Node targetNode = parameters.safeInteractionNode;
 
             if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
                 if (!AddMovementCommand(origin, targetNode))
@@ -613,7 +615,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         if (Queued_TargetInteractionComponent != null)
         {
-            transform.forward = Queued_TargetInteractionComponent.LookToDirection;
+            var parameters = Queued_TargetInteractionComponent.getInteractionParameters(transform.position);
+            transform.forward = parameters.orientation;
         }
     }
     void AE_PullLeverEnded()

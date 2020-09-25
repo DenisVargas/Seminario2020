@@ -173,7 +173,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
 
     //======================================= Ingnition System ====================================================
 
-    public Vector3 LookToDirection => transform.forward;
+    
     public bool IsActive => gameObject.activeSelf;
     public bool Burning { get; private set; } = (false);
     public bool isFreezed
@@ -196,9 +196,15 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         //Cambio los materiales a los que corresponden con el stain.
     }
 
-    public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
     {
-        return (transform.position + ((requesterPosition - transform.position).normalized) * _safeInteractionDistance);
+        NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
+
+        Vector3 safeInteractionPosition = (transform.position + ((requesterPosition - transform.position).normalized) * _safeInteractionDistance);
+        IA.PathFinding.Node SafePosition = PathFindSolver.getCloserNodeInGraph(safeInteractionPosition, graph);
+        Vector3 LookToDirection = transform.forward;
+
+        return new InteractionParameters(SafePosition, LookToDirection);
     }
     public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
     {

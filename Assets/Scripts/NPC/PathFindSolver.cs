@@ -87,6 +87,23 @@ public class PathFindSolver : MonoBehaviour
     }
 
     /// <summary>
+    /// Encuentra el nodo mas cercano dentro de un grafo específicado a la posicion inicial dada.
+    /// </summary>
+    /// <returns></returns>
+    public static Node getCloserNodeInGraph(Vector3 position, NodeGraphBuilder graph)
+    {
+        var builder = graph;
+        var posibleNodes = builder.GetComponentsInChildren<Node>()
+                                  .OrderBy(n => Vector3.Distance(position, n.transform.position));
+
+        Node closerNode = posibleNodes.First();
+        if (closerNode)
+            return closerNode;
+
+        return null;
+    }
+
+    /// <summary>
     /// Retorna el camino entre dos nodos, usando los settings establecidos en el Componente.
     /// </summary>
     /// <returns>Un camino posible entre 2 nodos. Null si no hay camino posible.</returns>

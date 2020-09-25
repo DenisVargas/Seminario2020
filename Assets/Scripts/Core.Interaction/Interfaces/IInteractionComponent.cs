@@ -8,12 +8,10 @@ namespace Core.Interaction
     public interface IInteractionComponent
     {
         bool isDynamic { get; }
-
         Transform transform { get; }
         T GetComponent<T>();
-        Vector3 LookToDirection { get; }
 
-        Vector3 requestSafeInteractionPosition(Vector3 requesterPosition);
+        InteractionParameters getInteractionParameters(Vector3 requesterPosition);
         List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory);
         void InputConfirmed(OperationType operation, params object[] optionalParams);
         void ExecuteOperation(OperationType operation, params object[] optionalParams);

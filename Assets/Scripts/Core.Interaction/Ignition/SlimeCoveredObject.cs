@@ -42,16 +42,9 @@ public class SlimeCoveredObject : MonoBehaviour, IIgnitableObject
     public bool isFreezed { get; set; } = (false);
     public bool Burning { get; private set; } = (false);
     public bool IsActive => gameObject.activeSelf;
-    public Vector3 LookToDirection { get => transform.forward; }
 
     public bool isDynamic => false;
-
     public void StainObjectWithSlime() { }
-
-    public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
-    {
-        return (transform.position + ((requesterPosition - transform.position).normalized *_safeInteractionDistance));
-    }
 
     IEnumerator Burn()
     {
@@ -73,6 +66,16 @@ public class SlimeCoveredObject : MonoBehaviour, IIgnitableObject
         Destroy(gameObject);
     }
 
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
+    {
+        var graph = FindObjectOfType<NodeGraphBuilder>();
+
+        Vector3 safeInteractionPosition = (transform.position + ((requesterPosition - transform.position).normalized * _safeInteractionDistance));
+        var node = PathFindSolver.getCloserNodeInGraph(safeInteractionPosition, graph);
+        Vector3 lookAtDir = (transform.position - node.transform.position).normalized;
+
+        return new InteractionParameters(node, lookAtDir);
+    }
     public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
@@ -80,7 +83,6 @@ public class SlimeCoveredObject : MonoBehaviour, IIgnitableObject
             new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
         };
     }
-
     public void InputConfirmed(OperationType operation, params object[] optionalParams) { }
     public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {

@@ -8,7 +8,6 @@ using System;
 [RequireComponent(typeof(InteractionHandler))]
 public class TrowRockAt : MonoBehaviour, IInteractionComponent
 {
-    public Vector3 LookToDirection => transform.position;
     public bool isDynamic => false;
 
     BaseNPC npc = null;
@@ -18,10 +17,6 @@ public class TrowRockAt : MonoBehaviour, IInteractionComponent
         npc = GetComponent<BaseNPC>();
     }
 
-    public Vector3 requestSafeInteractionPosition(Vector3 requesterPosition)
-    {
-        return npc.transform.position;
-    }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
         print("Input Confirmado");
@@ -38,5 +33,14 @@ public class TrowRockAt : MonoBehaviour, IInteractionComponent
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
         { new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this)};
+    }
+
+    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
+    {
+        var graph = FindObjectOfType<NodeGraphBuilder>();
+        var pickNode = PathFindSolver.getCloserNodeInGraph(npc.transform.position, graph);
+        Vector3 LookToDirection = (transform.position - pickNode.transform.position).normalized.YComponent(0);
+
+        return new InteractionParameters(pickNode, LookToDirection);
     }
 }

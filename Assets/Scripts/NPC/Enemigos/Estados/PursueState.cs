@@ -45,26 +45,30 @@ public class PursueState : State
                 player.OnMovementChange += RecalculateValidPathToTarget; //guardo el evento de movimiento
             }
         }
+
+        //Cálculo del camino inicial.
+        if (_current == null && _next == null)
+        {
+            _current = _solver.getCloserNode(transform.position);
+            RecalculateValidPathToTarget();
+        }
     }
 
     public override void Execute()
     {
-        //Cada Frame me fijo cual es el nodo en el que estoy actualmente y hacia donde voy.
-        if (_current == null && _next == null)
+        if (checkDistanceToTarget())
         {
-            RecalculateValidPathToTarget();
+            SwitchToState(CommonState.attack);
+            return;
         }
 
         //Me muevo en dirección al objetivo.
         //Si alcance el objetivo intermedio, descarto el siguiente nodo.
         if (MoveToTarget(_next, _pursueMovementSpeed))
         {
-            if (_solver.currentPath.Count < 2)
-                RecalculateValidPathToTarget();
+            _current = _next;
+            RecalculateValidPathToTarget();
         }
-
-        if (checkDistanceToTarget())
-            SwitchToState(CommonState.attack);
     }
 
     public override void End()
@@ -89,7 +93,6 @@ public class PursueState : State
 
     void RecalculateValidPathToTarget()
     {
-        _current = _solver.getCloserNode(transform.position);
         _solver.SetOrigin(_current);
 
         Node targetNode = getDestinyNode();

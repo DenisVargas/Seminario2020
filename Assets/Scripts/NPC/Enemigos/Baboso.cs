@@ -192,7 +192,7 @@ public class Baboso : BaseNPC
         //Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
         if (damage.instaKill)
         {
-            if (damage.type == DamageType.e_fire && _currentState != CommonState.burning)
+            if (damage.type == DamageType.Fire && _currentState != CommonState.burning)
             {
                 _states.Feed(CommonState.burning);
             }

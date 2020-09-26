@@ -6,7 +6,6 @@ using System;
 using IA.PathFinding;
 using Core.Interaction;
 using Core.InventorySystem;
-using TMPro;
 
 [RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
 public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
@@ -472,16 +471,18 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
     public void AttachItemToHand(Item item)
     {
+        print($"{ gameObject.name} ha pikeado un item. {item.name} se attachea a la mano.");
         //Presuponemos que el objeto es troweable.
         //Emparentamos el item al transform correspondiente.
+        item.SetPhysicsProperties(false, Vector3.zero);
         item.transform.SetParent(manitodumacaco);
         item.transform.localPosition = Vector3.zero;
         item.ExecuteOperation(OperationType.Take);
-        item.SetPhysicsProperties(false, Vector3.zero);
         _inventory.EquipItem(item);
     }
     public Item ReleaseEquipedItemFromHand(bool setToDefaultPosition = false, params object[] options)
     {
+        print($"{ gameObject.name} soltará un item equipado. {_inventory.equiped.name} se attachea a la mano.");
         //Desemparentamos el item equipado de la mano.
         Item released = _inventory.UnEquipItem();
 
@@ -567,6 +568,10 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
                 case OperationType.Combine:
                     _toActivateCommand = new cmd_Combine((Item)target, _inventory, AttachItemToHand, () => { _a_Grabing = true; });
+                    break;
+                case OperationType.lightOnTorch:
+                    if (_inventory.equiped.ID == 1)
+                        _toActivateCommand = new cmd_LightOnTorch(() => { }, target, (Torch)_inventory.equiped);
                     break;
 
                 default:

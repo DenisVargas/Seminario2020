@@ -119,11 +119,7 @@ public class CommandMenu : MonoBehaviour
         commandCallback = delegate { };
         interactionTarget = null;
 
-        foreach (var obj in _currentDisplay)
-            AbviableDisplay.DisablePoolObject(obj);
-
-        _currentDisplay = new List<GameObject>();
-
+        ClearCurrentDisplay();
         gameObject.SetActive(false);
     }
 
@@ -141,10 +137,17 @@ public class CommandMenu : MonoBehaviour
 
         //Tomamos nuestro target y le pedimos los displaySettings de acuerdo a nuestro inventario.
         var DisplaySettings = interactionTarget.GetInteractionDisplaySettings(inventory);
+        if (DisplaySettings.SuportedOperations.Count == 0)
+        {
+            ClearCurrentDisplay();
+            gameObject.SetActive(false);
+            return;
+        }
+
+
         _limitedActive = DisplaySettings.LimitedDisplay;
         if (_limitedActive)
             _remainingActiveTime = DisplaySettings.ActiveTime;
-
         _verticalScroll.size = 1;
 
         foreach (var pair in DisplaySettings.SuportedOperations)

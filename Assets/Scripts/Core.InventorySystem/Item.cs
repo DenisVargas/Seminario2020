@@ -26,13 +26,20 @@ namespace Core.InventorySystem
         public bool isDynamic => true;
 
         [SerializeField] Collider _physicCollider;
-        Rigidbody _rb = null;
+        [SerializeField] Rigidbody _rb = null;
 
-        private void Awake()
+#if UNITY_EDITOR
+        [SerializeField] bool debugThis = false; 
+#endif
+
+        protected virtual void Awake()
         {
             _rb = GetComponent<Rigidbody>();
 
-            SetData(ItemDataBase.Manager.getItemData(ID));
+            #if UNITY_EDITOR
+            if (debugThis) 
+            #endif
+                SetData(ItemDataBase.getItemData(ID));
 
             Operations.Add(OperationType.inspect);
             Operations.Add(OperationType.Drop);
@@ -151,7 +158,8 @@ namespace Core.InventorySystem
         //==============================================================================================================
 
         public void SetPhysicsProperties(bool state, Vector3 velocity)
-        { 
+        {
+            //print($"Set Physics Proterties:: el estado es: {state}, rigidBody es: {_rb}");
             if (_rb != null)
             {
                 _rb.useGravity = state;
@@ -176,8 +184,9 @@ namespace Core.InventorySystem
         {
             print($"Drop Executed in item {gameObject.name}");
 
-            //Rehabilitar interacción.
-            if (optionalParams != null && optionalParams.Length > 0)
+            //TODO::Rehabilitar interacción.
+            //TODO::Caller:: Posicionar el objeto si es necesario.
+            if (optionalParams != null && optionalParams.Length > 0) 
                 transform.position = (Vector3)optionalParams[0];
         }
         protected virtual void OnThrow()
@@ -201,7 +210,5 @@ namespace Core.InventorySystem
                 transform.position = new Vector3(Mathf.Lerp(firstPosition.x, target.transform.position.x, i), Mathf.Lerp(firstPosition.y, target.position.y, i) + Mathf.Sin(i * Mathf.PI) * 5, Mathf.Lerp(firstPosition.z, target.transform.position.z, i));
             }
         }
-
-        
     }
 }

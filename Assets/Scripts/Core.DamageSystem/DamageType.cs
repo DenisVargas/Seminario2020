@@ -1,6 +1,6 @@
 ﻿public enum DamageType
 {
-    e_fire,
+    Fire,
     cutting,
     blunt,
     piercing,

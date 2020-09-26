@@ -55,10 +55,10 @@ namespace Core.InventorySystem
         /// </summary>
         /// <param name="itemID">Identificador único del item.</param>
         /// <returns>Null si el item no existe dentro de la base de datos.</returns>
-        public ItemData getItemData(int itemID)
+        public static ItemData getItemData(int itemID)
         {
-            if (_dataBase.ContainsKey(itemID))
-                return _dataBase[itemID];
+            if (Manager._dataBase.ContainsKey(itemID))
+                return Manager._dataBase[itemID];
 
             return null;
         }

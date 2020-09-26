@@ -13,5 +13,6 @@
         Exchange,
         Drop,
         use,
+        lightOnTorch
     }
 }

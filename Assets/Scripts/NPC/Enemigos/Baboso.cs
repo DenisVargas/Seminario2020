@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Core.DamageSystem;
 using IA.FSM;
+using IA.Waypoints;
+using Core.SaveSystem;
+using System.Linq;
 
 public class Baboso : BaseNPC
 {
@@ -77,13 +81,6 @@ public class Baboso : BaseNPC
         patroll.moveToNode = MoveToNode;
         patroll.OnUpdateCurrentNode = _trail.OnCloserNodeChanged;
         patroll.AttachTo(_states);
-
-        if (startPatrolling)
-        {
-            _trail.Emit = true; //Es obligatorio que esto pase primero.
-            _states.SetState(CommonState.patroll);
-        }
-        else _states.SetState(CommonState.idle);
 
         DeadState dead = GetComponent<DeadState>();
         dead.OnDead = OnEntityDead;
@@ -169,10 +166,49 @@ public class Baboso : BaseNPC
 
         #endregion
     }
+    private void Start()
+    {
+        if (startPatrolling)
+        {
+            _trail.Emit = true; //Es obligatorio que esto pase primero.
+            _states.SetState(CommonState.patroll);
+        }
+        else _states.SetState(CommonState.idle);
+    }
+
     protected override void Update()
     {
         base.Update();
         _currentState = _states.CurrentStateType;
+    }
+
+    //========================================== Sistema de Guardado ==========================================
+
+    public override EnemyData getEnemyData()
+    {
+        var myData = new EnemyData();
+        myData.position = transform.position;
+        myData.forward = transform.forward;
+        myData.enemyType = EnemyType.baboso;
+        NodeWaypoint waypoints = GetComponent<NodeWaypoint>();
+        myData.WaypointIDs = waypoints.points.Select(x => x.ID).ToArray();
+
+        return myData;
+    }
+
+    public override void LoadEnemyData(EnemyData enemyData)
+    {
+        //Override Completo. Reconstruyo mis waypoints, reposiciono el enemigo y reseteo su estado inicial.
+        NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
+        NodeWaypoint waypoints = GetComponent<NodeWaypoint>();
+
+        waypoints.points = new List<IA.PathFinding.Node>();
+        foreach (var ID in enemyData.WaypointIDs)
+            waypoints.points.Add(graph.getNode(ID));
+
+        transform.position = enemyData.position;
+        transform.forward = enemyData.forward;
+        _states.SetState(startPatrolling ? CommonState.patroll : CommonState.idle);
     }
 
     //========================================== Sistema de Daño ==============================================

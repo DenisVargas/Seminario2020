@@ -6,6 +6,8 @@ using System;
 using IA.PathFinding;
 using Core.Interaction;
 using Core.InventorySystem;
+using Core.SaveSystem;
+using System.Linq;
 
 [RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
 public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
@@ -29,7 +31,18 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     IInteractionComponent Queued_TargetInteractionComponent = null;
     Node QueuedMovementEndPoint = null;
 
-    [SerializeField] Inventory _inventory;
+    Inventory _inventory;
+    public Inventory Inventory
+    {
+        get
+        {
+            if (_inventory == null)
+                _inventory = new Inventory();
+
+            return _inventory;
+        }
+        set =>_inventory = value;
+    }
 
     //Grab Objgrabed;
     bool _input = true;
@@ -46,6 +59,47 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     bool ClonInputEnabled = true;
     //bool playerMovementEnabled = true;
     Vector3 velocity;
+
+    //================================= Save System ========================================
+
+    public PlayerData getCurrentPlayerData()
+    {
+        return new PlayerData()
+        {
+            position = transform.position,
+            EquipedItem = Inventory.equiped != null ? Inventory.equiped.ID : -1,
+            maxItemsSlots = Inventory.maxItemsSlots,
+            inventory = Inventory.slots.Select(x => x.ID)
+                                         .ToList()
+        };
+    }
+    public void SetCurrentPlayerData(PlayerData data)
+    {
+        transform.position = data.position;
+
+        Inventory = new Inventory();
+        if (data.EquipedItem == -1)
+            Inventory.equiped = null;
+        else
+        {
+            var grabedItemData = ItemDataBase.getItemData(data.EquipedItem);
+            var go = grabedItemData.inGamePrefab[UnityEngine.Random.Range(0, grabedItemData.inGamePrefab.Length)];
+            var instance = Instantiate(go);
+            AttachItemToHand(go.GetComponent<Item>());
+        }
+        Inventory.maxItemsSlots = data.maxItemsSlots;
+        Inventory.slots = new List<Item>();
+
+        foreach (var item in data.inventory) //Reconstruimos el inventario.
+        {
+            var itemdata = ItemDataBase.getItemData(item);
+            var toAddItem = itemdata.inGamePrefab[0].GetComponent<Item>();
+
+            Inventory.slots.Add(toAddItem);
+        }
+    }
+
+    //======================================================================================
 
     #region Componentes
     Rigidbody _rb;
@@ -246,7 +300,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
                 }
             }
 
-            if (_inventory.equiped != null)
+            if (Inventory.equiped != null)
             {
                 if (Input.GetKeyDown(KeyCode.Alpha2) && !_Aiming)
                 {

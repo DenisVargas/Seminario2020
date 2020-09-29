@@ -5,6 +5,7 @@ using Core.DamageSystem;
 using IA.LineOfSight;
 using IA.FSM;
 using IA.PathFinding;
+using Core.SaveSystem;
 
 [RequireComponent(typeof(Animator), typeof(LineOfSightComponent), typeof(PathFindSolver))]
 public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEntity
@@ -251,5 +252,14 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     private void OnDestroy()
     {
         OnEntityDead(gameObject);
+    }
+    public virtual void LoadEnemyData(EnemyData enemyData)
+    {
+        print($"{gameObject.name} has loaded his data.");
+    }
+    public virtual EnemyData getEnemyData()
+    {
+        //Esto hay que overraidarlo en cada tipo de enemigo!!
+        return new EnemyData();
     }
 }

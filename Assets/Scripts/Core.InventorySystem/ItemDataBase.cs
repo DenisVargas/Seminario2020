@@ -49,7 +49,17 @@ namespace Core.InventorySystem
                     _dataBase.Add(id, idata);
             }
         }
+        public static Item getItem(int ID)
+        {
+            if (_instance._dataBase.ContainsKey(ID))
+            {
+                var data = _instance._dataBase[ID];
 
+                return data.inGamePrefab[0].GetComponent<Item>();
+            }
+
+            return null;
+        }
         /// <summary>
         /// Retorna la data correspondiente a un Item dado su ID.
         /// </summary>

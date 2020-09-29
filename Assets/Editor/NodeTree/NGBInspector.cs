@@ -17,6 +17,8 @@ public class NGBInspector : Editor
     public override void OnInspectorGUI()
     {
         //base.OnInspectorGUI();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("GraphID"));
+
         if (GUILayout.Button("Rename and Reasign ID in All Children"))
         {
             int Count = 0;

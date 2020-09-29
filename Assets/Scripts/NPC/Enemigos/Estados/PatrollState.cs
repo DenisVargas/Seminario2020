@@ -70,11 +70,6 @@ public class PatrollState : State
 
         CalculatePrimaryRoute(_currentNode, _nextWayPointNode, true);
 
-//#if UNITY_EDITOR
-//        if (debugMessages)
-//            Debug.Log($"selected current node is {_currentNode.ID} and its area is { _currentNode.area}"); 
-//#endif
-
         //Me aseguro de que el próximo nodo no sea el mismo que el current.
         _nextNode = _solver.currentPath.Dequeue();
         if (_nextNode == _currentNode)

@@ -9,16 +9,15 @@ namespace Core.InventorySystem
     //Item es una clase que utilizaremos para identificar  realizar operaciones sobre los objetos que pueden entrar dentro de un inventario.
     //Es una clase especial de Interactuable que admite multiples comandos, y es dinámico:
     //  Dependiendo de los items que estén a mano del jugador, este podría desbloquear mas iteracciones.
-    [RequireComponent(typeof(InteractionHandler))]
+    [System.Serializable, RequireComponent(typeof(InteractionHandler))]
     public class Item : MonoBehaviour, IInteractionComponent
     {
         public Action<GameObject> OnPickDepedency = delegate { };
 
         public int ID = 0;
-        public string ItemName = "";
-        public string Description = "";
-        public Texture2D Icon = null;
-
+        [SerializeField] string ItemName = "";
+        [SerializeField] string Description = "";
+        [SerializeField] Texture2D Icon = null;
         public bool isCombinable, isThroweable, isConsumable = false;
 
         //Operaciones estáticas son aquellas que siempre están disponibles.

@@ -3,6 +3,7 @@ using UnityEngine;
 using IA.FSM;
 using Core.Debuging;
 using IA.PathFinding;
+using Core.SaveSystem;
 
 public class Grunt : BaseNPC
 {
@@ -124,6 +125,25 @@ public class Grunt : BaseNPC
             debugText += $"Clon encontrado: {_playerClone != null}\n";
             DebugText_View.text = debugText; 
         #endif
+    }
+
+    //========================================== Sistema de Guardado ==========================================
+
+    public override EnemyData getEnemyData()
+    {
+        var myData = new EnemyData();
+        myData.enemyType = EnemyType.Grunt;
+        myData.position = transform.position;
+        myData.forward = transform.forward;
+        myData.WaypointIDs = new int[0];
+        return myData;
+    }
+    public override void LoadEnemyData(EnemyData enemyData)
+    {
+        //base.LoadEnemyData(enemyData);
+        transform.position = enemyData.position;
+        transform.forward = enemyData.forward;
+        _states.SetState(CommonState.idle);
     }
 
     //=================================== Private Memeber Funcs =============================

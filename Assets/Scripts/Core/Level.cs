@@ -37,10 +37,10 @@ namespace Core.SaveSystem
                 //Debo chequear que el archivo exista en Data
                 if (Directory.Exists(root))
                 {
-                    Debug.Log($"El directorio {root} existe.");
+                    //Debug.Log($"El directorio {root} existe.");
                     if (File.Exists(completeFilePath))
                     {
-                        Debug.Log($"El archivo {root + completeFilePath} Existe");
+                        //Debug.Log($"El archivo {root + completeFilePath} Existe");
                         Serializer.Serialize<CheckPoint>(value, completeFilePath, false);
                     }
                 }
@@ -66,7 +66,16 @@ namespace Core.SaveSystem
             }
         }
 
-        [MenuItem("Tests/TryLoadLevel")]
+        public static bool currentLevelHasChekpoint()
+        {
+            Level current = FindObjectOfType<Level>();
+            var save = current.saveFile;
+            if (save != null && save.levelID == current.LevelID)
+                return true;
+
+            return false;
+        }
+
         public static void LoadGameData()
         {
             Level currentLevel = GetCurrentLevel();
@@ -79,7 +88,7 @@ namespace Core.SaveSystem
                 var instantiatedPlayer = Instantiate(currentLevel.prefabPlayer);
                 player = instantiatedPlayer.GetComponent<Controller>();
             }
-            player.SetCurrentPlayerData(lastSave.playerData); //Con esto esta cargador la data del player.
+            player.LoadPlayerCheckpoint(lastSave.playerData); //Con esto esta cargador la data del player.
 
             var loadedGrunts = FindObjectsOfType<Grunt>(); //Encuentro todos los grunts que ya están cargados.
             int findedGrunts = loadedGrunts.Length;
@@ -120,7 +129,6 @@ namespace Core.SaveSystem
             camera.transform.position = lastSave.CameraPosition;
             camera.transform.rotation = lastSave.CameraRotation;
         }
-
         /// <summary>
         /// Devuelve una referencia al nivel actual.
         /// </summary>
@@ -128,17 +136,13 @@ namespace Core.SaveSystem
         {
             return FindObjectOfType<Level>();
         }
-
-#if UNITY_EDITOR
-        [MenuItem("Tests/TrySetCheckPoint")]
-#endif
         /// <summary>
         /// Crea un snapshot del nivel actual que luego puede ser cargado!
         /// </summary>
         /// <returns>True si el snapshot se creo Satisfactoriamente!</returns>
         public static bool SetCheckPoint()
         {
-            Debug.Log("Seteo un CheckPoint");
+            //Debug.Log("Seteo un CheckPoint");
             var currentLevel = FindObjectOfType<Level>();
 
             var newSave = new CheckPoint();
@@ -157,17 +161,5 @@ namespace Core.SaveSystem
             currentLevel.saveFile = newSave;
             return false;
         }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-    } 
+    }
 }

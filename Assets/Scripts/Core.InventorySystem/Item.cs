@@ -176,12 +176,12 @@ namespace Core.InventorySystem
 
         protected virtual void OnTake()
         {
-            print($"Take Executed in item {gameObject.name}");
+            //print($"Take Executed in item {gameObject.name}");
             OnPickDepedency(gameObject);
         }
         protected virtual void Drop(params object[] optionalParams)
         {
-            print($"Drop Executed in item {gameObject.name}");
+            //print($"Drop Executed in item {gameObject.name}");
 
             //TODO::Rehabilitar interacción.
             //TODO::Caller:: Posicionar el objeto si es necesario.

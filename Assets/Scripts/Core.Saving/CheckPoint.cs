@@ -11,6 +11,8 @@ namespace Core.SaveSystem
     {
         //Posición del jugador.
         public Vector3 position;
+        //Rotación del jugador
+        public Quaternion rotacion;
         //Inventario / Equipamiento. Guardado como una lista de ItemID.
         public int maxItemsSlots;
         public int EquipedItem;

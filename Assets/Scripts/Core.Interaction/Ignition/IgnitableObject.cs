@@ -112,7 +112,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
 
     public void KillIngnitableObject()
     {
-        print($"{gameObject.name} la baba se apaga ignite");
+        //print($"{gameObject.name} la baba se apaga ignite");
         Burning = false;
         // Desactivamos la interacción x ignite.
         // Desactivamos las particulas de fuego
@@ -221,7 +221,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     {
         if (!Burning && operation == OperationType.Ignite)
         {
-            print($"{gameObject.name} empezo la operación ignite");
+            //print($"{gameObject.name} empezo la operación ignite");
             // Desactivo las interacciones.
             foreach (var item in fireParticles)
                 item.SetActive(true);

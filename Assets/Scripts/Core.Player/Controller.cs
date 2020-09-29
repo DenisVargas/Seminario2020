@@ -10,15 +10,16 @@ using Core.SaveSystem;
 using System.Linq;
 
 [RequireComponent(typeof(PathFindSolver), typeof(MouseContextTracker))]
-public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
+public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEntity
 {
     //Stats.
     public int Health = 100;
 
-    public event Action ImDeadBro = delegate { };
+    public event Action OnPlayerDied = delegate { };
     public event Action OnMovementChange = delegate { };
     public event Action OnInputLocked = delegate { };
-    public event Action<Item> CheckItemDislayUI = delegate { };
+    public event Action OnDisplayThrowUI = delegate { };
+    public event Action<GameObject> OnEntityDead = delegate { };
 
     public Transform manitodumacaco;
     public ParticleSystem BloodStain;
@@ -57,8 +58,17 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         }
     }
     bool ClonInputEnabled = true;
-    //bool playerMovementEnabled = true;
     Vector3 velocity;
+
+    public void SubscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    {
+        this.OnEntityDead += OnEntityDead;
+    }
+
+    public void UnsuscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    {
+        this.OnEntityDead -= OnEntityDead;
+    }
 
     //================================= Save System ========================================
 
@@ -67,15 +77,17 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         return new PlayerData()
         {
             position = transform.position,
+            rotacion = transform.rotation,
             EquipedItem = Inventory.equiped != null ? Inventory.equiped.ID : -1,
             maxItemsSlots = Inventory.maxItemsSlots,
             inventory = Inventory.slots.Select(x => x.ID)
                                          .ToList()
         };
     }
-    public void SetCurrentPlayerData(PlayerData data)
+    public void LoadPlayerCheckpoint(PlayerData data)
     {
         transform.position = data.position;
+        transform.rotation = data.rotacion;
 
         Inventory = new Inventory();
         if (data.EquipedItem == -1)
@@ -97,6 +109,20 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
             Inventory.slots.Add(toAddItem);
         }
+
+        _a_GetSmashed = false;
+        _a_GetStunned = false;
+        _a_Dead = false;
+        _a_Walking = false;
+        Health = 100;
+        PlayerInputEnabled = true;
+        BloodStain.Clear();
+        BloodStain.Stop();
+
+        //_rb.useGravity = false;
+        _rb.velocity = Vector3.zero;
+        OnEntityDead = delegate { };
+        GetComponentInChildren<HurtBox>().DetectIncomingDamage = true;
     }
 
     //======================================================================================
@@ -194,9 +220,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         _mainCollider = GetComponent<Collider>();
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
+        OnPlayerDied += _canvasController.DisplayLoose;
+        OnDisplayThrowUI += _canvasController.DisplayThrow;
         OnInputLocked += _canvasController.CloseCommandMenu;
         _mv = GetComponent<MouseView>();
-       _mtracker = GetComponent<MouseContextTracker>();
+        _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
         _tm = GetComponent<TrowManagement>();
 
@@ -525,7 +553,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
     public void AttachItemToHand(Item item)
     {
-        print($"{ gameObject.name} ha pikeado un item. {item.name} se attachea a la mano.");
+        //print($"{ gameObject.name} ha pikeado un item. {item.name} se attachea a la mano.");
         //Presuponemos que el objeto es troweable.
         //Emparentamos el item al transform correspondiente.
         item.SetPhysicsProperties(false, Vector3.zero);
@@ -533,10 +561,12 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
         item.transform.localPosition = Vector3.zero;
         item.ExecuteOperation(OperationType.Take);
         _inventory.EquipItem(item);
+        if (_inventory.equiped != null && _inventory.equiped.isThroweable)
+            OnDisplayThrowUI();
     }
     public Item ReleaseEquipedItemFromHand(bool setToDefaultPosition = false, params object[] options)
     {
-        print($"{ gameObject.name} soltará un item equipado. {_inventory.equiped.name} se attachea a la mano.");
+        //print($"{ gameObject.name} soltará un item equipado. {_inventory.equiped.name} se attachea a la mano.");
         //Desemparentamos el item equipado de la mano.
         Item released = _inventory.UnEquipItem();
 
@@ -651,7 +681,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
     void Die(int KillingAnimType)
     {
         PlayerInputEnabled = false;
-        //playerMovementEnabled = false;
         Health = 0;
 
         _rb.useGravity = false;
@@ -663,7 +692,12 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         _a_Dead = true;
 
-        ImDeadBro();
+        comandos.Clear();
+        Queued_TargetInteractionComponent = null;
+        QueuedMovementEndPoint = null;
+
+        OnEntityDead(gameObject);
+        OnPlayerDied();
     }
 
     //====================================== AnimEvents =======================================
@@ -722,6 +756,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>
 
         comandos.Dequeue().Execute();
         PlayerInputEnabled = true;
-        CheckItemDislayUI(_inventory.equiped);
     }
- }
+
+
+}

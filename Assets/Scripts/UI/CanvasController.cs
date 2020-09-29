@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Core.Interaction;
 using Core.InventorySystem;
+using Core.SaveSystem;
 
 public class CanvasController : MonoBehaviour
 {
@@ -19,9 +20,6 @@ public class CanvasController : MonoBehaviour
     private void Awake()
     {
         _MultiCommandMenu.LoadData();
-        Controller Con = FindObjectOfType<Controller>();
-        Con.ImDeadBro += DisplayLoose;
-        Con.CheckItemDislayUI += DisplayThrow;
         Fade.canvasRenderer.SetAlpha(1);
         ThrwImg.canvasRenderer.SetAlpha(0);
         StartCoroutine(FadeIn());
@@ -41,43 +39,50 @@ public class CanvasController : MonoBehaviour
         _MultiCommandMenu.gameObject.SetActive(false);
     }
 
-    void DisplayLoose()
+    /// <summary>
+    /// Inicia un fade-Out
+    /// </summary>
+    public void DisplayLoose()
     {
-        StartCoroutine(Rutina());
+        StartCoroutine(FadeOut(3f));
     }
-    void DisplayThrow(Item equipedItem)
+    /// <summary>
+    /// Muestra un ícono de target.
+    /// </summary>
+    public void DisplayThrow()
     {
-        if (equipedItem != null && equipedItem.isThroweable)
-            ThrwImg.canvasRenderer.SetAlpha(1);
-    }
-    IEnumerator Rutina()
-    {
-        yield return new WaitForSeconds(3f);
-        StartCoroutine(FadeOut());
-
+        ThrwImg.canvasRenderer.SetAlpha(1);
     }
     IEnumerator FadeIn()
     {
+        Fade.canvasRenderer.SetAlpha(1.0f);
+        Fade.enabled = true;
         for (int i = 9; i >= 0; i--)
         {
             yield return new WaitForSeconds(0.1f);
-         
             Fade.canvasRenderer.SetAlpha(i*0.1f);
             if (i == 0)
                 Fade.enabled = false;
         }
     }
-    IEnumerator FadeOut()
+    IEnumerator FadeOut(float initialDelay = 0.1f)
     {
+        yield return new WaitForSeconds(initialDelay);
+        Fade.canvasRenderer.SetAlpha(0.0f);
         Fade.enabled = true;
         for (int i = 1; i <= 10; i++)
         {
             yield return new WaitForSeconds(0.1f);
             Fade.canvasRenderer.SetAlpha(i * 0.1f);
             if(i==10)
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
+            {
+                if (Level.currentLevelHasChekpoint())
+                {
+                    Level.LoadGameData();
+                    StartCoroutine(FadeIn());
+                }
+                else SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
     }
-
 }

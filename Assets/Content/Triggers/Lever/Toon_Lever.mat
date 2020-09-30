@@ -37,10 +37,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ASEOutlineWidth: 0.01
+    - _Bias: 0
     - _FresnelBias: 0.77
     - _Power: 3.1
-    - _Scale: -0.02
+    - _Scale: 0
     - __dirty: 0
+    - _change: 0
     m_Colors:
     - _ASEOutlineColor: {r: 0.2595275, g: 0.764151, b: 0.082903184, a: 1}
     - _Color1: {r: 0.7264151, g: 0.40195495, b: 0.10622107, a: 0}

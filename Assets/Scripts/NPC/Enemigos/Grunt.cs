@@ -21,8 +21,9 @@ public class Grunt : BaseNPC
     }
 
     #region DEBUG
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [Space(), Header("DEBUG GIZMOS")]
+    [SerializeField] bool DebugThisGrunt = false;
     [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
     [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
     [SerializeField] TMPro.TMP_Text DebugText_View = null;
@@ -172,11 +173,20 @@ public class Grunt : BaseNPC
     public override HitResult GetHit(Damage damage)
     {
         HitResult result = new HitResult() { fatalDamage = true, conected = true };
-        print($"Recibió un golpe {damage.type.ToString()} y es un instakill: {damage.instaKill}");
-        //Al recibir daño...
+        
+
         if (_states.currentState.StateType == CommonState.dead)
             return new HitResult { conected = false, fatalDamage = false };
 
+        if (damage.type == DamageType.hit)
+        {
+#if UNITY_EDITOR
+            if (DebugThisGrunt)
+                print($"{gameObject.name} Recibió un golpe de tipo {damage.type.ToString()} y es un instakill?: {damage.instaKill}");
+#endif
+
+            _states.Feed(CommonState.rage);
+        }
 
         if (damage.instaKill) Health = 0;
 

@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9118807196185049338}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &8811308873635539129
 Light:
@@ -278,7 +278,7 @@ RectTransform:
   m_Children:
   - {fileID: 1546326007849555788}
   m_Father: {fileID: 9118807196185049338}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -4.953, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -375,64 +375,6 @@ Transform:
   m_Father: {fileID: 317979888359518059}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -73.003006, y: -75.936005, z: 75.702}
---- !u!1 &8855646504975492525
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6848361321821814284}
-  - component: {fileID: 4696982817465683796}
-  - component: {fileID: 2766767475899118}
-  m_Layer: 8
-  m_Name: HurtBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6848361321821814284
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8855646504975492525}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.012, y: 0, z: 0.196}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 9118807196185049338}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &4696982817465683796
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8855646504975492525}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2.6844735
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.8422365, z: 0}
---- !u!114 &2766767475899118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8855646504975492525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 613f318e52976314798969aacc59db02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9118807196185049341
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +417,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5444688218013075045}
-  - {fileID: 6848361321821814284}
   - {fileID: 1227944865090800854}
   - {fileID: 1546326008612498239}
   m_Father: {fileID: 0}
@@ -574,6 +515,7 @@ MonoBehaviour:
   _minDetectionRange: 3
   Weaknesses: []
   resistances: []
+  DebugThisGrunt: 0
   DEBUG_MINDETECTIONRANGE: 0
   DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 1, b: 1, a: 1}
   DebugText_View: {fileID: 1546326007849555790}
@@ -637,7 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67e9d5aa6993614a9275cc3ed90e412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateType: 9
+  stateType: 10
 --- !u!114 &7780291179722826629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -663,7 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4658dddcba35a6e47835de998ec273d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateType: 6
+  stateType: 7
 --- !u!114 &7780291179722826631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,7 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7620ac8243984854a9d39e74a535b7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateType: 10
+  stateType: 11
   _mainCollider: {fileID: 3840256945297130291}
 --- !u!114 &7780291179722826367
 MonoBehaviour:
@@ -705,12 +647,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c44f3e6db331ef4c938cdebf3af6cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateType: 11
+  stateType: 14
   _targeteables:
     serializedVersion: 2
     m_Bits: 4294967295
   _rageMode_TargetDetectionRange: 5
   _detectionDelay: 0.5
+  debugThisState: 0
   DEBUG_RageMode_Ranges: 1
   DEBUG_RM_TrgDetectRange_GIZMOCOLOR: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1001 &1078013808036097407

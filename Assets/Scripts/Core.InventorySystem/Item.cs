@@ -13,6 +13,8 @@ namespace Core.InventorySystem
     public class Item : MonoBehaviour, IInteractionComponent
     {
         public Action<GameObject> OnPickDepedency = delegate { };
+        public Action<Collider> OnSetOwner = delegate { };
+        public Action OnThrowItem = delegate { };
 
         public int ID = 0;
         [SerializeField] string ItemName = "";
@@ -24,7 +26,8 @@ namespace Core.InventorySystem
         List<OperationType> Operations = new List<OperationType>();
         public bool isDynamic => true;
 
-        [SerializeField] Collider _physicCollider;
+        [SerializeField] Collider _physicCollider = null;
+        [SerializeField] Collider _owner = null;
         [SerializeField] Rigidbody _rb = null;
 
 #if UNITY_EDITOR
@@ -33,12 +36,10 @@ namespace Core.InventorySystem
 
         protected virtual void Awake()
         {
-            _rb = GetComponent<Rigidbody>();
+            if (_rb == null)
+                _rb = GetComponent<Rigidbody>();
 
-            #if UNITY_EDITOR
-            if (debugThis) 
-            #endif
-                SetData(ItemDataBase.getItemData(ID));
+            SetData(ItemDataBase.getItemData(ID));
 
             Operations.Add(OperationType.inspect);
             Operations.Add(OperationType.Drop);
@@ -129,7 +130,6 @@ namespace Core.InventorySystem
                     break;
                 case OperationType.Throw:
                     OnThrow();
-                    //StartCoroutine(ParabolicMove((Transform)optionalParams[0]));
                     break;
                 case OperationType.inspect:
                     //La UI no requiere del objeto.
@@ -150,8 +150,6 @@ namespace Core.InventorySystem
                     break;
             }
         }
-
-
         public virtual void CancelOperation(OperationType operation, params object[] optionalParams) { }
 
         //==============================================================================================================
@@ -166,6 +164,14 @@ namespace Core.InventorySystem
             }
             _physicCollider.enabled = state;
         }
+        public void SetOwner(Collider Owner)
+        {
+            if (Owner != null)
+            {
+                _owner = Owner;
+                OnSetOwner(_owner);
+            }
+        }
 
         //==================================== Operaciones =============================================================
 
@@ -176,7 +182,14 @@ namespace Core.InventorySystem
 
         protected virtual void OnTake()
         {
-            //print($"Take Executed in item {gameObject.name}");
+
+#if UNITY_EDITOR
+            if (debugThis)
+            {
+                print($"Take Executed in item {gameObject.name}");
+            }
+#endif
+
             OnPickDepedency(gameObject);
         }
         protected virtual void Drop(params object[] optionalParams)
@@ -191,6 +204,7 @@ namespace Core.InventorySystem
         protected virtual void OnThrow()
         {
             print($"Throw Executed in item {gameObject.name}");
+            OnThrowItem();
         }
         protected virtual void Use(params object[] optionalParams)
         {
@@ -199,15 +213,15 @@ namespace Core.InventorySystem
 
         //==================================== Corrutinas ==============================================================
 
-        IEnumerator ParabolicMove(Transform target)
-        {
-            Vector3 firstPosition = transform.position;
-            for (float i = 0; i < 1; i += 0.1f)
-            {
-                yield return new WaitForSeconds(0.01f);
-                //transform.position = Vector3.Slerp(firstPosition, target.transform.position, i);
-                transform.position = new Vector3(Mathf.Lerp(firstPosition.x, target.transform.position.x, i), Mathf.Lerp(firstPosition.y, target.position.y, i) + Mathf.Sin(i * Mathf.PI) * 5, Mathf.Lerp(firstPosition.z, target.transform.position.z, i));
-            }
-        }
+        //IEnumerator ParabolicMove(Transform target)
+        //{
+        //    Vector3 firstPosition = transform.position;
+        //    for (float i = 0; i < 1; i += 0.1f)
+        //    {
+        //        yield return new WaitForSeconds(0.01f);
+        //        //transform.position = Vector3.Slerp(firstPosition, target.transform.position, i);
+        //        transform.position = new Vector3(Mathf.Lerp(firstPosition.x, target.transform.position.x, i), Mathf.Lerp(firstPosition.y, target.position.y, i) + Mathf.Sin(i * Mathf.PI) * 5, Mathf.Lerp(firstPosition.z, target.transform.position.z, i));
+        //    }
+        //}
     }
 }

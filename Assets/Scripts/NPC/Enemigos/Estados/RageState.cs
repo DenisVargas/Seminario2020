@@ -28,6 +28,7 @@ public class RageState : State
 
     #region DEBUG
     [Space(), Header("DEBUG")]
+    [SerializeField] bool debugThisState = false;
     [SerializeField] bool DEBUG_RageMode_Ranges = true;
     [SerializeField] Color DEBUG_RM_TrgDetectRange_GIZMOCOLOR = Color.blue;
     private void OnDrawGizmos()
@@ -43,7 +44,10 @@ public class RageState : State
 
     public override void Begin()
     {
-        //print($"{gameObject.name} entró al estado Rage");
+#if UNITY_EDITOR
+        if(debugThisState)
+            print($"{gameObject.name} entró al estado Rage"); 
+#endif
         _targetsfounded = new List<Transform>();
 
         _anims.SetBool("GetHited", true);

@@ -18,7 +18,6 @@ public class Baboso : BaseNPC
     [SerializeField] GameObject[] burnParticles   = new GameObject[2];
 
     Collider _mainCollider      = null;
-    HurtBox _hurtbox            = null;
     Damage _damageState         = new Damage();
     Trail _trail                = null;
 
@@ -68,7 +67,6 @@ public class Baboso : BaseNPC
 
         //Seteo todas las referencias a los componentes.
         _mainCollider = GetComponent<Collider>();
-        _hurtbox = GetComponentInChildren<HurtBox>();
         _trail = GetComponentInChildren<Trail>();
 
         #region State Machine: Estados

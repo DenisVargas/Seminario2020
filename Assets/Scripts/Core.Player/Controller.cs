@@ -122,7 +122,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         //_rb.useGravity = false;
         _rb.velocity = Vector3.zero;
         OnEntityDead = delegate { };
-        GetComponentInChildren<HurtBox>().DetectIncomingDamage = true;
     }
 
     //======================================================================================
@@ -556,6 +555,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         //print($"{ gameObject.name} ha pikeado un item. {item.name} se attachea a la mano.");
         //Presuponemos que el objeto es troweable.
         //Emparentamos el item al transform correspondiente.
+        item.SetOwner(_mainCollider);
         item.SetPhysicsProperties(false, Vector3.zero);
         item.transform.SetParent(manitodumacaco);
         item.transform.localPosition = Vector3.zero;

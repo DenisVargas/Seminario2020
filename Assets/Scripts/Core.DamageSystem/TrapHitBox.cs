@@ -36,11 +36,9 @@ public class TrapHitBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var hurtBox = other.GetComponent<HurtBox>();
-        if (hurtBox != null)
-        {
-            hurtBox.TransferDamage(new Damage() { instaKill = _instaKill, Ammount = _ammount, criticalMultiplier = _criticalMultiplier, type = _damageType });
-        }
+        var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
+        if (damageable != null)
+            damageable.GetHit(new Damage() { instaKill = _instaKill, Ammount = _ammount, criticalMultiplier = _criticalMultiplier, type = _damageType });
     }
 
     public void AE_TrapActivated()

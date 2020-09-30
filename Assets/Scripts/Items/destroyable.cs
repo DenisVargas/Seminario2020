@@ -7,7 +7,7 @@ public class destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
 {
     public GameObject destroyedObject;
     public GameObject notDestroyedObject;
-    private void Awake()
+    protected virtual void Awake()
     {
         destroyedObject.SetActive(false);
         notDestroyedObject.SetActive(true);
@@ -17,7 +17,6 @@ public class destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
 
     public void FeedDamageResult(HitResult result)
     {
-
         throw new System.NotImplementedException();
     }
 
@@ -36,17 +35,14 @@ public class destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
         //    destroyedObject.SetActive(true);
         //    notDestroyedObject.SetActive(false);
         //    Debug.Log("me rompi");
-
         //}
         //if(damage.type == DamageType.e_fire)
         //{
-
         //    // aca pasa algo
         //}
 
         return new HitResult() { conected = true, fatalDamage = true };
     }
-
     public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod)
     {
         throw new System.NotImplementedException();

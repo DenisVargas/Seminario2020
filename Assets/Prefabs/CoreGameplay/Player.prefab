@@ -91,64 +91,6 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &1949279944099704947
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5752182197077050256}
-  - component: {fileID: 2321588928088697363}
-  - component: {fileID: 8538149715894378755}
-  m_Layer: 8
-  m_Name: HurtBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5752182197077050256
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949279944099704947}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6414858267132625118}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &2321588928088697363
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949279944099704947}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.40038922
-  m_Height: 1.906326
-  m_Direction: 1
-  m_Center: {x: 0.012917668, y: 0.710472, z: 0}
---- !u!114 &8538149715894378755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949279944099704947}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 613f318e52976314798969aacc59db02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3822261306509709452
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +158,6 @@ Transform:
   m_Children:
   - {fileID: 1034160237}
   - {fileID: 3379571561354770185}
-  - {fileID: 5752182197077050256}
   - {fileID: 7659735042965682337}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -327,10 +268,6 @@ MonoBehaviour:
   moveSpeed: 4
   _movementTreshold: 0.18
   MouseDebug: {fileID: 0}
-  _inventory:
-    _maxItemsSlots: 3
-    _slots: []
-    equiped: {fileID: 0}
   Clon: {fileID: 0}
   _clonLife: 20
   _clonCooldown: 4
@@ -561,7 +498,7 @@ PrefabInstance:
     - target: {fileID: 397471188853756198, guid: 8f3cd830763aec046a5eafb04062d29d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 397471188853756198, guid: 8f3cd830763aec046a5eafb04062d29d,
         type: 3}

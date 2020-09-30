@@ -2,35 +2,68 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Core.DamageSystem;
+using Core.InventorySystem;
 
 public class Rocks : destroyable
 {
+    public LayerMask Hiteables = ~0;
     public Damage MyDamage;
+    public bool isFlying = false;
 
-    private void OnTriggerEnter(Collider collision)
+    [SerializeField] Collider toIgnore = null;
+    [SerializeField] Item itemComp = null;
+
+#if UNITY_EDITOR
+    [SerializeField] bool debugThisRock = false;
+#endif
+
+    protected override void Awake()
     {
-        var damagecomponent = collision.GetComponent<IDamageable<Damage, HitResult>>();
-        if (damagecomponent != null)
+        base.Awake();
+        if (itemComp)
         {
-            GetHit(damagecomponent.GetDamageStats());
-            damagecomponent.GetHit(GetDamageStats());
+            //El owner de un item es ignorado cuando ocurre una colisión!
+            itemComp.OnSetOwner += (owner) => { toIgnore = owner; };
+            //Al ejecutarse Throw en un item, el estado pasa a flying.
+            itemComp.OnThrowItem += () => { isFlying = true; };
         }
     }
-    public override Damage GetDamageStats()
+
+    private void OnCollisionEnter(Collision collision)
     {
-        return MyDamage;
+
+#if UNITY_EDITOR
+        if (debugThisRock)
+            print($"Colisioné con algo wey: {collision.gameObject.name}");
+#endif
+
+        if (isFlying)
+        {
+            if (collision.collider == toIgnore) return;
+
+            var damagecomponent = collision.gameObject.GetComponent<IDamageable<Damage, HitResult>>();
+            if (damagecomponent != null)
+            {
+                Damage enemyCollisionDamage = new Damage() { type = DamageType.hit };
+                GetHit(enemyCollisionDamage); //Recibo daño por choque.
+                damagecomponent.GetHit(MyDamage); //Causo daño por choque.
+            } 
+        }
     }
     public override HitResult GetHit(Damage damage)
     {
-
-        if (damage.type == DamageType.explotion)
+        if (damage.type == DamageType.explotion || damage.type == DamageType.hit)
         {
             destroyedObject.SetActive(true);
             notDestroyedObject.SetActive(false);
-            
-
+            StartCoroutine(DelayedDestroy(2f));
         }
-        
+
         return new HitResult() { conected = true, fatalDamage = true };
+    }
+    IEnumerator DelayedDestroy(float delay)
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
     }
 }

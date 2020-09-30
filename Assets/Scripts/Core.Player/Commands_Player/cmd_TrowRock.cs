@@ -46,6 +46,7 @@ public class cmd_ThrowEquipment : IQueryComand
     {
         Vector3 origin = launchOrigin.position;
         Item released = ReleaseEquipment(true, new object[0]);//Lo desatacheo.
+        released.ExecuteOperation(OperationType.Throw);
         //Utilizando trowManager le añado una fuerza.
         tr.ThrowObject(released.gameObject, origin, targetNode.transform.position, time);
         completed = true;

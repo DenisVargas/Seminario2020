@@ -17,7 +17,7 @@ namespace Core.Interaction
     [RequireComponent(typeof(Collider))]
     public class InteractionHandler : MonoBehaviour, IInteractable
     {
-        [SerializeField] Collider _interactionCollider = null;
+        //[SerializeField] Collider _interactionCollider = null;
         [SerializeField] InteractionDisplaySettings displayOptions = new InteractionDisplaySettings();
 
         //Lista de interacciones posibles.
@@ -28,11 +28,7 @@ namespace Core.Interaction
         public bool InteractionEnabled
         {
             get => _interactionEnabled;
-            set
-            {
-                _interactionEnabled = value;
-                _interactionCollider.enabled = _interactionEnabled;
-            }
+            set => _interactionEnabled = value;
         }
         int _interactionsListed = -1;
         public int InteractionsAmmount

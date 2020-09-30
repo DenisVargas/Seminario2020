@@ -77,7 +77,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionCollider: {fileID: 8614256874735383781}
   _interactionEnabled: 1
 --- !u!114 &8702789833572466323
 MonoBehaviour:
@@ -99,7 +98,9 @@ MonoBehaviour:
   isThroweable: 0
   isConsumable: 0
   _physicCollider: {fileID: 8614256874735383781}
+  _owner: {fileID: 0}
   _rb: {fileID: 8255644011357120305}
+  debugThis: 0
   burningComponent: {fileID: 1110212495423863185}
   _isOn: 0
 --- !u!1001 &505643807314577668
@@ -183,7 +184,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 7d34abb08688a294c942b41f5bd6f416, type: 2}
+      objectReference: {fileID: 2100000, guid: d01de142aad877744a35e85af2c04c27, type: 2}
     - target: {fileID: -927199367670048503, guid: 4f2c6ada2eba44645aea8ff17ed2e317,
         type: 3}
       propertyPath: m_Name

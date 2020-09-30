@@ -759,7 +759,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1df2047ba4857064e93783aae5717a4f, type: 2}
+  - {fileID: 2100000, guid: e67f2b3924a9c5243b964c869688f04d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2742,6 +2742,7 @@ MonoBehaviour:
     instaKill: 0
     KillAnimationType: 0
   isFlying: 0
+  toIgnore: {fileID: 0}
   itemComp: {fileID: 4903890022063469045}
   debugThisRock: 0
 --- !u!114 &1963990917940396391
@@ -2777,6 +2778,7 @@ MonoBehaviour:
   isThroweable: 0
   isConsumable: 0
   _physicCollider: {fileID: 3456647685098316669}
+  _owner: {fileID: 0}
   _rb: {fileID: 1714221187}
   debugThis: 0
 --- !u!1 &5909229345970230364
@@ -3340,7 +3342,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6108430486926837128
 Transform:
   m_ObjectHideFlags: 0

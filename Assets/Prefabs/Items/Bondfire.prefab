@@ -236,7 +236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionCollider: {fileID: 827947386743203549}
   _interactionEnabled: 1
 --- !u!114 &1433424083271787401
 MonoBehaviour:
@@ -905,7 +904,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d4b7c0d170c61bd4185cc27050260ae6, type: 2}
+      objectReference: {fileID: 2100000, guid: 23d609b58aafd024382cf95584abdddc, type: 2}
     - target: {fileID: -927199367670048503, guid: ea60f4fff318aa642b7d633bf85f5c41,
         type: 3}
       propertyPath: m_Name

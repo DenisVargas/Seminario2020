@@ -11,6 +11,7 @@ public class Rocks : destroyable
     public bool isFlying = false;
 
     [SerializeField] Collider toIgnore = null;
+    [SerializeField] Collider _hitbox = null;
     [SerializeField] Item itemComp = null;
 
 #if UNITY_EDITOR
@@ -55,8 +56,10 @@ public class Rocks : destroyable
         if (damage.type == DamageType.explotion || damage.type == DamageType.hit)
         {
             destroyedObject.SetActive(true);
+            destroyedObject.transform.SetParent(null);
             notDestroyedObject.SetActive(false);
             StartCoroutine(DelayedDestroy(2f));
+            _hitbox.enabled = false;
         }
 
         return new HitResult() { conected = true, fatalDamage = true };

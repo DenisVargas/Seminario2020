@@ -122,6 +122,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         //_rb.useGravity = false;
         _rb.velocity = Vector3.zero;
         OnEntityDead = delegate { };
+        _hitbox.enabled = true;
     }
 
     //======================================================================================
@@ -129,7 +130,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     #region Componentes
     Rigidbody _rb;
     Camera _viewCamera;
-    Collider _mainCollider = null;
+    Collider _hitbox = null;
     CanvasController _canvasController = null;
     MouseView _mv;
     MouseContextTracker _mtracker;
@@ -216,7 +217,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     {
         //Componentes.
         _rb = GetComponent<Rigidbody>();
-        _mainCollider = GetComponent<Collider>();
+        _hitbox = GetComponent<Collider>();
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
         OnPlayerDied += _canvasController.DisplayLoose;
@@ -500,10 +501,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     public HitResult GetHit(Damage damage)
     {
         HitResult result = new HitResult() { conected = true, fatalDamage = true };
-        if (damage.instaKill)
-        {
+        if (IsAlive && damage.instaKill)
             Die(damage.KillAnimationType);
-        }
         return result;
     }
     public void FeedDamageResult(HitResult result) { }
@@ -555,7 +554,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         //print($"{ gameObject.name} ha pikeado un item. {item.name} se attachea a la mano.");
         //Presuponemos que el objeto es troweable.
         //Emparentamos el item al transform correspondiente.
-        item.SetOwner(_mainCollider);
+        item.SetOwner(_hitbox);
         item.SetPhysicsProperties(false, Vector3.zero);
         item.transform.SetParent(manitodumacaco);
         item.transform.localPosition = Vector3.zero;
@@ -587,7 +586,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
         _rb.useGravity = true;
         _rb.isKinematic = false;
-        _mainCollider.isTrigger = true;
+        _hitbox.isTrigger = true;
     }
     public void PlayBlood()
     {
@@ -686,6 +685,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _rb.useGravity = false;
         _rb.velocity = Vector3.zero;
         _a_KillingMethodID = KillingAnimType;
+        _hitbox.enabled = false;
 
         if (KillingAnimType == 1)
             _a_GetSmashed = true;

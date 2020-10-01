@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6398484833271114}
   - component: {fileID: 6821322518964237975}
-  - component: {fileID: 2732326046432118612}
   - component: {fileID: 4966029960977679780}
+  - component: {fileID: 2732326046432118612}
   m_Layer: 0
   m_Name: Box_1x1x1
   m_TagString: Untagged
@@ -49,26 +49,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.99654627, z: 1}
   m_Center: {x: 0, y: 0.50360227, z: 0}
---- !u!114 &2732326046432118612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381544679429717547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a8ed6555e1b7904599ccb413b263ab7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _operationType: 1
-  StainedMaterial: {fileID: 2100000, guid: bd200d7dffd8f6f4992d0350dc4ec5a3, type: 2}
-  ignitionParticle: {fileID: 8220435673935130844}
-  _suportedOperations: 
-  _interactionCollider: {fileID: 6821322518964237975}
-  _safeInteractionDistance: 1.5
-  DEBUG_safeInteractionDistance: 1
-  DEBUG_safeInteractionDistance_Color: {r: 0.18212414, g: 1, b: 0, a: 0.19607843}
 --- !u!114 &4966029960977679780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,6 +69,27 @@ MonoBehaviour:
     criticalMultiplier: 0
     instaKill: 0
     KillAnimationType: 0
+  AffectedNodes: []
+--- !u!114 &2732326046432118612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381544679429717547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8ed6555e1b7904599ccb413b263ab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _operationType: 1
+  StainedMaterial: {fileID: 2100000, guid: bd200d7dffd8f6f4992d0350dc4ec5a3, type: 2}
+  ignitionParticle: {fileID: 8220435673935130844}
+  _suportedOperations: 
+  _interactionCollider: {fileID: 6821322518964237975}
+  _safeInteractionDistance: 1.5
+  DEBUG_safeInteractionDistance: 1
+  DEBUG_safeInteractionDistance_Color: {r: 0.18212414, g: 1, b: 0, a: 0.19607843}
 --- !u!1 &7994080308221422143
 GameObject:
   m_ObjectHideFlags: 0
@@ -5059,7 +5060,7 @@ PrefabInstance:
     - target: {fileID: 6325665386275723659, guid: 3ee4c7d50a53c0a429411a4e883e91e1,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6325665386275723659, guid: 3ee4c7d50a53c0a429411a4e883e91e1,
         type: 3}

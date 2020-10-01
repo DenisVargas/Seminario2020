@@ -27,6 +27,9 @@ namespace Core.Interaction
         bool InteractionEnabled { get; set; }
         int InteractionsAmmount { get; }
 
+        void OnInteractionMouseOver();
+        void OnInteractionMouseExit();
+
         //Contemplar: Añadir componentes --> Activar o desactivar componentes.
         InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters);
         IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic);

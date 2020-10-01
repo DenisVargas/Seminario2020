@@ -4,11 +4,11 @@ namespace Core.Interaction
 {
     public interface IIgnitableObject : IInteractionComponent
     {
-        bool lockInteraction { get; }
-        bool isFreezed { get; set; }
+        //bool lockInteraction { get; }
+        //bool isFreezed { get; set; }
         bool Burning { get; }
 
-        bool IsActive { get; }
+        //bool IsActive { get; }
         GameObject gameObject { get; }
 
         //El objeto igniteable debería iniciar un efecto en cadena al activarse.

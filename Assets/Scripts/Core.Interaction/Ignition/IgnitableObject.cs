@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Core.Interaction;
 using Core.InventorySystem;
+using Core.DamageSystem;
 
 [RequireComponent(typeof(Collider), typeof(InteractionHandler))]
 public class IgnitableObject : MonoBehaviour, IIgnitableObject
@@ -11,6 +12,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     public Action OnDisable = delegate { };
     public event Action CancelInputs = delegate { };
 
+    [SerializeField] Damage toAplyDamage = new Damage();
     [SerializeField] float _chainReactionDelay = 0.1f;
     [SerializeField] GameObject[] fireParticles = null;
     [SerializeField] GameObject _root = null;
@@ -18,7 +20,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     [SerializeField] float _ignitableSearchRadius = 5f;
     [SerializeField] float _safeInteractionDistance = 3;
     [SerializeField] float _remainingLifeTime = 0;
-    [SerializeField] TrapHitBox _trapHitBox = null; //Se encarga de administrar daño por fuego.
+    [SerializeField] bool _burning = false;
     public List<GameObject> patches = new List<GameObject>();
 
     public GameObject RootGameObject
@@ -37,6 +39,27 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     float _burningTime = 5f;
     float _expansionDelayTime = 0.8f;
     float _inputWaitTime = 2f;
+
+#if UNITY_EDITOR
+
+    [SerializeField] bool debugThisIgnitableObject = false;
+
+#endif
+
+
+    private void OnTriggerStay(Collider other)
+    {
+#if UNITY_EDITOR
+        if (debugThisIgnitableObject)
+            Debug.Log($"{gameObject.name} entró en colisión.");
+#endif
+        if (Burning)
+        {
+            var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
+            if (damageable != null)
+                damageable.GetHit(toAplyDamage);
+        }
+    }
 
     void Awake()
     {
@@ -73,30 +96,30 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         }
     }
 
-    void FreezeAll()
-    {
-        checkSurroundingIgnitionObjects();
-        foreach (var ignit in toIgnite)
-        {
-            if (!ignit.isFreezed)
-            {
-                ignit.isFreezed = true;
-            }
-            else continue;
-        }
-    }
-    void UnFreezeAll()
-    {
-        checkSurroundingIgnitionObjects();
-        foreach (var ignit in toIgnite)
-        {
-            if (!ignit.isFreezed && ignit != (IIgnitableObject)this)
-            {
-                ignit.isFreezed = false;
-            }
-            else continue;
-        }
-    }
+    //void FreezeAll()
+    //{
+    //    checkSurroundingIgnitionObjects();
+    //    foreach (var ignit in toIgnite)
+    //    {
+    //        if (!ignit.isFreezed)
+    //        {
+    //            ignit.isFreezed = true;
+    //        }
+    //        else continue;
+    //    }
+    //}
+    //void UnFreezeAll()
+    //{
+    //    checkSurroundingIgnitionObjects();
+    //    foreach (var ignit in toIgnite)
+    //    {
+    //        if (!ignit.isFreezed && ignit != (IIgnitableObject)this)
+    //        {
+    //            ignit.isFreezed = false;
+    //        }
+    //        else continue;
+    //    }
+    //}
 
     //Esto se llamaba desde Trail.
     public void OnSpawn(float LifeTime, float IgnitionLifeTime, float InputWaitTime, float ExpansionDelayTime = 0.8f)
@@ -116,7 +139,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         Burning = false;
         // Desactivamos la interacción x ignite.
         // Desactivamos las particulas de fuego
-        _trapHitBox.IsActive = false;
+        //_trapHitBox.IsActive = false;
         _freezeInPlace = false;
         CancelInputs();
         CancelInputs = delegate { };
@@ -132,7 +155,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         for (int i = 0; i < cols.Length; i++)
         {
             var igniteable = cols[i].GetComponent<IIgnitableObject>();
-            if (igniteable != null && !toIgnite.Contains(igniteable) && igniteable.IsActive)
+            if (igniteable != null && !toIgnite.Contains(igniteable)) //&& igniteable.IsActive)
             {
                 //lo añado a una lista a ignitar.
                 toIgnite.Add(igniteable);
@@ -150,7 +173,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         checkSurroundingIgnitionObjects();
         foreach (var igniteable in toIgnite)
         {
-            if (igniteable != (IIgnitableObject)this && !igniteable.lockInteraction)
+            if (igniteable != (IIgnitableObject)this)// && !igniteable.lockInteraction)
             {
                 //igniteable.OnInteractionEvent();
             }
@@ -173,21 +196,21 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
 
     //======================================= Ingnition System ====================================================
 
-    
-    public bool IsActive => gameObject.activeSelf;
-    public bool Burning { get; private set; } = (false);
+    public bool Burning
+    {
+        get => _burning;
+        set => _burning = value;
+    }
     public bool isFreezed
     {
         get => _freezeInPlace;
         set
         {
             _freezeInPlace = value;
-            if (_freezeInPlace)
-                FreezeAll();
+            //if (_freezeInPlace)
+            //    FreezeAll();
         }
     }
-    public bool IsCurrentlyInteractable { get; private set; } = (true);
-    public bool lockInteraction { get; set; } = (false);
 
     public bool isDynamic => false;
 
@@ -225,7 +248,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
             // Desactivo las interacciones.
             foreach (var item in fireParticles)
                 item.SetActive(true);
-            _trapHitBox.IsActive = true;
+            //_trapHitBox.IsActive = true;
 
             StartCoroutine(DelayedOtherIgnition(_chainReactionDelay));
             _remainingLifeTime = _burningTime;

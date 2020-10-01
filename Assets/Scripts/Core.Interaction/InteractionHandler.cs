@@ -21,7 +21,9 @@ namespace Core.Interaction
         [SerializeField] InteractionDisplaySettings displayOptions = new InteractionDisplaySettings();
 
         //Lista de interacciones posibles.
-        List<Tuple<OperationType, IInteractionComponent>> interactionComponents;
+        List<Tuple<OperationType, IInteractionComponent>> interactionComponents = new List<Tuple<OperationType, IInteractionComponent>>();
+
+        [SerializeField] Renderer _renderer = null;
 
         //Bloquea la interactividad.
         [SerializeField] bool _interactionEnabled = true;
@@ -107,6 +109,24 @@ namespace Core.Interaction
             }
 
             return false;
+        }
+
+        public void OnInteractionMouseOver()
+        {
+            if (_renderer && InteractionEnabled)
+            {
+                var mat = _renderer.material;
+                mat.SetFloat("_mouseOver", 1);
+            }
+        }
+
+        public void OnInteractionMouseExit()
+        {
+            if (_renderer && InteractionEnabled)
+            {
+                var mat = _renderer.material;
+                mat.SetFloat("_mouseOver", 0);
+            }
         }
     }
 }

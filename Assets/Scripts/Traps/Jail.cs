@@ -5,33 +5,34 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Jail : MonoBehaviour
 {
-    Animator _anims;
-    //TrapHitBox _hitbox = null;
-    Damage _dmg = new Damage();
-    public CapsuleCollider _hitbox;
-    Collider _destructibleHitbox = null;
-    public GameObject Smash;
+    [SerializeField] GameObject HitParticle;
+    [SerializeField] Damage _toAplyDamage = new Damage();
+    [SerializeField] Collider _hitbox = null;
 
     [SerializeField] float deactivateDelay = 1f;
     [SerializeField] bool autoDeactivate = false;
+    Animator _anims;
 
-    [Header("Hitbox Settings")]
-    [SerializeField] bool _instaKill = true;
-    [SerializeField] DamageType _damageType = DamageType.blunt;
-    [SerializeField] float _ammount = 0f;
-    [SerializeField] float _criticalMultiplier = 2f;
+#if UNITY_EDITOR
+
+    [Header("DEBUG")]
+    [SerializeField] bool debugThisJail = false;
+
+#endif
+
+    private void OnCollisionEnter(Collision collision)
+    {
+#if UNITY_EDITOR
+        if (debugThisJail)
+            print($"{gameObject.name} Entré en collisión we");
+#endif
+    }
 
     void Awake()
     {
         _anims = GetComponent<Animator>();
-        _destructibleHitbox = GetComponent<Collider>();
-        _destructibleHitbox.isTrigger = true;
-     
-        //_hitbox = GetComponentInChildren<TrapHitBox>();
-        //if (_hitbox != null)
-        //{
-        //    _hitbox.SetTrapHitbox(_instaKill, _damageType, _ammount, _criticalMultiplier);
-        //}
+        if (_hitbox != null && !_hitbox.isTrigger)
+            _hitbox.isTrigger = true;
     }
 
     public void Drop()
@@ -42,32 +43,17 @@ public class Jail : MonoBehaviour
     {
         _anims.SetBool("Activated", false);
         if (_hitbox != null)
-        {
             _hitbox.enabled = false;
-        }
-        if (_destructibleHitbox != null)
-        {
-            _destructibleHitbox.enabled = false;
-        }
-        Smash.SetActive(false);
+        HitParticle.SetActive(false);
     }
 
     public void AV_FallEnded()
     {
-        Smash.SetActive(true);
+        HitParticle.SetActive(true);
         if (_hitbox != null)
-        {
             _hitbox.enabled = true;
-        }
-        if (_destructibleHitbox != null)
-        {
-            _destructibleHitbox.enabled = true;
-        }
         if (autoDeactivate)
-        {
             StartCoroutine(delayedDeactivate());
-        }
-        
     }
 
     IEnumerator delayedDeactivate()
@@ -80,10 +66,7 @@ public class Jail : MonoBehaviour
         var hurtBox = other.GetComponent<IDamageable<Damage,HitResult>>();
         if (hurtBox != null)
         {
-            _dmg.type = DamageType.blunt;
-            hurtBox.GetHit(_dmg);
+            hurtBox.GetHit(_toAplyDamage);
         }
     }
-
-
 }

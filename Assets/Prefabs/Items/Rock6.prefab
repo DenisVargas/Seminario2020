@@ -2737,8 +2737,8 @@ MonoBehaviour:
     m_Bits: 4294967295
   MyDamage:
     type: 5
-    Ammount: 0
-    criticalMultiplier: 0
+    Ammount: 1
+    criticalMultiplier: 1
     instaKill: 0
     KillAnimationType: 0
   isFlying: 0
@@ -2757,6 +2757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 5357538780707443480}
   _interactionEnabled: 1
 --- !u!114 &4903890022063469045
 MonoBehaviour:

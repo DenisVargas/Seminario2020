@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.AI;
-using Core.DamageSystem;
 using IA.PathFinding;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -110,7 +107,6 @@ public class PitTrap : MonoBehaviour
             OnTop.Add(other);
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         //print($"{other.gameObject.name} Salió de la trampa");
@@ -131,6 +127,10 @@ public class PitTrap : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Callback que se llama cuando una unidad muere por algún motivo diferente a esta trampa.
+    /// </summary>
+    /// <param name="go">GameObject del objeto a considerar.</param>
     void OnEntityDieForExternSource(GameObject go)
     {
         Collider mainCol = go.GetComponent<Collider>();

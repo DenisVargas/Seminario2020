@@ -152,7 +152,8 @@ AnimationClip:
   - time: 0.8
     functionName: AE_TrapDeactivated
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: eed244f83775daa4abdb50f56249c3b0,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

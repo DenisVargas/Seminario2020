@@ -214,13 +214,13 @@ public class Baboso : BaseNPC
     public override HitResult GetHit(Damage damage)
     {
         //Debug.Log("Recibió daño.");
+        CommonState _currentState = _states.CurrentStateType;
         HitResult result = new HitResult()
         {
             conected = true,
             fatalDamage = true
         };
 
-        CommonState _currentState = _states.CurrentStateType;
         if (_currentState == CommonState.dead) return result;
 
         //Debug.LogWarning(string.Format("{0} ha recibido un HIT", gameObject.name));
@@ -239,10 +239,8 @@ public class Baboso : BaseNPC
                 _states.Feed(CommonState.dead);
             }
         }
-        else
-        {
-            Health -= damage.Ammount;
-        }
+        else Health -= damage.Ammount;
+
         return result;
     }
     public override void FeedDamageResult(HitResult result){ }

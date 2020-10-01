@@ -24,9 +24,9 @@ public class MouseContextTracker : MonoBehaviour
     PathFindSolver _solver;
     [SerializeField] LayerMask mouseDetectionMask = ~0;
     //float checkRate = 0.1f;
-   
+    [SerializeField] IInteractable lastFinded = null;
 
-  [Header("Cursor Rendering")]
+    [Header("Cursor Rendering")]
     public Texture2D defaultCursor;
     public Texture2D InteractiveCursor;
     public Texture2D AimCursor;
@@ -103,6 +103,7 @@ public class MouseContextTracker : MonoBehaviour
                 _context.InteractionHandler = interactableObject;
                 validHits++;
             }
+            ThrowMouseEvents(interactableObject);
 
             Collider collider = hit.collider;
             if (collider.transform.CompareTag("NavigationFloor"))
@@ -117,5 +118,32 @@ public class MouseContextTracker : MonoBehaviour
         _context.validHit = validHits > 0; //Validación del hit.
 
         return _context;
+    }
+
+
+    public void ThrowMouseEvents(IInteractable target)
+    {
+        if (target == null)
+        {
+            if (lastFinded != null)
+            {
+                lastFinded.OnInteractionMouseExit();
+                lastFinded = null;
+            }
+        }
+        else
+        {
+            if (lastFinded != null && lastFinded != target)
+            {
+                lastFinded.OnInteractionMouseExit();
+                lastFinded = target;
+                lastFinded.OnInteractionMouseOver();
+            }
+            else
+            {
+                lastFinded = target;
+                lastFinded.OnInteractionMouseOver();
+            }
+        }
     }
 }

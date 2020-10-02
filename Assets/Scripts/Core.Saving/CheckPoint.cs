@@ -16,6 +16,8 @@ namespace Core.SaveSystem
         //Inventario / Equipamiento. Guardado como una lista de ItemID.
         public int maxItemsSlots;
         public int EquipedItem;
+        public Vector3 itemScale;
+        public Quaternion itemRotation;
         public List<int> inventory;
     }
 

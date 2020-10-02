@@ -20,10 +20,10 @@ namespace Core.InventorySystem
                     _instance = FindObjectOfType<ItemDataBase>();
                     if (_instance == null)
                         _instance = new GameObject("ItemDataBase").AddComponent<ItemDataBase>();
+                    _instance.Init();
+                    DontDestroyOnLoad(_instance.gameObject);
                 }
 
-                _instance.Init();
-                DontDestroyOnLoad(_instance.gameObject);
                 return _instance;
             }
         }
@@ -49,13 +49,25 @@ namespace Core.InventorySystem
                     _dataBase.Add(id, idata);
             }
         }
-        public static Item getItem(int ID)
+        public static GameObject getFirstItemPrefab(int ID)
         {
             if (_instance._dataBase.ContainsKey(ID))
             {
-                var data = _instance._dataBase[ID];
+                var data = Manager._dataBase[ID];
+                return data.inGamePrefabs[0];
+            }
 
-                return data.inGamePrefab[0].GetComponent<Item>();
+            return null;
+        }
+        public static GameObject getRandomItemPrefab(int ID)
+        {
+            if (_instance._dataBase.ContainsKey(ID))
+            {
+                var dataPrefs = _instance._dataBase[ID].inGamePrefabs;
+                if (dataPrefs.Length == 1)
+                    return dataPrefs[0];
+                if (dataPrefs.Length > 1)
+                    return dataPrefs[UnityEngine.Random.Range(0, dataPrefs.Length)];
             }
 
             return null;

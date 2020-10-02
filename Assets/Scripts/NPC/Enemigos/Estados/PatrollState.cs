@@ -145,10 +145,12 @@ public class PatrollState : State
             }
 
             //Si no llegue al nodo Waypoint Objetivo. Pongo en la cola el siguiente nodo dentro del camino actual.
-            _nextNode = _solver.currentPath.Dequeue(); //Acá esto siempre tiene que estar completo.
+            if (_solver.currentPath!= null && _solver.currentPath.Count > 0)
+                _nextNode = _solver.currentPath.Dequeue(); //Acá esto siempre tiene que estar completo.
         }
 
-        moveToNode(_nextNode, _patrollSpeed); //Me muevo hacia el objetivo actual.
+        if (_nextNode != null)
+            moveToNode(_nextNode, _patrollSpeed); //Me muevo hacia el objetivo actual.
     }
 
     public override void End()

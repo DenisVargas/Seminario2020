@@ -74,11 +74,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
     public PlayerData getCurrentPlayerData()
     {
+        var equiped = Inventory.equiped;
         return new PlayerData()
         {
             position = transform.position,
             rotacion = transform.rotation,
-            EquipedItem = Inventory.equiped != null ? Inventory.equiped.ID : -1,
+            EquipedItem = equiped != null ? Inventory.equiped.ID : -1,
+            itemScale = equiped != null ? equiped.transform.localScale : Vector3.zero,
+            itemRotation = equiped != null ? equiped.transform.rotation : Quaternion.identity,
             maxItemsSlots = Inventory.maxItemsSlots,
             inventory = Inventory.slots.Select(x => x.ID)
                                          .ToList()
@@ -89,16 +92,17 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         transform.position = data.position;
         transform.rotation = data.rotacion;
 
-        Destroy(Inventory.equiped.gameObject);
+        if (Inventory.equiped != null)
+            Destroy(Inventory.equiped.gameObject);
         Inventory = new Inventory();
         if (data.EquipedItem == -1)
             Inventory.equiped = null;
         else
         {
-            var grabedItemData = ItemDataBase.getItemData(data.EquipedItem);
-            var go = grabedItemData.inGamePrefab[UnityEngine.Random.Range(0, grabedItemData.inGamePrefab.Length)];
-            var instance = Instantiate(go);
-            AttachItemToHand(go.GetComponent<Item>());
+            var instance = Instantiate(ItemDataBase.getRandomItemPrefab(data.EquipedItem));
+            instance.transform.localScale = data.itemScale;
+            instance.transform.rotation = data.rotacion;
+            AttachItemToHand(instance.GetComponent<Item>());
         }
         Inventory.maxItemsSlots = data.maxItemsSlots;
         Inventory.slots = new List<Item>();
@@ -106,7 +110,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         foreach (var item in data.inventory) //Reconstruimos el inventario.
         {
             var itemdata = ItemDataBase.getItemData(item);
-            var toAddItem = itemdata.inGamePrefab[0].GetComponent<Item>();
+            var toAddItem = itemdata.inGamePrefabs[0].GetComponent<Item>();
 
             Inventory.slots.Add(toAddItem);
         }

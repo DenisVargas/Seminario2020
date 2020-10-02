@@ -15,13 +15,12 @@ public class CanvasController : MonoBehaviour
     [Header("Multi-Comand Menu")]
     [SerializeField] CommandMenu _MultiCommandMenu = null;
     public Image Fade;
-    public Image ThrwImg;
+    public GameObject ThrwImg;
 
     private void Awake()
     {
         _MultiCommandMenu.LoadData();
         Fade.canvasRenderer.SetAlpha(1);
-        ThrwImg.canvasRenderer.SetAlpha(0);
         StartCoroutine(FadeIn());
     }
 
@@ -49,9 +48,9 @@ public class CanvasController : MonoBehaviour
     /// <summary>
     /// Muestra un ícono de target.
     /// </summary>
-    public void DisplayThrow()
+    public void DisplayThrow(bool active)
     {
-        ThrwImg.canvasRenderer.SetAlpha(1);
+        ThrwImg.SetActive(active);
     }
     IEnumerator FadeIn()
     {

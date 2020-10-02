@@ -17,7 +17,15 @@ public class TrowManagement : MonoBehaviour
         velocity = GetInitialVelocity(from, to, Time);
 
         Rigidbody rb = obj.GetComponent<Rigidbody>();
-        rb.velocity = velocity;
+        try
+        {
+            rb.velocity = velocity;
+        }
+        catch (MissingComponentException)
+        {
+            Debug.LogWarning("Este item no tiene seteado un rigidbody!");
+            throw;
+        }
     }
 
     private Vector3 GetInitialVelocity(Vector3 origin, Vector3 end, float t)

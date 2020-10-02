@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Core.Interaction;
 using System;
+using System.Linq;
 
 namespace Core.InventorySystem
 {
@@ -104,9 +105,13 @@ namespace Core.InventorySystem
         {
             var graph = FindObjectOfType<NodeGraphBuilder>();
             var pickNode = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
-            Vector3 LookToDirection = (transform.position - pickNode.transform.position).normalized.YComponent(0);
+            var neighbours = pickNode.Connections;
+            var closer = neighbours.OrderBy(x => Vector3.Distance(requesterPosition, x.transform.position))
+                                   .First();
 
-            return new InteractionParameters(pickNode, LookToDirection);
+            Vector3 LookToDirection = (transform.position - closer.transform.position).normalized.YComponent(0);
+
+            return new InteractionParameters(closer, LookToDirection);
         }
         public virtual void InputConfirmed(OperationType operation, params object[] optionalParams) { }
         public virtual void ExecuteOperation(OperationType operation, params object[] optionalParams)

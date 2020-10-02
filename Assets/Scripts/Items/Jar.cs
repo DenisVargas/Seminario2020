@@ -22,7 +22,6 @@ public class Jar : destroyable
     }
     public override HitResult GetHit(Damage damage)
     {
-
         if (damage.type == DamageType.hit || damage.type == DamageType.explotion || damage.type == DamageType.blunt)
         {
             destroyedObject.SetActive(true);

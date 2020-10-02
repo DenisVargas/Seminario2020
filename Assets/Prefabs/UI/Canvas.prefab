@@ -1960,7 +1960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MultiCommandMenu: {fileID: 7249967577694527021}
   Fade: {fileID: 6456812732561588325}
-  ThrwImg: {fileID: 2195467842120632323}
+  ThrwImg: {fileID: 8609325129082810799}
 --- !u!1 &8609325129082810799
 GameObject:
   m_ObjectHideFlags: 0

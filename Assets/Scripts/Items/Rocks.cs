@@ -35,7 +35,7 @@ public class Rocks : destroyable
 
 #if UNITY_EDITOR
         if (debugThisRock)
-            print($"Colisioné con algo wey: {collision.gameObject.name}");
+            print($"CondComp::Colisioné con algo wey: {collision.gameObject.name}");
 #endif
 
         if (isFlying)

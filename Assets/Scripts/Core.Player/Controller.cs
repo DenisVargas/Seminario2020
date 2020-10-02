@@ -18,7 +18,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     public event Action OnPlayerDied = delegate { };
     public event Action OnMovementChange = delegate { };
     public event Action OnInputLocked = delegate { };
-    public event Action OnDisplayThrowUI = delegate { };
+    public event Action<bool> DisplayThrowUI = delegate { };
     public event Action<GameObject> OnEntityDead = delegate { };
 
     public Transform manitodumacaco;
@@ -32,7 +32,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     IInteractionComponent Queued_TargetInteractionComponent = null;
     Node QueuedMovementEndPoint = null;
 
-    Inventory _inventory;
+    Inventory _inventory = new Inventory();
     public Inventory Inventory
     {
         get
@@ -89,6 +89,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         transform.position = data.position;
         transform.rotation = data.rotacion;
 
+        Destroy(Inventory.equiped.gameObject);
         Inventory = new Inventory();
         if (data.EquipedItem == -1)
             Inventory.equiped = null;
@@ -137,7 +138,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     PathFindSolver _solver;
     MouseContext _mouseContext;
     TrowManagement _tm;
-    float checkRate = 0.1f;
     bool _Aiming;
     Transform throwTarget;
     #endregion
@@ -221,7 +221,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
         OnPlayerDied += _canvasController.DisplayLoose;
-        OnDisplayThrowUI += _canvasController.DisplayThrow;
+        DisplayThrowUI += _canvasController.DisplayThrow;
         OnInputLocked += _canvasController.CloseCommandMenu;
         _mv = GetComponent<MouseView>();
         _mtracker = GetComponent<MouseContextTracker>();
@@ -252,39 +252,69 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     void Update()
     {
-        #region mouse
-        checkRate -= Time.deltaTime;
-        if (checkRate <= 0)
-        {
-           _mouseContext = _mtracker.GetCurrentMouseContext();
-            if(!_Aiming)
-            {
-                if (_mouseContext.interactuableHitted)
-                {
-                    _mtracker.ChangeCursorView(2);
-                }
-                else
-                {
-                    _mtracker.ChangeCursorView(1);
-                }
-                checkRate = 0.1f;
-            }
-            
-        }
-
-        #endregion
+        _mouseContext = _mtracker.GetCurrentMouseContext();
+        //print("=================================== Frame Update =========================================");
         #region Input
         if (PlayerInputEnabled)
         {
-            // MouseClic Derecho.
-            if (Input.GetMouseButtonDown(1))
+            //print($"Im Aiming: {_Aiming}");
+
+            if (_Aiming)
             {
-                //MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();//Obtengo el contexto del Mouse.
-                if (!_mouseContext.validHit) return; //Si no hay hit Válido.
+                //print("Bloque 1:");
+                //Cancelo el tiro.
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    //print("Cancelo Aiming");
+                    _mtracker.ChangeCursorView(1);
+                    _Aiming = false;
+                    return;
+                }
+
+                //Confirmar el tiro.
+                if (Input.GetMouseButtonDown(0))
+                {
+                    //print("Confirmo el tiro");
+                    _Aiming = false;
+                    _mtracker.ChangeCursorView(1);
+                    _mouseContext = _mtracker.GetCurrentMouseContext();
+                    Node targetNode = _mouseContext.closerNode;//El objetivo.
+                    Vector3 origin = manitodumacaco.position;
+
+                    //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
+                    var command = new cmd_ThrowEquipment(1f, manitodumacaco, targetNode, _tm, ReleaseEquipedItemFromHand,
+                    () =>
+                    {
+                        _a_ThrowRock = true;
+                        transform.forward = (targetNode.transform.position - transform.position).normalized;
+                    });
+                    comandos.Enqueue(command);
+                    return;
+                }
+            }
+            else
+            {
+                //print("Bloque 2:");
+                if (Input.GetKeyDown(KeyCode.Alpha2) && Inventory.equiped != null)
+                {
+                    //Debug.LogWarning("INICIO AIMING");
+                    _mtracker.ChangeCursorView(3);
+                    _Aiming = true;
+                    return;
+                }
 
                 if (_mouseContext.interactuableHitted)
+                    _mtracker.ChangeCursorView(1);
+                else
+                    _mtracker.ChangeCursorView(0);
+
+                // MouseClic Derecho.
+                if (Input.GetMouseButtonDown(1))
                 {
-                    if(!_Aiming)
+                    //MouseContext _mouseContext = _mtracker.GetCurrentMouseContext();//Obtengo el contexto del Mouse.
+                    if (!_mouseContext.validHit) return; //Si no hay hit Válido.
+
+                    if (_mouseContext.interactuableHitted)
                     {
                         //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
                         _canvasController.DisplayCommandMenu
@@ -294,125 +324,36 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                             _inventory,
                             QuerySelectedOperation
                          );
-                    }
-                    return;
-                }
-
-                if (Input.GetKey(KeyCode.LeftControl) && Clon.IsActive)
-                    Clon.SetMovementDestinyPosition(_mouseContext.closerNode);
-                else
-                {
-                    Node targetNode = _mouseContext.closerNode;
-                    Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
-
-                    if (targetNode == null || origin == null)
-                    {
-                        Debug.LogError("targetNode o origin node es nulo");
                         return;
                     }
 
-                    if (Input.GetKey(KeyCode.LeftShift)) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
+                    if (Input.GetKey(KeyCode.LeftControl) && Clon.IsActive)
+                        Clon.SetMovementDestinyPosition(_mouseContext.closerNode);
+                    else
                     {
-                        if (AddMovementCommand(origin, targetNode))
-                            _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
-                    }
-                    else //Si no presiono nada, es una acción normal, sobreescribimos todos los comandos!.
-                    {
-                        CancelAllCommands();
-                        if (AddMovementCommand(origin, targetNode))
+                        Node targetNode = _mouseContext.closerNode;
+                        Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
+
+                        if (targetNode == null || origin == null)
                         {
-                            _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
+                            Debug.LogError("targetNode o origin node es nulo");
+                            return;
                         }
-                        _Aiming = false;
+
+                        if (Input.GetKey(KeyCode.LeftShift)) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
+                        {
+                            if (AddMovementCommand(origin, targetNode))
+                                _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
+                        }
+                        else //Si no presiono nada, es una acción normal, sobreescribimos todos los comandos!.
+                        {
+                            CancelAllCommands();
+                            if (AddMovementCommand(origin, targetNode))
+                            {
+                                _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
+                            }
+                        }
                     }
-                }
-            }
-
-            if (Inventory.equiped != null)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha2) && !_Aiming)
-                {
-                    _mtracker.ChangeCursorView(3);
-                    _Aiming = true;
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha2) && _Aiming)
-                {
-                    _mtracker.ChangeCursorView(1);
-                    _Aiming = false;
-                }
-
-                if (Input.GetMouseButtonDown(0) && _Aiming)
-                {
-                    _Aiming = false;
-                    Node targetNode = _mouseContext.closerNode;//El objetivo.
-                    //Node origin = _solver.getCloserNode(transform.position); //El origen debería ser la manito.
-                    Vector3 origin = manitodumacaco.position;
-
-                    //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
-                    var command = new cmd_ThrowEquipment(1f, manitodumacaco, targetNode, _tm, ReleaseEquipedItemFromHand, () => 
-                    {
-                        _a_ThrowRock = true;
-                        transform.forward = (targetNode.transform.position - transform.position).normalized;
-                    });
-                    comandos.Enqueue(command);
-
-                    //Es posible que en el Trowmanager debamos construir la mecánica.
-                    //Es decir la parte visual.
-
-                    //La distancia debería limitarse al entrar en modo de selección.
-                    //float dist = (targetNode.transform.position - origin.transform.position).magnitude;
-                    //if (dist > TRWRange)
-                    //{
-                    //    _solver.SetOrigin(origin).SetTarget(targetNode).CalculatePathUsingSettings();
-                    //    if (_solver.currentPath.Count > 0)
-                    //    {
-                    //        Node FinalNode = null;
-
-                    //        while (FinalNode == null)
-                    //        {
-                    //            Node currentNode = _solver.currentPath.Dequeue();
-                    //            if ((targetNode.transform.position - currentNode.transform.position).magnitude < TRWRange)
-                    //                FinalNode = currentNode;
-                    //        }
-                    //        AddMovementCommand(origin, FinalNode);
-                    //    }
-                    //    else return;
-                    //}
-
-                    //if (_mouseContext.interactuableHitted)
-                    //{
-                    //    IInteractionComponent target = _mouseContext.InteractionHandler.GetInteractionComponent(OperationType.Throw, false);
-
-                    //    IQueryComand _ActivateCommand = new cmd_TrowRock
-                    //        (
-                    //            target,
-                    //            () =>
-                    //            {
-                    //                _a_ThrowRock = true;
-                    //                transform.forward = (target.transform.position - transform.position).normalized;
-                    //            },
-                    //            false,
-                    //            _mouseContext.closerNode
-                    //          );
-                    //    comandos.Enqueue(_ActivateCommand);
-                    //    throwTarget = target.transform;
-                    //}
-                    //else
-                    //{
-                    //    Node finalNode = _mouseContext.closerNode;
-
-                    //    IQueryComand _toActivateCommand = new cmd_TrowRock
-                    //    (
-                    //        null,
-                    //        () =>
-                    //        {
-                    //            _a_ThrowRock = true;
-                    //            transform.forward = (finalNode.transform.position - transform.position).normalized;
-                    //        }, true, finalNode
-                    //        );
-                    //    comandos.Enqueue(_toActivateCommand);
-                    //    throwTarget = finalNode.transform;
-                    //}
                 }
             }
         }
@@ -554,14 +495,16 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         //print($"{ gameObject.name} ha pikeado un item. {item.name} se attachea a la mano.");
         //Presuponemos que el objeto es troweable.
         //Emparentamos el item al transform correspondiente.
-        item.SetOwner(_hitbox);
-        item.SetPhysicsProperties(false, Vector3.zero);
-        item.transform.SetParent(manitodumacaco);
-        item.transform.localPosition = Vector3.zero;
-        item.ExecuteOperation(OperationType.Take);
-        _inventory.EquipItem(item);
-        if (_inventory.equiped != null && _inventory.equiped.isThroweable)
-            OnDisplayThrowUI();
+        if (item != null)
+        {
+            item.SetOwner(_hitbox);
+            item.SetPhysicsProperties(false, Vector3.zero);
+            item.transform.SetParent(manitodumacaco);
+            item.transform.localPosition = Vector3.zero;
+            item.ExecuteOperation(OperationType.Take);
+            _inventory.EquipItem(item);
+            DisplayThrowUI(_inventory.equiped != null && _inventory.equiped.isThroweable);
+        }
     }
     public Item ReleaseEquipedItemFromHand(bool setToDefaultPosition = false, params object[] options)
     {
@@ -575,6 +518,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             released.ExecuteOperation(OperationType.Drop, options[0]);
         released.SetPhysicsProperties(true, Vector3.zero);
         released.transform.SetParent(null);
+        DisplayThrowUI(_inventory.equiped != null && _inventory.equiped.isThroweable);
         return released;
     }
 

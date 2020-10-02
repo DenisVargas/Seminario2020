@@ -23,7 +23,6 @@ public class MouseContextTracker : MonoBehaviour
     Camera _viewCamera;
     PathFindSolver _solver;
     [SerializeField] LayerMask mouseDetectionMask = ~0;
-    //float checkRate = 0.1f;
     [SerializeField] IInteractable lastFinded = null;
 
     [Header("Cursor Rendering")]
@@ -47,7 +46,7 @@ public class MouseContextTracker : MonoBehaviour
         }
         
     }
- 
+
     public void ChangeCursorView(int index)
     {
         switch (index)
@@ -64,13 +63,7 @@ public class MouseContextTracker : MonoBehaviour
         }
     }
 
-    
     public MouseContext GetCurrentMouseContext()
-    {
-        return m_MouseContextDetection();
-    }
-
-    MouseContext m_MouseContextDetection()
     {
         MouseContext _context = new MouseContext();
         int validHits = 0;
@@ -101,9 +94,9 @@ public class MouseContextTracker : MonoBehaviour
             {
                 _context.interactuableHitted = true;
                 _context.InteractionHandler = interactableObject;
+
                 validHits++;
             }
-            ThrowMouseEvents(interactableObject);
 
             Collider collider = hit.collider;
             if (collider.transform.CompareTag("NavigationFloor"))
@@ -116,6 +109,7 @@ public class MouseContextTracker : MonoBehaviour
         }
 
         _context.validHit = validHits > 0; //Validación del hit.
+        ThrowMouseEvents(_context.InteractionHandler);
 
         return _context;
     }

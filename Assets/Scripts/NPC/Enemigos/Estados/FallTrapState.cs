@@ -13,7 +13,6 @@ public class FallTrapState : State
     Collider _mainCollider = null;
 
     Rigidbody _rb = null;
-    //PathFindSolver _solver = null;
 
     public override void Begin()
     {
@@ -23,7 +22,6 @@ public class FallTrapState : State
         _rb.isKinematic = false;
 
         DeactivateMovement();
-
         _mainCollider.isTrigger = true;
     }
 }

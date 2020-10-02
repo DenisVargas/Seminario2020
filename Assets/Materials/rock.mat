@@ -25,8 +25,8 @@ Material:
     - __dirty: 0
     - _change1: 0
     - _mouseOver: 0
-    - _smoothness: 0.5
+    - _smoothness: 0.276
     m_Colors:
     - _Color0: {r: 0.5490196, g: 0.4509804, b: 0.4117647, a: 0}
-    - _EmissionColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
-    - _MainColor: {r: 0.5490196, g: 0.4509804, b: 0.4117647, a: 0}
+    - _EmissionColor: {r: 0.6226415, g: 0.2939431, b: 0.07929868, a: 1}
+    - _MainColor: {r: 0.3882353, g: 0.24053897, b: 0.17647058, a: 0}

@@ -61,7 +61,7 @@ namespace Core.SaveSystem
             var lastSave = saveFile;
             if (lastSave != null && lastSave.levelID == LevelID)
             {
-                Debug.LogWarning("Hay una partida guardada que corresponde a este nivel!");
+                //Debug.LogWarning("Hay una partida guardada que corresponde a este nivel!");
                 //LoadGameData(lastSave);
             }
         }

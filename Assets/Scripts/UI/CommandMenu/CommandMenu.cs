@@ -10,6 +10,7 @@ using Utility.ObjectPools.Generic;
 public class CommandMenu : MonoBehaviour
 {
     public Action<OperationType, IInteractionComponent> commandCallback = delegate { };
+    public event Action OnCancelByRightClic = delegate { };
     [HideInInspector]
     public IInteractable interactionTarget;
 
@@ -36,19 +37,18 @@ public class CommandMenu : MonoBehaviour
     bool _limitedActive = false;
     [SerializeField] float _remainingActiveTime = 5f;
 
-    private void Update()
-    {
-        if (_limitedActive)
-        {
-            _remainingActiveTime -= Time.deltaTime;
-            if (_remainingActiveTime <= 0)
-            {
-                _remainingActiveTime = 0;
-                gameObject.SetActive(false);
-            }
-        }
-    }
-
+    //private void Update()
+    //{
+    //    if (_limitedActive)
+    //    {
+    //        _remainingActiveTime -= Time.deltaTime;
+    //        if (_remainingActiveTime <= 0)
+    //        {
+    //            _remainingActiveTime = 0;
+    //            gameObject.SetActive(false);
+    //        }
+    //    }
+    //}
     public void LoadData()
     {
         //Inicializo el displayPool. el pool presupone que el factory inicializa los objetos como desactivados.
@@ -70,6 +70,8 @@ public class CommandMenu : MonoBehaviour
 
         var commandItem = presetInstance.GetComponent<CommandMenuItem>();
         commandItem.OnOperationSelected += ActivateCommand;
+        commandItem.CloseMenu = Close;
+        commandItem.CancelAndCloseMenu = CancelAndClose;
 
         presetInstance.SetActive(false);
 
@@ -105,7 +107,7 @@ public class CommandMenu : MonoBehaviour
 
         //Vector2 screenDimentions = new Vector2(Screen.width, Screen.height); // va de 0 a max width, y de 0 a max Hight
 
-        //TODO: Reposicionar el menu, si se sale de la pantalla.
+        print("================= Command Menu Emplaced! ====================");
     }
 
     /// <summary>
@@ -120,11 +122,10 @@ public class CommandMenu : MonoBehaviour
         interactionTarget = null;
 
         ClearCurrentDisplay();
-        gameObject.SetActive(false);
     }
 
     public void FillOptions
-    ( 
+    (
       IInteractable interactionTarget,
       Inventory inventory,
       Action<OperationType, IInteractionComponent> callback
@@ -140,10 +141,8 @@ public class CommandMenu : MonoBehaviour
         if (DisplaySettings.SuportedOperations.Count == 0)
         {
             ClearCurrentDisplay();
-            gameObject.SetActive(false);
             return;
         }
-
 
         _limitedActive = DisplaySettings.LimitedDisplay;
         if (_limitedActive)
@@ -157,8 +156,19 @@ public class CommandMenu : MonoBehaviour
 
             displaySetting.Data = presetDataBase.Find(x => x.Operation == pair.Item1);
             displaySetting.referenceComponent = pair.Item2;
+
             _currentDisplay.Add(display);
         }
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void CancelAndClose()
+    {
+        StartCoroutine(frameDelayedClose());
     }
 
     public void OnMouseOver_SliderContext(bool isInsideSlider)
@@ -178,8 +188,7 @@ public class CommandMenu : MonoBehaviour
             commandCallback = delegate { };
             interactionTarget = null;
             ClearCurrentDisplay();
-
-            gameObject.SetActive(false);
+            Close();
         }
     }
 
@@ -191,5 +200,13 @@ public class CommandMenu : MonoBehaviour
         foreach (var obj in _currentDisplay)
             AbviableDisplay.DisablePoolObject(obj);
         _currentDisplay = new List<GameObject>();
+    }
+
+    IEnumerator frameDelayedClose()
+    {
+        yield return new WaitForEndOfFrame();
+        Debug.LogWarning("--------------- CLOSED ACTIVADO -----------------");
+        OnCancelByRightClic();
+        gameObject.SetActive(false);
     }
 }

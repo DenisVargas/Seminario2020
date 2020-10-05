@@ -46,7 +46,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
 
     //Grab Objgrabed;
-    bool _input = true;
+    [SerializeField] bool _input = true;
     bool PlayerInputEnabled
     {
         get => _input;
@@ -133,6 +133,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     //======================================================================================
 
     #region Componentes
+    [SerializeField] CommandMenu _MultiCommandMenu = null;
     Rigidbody _rb;
     Camera _viewCamera;
     Collider _hitbox = null;
@@ -226,11 +227,19 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _canvasController = FindObjectOfType<CanvasController>();
         OnPlayerDied += _canvasController.DisplayLoose;
         DisplayThrowUI += _canvasController.DisplayThrow;
-        OnInputLocked += _canvasController.CloseCommandMenu;
         _mv = GetComponent<MouseView>();
         _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
         _tm = GetComponent<TrowManagement>();
+
+        if (_MultiCommandMenu)
+        {
+            _MultiCommandMenu.OnCancelByRightClic += () => 
+            {
+                Debug.LogWarning("Controller::SetPlayerInput as True.");
+                PlayerInputEnabled = true;
+            };
+        }
 
         if (_solver.Origin == null)
         {
@@ -254,15 +263,15 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
     }
+
     void Update()
     {
         _mouseContext = _mtracker.GetCurrentMouseContext();
         //print("=================================== Frame Update =========================================");
+
         #region Input
         if (PlayerInputEnabled)
         {
-            //print($"Im Aiming: {_Aiming}");
-
             if (_Aiming)
             {
                 //print("Bloque 1:");
@@ -320,14 +329,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
                     if (_mouseContext.interactuableHitted)
                     {
-                        //Muestro el menú en la posición del mouse, con las opciones soportadas por dicho objeto.
-                        _canvasController.DisplayCommandMenu
-                        (
-                            Input.mousePosition,
-                            _mouseContext.InteractionHandler,
-                            _inventory,
-                            QuerySelectedOperation
-                         );
+                        //Le paso las nuevas opciones disponibles.
+                        _MultiCommandMenu.FillOptions(_mouseContext.InteractionHandler, _inventory, QuerySelectedOperation);
+                        //if (!_MultiCommandMenu.gameObject.activeSelf) //Lo activo en el canvas. Esto no cambia nada.
+                            _MultiCommandMenu.gameObject.SetActive(true);
+                        //Lo posiciono en donde debe estar.
+                        _MultiCommandMenu.Emplace(Input.mousePosition);
+
+                        PlayerInputEnabled = false;//Esto genera algo extraño.
                         return;
                     }
 
@@ -559,59 +568,56 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     /// <param name="target">El objetivo de dicha operación. Es un interaction Component que contiene dentro de si el tipo de la operación.</param>
     public void QuerySelectedOperation(OperationType operation, IInteractionComponent target)
     {
-        if (PlayerInputEnabled)
-        {
-            var parameters = target.getInteractionParameters(transform.position);
+        var parameters = target.getInteractionParameters(transform.position);
 
-            Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
-            Node targetNode = parameters.safeInteractionNode;
+        Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
+        Node targetNode = parameters.safeInteractionNode;
 
-            if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
-                if (!AddMovementCommand(origin, targetNode))
-                {
-                    print("No se pudo añadir un camino posible, el camino está obstruído");
-                    return;
-                }
-
-            //añado el comando correspondiente a la query.
-            IQueryComand _toActivateCommand = null;
-            switch (operation)
+        if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
+            if (!AddMovementCommand(origin, targetNode))
             {
-                case OperationType.Ignite:
-                    _toActivateCommand = new cmd_Ignite(target, operation, () => { _a_Ignite = true; });
-                    break;
-
-                case OperationType.Activate:
-                    _toActivateCommand = new cmd_Activate(target, operation, () => { _a_LeverPull = true; });
-                    break;
-
-                case OperationType.Equip:
-                    break;
-
-                case OperationType.Take:
-                    if (_inventory.equiped == null)
-                        _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
-                    break;
-
-                case OperationType.Exchange:
-                    _toActivateCommand = new cmd_Exchange((Item)target, _inventory, ReleaseEquipedItemFromHand, AttachItemToHand, () => { _a_Grabing = true; });
-                    break;
-
-                case OperationType.Combine:
-                    _toActivateCommand = new cmd_Combine((Item)target, _inventory, AttachItemToHand, () => { _a_Grabing = true; });
-                    break;
-                case OperationType.lightOnTorch:
-                    if (_inventory.equiped.ID == 1)
-                        _toActivateCommand = new cmd_LightOnTorch(() => { }, target, (Torch)_inventory.equiped);
-                    break;
-
-                default:
-                    break;
+                print("No se pudo añadir un camino posible, el camino está obstruído");
+                return;
             }
 
-            if (_toActivateCommand != null)
-                comandos.Enqueue(_toActivateCommand);
+        //añado el comando correspondiente a la query.
+        IQueryComand _toActivateCommand = null;
+        switch (operation)
+        {
+            case OperationType.Ignite:
+                _toActivateCommand = new cmd_Ignite(target, operation, () => { _a_Ignite = true; });
+                break;
+
+            case OperationType.Activate:
+                _toActivateCommand = new cmd_Activate(target, operation, () => { _a_LeverPull = true; });
+                break;
+
+            case OperationType.Equip:
+                break;
+
+            case OperationType.Take:
+                if (_inventory.equiped == null)
+                    _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
+                break;
+
+            case OperationType.Exchange:
+                _toActivateCommand = new cmd_Exchange((Item)target, _inventory, ReleaseEquipedItemFromHand, AttachItemToHand, () => { _a_Grabing = true; });
+                break;
+
+            case OperationType.Combine:
+                _toActivateCommand = new cmd_Combine((Item)target, _inventory, AttachItemToHand, () => { _a_Grabing = true; });
+                break;
+            case OperationType.lightOnTorch:
+                if (_inventory.equiped.ID == 1)
+                    _toActivateCommand = new cmd_LightOnTorch(() => { }, target, (Torch)_inventory.equiped);
+                break;
+
+            default:
+                break;
         }
+
+        if (_toActivateCommand != null)
+            comandos.Enqueue(_toActivateCommand);
     }
 
     //========================================================================================
@@ -705,6 +711,4 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         comandos.Dequeue().Execute();
         PlayerInputEnabled = true;
     }
-
-
 }

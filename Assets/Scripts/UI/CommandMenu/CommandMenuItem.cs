@@ -5,10 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using Core.Interaction;
+using UnityEngine.EventSystems;
 
 public class CommandMenuItem : MonoBehaviour
 {
     public event Action<OperationType, IInteractionComponent> OnOperationSelected = delegate { };
+    public Action CancelAndCloseMenu = delegate { };
+    public Action CloseMenu = delegate { };
 
     [SerializeField]
     CommandMenuItemData data = null;
@@ -39,31 +42,41 @@ public class CommandMenuItem : MonoBehaviour
                 _text.SetText(data.CommandName);
                 _iconImageField.sprite = data.Icon;
             }
-            //_backGroundImage.color = _normalColor;
         }
     }
 
-    public void OnMouseHoverStart()
+    public void OnMouseHoverStart(BaseEventData currentEvent)
     {
         //Si ponemos el mouse encima.
         //_backGroundImage.color = _hoverColor;
         _backGroundImage.sprite = onHover;
         _text.color = Color.white;
-        
     }
-    public void OnMOuseClickDown()
+    public void OnMouseClickDown(BaseEventData currentEvent)
     {
-        //Si hacemos clic.
-        //_backGroundImage.color = _pressedColor;
-        //Ejecutamos nuestro delegado.
-        _backGroundImage.sprite = onPress;
-        OnOperationSelected(data.Operation, referenceComponent);
+        print("Clic");
+        var input = currentEvent.currentInputModule.input;
+        if (input.GetMouseButtonDown(0))
+        {
+            print("Uso el comando");
+            _backGroundImage.sprite = onPress;
+            OnOperationSelected(data.Operation, referenceComponent);
+            currentEvent.Use();
+            CloseMenu();
+        }
+        else
+        if (input.GetMouseButtonDown(1))
+        {
+            print("Cancelo el comando.");
+            CancelAndCloseMenu();
+            currentEvent.Use();
+        }
     }
-    public void OnMouseClickUp()
+    public void OnMouseClickUp(BaseEventData currentEvent)
     {
         _backGroundImage.color = _hoverColor;
     }
-    public void OnMouseHoverEnd()
+    public void OnMouseHoverEnd(BaseEventData currentEvent)
     {
         //Si sacamos el mouse de encima.
         //_backGroundImage.color = _normalColor;

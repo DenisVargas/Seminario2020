@@ -24,20 +24,6 @@ public class CanvasController : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    public void DisplayCommandMenu(Vector2 mouseScreenPosition, IInteractable interactionTarget, Inventory inventory, Action<OperationType, IInteractionComponent> callback)
-    {
-        //Le paso las nuevas opciones disponibles.
-        _MultiCommandMenu.FillOptions( interactionTarget, inventory, callback);
-        //Lo posiciono en donde debe estar.
-        _MultiCommandMenu.Emplace(mouseScreenPosition);
-        //Lo activo en el canvas.
-        _MultiCommandMenu.gameObject.SetActive(true);
-    }
-    public void CloseCommandMenu()
-    {
-        _MultiCommandMenu.gameObject.SetActive(false);
-    }
-
     /// <summary>
     /// Inicia un fade-Out
     /// </summary>

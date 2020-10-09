@@ -16,7 +16,8 @@ MonoBehaviour:
   Name: Antorcha
   Description: Una simple Antorcha.
   Icon: {fileID: 0}
-  inGamePrefab: []
+  inGamePrefabs:
+  - {fileID: 1660693476968964156, guid: 4bb4eab90d685f24c8c463b979cba2fe, type: 3}
   isCombinable: 1
   isDropeable: 1
   isTrowable: 1

@@ -64,7 +64,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     {
         this.OnEntityDead += OnEntityDead;
     }
-
     public void UnsuscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
     {
         this.OnEntityDead -= OnEntityDead;
@@ -336,7 +335,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                         //Lo posiciono en donde debe estar.
                         _MultiCommandMenu.Emplace(Input.mousePosition);
 
-                        PlayerInputEnabled = false;//Esto genera algo extraño.
                         return;
                     }
 

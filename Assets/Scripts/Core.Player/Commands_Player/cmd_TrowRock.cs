@@ -19,14 +19,7 @@ public class cmd_ThrowEquipment : IQueryComand
     public bool isReady { get; private set; } = false;
     public bool cashed => true;
 
-    //public cmd_ThrowEquipment(IInteractionComponent CommandTarget, Node targetNode, Func<bool, object[], Item> ReleaseItem, Action TriggerAnimation)
-    //{
-    //    this.CommandTarget = CommandTarget;
-    //    this.targetNode = targetNode;
-    //    this.TriggerAnimation = TriggerAnimation;
-    //    this.ReleaseEquipment = ReleaseItem;
-    //}
-    public cmd_ThrowEquipment(float time, Transform launchOrigin, Node targetNode, TrowManagement tr,Func<bool,object[], Item> ReleaseItem, Action TriggerAnimation)
+    public cmd_ThrowEquipment(float time, Transform launchOrigin, Node targetNode, TrowManagement tr,Func<bool,object[], Item> ReleaseEquipment, Action TriggerAnimation)
     {
         this.CommandTarget = null;
         this.time = time;
@@ -34,7 +27,7 @@ public class cmd_ThrowEquipment : IQueryComand
         this.targetNode = targetNode;
         this.tr = tr;
         this.TriggerAnimation = TriggerAnimation;
-        this.ReleaseEquipment = ReleaseItem;
+        this.ReleaseEquipment = ReleaseEquipment;
     }
 
     public void SetUp()
@@ -48,7 +41,9 @@ public class cmd_ThrowEquipment : IQueryComand
         Item released = ReleaseEquipment(true, new object[0]);//Lo desatacheo.
         released.ExecuteOperation(OperationType.Throw);
         //Utilizando trowManager le añado una fuerza.
-        tr.ThrowObject(released.gameObject, origin, targetNode.transform.position, time);
+        var rb = released.gameObject.GetComponent<Rigidbody>();
+        if (rb != null)
+            tr.ThrowObject(rb, origin, targetNode.transform.position, time);
         completed = true;
     }
     public void Cancel()

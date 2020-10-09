@@ -32,6 +32,8 @@ public class MouseContextTracker : MonoBehaviour
 
 #if UNITY_EDITOR
     [SerializeField] List<Collider> hited = new List<Collider>();
+    [SerializeField] Transform HITPOSITION = null;
+    [SerializeField] Transform HITNODE = null;
 #endif
 
     private void Awake()
@@ -44,7 +46,6 @@ public class MouseContextTracker : MonoBehaviour
             Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
             Cursor.visible = true;
         }
-        
     }
 
     public void ChangeCursorView(int index)
@@ -72,7 +73,7 @@ public class MouseContextTracker : MonoBehaviour
         RaycastHit[] hits;
         Ray mousePositionInWorld = _viewCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x,
                                                           Input.mousePosition.y,
-                                                          _viewCamera.transform.position.y));
+                                                          _viewCamera.transform.forward.z));
         hits = Physics.RaycastAll(mousePositionInWorld, float.MaxValue, mouseDetectionMask, QueryTriggerInteraction.Collide);
 
         #region DEBUG
@@ -103,6 +104,18 @@ public class MouseContextTracker : MonoBehaviour
             {
                 _context.hitPosition = hit.point;
                 _context.closerNode = _solver.getCloserNode(hit.point);
+
+#if UNITY_EDITOR
+                if (HITPOSITION)
+                {
+                    HITPOSITION.transform.position = _context.hitPosition;
+                }
+                if (HITNODE)
+                {
+                    HITNODE.transform.position = _context.closerNode.transform.position;
+                }
+#endif
+
                 validHits++;
             }
             else continue;

@@ -54,11 +54,11 @@ public class CommandMenuItem : MonoBehaviour
     }
     public void OnMouseClickDown(BaseEventData currentEvent)
     {
-        print("Clic");
+        //print("Clic");
         var input = currentEvent.currentInputModule.input;
         if (input.GetMouseButtonDown(0))
         {
-            print("Uso el comando");
+            //print("Uso el comando");
             _backGroundImage.sprite = onPress;
             OnOperationSelected(data.Operation, referenceComponent);
             currentEvent.Use();

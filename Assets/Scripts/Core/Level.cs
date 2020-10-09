@@ -32,25 +32,17 @@ namespace Core.SaveSystem
             set
             {
                 string root = Application.persistentDataPath + "/Data/Saves/";
-                string completeFilePath = root + "slot1.sv";
+                string file = root + "slot1.sv";
 
                 //Debo chequear que el archivo exista en Data
                 if (Directory.Exists(root))
-                {
-                    //Debug.Log($"El directorio {root} existe.");
-                    if (File.Exists(completeFilePath))
-                    {
-                        //Debug.Log($"El archivo {root + completeFilePath} Existe");
-                        Serializer.Serialize<CheckPoint>(value, completeFilePath, false);
-                    }
-                }
+                    Serializer.Serialize<CheckPoint>(value, file, false);
                 else
                 {
                     Debug.Log("Creo el Datapath no existía así que se creó uno nuevo.");
                     Directory.CreateDirectory(root);
-                    //File.Create(completeFilePath);
 
-                    Serializer.Serialize<CheckPoint>(value, completeFilePath, false);
+                    Serializer.Serialize<CheckPoint>(value, file, false);
                 }
             }
         }
@@ -58,12 +50,18 @@ namespace Core.SaveSystem
         private void Awake()
         {
             //Chequear si tengo datos guardados del estado del nivel antes de iniciar.
-            var lastSave = saveFile;
-            if (lastSave != null && lastSave.levelID == LevelID)
-            {
-                //Debug.LogWarning("Hay una partida guardada que corresponde a este nivel!");
-                //LoadGameData(lastSave);
-            }
+            if (saveFile != null)
+                clearCheckpoint();
+        }
+
+        public static void clearCheckpoint()
+        {
+            string root = Application.persistentDataPath + "/Data/Saves/";
+            string file = root + "slot1.sv";
+
+            if (Directory.Exists(root))
+                if (File.Exists(file))
+                    File.Delete(file);
         }
 
         public static bool currentLevelHasChekpoint()

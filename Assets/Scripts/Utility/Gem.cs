@@ -8,12 +8,10 @@ using IA.PathFinding;
 [RequireComponent(typeof(InteractionHandler))]
 public class Gem : MonoBehaviour, IInteractionComponent
 {
-    [SerializeField] int SpeedRot                 = 2;
-    [SerializeField] Transform ActivationPosition = null;
-    [SerializeField] Transform GemaView           = null;
-
-    public bool IsCurrentlyInteractable => isActiveAndEnabled;
-    public Vector3 position => transform.position;
+    [SerializeField] int SpeedRot        = 2;
+    [SerializeField] Node ActivationNode = null;
+    [SerializeField] Transform GemaView  = null;
+    [SerializeField] LevelTesting RestartObject = null;
 
     public bool isDynamic => false;
 
@@ -50,7 +48,7 @@ public class Gem : MonoBehaviour, IInteractionComponent
         //Estaría bueno tener un par de puntos de referencia que podriamos utilizar como posiciones.
         //Seleccionamos la posicion cuya distancia es menor al requester y luego obtenemos dicho nodos y se lo devolvemos.
 
-        Node SafePosition = PathFindSolver.getCloserNodeInGraph(ActivationPosition.position, graph);
+        Node SafePosition = ActivationNode;
         Vector3 directionToMe = ( transform.position - SafePosition.transform.position).normalized.YComponent(0);
 
         return new InteractionParameters(SafePosition, directionToMe);

@@ -107,7 +107,7 @@ public class CommandMenu : MonoBehaviour
 
         //Vector2 screenDimentions = new Vector2(Screen.width, Screen.height); // va de 0 a max width, y de 0 a max Hight
 
-        print("================= Command Menu Emplaced! ====================");
+        //print("================= Command Menu Emplaced! ====================");
     }
 
     /// <summary>

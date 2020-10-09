@@ -9,17 +9,15 @@ public class TrowManagement : MonoBehaviour
     /// <param name="from">La posición inicial en donde se realizará el tiro.</param>
     /// <param name="to">La posición objetivo a donde el objeto debería caer.</param>
     /// <param name="Time">El tiempo que debe tardar el objeto en llegar al objetivo.</param>
-    public void ThrowObject( GameObject obj, Vector3 from, Vector3 to, float Time = 1f)
+    public void ThrowObject( Rigidbody obj, Vector3 from, Vector3 to, float Time = 1f)
     {
         Vector3 velocity = Vector3.zero;
         float gravity = Physics.gravity.y;
 
         velocity = GetInitialVelocity(from, to, Time);
-
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
         try
         {
-            rb.velocity = velocity;
+            obj.velocity = velocity;
         }
         catch (MissingComponentException)
         {

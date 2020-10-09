@@ -208,7 +208,7 @@ namespace Core.InventorySystem
         }
         protected virtual void OnThrow()
         {
-            print($"Throw Executed in item {gameObject.name}");
+            //print($"Throw Executed in item {gameObject.name}");
             OnThrowItem();
         }
         protected virtual void Use(params object[] optionalParams)

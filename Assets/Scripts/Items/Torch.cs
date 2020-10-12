@@ -5,7 +5,8 @@ using Core.DamageSystem;
 
 public class Torch : Item, IDamageable<Damage, HitResult>
 {
-    public GameObject burningComponent;
+    [SerializeField] GameObject _burningComponent;
+    [SerializeField] Collider _interactionCollider = null;
     [SerializeField] bool _isOn;
 
     bool _toDestroy_FLAG = false;
@@ -16,7 +17,7 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         set
         {
             _isOn = value;
-            burningComponent.SetActive(_isOn);
+            _burningComponent.SetActive(_isOn);
         }
     }
     public bool IsAlive => true;
@@ -36,6 +37,18 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         //testemaos un bool para saber si queremos prender la antorcha.
         if (optionalParams.Length > 1)
             isBurning = (bool) optionalParams[0];
+    }
+    protected override void OnTake()
+    {
+        base.OnTake();
+        if (_interactionCollider)
+            _interactionCollider.enabled = false;
+    }
+    protected override void Drop(params object[] optionalParams)
+    {
+        base.Drop(optionalParams);
+        if (_interactionCollider)
+            _interactionCollider.enabled = true;
     }
 
     //Colisiones. Si este objeto colisiona con un igniteable. Ejecuta su comando ignite, y luego se destruye.

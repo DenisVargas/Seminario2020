@@ -76,15 +76,14 @@ public class MouseContextTracker : MonoBehaviour
                                                           _viewCamera.transform.forward.z));
         hits = Physics.RaycastAll(mousePositionInWorld, float.MaxValue, mouseDetectionMask, QueryTriggerInteraction.Collide);
 
-        #region DEBUG
+
 #if UNITY_EDITOR
         hited = new List<Collider>();
         for (int i = 0; i < hits.Length; i++) // Lista debug para el inspector.
         {
             hited.Add(hits[i].collider);
         }
-#endif 
-        #endregion
+#endif
 
         for (int i = 0; i < hits.Length; i++)
         {

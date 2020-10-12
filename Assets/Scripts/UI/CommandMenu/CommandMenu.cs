@@ -10,7 +10,6 @@ using Utility.ObjectPools.Generic;
 public class CommandMenu : MonoBehaviour
 {
     public Action<OperationType, IInteractionComponent> commandCallback = delegate { };
-    public event Action OnCancelByRightClic = delegate { };
     [HideInInspector]
     public IInteractable interactionTarget;
 
@@ -71,7 +70,6 @@ public class CommandMenu : MonoBehaviour
         var commandItem = presetInstance.GetComponent<CommandMenuItem>();
         commandItem.OnOperationSelected += ActivateCommand;
         commandItem.CloseMenu = Close;
-        commandItem.CancelAndCloseMenu = CancelAndClose;
 
         presetInstance.SetActive(false);
 
@@ -123,7 +121,6 @@ public class CommandMenu : MonoBehaviour
 
         ClearCurrentDisplay();
     }
-
     public void FillOptions
     (
       IInteractable interactionTarget,
@@ -133,7 +130,7 @@ public class CommandMenu : MonoBehaviour
     {
         ClearCurrentDisplay();
 
-        commandCallback += callback;
+        commandCallback = callback;
         this.interactionTarget = interactionTarget;
 
         //Tomamos nuestro target y le pedimos los displaySettings de acuerdo a nuestro inventario.
@@ -166,11 +163,6 @@ public class CommandMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void CancelAndClose()
-    {
-        StartCoroutine(frameDelayedClose());
-    }
-
     public void OnMouseOver_SliderContext(bool isInsideSlider)
     {
         _sliderContextOn = isInsideSlider;
@@ -200,13 +192,5 @@ public class CommandMenu : MonoBehaviour
         foreach (var obj in _currentDisplay)
             AbviableDisplay.DisablePoolObject(obj);
         _currentDisplay = new List<GameObject>();
-    }
-
-    IEnumerator frameDelayedClose()
-    {
-        yield return new WaitForEndOfFrame();
-        Debug.LogWarning("--------------- CLOSED ACTIVADO -----------------");
-        OnCancelByRightClic();
-        gameObject.SetActive(false);
     }
 }

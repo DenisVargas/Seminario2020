@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2070052746480032523}
+  - component: {fileID: 2493914976280020308}
   - component: {fileID: 8614256874735383781}
   - component: {fileID: 8255644011357120305}
   - component: {fileID: 8092623578812047391}
@@ -36,6 +37,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2493914976280020308
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660693476968964156}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.2172799, z: 1}
+  m_Center: {x: 0, y: 0.26280499, z: 0}
 --- !u!65 &8614256874735383781
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -102,7 +116,8 @@ MonoBehaviour:
   _owner: {fileID: 0}
   _rb: {fileID: 8255644011357120305}
   debugThis: 0
-  burningComponent: {fileID: 1110212495423863185}
+  _burningComponent: {fileID: 1110212495423863185}
+  _interactionCollider: {fileID: 2493914976280020308}
   _isOn: 0
 --- !u!1001 &505643807314577668
 PrefabInstance:

@@ -231,14 +231,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _solver = GetComponent<PathFindSolver>();
         _tm = GetComponent<TrowManagement>();
 
-        if (_MultiCommandMenu)
-        {
-            _MultiCommandMenu.OnCancelByRightClic += () => 
-            {
-                Debug.LogWarning("Controller::SetPlayerInput as True.");
-                PlayerInputEnabled = true;
-            };
-        }
+        //if (_MultiCommandMenu)
+        //{
+        //    _MultiCommandMenu.OnCancelByRightClic += () => 
+        //    {
+        //        Debug.LogWarning("Controller::SetPlayerInput as True.");
+        //        PlayerInputEnabled = true;
+        //    };
+        //}
 
         if (_solver.Origin == null)
         {

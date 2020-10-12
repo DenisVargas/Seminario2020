@@ -10,7 +10,6 @@ using UnityEngine.EventSystems;
 public class CommandMenuItem : MonoBehaviour
 {
     public event Action<OperationType, IInteractionComponent> OnOperationSelected = delegate { };
-    public Action CancelAndCloseMenu = delegate { };
     public Action CloseMenu = delegate { };
 
     [SerializeField]
@@ -58,18 +57,19 @@ public class CommandMenuItem : MonoBehaviour
         var input = currentEvent.currentInputModule.input;
         if (input.GetMouseButtonDown(0))
         {
-            //print("Uso el comando");
+            print($"{gameObject.name}:: Activo el comando{{ {data.Operation} }}");
             _backGroundImage.sprite = onPress;
-            OnOperationSelected(data.Operation, referenceComponent);
             currentEvent.Use();
+            OnOperationSelected(data.Operation, referenceComponent);
+            OnOperationSelected = delegate { };
             CloseMenu();
         }
         else
         if (input.GetMouseButtonDown(1))
         {
             print("Cancelo el comando.");
-            CancelAndCloseMenu();
             currentEvent.Use();
+            CloseMenu();
         }
     }
     public void OnMouseClickUp(BaseEventData currentEvent)

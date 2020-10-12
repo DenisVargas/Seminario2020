@@ -166,6 +166,7 @@ namespace Core.InventorySystem
             {
                 _rb.useGravity = state;
                 _rb.velocity = velocity;
+                _rb.isKinematic = !state;
             }
             _physicCollider.enabled = state;
         }

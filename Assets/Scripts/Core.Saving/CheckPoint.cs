@@ -41,6 +41,7 @@ namespace Core.SaveSystem
     public class CheckPoint
     {
         public int levelID;
+        public int LevelBuildID;
         public PlayerData playerData;
         public List<EnemyData> Enemies;
         public Vector3 CameraPosition;

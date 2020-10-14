@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 702348984}
   - component: {fileID: 9114495887029711514}
   - component: {fileID: 702348981}
-  - component: {fileID: 3477147565636679532}
   m_Layer: 30
   m_Name: GemaCosmica
   m_TagString: Untagged
@@ -124,16 +123,3 @@ MonoBehaviour:
   SpeedRot: 1
   ActivationNode: {fileID: 0}
   GemaView: {fileID: 4424400401803550}
-  RestartObject: {fileID: 3477147565636679532}
---- !u!114 &3477147565636679532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1348091016859136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94dce6df107fc264daf63b21588e4a0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -322,13 +322,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
                     if (_mouseContext.interactuableHitted)
                     {
-                        //Le paso las nuevas opciones disponibles.
-                        _MultiCommandMenu.FillOptions(_mouseContext.InteractionHandler, _inventory, QuerySelectedOperation);
-                        //if (!_MultiCommandMenu.gameObject.activeSelf) //Lo activo en el canvas. Esto no cambia nada.
-                            _MultiCommandMenu.gameObject.SetActive(true);
-                        //Lo posiciono en donde debe estar.
-                        _MultiCommandMenu.Emplace(Input.mousePosition);
-
+                        _MultiCommandMenu.SetCommandMenu(Input.mousePosition, _mouseContext.InteractionHandler, _inventory, QuerySelectedOperation);
                         return;
                     }
 

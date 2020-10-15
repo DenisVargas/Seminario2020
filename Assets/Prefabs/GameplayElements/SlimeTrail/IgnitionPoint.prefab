@@ -162,6 +162,8 @@ MonoBehaviour:
   _chainReactionDelay: 0.5
   fireParticles:
   - {fileID: 4255842031857750274}
+  _dropParticle: {fileID: 8338597981694847702, guid: abc0a6558c0705e47a6ceca12d268a3a,
+    type: 3}
   _root: {fileID: 206088919360503028}
   efectTargets:
     serializedVersion: 2
@@ -169,6 +171,7 @@ MonoBehaviour:
   _ignitableSearchRadius: 1.5
   _safeInteractionDistance: 2
   _remainingLifeTime: 0
+  _burning: 0
   patches: []
   myMesh: {fileID: 8835212789124928482}
   myMaterials:

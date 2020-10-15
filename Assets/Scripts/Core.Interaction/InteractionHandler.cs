@@ -60,19 +60,6 @@ namespace Core.Interaction
             return ip;
         }
 
-        /// <summary>
-        /// key en 0 es un componente Estático. Mientras que 1 es un componente dinámico.
-        /// </summary>
-        /// <param name="operation"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic)
-        {
-            return GetInteractionsAbviable().Where(x => x.Item1 == operation && x.Item2.isDynamic == isDynamic)
-                                            .Select(x => x.Item2)
-                                            .FirstOrDefault();
-        }
-
         private List<Tuple<OperationType, IInteractionComponent>> GetInteractionsAbviable(Inventory inventory = null)
         {
             interactionComponents = new List<Tuple<OperationType, IInteractionComponent>>();
@@ -93,6 +80,20 @@ namespace Core.Interaction
             _interactionsListed = interactionComponents.Count;
             return interactionComponents;
         }
+
+        /// <summary>
+        /// key en 0 es un componente Estático. Mientras que 1 es un componente dinámico.
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="isDynamic">Si el target buscado es de tipo Dinámico.</param>
+        /// <returns></returns>
+        public IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic)
+        {
+            return GetInteractionsAbviable().Where(x => x.Item1 == operation && x.Item2.isDynamic == isDynamic)
+                                            .Select(x => x.Item2)
+                                            .FirstOrDefault();
+        }
+
         /// <summary>
         /// Chequea si hay un componente estático para una determinada operación.
         /// </summary>

@@ -86,7 +86,7 @@ public class CommandMenu : MonoBehaviour
         selectedPreset.SetActive(false);
     }
 
-    public void Emplace(Vector2 mouseScreenPosition)
+    void Emplace(Vector2 mouseScreenPosition)
     {
         //posicionar el MultiCommandMenu();
 
@@ -121,7 +121,22 @@ public class CommandMenu : MonoBehaviour
 
         ClearCurrentDisplay();
     }
-    public void FillOptions
+
+    public void SetCommandMenu(
+          Vector2 MouseScreenPosition,
+          IInteractable interactionTarget,
+          Inventory inventory,
+          Action<OperationType, IInteractionComponent> callback)
+    {
+        //Le paso las nuevas opciones disponibles.
+        if(FillOptions(interactionTarget, inventory, callback))
+        {
+            Emplace(Input.mousePosition);
+            gameObject.SetActive(true);
+        }
+    }
+
+    bool FillOptions
     (
       IInteractable interactionTarget,
       Inventory inventory,
@@ -130,7 +145,6 @@ public class CommandMenu : MonoBehaviour
     {
         ClearCurrentDisplay();
 
-        //commandCallback = callback;
         this.interactionTarget = interactionTarget;
 
         //Tomamos nuestro target y le pedimos los displaySettings de acuerdo a nuestro inventario.
@@ -138,7 +152,7 @@ public class CommandMenu : MonoBehaviour
         if (DisplaySettings.SuportedOperations.Count == 0)
         {
             ClearCurrentDisplay();
-            return;
+            return false;
         }
 
         _limitedActive = DisplaySettings.LimitedDisplay;
@@ -156,6 +170,8 @@ public class CommandMenu : MonoBehaviour
 
             _currentDisplay.Add(display);
         }
+
+        return true;
     }
 
     public void Close()

@@ -15,6 +15,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     [SerializeField] Damage toAplyDamage = new Damage();
     [SerializeField] float _chainReactionDelay = 0.1f;
     [SerializeField] GameObject[] fireParticles = null;
+    [SerializeField] ParticleSystem _dropParticle = null;
     [SerializeField] GameObject _root = null;
     [SerializeField] LayerMask efectTargets = ~0;
     [SerializeField] float _ignitableSearchRadius = 5f;
@@ -148,6 +149,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         }
         patches.Clear();
         RemoveFromNode();
+        var dropParticle = Instantiate(_dropParticle, transform.position, Quaternion.identity);
         Destroy(gameObject);//Esta parte hay que reemplazarlo por una bonita partícula.
     }
 
@@ -219,10 +221,15 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     }
     public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
     {
-        return new List<Tuple<OperationType, IInteractionComponent>>()
+        if (inventory != null && inventory.equiped != null && inventory.equiped.ID == 1)
         {
-            new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
-        };
+            return new List<Tuple<OperationType, IInteractionComponent>>()
+            {
+                new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
+            };
+        }
+
+        return new List<Tuple<OperationType, IInteractionComponent>>();
     }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {

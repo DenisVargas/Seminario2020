@@ -5,8 +5,8 @@ using Core.Interaction;
 public class Trail : MonoBehaviour
 {
     [Header("Igniteable Object Main Settings")]
-    [SerializeField] GameObject _ignitionPoint_Prefab;
-    [SerializeField] GameObject _slimePatch_Prefab;
+    [SerializeField] GameObject _ignitionPoint_Prefab = null;
+    [SerializeField] GameObject _slimePatch_Prefab    = null;
 
     public bool Emit { get; set; } = false;
 
@@ -34,7 +34,6 @@ public class Trail : MonoBehaviour
                 if (igniteObject.RootGameObject == null) igniteObject.RootGameObject = ignition;
                 igniteObject.RemoveFromNode += current.clearHandler;
                 current.handler = ignitionInteractionHandler;
-                //handler.markAsDirty(); //Función que utilizamos para decirle a un InteractionHandler que tiene que serializarse (Sistema de guardado).
 
                 //Seteo los parches.
                 foreach (var connection in current.Connections)

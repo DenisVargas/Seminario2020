@@ -1,55 +1,43 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using IA.PathFinding;
+using UnityEngine;
 
 [System.Serializable]
-public class cmd_Move : IQueryComand
+public class cmd_Move : BaseQueryCommand
 {
-    public Func<Node, bool> _moveFunction = delegate { return false; };
-    public Func<Node, bool> _checkCondition = delegate { return false; };
-    public Action _dispose = delegate { };
-    public Action OnChangePath = delegate { };
-    public Queue<Node> _pathToTarget = new Queue<Node>();
+    Action<bool> setAnimation = delegate { };
 
-    Node _currentTarget = null;
-    Node _targetNode = null;
-
-    public cmd_Move(Node TargetNode, Queue<Node> pathToTarget, Action OnChangePath, Func<Node, bool> moveFunction, Func<Node, bool> checkCondition, Action Dispose)
+    public cmd_Move(Transform body, PathFindSolver solver, Node TargetNode, Func<Node, bool> moveFunction, Action<bool> setAnimation, Action dispose, Action OnChangePath)
+        : base( body, solver, moveFunction, dispose, OnChangePath)
     {
-        _targetNode = TargetNode;
-        _pathToTarget = new Queue<Node>(pathToTarget);
-        this.OnChangePath = OnChangePath;
-        _currentTarget = _pathToTarget.Dequeue();
-        _moveFunction = moveFunction;
-        _checkCondition = checkCondition;
-        _dispose = Dispose;
+        this.setAnimation = setAnimation;
+        _ObjectiveNode = TargetNode;
     }
 
-    public bool completed { get; private set; } = false;
-    public bool isReady { get; private set; } = false;
-    public bool cashed => false;
-
-    public void SetUp()
+    public override void SetUp()
     {
-        //Move no es un comando Casheado. Por lo que tiene una ejecución contínua.
-        OnChangePath();
+        base.SetUp();
+        setAnimation(true);
         isReady = true;
     }
-    public void Execute()
+
+    public override void UpdateCommand()
     {
-        completed = _checkCondition(_targetNode);
-        if (completed)
-            _dispose();
-        else
+        //Move Function Retorna true, cuando la distancia al objetivo despues del movimiento es menor al treshold.
+        //Si el move Retorna true, entonces actualizamos nuestro siguiente nodo.
+        if (moveFunction(_nextNode) && _solver.currentPath.Count > 0)
         {
-            //Move Function Retorna true, cuando la distancia al objetivo despues del movimiento es menor al treshold.
-            if(_moveFunction(_currentTarget) && _pathToTarget.Count > 0)//Si el move Retorna true, entonces actualizamos nuestro siguiente nodo.
-                _currentTarget = _pathToTarget.Dequeue();
+            _currentNode = _nextNode;
+            _nextNode = _solver.currentPath.Dequeue();
+        }
+
+        if (isInRange(_ObjectiveNode))
+        {
+            setAnimation(false);
+            dispose();
         }
 
         //MonoBehaviour.print($"move comand Executing, status {completed ? "Completed" : "On Going"}");
     }
-    public void Cancel() { }
+    public override void Cancel() { }
 }

@@ -289,7 +289,7 @@ public class Baboso : BaseNPC
     void AV_Burning_End()
     {
         _states.Feed(CommonState.dead);
-        Debug.LogWarning("AnimEvent: BurningEnd");
+        //Debug.LogWarning("AnimEvent: BurningEnd");
     }
 
     IEnumerator Burn()

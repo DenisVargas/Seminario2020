@@ -25,12 +25,9 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     public ParticleSystem BloodStain;
 
     public float moveSpeed = 6;
-    [SerializeField] float _movementTreshold = 0.18f;
     public Transform MouseDebug;
 
     Queue<IQueryComand> comandos = new Queue<IQueryComand>();
-    IInteractionComponent Queued_TargetInteractionComponent = null;
-    Node QueuedMovementEndPoint = null;
 
     Inventory _inventory = new Inventory();
     public Inventory Inventory
@@ -45,7 +42,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         set =>_inventory = value;
     }
 
-    //Grab Objgrabed;
     [SerializeField] bool _input = true;
     bool PlayerInputEnabled
     {
@@ -231,14 +227,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _solver = GetComponent<PathFindSolver>();
         _tm = GetComponent<TrowManagement>();
 
-        //if (_MultiCommandMenu)
-        //{
-        //    _MultiCommandMenu.OnCancelByRightClic += () => 
-        //    {
-        //        Debug.LogWarning("Controller::SetPlayerInput as True.");
-        //        PlayerInputEnabled = true;
-        //    };
-        //}
+        if (_MultiCommandMenu)
+            _MultiCommandMenu.commandCallback = QuerySelectedOperation;
 
         if (_solver.Origin == null)
         {
@@ -262,7 +252,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
     }
-
     void Update()
     {
         _mouseContext = _mtracker.GetCurrentMouseContext();
@@ -294,7 +283,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                     Vector3 origin = manitodumacaco.position;
 
                     //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
-                    var command = new cmd_ThrowEquipment(1f, manitodumacaco, targetNode, _tm, ReleaseEquipedItemFromHand,
+                    var command = new cmd_ThrowEquipment(manitodumacaco, targetNode, 1f, _tm, ReleaseEquipedItemFromHand,
                     () =>
                     {
                         _a_ThrowRock = true;
@@ -343,26 +332,16 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                     else
                     {
                         Node targetNode = _mouseContext.closerNode;
-                        Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
-
-                        if (targetNode == null || origin == null)
-                        {
-                            Debug.LogError("targetNode o origin node es nulo");
-                            return;
-                        }
-
                         if (Input.GetKey(KeyCode.LeftShift)) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
                         {
-                            if (AddMovementCommand(origin, targetNode))
-                                _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
+                            AddMovementCommand(targetNode);
+                            _mv.SetMousePositionAditive(_mouseContext.closerNode.transform.position);
                         }
                         else //Si no presiono nada, es una acción normal, sobreescribimos todos los comandos!.
                         {
                             CancelAllCommands();
-                            if (AddMovementCommand(origin, targetNode))
-                            {
-                                _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
-                            }
+                            AddMovementCommand(targetNode);
+                            _mv.SetMousePosition(_mouseContext.closerNode.transform.position);
                         }
                     }
                 }
@@ -388,52 +367,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             IQueryComand current = comandos.Peek();
             if (!current.isReady)
                 current.SetUp();
-            if (!current.cashed)
-                current.Execute();
+            current.UpdateCommand();
         }
-    }
-
-    /// <summary>
-    /// Añade un comando Move si hay un camino posible entre los 2 nodos dados por parámetros. Si no hay uno, el comando es ignorado.
-    /// </summary>
-    /// <param name="OriginNode">El nodo mas cercano al agente.</param>
-    /// <param name="TargetNode">El nodo objetivo al que se quiere desplazar.</param>
-    /// <returns></returns>
-    private bool AddMovementCommand(Node OriginNode, Node TargetNode)
-    {
-        //_solver.SetOrigin(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position)
-        _solver.SetOrigin(OriginNode)
-               .SetTarget(TargetNode)
-               .CalculatePathUsingSettings();
-
-        if (_solver.currentPath.Count == 0) //Si el solver no halló un camino, no hay camino posible.
-        {
-            //print("No hay camino Posible");
-            return false;
-        }
-
-        QueuedMovementEndPoint = TargetNode;
-
-        IQueryComand moveCommand = new cmd_Move
-                            (
-                                TargetNode,
-                                _solver.currentPath,
-                                () => { OnMovementChange(); },
-                                MoveToTarget,
-                                (targetNode) =>
-                                {
-                                    float dst = Vector3.Distance(transform.position, targetNode.transform.position);
-                                    bool completed = dst <= _movementTreshold;
-
-                                    if (completed)
-                                        _a_Walking = false;
-
-                                    return completed;
-                                },
-                                () => { comandos.Dequeue(); }
-                            );
-        comandos.Enqueue(moveCommand);
-        return true;
     }
 
     //================================= Damage System ======================================
@@ -547,47 +482,102 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     {
         BloodStain.Play();
     }
-
+    /// <summary>
+    /// Mueve este cuerpo en dirección a un nodo.
+    /// </summary>
+    /// <param name="targetNode">El nodo objetivo al que nos queremos mover.</param>
+    /// <returns>Retorna verdadero, si hemos llegado al nodo objetivo.</returns>
     public bool MoveToTarget(Node targetNode)
     {
         Vector3 dirToTarget = (targetNode.transform.position - transform.position).normalized;
-        transform.forward = dirToTarget;
-
-        if (!_a_Walking)
-            _a_Walking = true;
-
+        transform.forward = dirToTarget.YComponent(0);
         transform.position += dirToTarget * moveSpeed * Time.deltaTime;
-        return Vector3.Distance(transform.position, targetNode.transform.position) <= _movementTreshold;
+        return Vector3.Distance(transform.position, targetNode.transform.position) <= _solver.ProximityTreshold;
     }
 
     /// <summary>
-    /// Callback que se llama cuando seleccionamos una acción a realizar sobre un objeto interactuable desde el panel de comandos.
+    /// Añade un comando Move si hay un camino posible entre los 2 nodos dados por parámetros. Si no hay uno, el comando es ignorado.
     /// </summary>
-    /// <param name="target">El objetivo de dicha operación. Es un interaction Component que contiene dentro de si el tipo de la operación.</param>
+    /// <param name="OriginNode">El nodo mas cercano al agente.</param>
+    private void AddMovementCommand(Node TargetNode)
+    {
+        IQueryComand moveCommand = new cmd_Move
+                            (
+                                transform,
+                                _solver,
+                                TargetNode,
+                                MoveToTarget,
+                                (value) => { _a_Walking = value; },
+                                () => { comandos.Dequeue(); },
+                                OnMovementChange
+                            );
+        //Move Command se autovalida, si no hay camino posible, en SetUp ejecuta Dispose();
+        comandos.Enqueue(moveCommand);
+    }
+
+    /// <summary>
+    /// Añade un comando a la cola, desde el menú de comandos.
+    /// </summary>
+    /// <param name="target">El objetivo de dicha operación.</param>
+    /// <param name="operation">El tipo de operacion que se desea ejecutar.</param>
     public void QuerySelectedOperation(OperationType operation, IInteractionComponent target)
     {
-        var parameters = target.getInteractionParameters(transform.position);
-
-        Node origin = _solver.getCloserNode(QueuedMovementEndPoint == null ? transform.position : QueuedMovementEndPoint.transform.position);
-        Node targetNode = parameters.safeInteractionNode;
-
-        if (Vector3.Distance(origin.transform.position, targetNode.transform.position) > _movementTreshold)
-            if (!AddMovementCommand(origin, targetNode))
-            {
-                print("No se pudo añadir un camino posible, el camino está obstruído");
-                return;
-            }
-
         //añado el comando correspondiente a la query.
         IQueryComand _toActivateCommand = null;
         switch (operation)
         {
             case OperationType.Ignite:
-                _toActivateCommand = new cmd_Ignite(target, operation, () => { _a_Ignite = true; });
+                _toActivateCommand = new cmd_Ignite(
+                        target,
+                        operation,
+                        (AnimIndex, value) => 
+                        {
+                            if (AnimIndex == 0)
+                                _a_Walking = value;
+                            if (AnimIndex == 1)
+                                _a_Ignite = value;
+                        },
+                        (AnimIndex) =>
+                        {
+                            if (AnimIndex == 0)
+                                return _a_Walking;
+                            if (AnimIndex == 1)
+                                return _a_Ignite;
+                            return false;
+                        },
+                        transform,
+                        _solver,
+                        MoveToTarget,
+                        () => { comandos.Dequeue(); }, //Dispose.
+                        OnMovementChange //Recálculo de camino.
+                    );
                 break;
 
             case OperationType.Activate:
-                _toActivateCommand = new cmd_Activate(target, operation, () => { _a_LeverPull = true; });
+                _toActivateCommand = new Cmd_Activate(
+                        target,    //Objetivo.
+                        operation, //Tipo de operación.
+                        transform, //Referencia a mi cuerpo.
+                        _solver,   //Referencia al Componente de Cálculo de camino.
+                        (animIndex) =>
+                        {
+                            if (animIndex == 0)
+                                return _a_Walking;
+                            if (animIndex == 1)
+                                return _a_LeverPull;
+                            return false;
+                        }, //get value de animación.
+                        (animIndex, value) => 
+                        {
+                            if (animIndex == 0)
+                                _a_Walking = value;
+                            if (animIndex == 1)
+                                _a_LeverPull = value;
+                        }, //Set value de animación.
+                        MoveToTarget,//Función de movimiento.
+                        () => { comandos.Dequeue(); }, //Dispose.
+                        OnMovementChange //Recálculo de camino.
+                    );
                 break;
 
             case OperationType.Equip:
@@ -595,19 +585,116 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
             case OperationType.Take:
                 if (_inventory.equiped == null)
-                    _toActivateCommand = new cmd_Take((Item)target, AttachItemToHand, () => { _a_Grabing = true; });
+                    _toActivateCommand = new cmd_Take(
+                                (Item)target,
+                                AttachItemToHand,
+                                (animIndex, value) => 
+                                {
+                                    if (animIndex == 0)
+                                        _a_Walking = value;
+                                    if (animIndex == 1)
+                                        _a_Grabing = value;
+                                },
+                                (animIndex) =>
+                                {
+                                    if (animIndex == 0)
+                                        return _a_Walking;
+                                    if (animIndex == 1)
+                                        return _a_Grabing;
+                                    return false;
+                                },
+                                transform,
+                                _solver,
+                                MoveToTarget,
+                                () => { comandos.Dequeue(); }, //Dispose.
+                                OnMovementChange //Recálculo de camino.
+                            );
                 break;
 
             case OperationType.Exchange:
-                _toActivateCommand = new cmd_Exchange((Item)target, _inventory, ReleaseEquipedItemFromHand, AttachItemToHand, () => { _a_Grabing = true; });
+                _toActivateCommand = new cmd_Exchange(
+                        (Item)target,
+                        _inventory,
+                        ReleaseEquipedItemFromHand, 
+                        AttachItemToHand, 
+                        (animIndex, value) => 
+                        {
+                            if (animIndex == 0)
+                                _a_Walking = value;
+                            if (animIndex == 1)
+                                _a_Grabing = value;
+                        },
+                        (animIndex) =>
+                        {
+                            if (animIndex == 0)
+                                return _a_Walking;
+                            if (animIndex == 1)
+                                return _a_Grabing;
+                            return false;
+                        },
+                        transform,
+                        _solver,
+                        MoveToTarget,
+                        () => { comandos.Dequeue(); }, //Dispose.
+                        OnMovementChange //Recálculo de camino.
+                    );
                 break;
 
             case OperationType.Combine:
-                _toActivateCommand = new cmd_Combine((Item)target, _inventory, AttachItemToHand, () => { _a_Grabing = true; });
+                _toActivateCommand = new cmd_Combine(
+                        (Item)target, 
+                        _inventory, 
+                        AttachItemToHand, 
+                        (animIndex, value) => 
+                        {
+                            if (animIndex == 0)
+                                _a_Walking = value;
+                            if (animIndex == 1)
+                                _a_Grabing = value;
+                        },
+                        (animIndex) =>
+                        {
+                            if (animIndex == 0)
+                                return _a_Walking;
+                            if (animIndex == 1)
+                                return _a_Grabing;
+                            return false;
+                        },
+                        transform,
+                        _solver,
+                        MoveToTarget,
+                        () => { comandos.Dequeue(); }, //Dispose.
+                        OnMovementChange //Recálculo de camino.
+                    );
                 break;
+
             case OperationType.lightOnTorch:
                 if (_inventory.equiped.ID == 1)
-                    _toActivateCommand = new cmd_LightOnTorch(() => { }, target, (Torch)_inventory.equiped);
+                    _toActivateCommand = new cmd_LightOnTorch
+                        (
+                            target,
+                            (Torch)_inventory.equiped,
+                            (animIndex, value) => 
+                            {
+                                if (animIndex == 0)
+                                    _a_Walking = value;
+                                if (animIndex == 1)
+                                    _a_Ignite = value;
+                            },
+                            (animIndex) =>
+                            {
+                                if (animIndex == 0)
+                                    return _a_Walking;
+                                if (animIndex == 1)
+                                    return _a_Ignite;
+                                return false;
+                            },
+                            transform,
+                            _solver,
+                            MoveToTarget,
+                            () => { comandos.Dequeue(); }, //Dispose.
+                            OnMovementChange
+                        );
                 break;
 
             default:
@@ -626,7 +713,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         {
             command.Cancel();
         }
-        QueuedMovementEndPoint = null;
         comandos.Clear();
     }
     void Die(int KillingAnimType)
@@ -645,8 +731,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _a_Dead = true;
 
         comandos.Clear();
-        Queued_TargetInteractionComponent = null;
-        QueuedMovementEndPoint = null;
 
         OnEntityDead(gameObject);
         OnPlayerDied();
@@ -654,59 +738,58 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
     //====================================== AnimEvents =======================================
 
-    void AE_PullLeverStarted()
+    void AE_BlockInteractions()
     {
         PlayerInputEnabled = false;
+        //Llamo a una función que cierre la ventana de interacción.
+        if (_MultiCommandMenu.isActiveAndEnabled)
+            _MultiCommandMenu.Close();
+    }
+    void AE_UnLockInteractions()
+    {
+        PlayerInputEnabled = true;
+    }
 
-        if (Queued_TargetInteractionComponent != null)
-        {
-            var parameters = Queued_TargetInteractionComponent.getInteractionParameters(transform.position);
-            transform.forward = parameters.orientation;
-        }
+    void AE_PullLeverStarted()
+    {
+        print($"Pull Lever Started:: {gameObject.name} ha iniciado la activación de una palanca");
     }
     void AE_PullLeverEnded()
     {
-        PlayerInputEnabled = true;
         _a_LeverPull = false;
         comandos.Dequeue().Execute();
     }
     void AE_Ignite_Start()
     {
-        PlayerInputEnabled = false;
+        //PlayerInputEnabled = false;
     }
     void AE_Ignite_End()
     {
-        PlayerInputEnabled = true;
         _a_Ignite = false;
 
         comandos.Dequeue().Execute();
     }
     void AE_Throw_Start()
     {
-        PlayerInputEnabled = false;
+        //Esto esta al pepe ahora mismo.
     }
     void AE_Throw_Excecute()
     {
-        //ReleaseEquipedItemFromHand()
-        //.ExecuteOperation(OperationType.Throw, throwTarget);
         comandos.Peek().Execute();
-        //throwTarget = null;
     }
     void AE_TrowRock_Ended()
     {
-        PlayerInputEnabled = true;
         _a_ThrowRock = false;
         comandos.Dequeue();
     }
     void AE_Grab_Star()
     {
-        PlayerInputEnabled = false;
+        //PlayerInputEnabled = false;
     }
     void AE_Grab_End()
     {
         _a_Grabing = false;
 
         comandos.Dequeue().Execute();
-        PlayerInputEnabled = true;
     }
 }

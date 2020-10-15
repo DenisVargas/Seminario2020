@@ -116,7 +116,7 @@ public class CommandMenu : MonoBehaviour
     public void ActivateCommand(OperationType operation, IInteractionComponent component)
     {
         commandCallback(operation, component);
-        commandCallback = delegate { };
+        //commandCallback = delegate { };
         interactionTarget = null;
 
         ClearCurrentDisplay();
@@ -130,7 +130,7 @@ public class CommandMenu : MonoBehaviour
     {
         ClearCurrentDisplay();
 
-        commandCallback = callback;
+        //commandCallback = callback;
         this.interactionTarget = interactionTarget;
 
         //Tomamos nuestro target y le pedimos los displaySettings de acuerdo a nuestro inventario.
@@ -177,7 +177,7 @@ public class CommandMenu : MonoBehaviour
 
         if (!_viewportContextOn)
         {
-            commandCallback = delegate { };
+            //commandCallback = delegate { };
             interactionTarget = null;
             ClearCurrentDisplay();
             Close();

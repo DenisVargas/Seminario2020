@@ -1,42 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.Interaction;
-using Core.InventorySystem;
+using UnityEngine;
+using IA.PathFinding;
 
-class cmd_LightOnTorch : IQueryComand
+class cmd_LightOnTorch : BaseQueryCommand
 {
-    //La animacion.
-    Action TriggerAnimation = delegate { };
+    //Animaciones!
+    Action<int, bool> setAnimation = delegate { };
+    Func<int, bool> getAnimation = delegate { return false; };
 
-    IInteractionComponent component;
+    IInteractionComponent InteractionTarget;
     Torch equipedTorch;
 
-    public cmd_LightOnTorch(Action triggerAnimation, IInteractionComponent component, Torch equipedTorch)
+    public cmd_LightOnTorch(IInteractionComponent InteractionTarget, Torch equipedTorch, Action<int,bool> setAnimation, Func<int, bool> getAnimation, Transform body, PathFindSolver solver, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath)
+        : base(body, solver, moveFunction, dispose, OnChangePath)
     {
-        TriggerAnimation = triggerAnimation;
-        this.component = component;
+        this.setAnimation = setAnimation;
+        this.getAnimation = getAnimation;
+        this.InteractionTarget = InteractionTarget;
         this.equipedTorch = equipedTorch;
     }
 
-    public bool completed { get; set; } = false;
-    public bool isReady { get; set; } = false;
-    public bool cashed => false;
-
-    public void SetUp()
+    public override void SetUp()
     {
+        var target = InteractionTarget.getInteractionParameters(_body.position);
+        _ObjectiveNode = target.safeInteractionNode;
+
+        base.SetUp();
         isReady = true;
     }
-
-    public void Execute()
+    public override void UpdateCommand()
     {
-        component.ExecuteOperation(OperationType.lightOnTorch, new object[] { equipedTorch });
+        if (!isInRange(_ObjectiveNode))
+        {
+            if (!getAnimation(0))
+                setAnimation(0, true);
+
+            if (moveFunction(_nextNode) && _solver.currentPath.Count > 0)
+                _nextNode = _solver.currentPath.Dequeue();
+        }
+        else Execute();
+    }
+    public override void Execute()
+    {
+        lookTowards(InteractionTarget);
+        setAnimation(0, false);
+        //setAnimation(1, true);
+        InteractionTarget.ExecuteOperation(OperationType.lightOnTorch, new object[] { equipedTorch });
         completed = true;
     }
-
-    public void Cancel()
+    public override void Cancel()
     {
         completed = false;
     }

@@ -2,9 +2,11 @@
 {
     bool completed { get; }
     bool isReady { get; }
+    bool needsPremovement { get; }
     bool cashed { get; }
 
-    void Cancel();
-    void Execute();
     void SetUp();
+    void UpdateCommand();
+    void Execute();
+    void Cancel();
 }

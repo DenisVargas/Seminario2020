@@ -57,7 +57,7 @@ public class CommandMenuItem : MonoBehaviour
         var input = currentEvent.currentInputModule.input;
         if (input.GetMouseButtonDown(0))
         {
-            print($"{gameObject.name}:: Activo el comando{{ {data.Operation} }}");
+            //print($"{gameObject.name}:: Activo el comando{{ {data.Operation} }}");
             _backGroundImage.sprite = onPress;
             currentEvent.Use();
             OnOperationSelected(data.Operation, referenceComponent);

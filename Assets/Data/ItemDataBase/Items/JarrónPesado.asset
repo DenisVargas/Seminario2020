@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: Jarron Pesado
   Description: Un jarron lleno de piedras!
   Icon: {fileID: 0}
-  inGamePrefab:
+  inGamePrefabs:
   - {fileID: 8132736032666455958, guid: 110dab6a03331d9478c72b6bd22f7616, type: 3}
   isCombinable: 0
   isDropeable: 1

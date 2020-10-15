@@ -59,6 +59,22 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0
+        functionName: AE_PullLeverStarted
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: AE_BlockInteractions
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.7993795
         functionName: AE_PullLeverEnded
         data: 
@@ -67,8 +83,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0
-        functionName: AE_PullLeverStarted
+      - time: 1
+        functionName: AE_UnLockInteractions
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: b41e3e219d5098946aa739ea663a400a,
           type: 3}

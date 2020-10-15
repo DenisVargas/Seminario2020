@@ -11,7 +11,6 @@ public class Gem : MonoBehaviour, IInteractionComponent
     [SerializeField] int SpeedRot        = 2;
     [SerializeField] Node ActivationNode = null;
     [SerializeField] Transform GemaView  = null;
-    [SerializeField] LevelTesting RestartObject = null;
 
     public bool isDynamic => false;
 
@@ -34,7 +33,7 @@ public class Gem : MonoBehaviour, IInteractionComponent
     }
     public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
-        GetComponent<LevelTesting>().Restart();
+        Core.SaveSystem.Level.RestartCurrentLevel();
     }
     public void CancelOperation(OperationType operation, params object[] optionalParams)
     {

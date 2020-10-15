@@ -91,12 +91,12 @@ namespace Core.InventorySystem
         /// <param name="a">Identificador del primer Item</param>
         /// <param name="b">Identificador del segundo Item</param>
         /// <returns>Null si no hay una combinación válida</returns>
-        public GameObject Combine(int a, int b, out ItemData resultData)
+        public static ItemData Combine(int a, int b)
         {
             if (CanCombineItems(a,b))
             {
                 //Busco entre las combinaciones aquel que coíncida.
-                var foundCombination = _recipes.combinations
+                var foundCombination = Manager._recipes.combinations
                                        .Where(x => x.checkIn(a, b))
                                        .First();
 
@@ -105,12 +105,10 @@ namespace Core.InventorySystem
                     //obtengo el ID resultante y busco el item que corresponda.
                     //Retorno el item.
 
-                    resultData = getItemData(foundCombination.Result);
-                    return _dataBase[foundCombination.Result].GetRandomInGamePrefab();
+                    return getItemData(foundCombination.Result);
                 }
             }
 
-            resultData = null;
             return null;
         }
         /// <summary>
@@ -119,9 +117,9 @@ namespace Core.InventorySystem
         /// <param name="a">Identificador del item A</param>
         /// <param name="b">Identificador del item A</param>
         /// <returns>false si no es posible combinar los items con los ID´s dados</returns>
-        public bool CanCombineItems(int a, int b)
+        public static bool CanCombineItems(int a, int b)
         {
-            int combinationsPosible = _recipes.combinations.Count(x => x.checkIn(a, b));
+            int combinationsPosible = Manager._recipes.combinations.Count(x => x.checkIn(a, b));
             return combinationsPosible > 0;
         }
     }

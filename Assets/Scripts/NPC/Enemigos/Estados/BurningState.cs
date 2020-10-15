@@ -8,7 +8,7 @@ public class BurningState : State
     public override void Begin()
     {
         //Seteo la animación.
-        print($"{gameObject.name} está entrando a Burning");
+        //print($"{gameObject.name} está entrando a Burning");
         _anims.SetBool("Burning", true);
 
         OnBurning();
@@ -51,6 +51,6 @@ public class BurningState : State
 
     public override void End()
     {
-        print($"{gameObject.name} está saliendo de Burning");
+        //print($"{gameObject.name} está saliendo de Burning");
     }
 }

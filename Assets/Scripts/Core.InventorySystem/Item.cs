@@ -81,7 +81,7 @@ namespace Core.InventorySystem
                     _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Exchange, this));
 
                     // Es combinable? Añado la operación si el equipado tiene una combinación con este item.
-                    if (isCombinable && ItemDataBase.Manager.CanCombineItems(ID, CurrentInventory.equiped.ID))
+                    if (isCombinable && ItemDataBase.CanCombineItems(ID, CurrentInventory.equiped.ID))
                         _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Combine, this));
                 }
             }

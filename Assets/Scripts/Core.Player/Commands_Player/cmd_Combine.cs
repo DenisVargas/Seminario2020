@@ -1,50 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.InventorySystem;
 using UnityEngine;
+using IA.PathFinding;
 
-public class cmd_Combine : IQueryComand
+public class cmd_Combine : BaseQueryCommand
 {
-    private Item target;
-    private Inventory _inventory;
-    public Action AnimTrigget = delegate { };
-    private Action<Item> AttachToArm = delegate { };
+    Item target;
+    Inventory _inventory;
+    Action<Item> AttachToArm = delegate { };
 
-    public cmd_Combine(Item target, Inventory inventory, Action<Item> AttachToArm,Action AnimTrigger)
+    Action<int, bool> setAnimation = delegate { };
+    Func<int, bool> getAnimation = delegate { return false; };
+
+    public cmd_Combine(Item target, Inventory inventory, Action<Item> AttachToArm,Action<int, bool> setAnimation, Func<int, bool> getAnimation, Transform body, PathFindSolver solver, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath)
+        : base(body, solver, moveFunction, dispose, OnChangePath)
     {
         this.target = target;
         _inventory = inventory;
-        this.AnimTrigget = AnimTrigger;
         this.AttachToArm = AttachToArm;
+        this.setAnimation = setAnimation;
+        this.getAnimation = getAnimation;
     }
 
-    public bool completed { get; private set; } = false;
-    public bool isReady { get; private set; } = false;
-    public bool cashed => true;
-
-    public void SetUp()
+    public override void SetUp()
     {
-        AnimTrigget();
+        _ObjectiveNode = target.getInteractionParameters(_body.position).safeInteractionNode;
+        base.SetUp();
         isReady = true;
     }
-    public void Execute()
+    public override void UpdateCommand()
     {
+        if (completed) return;
+
+        if (!isInRange(_ObjectiveNode))
+        {
+            //Se entiende que el índice 0 es walk, mientras que el índice 1 es PullLever.
+            if (!getAnimation(0))
+                setAnimation(0, true);
+
+            if (moveFunction(_nextNode) && _solver.currentPath.Count > 0)
+                _nextNode = _solver.currentPath.Dequeue();
+        }
+        else
+        {
+            setAnimation(0, false);
+            setAnimation(1, true);
+        }
+    }
+    public override void Execute()
+    {
+        lookTowards(target);
         Item equiped = _inventory.UnEquipItem();//Desequipo el objeto equipado.
         //Tomamos item a y b, guardamos sus indexes.
         int AID = target.ID;
         int BID = equiped.ID;
 
-        ItemData resultData = null;
-        var prefab = ItemDataBase.Manager.Combine(AID, BID, out resultData);//Obtengo el prefab resultante.
-        if (prefab)
+        ItemData resultData = ItemDataBase.Combine(AID, BID);//Obtengo la data del objeto resultante.
+        if (resultData)
         {
             //Destruyo a y b.
             GameObject.Destroy(equiped.gameObject);
             GameObject.Destroy(target.gameObject);
             //Instancio el prefab resultante.
+            GameObject prefab = resultData.GetRandomInGamePrefab();//Obtengo un prefab spawneable.
             var newItem = GameObject.Instantiate(prefab);
             var itemSettings = newItem.GetComponent<Item>();
             itemSettings.SetData(resultData);
@@ -53,7 +71,5 @@ public class cmd_Combine : IQueryComand
         }
         completed = true;
     }
-    public void Cancel()
-    {
-    }
+    public override void Cancel() { }
 }

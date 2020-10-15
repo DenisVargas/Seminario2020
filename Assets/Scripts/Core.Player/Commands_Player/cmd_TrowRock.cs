@@ -6,35 +6,35 @@ using IA.PathFinding;
 
 public class cmd_ThrowEquipment : IQueryComand
 {
-    Action TriggerAnimation = delegate { };
+    Action setAnimation = delegate { };
     Func<bool, object[], Item> ReleaseEquipment = delegate { return null; };
 
-    IInteractionComponent CommandTarget = null;
-    Node targetNode = null;
+    Node targetNode = null; //Objetivo del tiro.
     float time;
     Transform launchOrigin;
     TrowManagement tr;
 
-    public bool completed { get; private set; } = false;
-    public bool isReady { get; private set; } = false;
-    public bool cashed => true;
+    public bool completed { get; protected set; } = false;
+    public bool isReady { get; protected set; } = false;
+    public bool needsPremovement { get; protected set; } = false;
+    public bool cashed { get; protected set; } = false;
 
-    public cmd_ThrowEquipment(float time, Transform launchOrigin, Node targetNode, TrowManagement tr,Func<bool,object[], Item> ReleaseEquipment, Action TriggerAnimation)
+    public cmd_ThrowEquipment( Transform launchOrigin, Node targetNode, float time, TrowManagement tr,Func<bool,object[], Item> ReleaseEquipment, Action setAnimation)
     {
-        this.CommandTarget = null;
-        this.time = time;
         this.launchOrigin = launchOrigin;
         this.targetNode = targetNode;
+        this.time = time;
         this.tr = tr;
-        this.TriggerAnimation = TriggerAnimation;
         this.ReleaseEquipment = ReleaseEquipment;
+        this.setAnimation = setAnimation;
     }
 
     public void SetUp()
     {
-        TriggerAnimation();
+        setAnimation();
         isReady = true;
     }
+    public void UpdateCommand() { }
     public void Execute()
     {
         Vector3 origin = launchOrigin.position;
@@ -46,8 +46,5 @@ public class cmd_ThrowEquipment : IQueryComand
             tr.ThrowObject(rb, origin, targetNode.transform.position, time);
         completed = true;
     }
-    public void Cancel()
-    {
-        CommandTarget.CancelOperation(OperationType.Throw);
-    }
+    public void Cancel() { }
 }

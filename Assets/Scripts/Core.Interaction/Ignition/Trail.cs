@@ -32,7 +32,7 @@ public class Trail : MonoBehaviour
                 var ignitionInteractionHandler = ignition.GetComponent<IInteractable>();
                 var igniteObject = ignition.GetComponentInChildren<IgnitableObject>();
                 if (igniteObject.RootGameObject == null) igniteObject.RootGameObject = ignition;
-                igniteObject.OnDisable += current.clearHandler;
+                igniteObject.RemoveFromNode += current.clearHandler;
                 current.handler = ignitionInteractionHandler;
                 //handler.markAsDirty(); //Función que utilizamos para decirle a un InteractionHandler que tiene que serializarse (Sistema de guardado).
 

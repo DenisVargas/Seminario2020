@@ -15,6 +15,7 @@ public class PitTrap : MonoBehaviour
     BoxCollider _col;
 
     [SerializeField] List<Collider> OnTop = new List<Collider>();
+    [SerializeField] List<IgnitableObject> OnTopBabas = new List<IgnitableObject>();
     [SerializeField] Node[] AffectedNodes = new Node[0];
 
     private void Awake()
@@ -72,6 +73,12 @@ public class PitTrap : MonoBehaviour
             foreach (var node in AffectedNodes)
                 node.ChangeNodeState(NavigationArea.blocked);
         }
+        if (OnTopBabas.Count > 0)
+        {
+            foreach (var baba in OnTopBabas)
+                baba.OnGrundFall();
+            OnTopBabas = new List<IgnitableObject>();
+        }
 
         isActive = true;
         killOnTopEntities();
@@ -106,6 +113,12 @@ public class PitTrap : MonoBehaviour
         {
             OnTop.Add(other);
         }
+
+        var Baba = other.GetComponent<IgnitableObject>();
+        if (Baba != null)
+        {
+            OnTopBabas.Add(Baba);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -123,6 +136,12 @@ public class PitTrap : MonoBehaviour
             if (player != null)
             {
                 OnTop.Remove(other);
+            }
+
+            var Baba = other.GetComponent<IgnitableObject>();
+            if (Baba != null)
+            {
+                OnTopBabas.Remove(Baba);
             }
         }
     }

@@ -9,7 +9,7 @@ using Core.DamageSystem;
 [RequireComponent(typeof(Collider), typeof(InteractionHandler))]
 public class IgnitableObject : MonoBehaviour, IIgnitableObject
 {
-    public Action OnDisable = delegate { };
+    public Action RemoveFromNode = delegate { };
     public event Action CancelInputs = delegate { };
 
     [SerializeField] Damage toAplyDamage = new Damage();
@@ -87,7 +87,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         {
             if (_remainingLifeTime <= 0)
             {
-                OnDisable();
+                RemoveFromNode();
                 KillIngnitableObject();
                 return;
             }
@@ -95,31 +95,6 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
             _remainingLifeTime -= Time.deltaTime;
         }
     }
-
-    //void FreezeAll()
-    //{
-    //    checkSurroundingIgnitionObjects();
-    //    foreach (var ignit in toIgnite)
-    //    {
-    //        if (!ignit.isFreezed)
-    //        {
-    //            ignit.isFreezed = true;
-    //        }
-    //        else continue;
-    //    }
-    //}
-    //void UnFreezeAll()
-    //{
-    //    checkSurroundingIgnitionObjects();
-    //    foreach (var ignit in toIgnite)
-    //    {
-    //        if (!ignit.isFreezed && ignit != (IIgnitableObject)this)
-    //        {
-    //            ignit.isFreezed = false;
-    //        }
-    //        else continue;
-    //    }
-    //}
 
     //Esto se llamaba desde Trail.
     public void OnSpawn(float LifeTime, float IgnitionLifeTime, float InputWaitTime, float ExpansionDelayTime = 0.8f)
@@ -161,6 +136,19 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
                 toIgnite.Add(igniteable);
             }
         }
+    }
+    /// <summary>
+    /// Callback que se llama cuando las trampas de pinchos se activan!
+    /// </summary>
+    public void OnGrundFall()
+    {
+        foreach (var patch in patches)
+        {
+            Destroy(patch.gameObject);
+        }
+        patches.Clear();
+        RemoveFromNode();
+        Destroy(gameObject);//Esta parte hay que reemplazarlo por una bonita partícula.
     }
 
     /// <summary>

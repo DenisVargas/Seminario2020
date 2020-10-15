@@ -254,8 +254,18 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     void Update()
     {
+        print("=================================== Frame Update =========================================");
         _mouseContext = _mtracker.GetCurrentMouseContext();
-        //print("=================================== Frame Update =========================================");
+        if (!_Aiming)
+        {
+            if (_mouseContext.interactuableHitted)
+                _mtracker.ChangeCursorView(2);
+            else
+                _mtracker.ChangeCursorView(1);
+        }
+        else _mtracker.ChangeCursorView(3);
+
+        print("=================================== Post Cursor Update ===================================");
 
         #region Input
         if (PlayerInputEnabled)
@@ -267,7 +277,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     //print("Cancelo Aiming");
-                    _mtracker.ChangeCursorView(1);
+                    //_mtracker.ChangeCursorView(1);
                     _Aiming = false;
                     return;
                 }
@@ -277,7 +287,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 {
                     //print("Confirmo el tiro");
                     _Aiming = false;
-                    _mtracker.ChangeCursorView(1);
+                    //_mtracker.ChangeCursorView(1);
                     _mouseContext = _mtracker.GetCurrentMouseContext();
                     Node targetNode = _mouseContext.closerNode;//El objetivo.
                     Vector3 origin = manitodumacaco.position;
@@ -299,15 +309,10 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 if (Input.GetKeyDown(KeyCode.Alpha2) && Inventory.equiped != null)
                 {
                     //Debug.LogWarning("INICIO AIMING");
-                    _mtracker.ChangeCursorView(3);
+                    //_mtracker.ChangeCursorView(3);
                     _Aiming = true;
                     return;
                 }
-
-                if (_mouseContext.interactuableHitted)
-                    _mtracker.ChangeCursorView(1);
-                else
-                    _mtracker.ChangeCursorView(0);
 
                 // MouseClic Derecho.
                 if (Input.GetMouseButtonDown(1))

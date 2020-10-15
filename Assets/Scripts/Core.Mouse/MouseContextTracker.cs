@@ -30,6 +30,8 @@ public class MouseContextTracker : MonoBehaviour
     public Texture2D InteractiveCursor;
     public Texture2D AimCursor;
 
+    int current = 0;
+
 #if UNITY_EDITOR
     [SerializeField] List<Collider> hited = new List<Collider>();
     [SerializeField] Transform HITPOSITION = null;
@@ -45,21 +47,28 @@ public class MouseContextTracker : MonoBehaviour
         {
             Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
             Cursor.visible = true;
+            current = 1;
         }
     }
 
     public void ChangeCursorView(int index)
     {
+        if (index == current) return;
+
+        Debug.Log($"Cursor view changed to: {index}");
         switch (index)
         {
             case 1:
                 Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
+                current = 1;
                 break;
             case 2:
                 Cursor.SetCursor(InteractiveCursor, Vector2.zero, CursorMode.Auto);
+                current = 2;
                 break;
             case 3:
                 Cursor.SetCursor(AimCursor, new Vector2(AimCursor.width/2, AimCursor.height/2), CursorMode.Auto);
+                current = 3;
                 break;
         }
     }

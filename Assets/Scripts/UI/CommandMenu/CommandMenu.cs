@@ -68,7 +68,7 @@ public class CommandMenu : MonoBehaviour
         presetInstance.transform.localPosition = Vector3.zero;
 
         var commandItem = presetInstance.GetComponent<CommandMenuItem>();
-        commandItem.OnOperationSelected += ActivateCommand;
+        commandItem.OnOperationSelected = ActivateCommand;
         commandItem.CloseMenu = Close;
 
         presetInstance.SetActive(false);

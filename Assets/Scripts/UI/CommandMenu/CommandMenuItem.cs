@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 public class CommandMenuItem : MonoBehaviour
 {
-    public event Action<OperationType, IInteractionComponent> OnOperationSelected = delegate { };
+    public Action<OperationType, IInteractionComponent> OnOperationSelected = delegate { };
     public Action CloseMenu = delegate { };
 
     [SerializeField]
@@ -61,16 +61,15 @@ public class CommandMenuItem : MonoBehaviour
             _backGroundImage.sprite = onPress;
             currentEvent.Use();
             OnOperationSelected(data.Operation, referenceComponent);
-            OnOperationSelected = delegate { };
             CloseMenu();
         }
-        else
-        if (input.GetMouseButtonDown(1))
-        {
-            print("Cancelo el comando.");
-            currentEvent.Use();
-            CloseMenu();
-        }
+        //else
+        //if (input.GetMouseButtonDown(1))
+        //{
+        //    print("Cancelo el comando.");
+        //    currentEvent.Use();
+        //    CloseMenu();
+        //}
     }
     public void OnMouseClickUp(BaseEventData currentEvent)
     {

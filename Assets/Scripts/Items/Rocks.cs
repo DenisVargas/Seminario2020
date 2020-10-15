@@ -4,7 +4,7 @@ using UnityEngine;
 using Core.DamageSystem;
 using Core.InventorySystem;
 
-public class Rocks : destroyable
+public class Rocks : MonoBehaviour
 {
     public LayerMask Hiteables = ~0;
     public Damage MyDamage;
@@ -18,9 +18,8 @@ public class Rocks : destroyable
     [SerializeField] bool debugThisRock = false;
 #endif
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         if (itemComp)
         {
             //El owner de un item es ignorado cuando ocurre una colisión!
@@ -51,13 +50,13 @@ public class Rocks : destroyable
             } 
         }
     }
-    public override HitResult GetHit(Damage damage)
+    public HitResult GetHit(Damage damage)
     {
         if (damage.type == DamageType.explotion || damage.type == DamageType.hit)
         {
-            destroyedObject.SetActive(true);
-            destroyedObject.transform.SetParent(null);
-            notDestroyedObject.SetActive(false);
+            //destroyedObject.SetActive(true);
+            //destroyedObject.transform.SetParent(null);
+            //notDestroyedObject.SetActive(false);
             StartCoroutine(DelayedDestroy(2f));
             _hitbox.enabled = false;
         }

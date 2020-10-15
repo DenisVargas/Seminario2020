@@ -254,7 +254,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     void Update()
     {
-        print("=================================== Frame Update =========================================");
         _mouseContext = _mtracker.GetCurrentMouseContext();
         if (!_Aiming)
         {
@@ -264,8 +263,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 _mtracker.ChangeCursorView(1);
         }
         else _mtracker.ChangeCursorView(3);
-
-        print("=================================== Post Cursor Update ===================================");
 
         #region Input
         if (PlayerInputEnabled)
@@ -293,23 +290,26 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                     Vector3 origin = manitodumacaco.position;
 
                     //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
-                    var command = new cmd_ThrowEquipment(manitodumacaco, targetNode, 1f, _tm, ReleaseEquipedItemFromHand,
-                    () =>
-                    {
-                        _a_ThrowRock = true;
-                        transform.forward = (targetNode.transform.position - transform.position).normalized;
-                    });
+                    var command = new cmd_ThrowEquipment(
+                        manitodumacaco,
+                        targetNode,
+                        transform,
+                        1f, 
+                        _tm, 
+                        ReleaseEquipedItemFromHand,
+                        () =>
+                        {
+                            _a_ThrowRock = true;
+                        }
+                    );
                     comandos.Enqueue(command);
                     return;
                 }
             }
             else
             {
-                //print("Bloque 2:");
                 if (Input.GetKeyDown(KeyCode.Alpha2) && Inventory.equiped != null)
                 {
-                    //Debug.LogWarning("INICIO AIMING");
-                    //_mtracker.ChangeCursorView(3);
                     _Aiming = true;
                     return;
                 }
@@ -494,6 +494,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     /// <returns>Retorna verdadero, si hemos llegado al nodo objetivo.</returns>
     public bool MoveToTarget(Node targetNode)
     {
+        if (targetNode == null)
+            return false;
         Vector3 dirToTarget = (targetNode.transform.position - transform.position).normalized;
         transform.forward = dirToTarget.YComponent(0);
         transform.position += dirToTarget * moveSpeed * Time.deltaTime;

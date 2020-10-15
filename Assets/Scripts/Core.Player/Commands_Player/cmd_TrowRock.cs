@@ -12,6 +12,7 @@ public class cmd_ThrowEquipment : IQueryComand
     Node targetNode = null; //Objetivo del tiro.
     float time;
     Transform launchOrigin;
+    Transform body;
     TrowManagement tr;
 
     public bool completed { get; protected set; } = false;
@@ -19,11 +20,12 @@ public class cmd_ThrowEquipment : IQueryComand
     public bool needsPremovement { get; protected set; } = false;
     public bool cashed { get; protected set; } = false;
 
-    public cmd_ThrowEquipment( Transform launchOrigin, Node targetNode, float time, TrowManagement tr,Func<bool,object[], Item> ReleaseEquipment, Action setAnimation)
+    public cmd_ThrowEquipment( Transform launchOrigin, Node targetNode, Transform body, float time, TrowManagement tr,Func<bool,object[], Item> ReleaseEquipment, Action setAnimation)
     {
         this.launchOrigin = launchOrigin;
         this.targetNode = targetNode;
         this.time = time;
+        this.body = body;
         this.tr = tr;
         this.ReleaseEquipment = ReleaseEquipment;
         this.setAnimation = setAnimation;
@@ -31,6 +33,8 @@ public class cmd_ThrowEquipment : IQueryComand
 
     public void SetUp()
     {
+        Vector3 dirToTarget = (targetNode.transform.position - body.transform.position).normalized.YComponent(0);
+        body.forward = dirToTarget;
         setAnimation();
         isReady = true;
     }
@@ -44,6 +48,7 @@ public class cmd_ThrowEquipment : IQueryComand
         var rb = released.gameObject.GetComponent<Rigidbody>();
         if (rb != null)
             tr.ThrowObject(rb, origin, targetNode.transform.position, time);
+
         completed = true;
     }
     public void Cancel() { }

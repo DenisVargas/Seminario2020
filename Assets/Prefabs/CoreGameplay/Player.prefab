@@ -114,11 +114,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3822261306509709452}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0724, y: -0.0418, z: -0.0315}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.8401403, y: 0.20433937, z: 0.03469099, w: -0.5012049}
+  m_LocalPosition: {x: -0.066, y: -0.024, z: 0.006}
+  m_LocalScale: {x: 0.9999882, y: 1.0000293, z: 0.9999801}
   m_Children: []
-  m_Father: {fileID: 7266532997394825458}
+  m_Father: {fileID: 2490641320117086071}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6414858267132625105
@@ -230,6 +230,8 @@ MonoBehaviour:
   InteractiveCursor: {fileID: 2800000, guid: 4921ee5eb03c8a240926e72d7e383e83, type: 3}
   AimCursor: {fileID: 2800000, guid: 0a100f36224cef445b081e8d34ed7afb, type: 3}
   hited: []
+  HITPOSITION: {fileID: 0}
+  HITNODE: {fileID: 0}
 --- !u!114 &4294857582440551377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,8 +268,9 @@ MonoBehaviour:
   manitodumacaco: {fileID: 1128369514105645132}
   BloodStain: {fileID: 4679681811783056356}
   moveSpeed: 4
-  _movementTreshold: 0.18
   MouseDebug: {fileID: 0}
+  _input: 1
+  _MultiCommandMenu: {fileID: 0}
   Clon: {fileID: 0}
   _clonLife: 20
   _clonCooldown: 4
@@ -447,9 +450,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7754093151426026515}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7266532997394825458 stripped
+--- !u!4 &2490641320117086071 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8121120556891890463, guid: 293586a2b09919a4aad2e5ced276aff2,
+  m_CorrespondingSourceObject: {fileID: 5263753273872268132, guid: 293586a2b09919a4aad2e5ced276aff2,
     type: 3}
   m_PrefabInstance: {fileID: 7754093151426026515}
   m_PrefabAsset: {fileID: 0}

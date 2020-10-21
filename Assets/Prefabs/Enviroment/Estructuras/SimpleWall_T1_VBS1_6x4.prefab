@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5323633244655410211}
   - component: {fileID: 4011470754424181901}
   - component: {fileID: 8522298959834334474}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SimpleWall_T1_VBS1_6x4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

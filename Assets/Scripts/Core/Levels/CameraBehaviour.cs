@@ -47,6 +47,10 @@ public class CameraBehaviour : MonoBehaviour
         }
         else
             transform.position = _target.transform.position;
+
+        var inspectionMenu = FindObjectOfType<InspectionMenu>();
+        if (inspectionMenu)
+            inspectionMenu.OnSetInspection += OnInspection;
     }
 
     // Update is called once per frame
@@ -150,7 +154,6 @@ public class CameraBehaviour : MonoBehaviour
     {
         transform.position = ClampToPanLimits(targetPosition, navigationLimits);
     }
-
     public void AdjustY()
     {
         Ray ray = new Ray(OperativeCamera.position, Vector3.down);
@@ -172,5 +175,17 @@ public class CameraBehaviour : MonoBehaviour
         {
             transform.position = transform.position.YComponent(LastYComponent);
         }
+    }
+
+    /// <summary>
+    /// Callback que se llamará cuando el panel de Inspección se abre.
+    /// Nos permite controlar que va a pasar con la cámara!
+    /// </summary>
+    /// <param name="inspectionEnabled">Estado actual del panel de inspección.</param>
+    void OnInspection(bool inspectionEnabled)
+    {
+        if (inspectionEnabled && _target != null)
+            freeCamera = false;
+        else freeCamera = true;
     }
 }

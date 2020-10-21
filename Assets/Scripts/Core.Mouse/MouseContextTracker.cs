@@ -55,7 +55,7 @@ public class MouseContextTracker : MonoBehaviour
     {
         if (index == current) return;
 
-        Debug.Log($"Cursor view changed to: {index}");
+        //Debug.Log($"Cursor view changed to: {index}");
         switch (index)
         {
             case 1:

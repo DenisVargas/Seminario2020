@@ -155,8 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7477d5abf09f6ca43adc3a34e801774d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyedObject: {fileID: 0}
-  notDestroyedObject: {fileID: 1824055214774469272}
   Hiteables:
     serializedVersion: 2
     m_Bits: 4294967295

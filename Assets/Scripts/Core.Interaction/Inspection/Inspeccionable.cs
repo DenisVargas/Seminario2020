@@ -11,11 +11,18 @@ namespace Core.Interaction
     [RequireComponent(typeof(InteractionHandler))]
     public class Inspeccionable : MonoBehaviour, IInteractionComponent
     {
+        [SerializeField] InspectionMenu _displayMenu = null;
         [SerializeField] string IDName = "";
         [SerializeField, TextArea]
-        string description = "An irrelevant Object.";
+        string[] description = { "An irrelevant Object." };
 
         public bool isDynamic => false;
+
+        private void Awake()
+        {
+            if (_displayMenu == null)
+                _displayMenu = FindObjectOfType<InspectionMenu>();
+        }
 
         public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
         {
@@ -32,17 +39,19 @@ namespace Core.Interaction
                 new Tuple<OperationType, IInteractionComponent>(OperationType.inspect, this)
             };
         }
-        public void InputConfirmed(OperationType operation, params object[] optionalParams)
-        {
-            
-        }
+        public void InputConfirmed(OperationType operation, params object[] optionalParams) { }
         public void ExecuteOperation(OperationType operation, params object[] optionalParams)
         {
             //Activo el canvas, y muestro la descripción del item.
+            if (_displayMenu != null)
+                _displayMenu.DisplayText(description, UnlockInteraction);
+
         }
-        public void CancelOperation(OperationType operation, params object[] optionalParams)
+        public void CancelOperation(OperationType operation, params object[] optionalParams) { }
+
+        public void UnlockInteraction()
         {
-            
+            Debug.Log("UnlockInteraction Executed");
         }
     }
 }

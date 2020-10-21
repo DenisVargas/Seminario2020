@@ -90,10 +90,6 @@ namespace Core.InventorySystem
                 _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Take, this));
             }
 
-            //Este objeto no se puede tirar, si no es equipado primero.La secuencia es Take>Throw.
-            //if (isThroweable)
-            //    _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this));
-
             //Es consumible?.
             if (isConsumable)
                 _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.use, this));
@@ -137,7 +133,7 @@ namespace Core.InventorySystem
                     OnThrow();
                     break;
                 case OperationType.inspect:
-                    //La UI no requiere del objeto.
+                    FindObjectOfType<InspectionMenu>().DisplayText(new string[] { Description }, () => { Debug.Log("Display Completado. "); });
                     break;
                 case OperationType.Combine:
                     //Esta funcionalidad va por fuera del objeto. El objeto desconoce las combinaciones.
@@ -216,18 +212,5 @@ namespace Core.InventorySystem
         {
             print($"Use Executed in item {gameObject.name}");
         }
-
-        //==================================== Corrutinas ==============================================================
-
-        //IEnumerator ParabolicMove(Transform target)
-        //{
-        //    Vector3 firstPosition = transform.position;
-        //    for (float i = 0; i < 1; i += 0.1f)
-        //    {
-        //        yield return new WaitForSeconds(0.01f);
-        //        //transform.position = Vector3.Slerp(firstPosition, target.transform.position, i);
-        //        transform.position = new Vector3(Mathf.Lerp(firstPosition.x, target.transform.position.x, i), Mathf.Lerp(firstPosition.y, target.position.y, i) + Mathf.Sin(i * Mathf.PI) * 5, Mathf.Lerp(firstPosition.z, target.transform.position.z, i));
-        //    }
-        //}
     }
 }

@@ -129,6 +129,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
     #region Componentes
     [SerializeField] CommandMenu _MultiCommandMenu = null;
+    [SerializeField] InspectionMenu _inspectionMenu = null;
     Rigidbody _rb;
     Camera _viewCamera;
     Collider _hitbox = null;
@@ -226,6 +227,10 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
         _tm = GetComponent<TrowManagement>();
+        _inspectionMenu = FindObjectOfType<InspectionMenu>();
+
+        if (_inspectionMenu)
+            _inspectionMenu.OnSetInspection += (value) => { PlayerInputEnabled = !value; };
 
         if (_MultiCommandMenu)
             _MultiCommandMenu.commandCallback = QuerySelectedOperation;
@@ -530,7 +535,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             case OperationType.Ignite:
                 _toActivateCommand = new cmd_Ignite(
                         target,
-                        operation,
                         (AnimIndex, value) => 
                         {
                             if (AnimIndex == 0)
@@ -549,7 +553,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                         transform,
                         _solver,
                         MoveToTarget,
-                        () => { comandos.Dequeue(); }, //Dispose.
+                        () => comandos.Dequeue(), //Dispose.
                         OnMovementChange //Recálculo de camino.
                     );
                 break;
@@ -557,7 +561,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             case OperationType.Activate:
                 _toActivateCommand = new Cmd_Activate(
                         target,    //Objetivo.
-                        operation, //Tipo de operación.
                         transform, //Referencia a mi cuerpo.
                         _solver,   //Referencia al Componente de Cálculo de camino.
                         (animIndex) =>
@@ -576,7 +579,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                                 _a_LeverPull = value;
                         }, //Set value de animación.
                         MoveToTarget,//Función de movimiento.
-                        () => { comandos.Dequeue(); }, //Dispose.
+                        () => comandos.Dequeue(), //Dispose.
                         OnMovementChange //Recálculo de camino.
                     );
                 break;
@@ -607,7 +610,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                                 transform,
                                 _solver,
                                 MoveToTarget,
-                                () => { comandos.Dequeue(); }, //Dispose.
+                                () => comandos.Dequeue(), //Dispose.
                                 OnMovementChange //Recálculo de camino.
                             );
                 break;
@@ -636,7 +639,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                         transform,
                         _solver,
                         MoveToTarget,
-                        () => { comandos.Dequeue(); }, //Dispose.
+                        () => comandos.Dequeue(), //Dispose.
                         OnMovementChange //Recálculo de camino.
                     );
                 break;
@@ -664,7 +667,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                         transform,
                         _solver,
                         MoveToTarget,
-                        () => { comandos.Dequeue(); }, //Dispose.
+                        () => comandos.Dequeue(), //Dispose.
                         OnMovementChange //Recálculo de camino.
                     );
                 break;
@@ -693,9 +696,24 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                             transform,
                             _solver,
                             MoveToTarget,
-                            () => { comandos.Dequeue(); }, //Dispose.
+                            () => comandos.Dequeue(), //Dispose.
                             OnMovementChange
                         );
+                break;
+
+            case OperationType.inspect:
+                _toActivateCommand = new cmd_Inspect
+                    (
+                        target,
+                        transform,
+                        _solver,
+                        MoveToTarget,
+                        () => _a_Walking,
+                        (value) => _a_Walking = value,
+                        () => comandos.Dequeue(),
+                        OnMovementChange,
+                        _inspectionMenu.DisplayText
+                    );
                 break;
 
             default:

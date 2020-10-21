@@ -250,8 +250,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 750a063767888da4d897de73a7cfea9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _displayMenu: {fileID: 0}
   IDName: Small BondFire
-  description: "Una peque\xF1a fuente de luz. \nTal vez me resulte \xFAtil."
+  description:
+  - "Es una hoguera peque\xF1a, parece que puedo alcanzar facilmente el fuego. \nPodr\xEDa
+    resultarme \xFAtil."
 --- !u!114 &4813594023713640220
 MonoBehaviour:
   m_ObjectHideFlags: 0

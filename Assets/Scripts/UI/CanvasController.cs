@@ -14,14 +14,31 @@ public class CanvasController : MonoBehaviour
 {
     [Header("Multi-Comand Menu")]
     [SerializeField] CommandMenu _MultiCommandMenu = null;
-    public Image Fade;
-    public GameObject ThrwImg;
+    [SerializeField] GameObject ThrowHUD = null;
+    [SerializeField] GameObject ClonHUD  = null;
+    [SerializeField] Image FadeImage     = null;
 
     private void Awake()
     {
         _MultiCommandMenu.LoadData();
-        Fade.canvasRenderer.SetAlpha(1);
+        FadeImage.canvasRenderer.SetAlpha(1);
         StartCoroutine(FadeIn());
+
+
+        var inpsectionMenu = FindObjectOfType<InspectionMenu>();
+        inpsectionMenu.OnSetInspection += (enableInspection) => 
+        {
+            if (enableInspection)
+            {
+                ThrowHUD.SetActive(false);
+                ClonHUD.SetActive(false);
+            }
+            else
+            {
+                ThrowHUD.SetActive(true);
+                ClonHUD.SetActive(true);
+            }
+        };
     }
 
     /// <summary>
@@ -36,29 +53,29 @@ public class CanvasController : MonoBehaviour
     /// </summary>
     public void DisplayThrow(bool active)
     {
-        ThrwImg.SetActive(active);
+        ThrowHUD.SetActive(active);
     }
     IEnumerator FadeIn()
     {
-        Fade.canvasRenderer.SetAlpha(1.0f);
-        Fade.enabled = true;
+        FadeImage.canvasRenderer.SetAlpha(1.0f);
+        FadeImage.enabled = true;
         for (int i = 9; i >= 0; i--)
         {
             yield return new WaitForSeconds(0.1f);
-            Fade.canvasRenderer.SetAlpha(i*0.1f);
+            FadeImage.canvasRenderer.SetAlpha(i*0.1f);
             if (i == 0)
-                Fade.enabled = false;
+                FadeImage.enabled = false;
         }
     }
     IEnumerator FadeOut(float initialDelay = 0.1f)
     {
         yield return new WaitForSeconds(initialDelay);
-        Fade.canvasRenderer.SetAlpha(0.0f);
-        Fade.enabled = true;
+        FadeImage.canvasRenderer.SetAlpha(0.0f);
+        FadeImage.enabled = true;
         for (int i = 1; i <= 10; i++)
         {
             yield return new WaitForSeconds(0.1f);
-            Fade.canvasRenderer.SetAlpha(i * 0.1f);
+            FadeImage.canvasRenderer.SetAlpha(i * 0.1f);
             if(i==10)
             {
                 if (Level.currentLevelHasChekpoint())

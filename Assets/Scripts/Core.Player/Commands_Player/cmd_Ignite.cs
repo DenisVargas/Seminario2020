@@ -11,13 +11,12 @@ public class cmd_Ignite : BaseQueryCommand
     Func<int, bool> getAnimation = delegate { return false; };
 
     IInteractionComponent target = null;
-    OperationType operation;
+    OperationType operation = OperationType.Ignite;
 
-    public cmd_Ignite(IInteractionComponent target, OperationType operation, Action<int, bool> setAnimation, Func<int, bool> getAnimation, Transform body, PathFindSolver solver, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath)
+    public cmd_Ignite(IInteractionComponent target, Action<int, bool> setAnimation, Func<int, bool> getAnimation, Transform body, PathFindSolver solver, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath)
         :base(body, solver, moveFunction, dispose, OnChangePath)
     {
         this.target = target;
-        this.operation = operation;
         this.setAnimation = setAnimation;
         this.getAnimation = getAnimation;
     }

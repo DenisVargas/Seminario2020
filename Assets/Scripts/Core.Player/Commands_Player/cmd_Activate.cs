@@ -10,14 +10,13 @@ public class Cmd_Activate : BaseQueryCommand
     Action<int, bool> setAnimation = delegate { };
     Func<int, bool> getAnimation = delegate { return false; };
     IInteractionComponent CommandTarget;
-    OperationType operation;
+    OperationType operation = OperationType.Activate;
 
-    public Cmd_Activate(IInteractionComponent CommandTarget, OperationType operation, Transform body, PathFindSolver solver, Func<int, bool> getAnimation, Action<int, bool> setAnimation, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath) :
+    public Cmd_Activate(IInteractionComponent CommandTarget, Transform body, PathFindSolver solver, Func<int, bool> getAnimation, Action<int, bool> setAnimation, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath) :
         base(body, solver, moveFunction, dispose, OnChangePath)
     {
         this.CommandTarget = CommandTarget;
         this.setAnimation = setAnimation;
-        this.operation = operation;
     }
 
     public override void SetUp()

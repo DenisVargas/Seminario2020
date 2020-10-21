@@ -225,7 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseDetectionMask:
     serializedVersion: 2
-    m_Bits: 1073741825
+    m_Bits: 1073744897
   defaultCursor: {fileID: 2800000, guid: 1f9f8bba5217d064a8c63720188a3279, type: 3}
   InteractiveCursor: {fileID: 2800000, guid: 4921ee5eb03c8a240926e72d7e383e83, type: 3}
   AimCursor: {fileID: 2800000, guid: 0a100f36224cef445b081e8d34ed7afb, type: 3}
@@ -271,6 +271,7 @@ MonoBehaviour:
   MouseDebug: {fileID: 0}
   _input: 1
   _MultiCommandMenu: {fileID: 0}
+  _inspectionMenu: {fileID: 0}
   Clon: {fileID: 0}
   _clonLife: 20
   _clonCooldown: 4

@@ -29,7 +29,7 @@ public class TrowRockAt : MonoBehaviour, IInteractionComponent
     {
         print("Input Cancelado");
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
         { new Tuple<OperationType, IInteractionComponent>(OperationType.Throw, this)};

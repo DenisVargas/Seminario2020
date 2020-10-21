@@ -25,7 +25,7 @@ public class GroundLever : MonoBehaviour, IInteractionComponent
         if (!_col.isTrigger)
             _col.isTrigger = true;
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory = true)
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
         {

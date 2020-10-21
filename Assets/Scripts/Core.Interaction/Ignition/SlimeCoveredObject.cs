@@ -76,7 +76,7 @@ public class SlimeCoveredObject : MonoBehaviour, IIgnitableObject
 
         return new InteractionParameters(node, lookAtDir);
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
         {

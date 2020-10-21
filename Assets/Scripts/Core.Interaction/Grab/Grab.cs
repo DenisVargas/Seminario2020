@@ -16,7 +16,7 @@ public class Grab : MonoBehaviour , IInteractionComponent
     {
         return transform.position;
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
         {

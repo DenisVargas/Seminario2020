@@ -219,9 +219,9 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
 
         return new InteractionParameters(SafePosition, LookToDirection);
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
-        if (inventory != null && inventory.equiped != null && inventory.equiped.ID == 1)
+        if (inventory != null && inventory.equiped != null && inventory.equiped.ID == 1 || ignoreInventory)
         {
             return new List<Tuple<OperationType, IInteractionComponent>>()
             {

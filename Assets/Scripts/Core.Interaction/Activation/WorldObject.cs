@@ -38,7 +38,7 @@ public class WorldObject : MonoBehaviour,   IInteractionComponent
 
         return new InteractionParameters(SafePosition, directionToMe);
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
         List<Tuple<OperationType, IInteractionComponent>> operations = new List<Tuple<OperationType, IInteractionComponent>>();
         operations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Activate, this));

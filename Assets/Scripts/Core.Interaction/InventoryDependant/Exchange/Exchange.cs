@@ -11,7 +11,7 @@ namespace Core.Interaction
         [SerializeField] ItemData data;
         public bool isDynamic => false;
 
-        public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+        public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
         {
             return new List<Tuple<OperationType, IInteractionComponent>>()
             {

@@ -23,7 +23,7 @@ public class Trail : MonoBehaviour
 
         if (Emit)
         {
-            if (current.handler == null || !current.handler.HasStaticInteractionOfType(OperationType.Ignite))
+            if (current.handler == null || !current.handler.HasCompomponentOfType(OperationType.Ignite, true))
             {
                 var ignition = Instantiate(_ignitionPoint_Prefab);
                 ignition.transform.SetParent(current.gameObject.transform); //Añadimos el prefab como un subobjeto.
@@ -38,7 +38,7 @@ public class Trail : MonoBehaviour
                 //Seteo los parches.
                 foreach (var connection in current.Connections)
                 {
-                    if (connection.handler != null && connection.handler.HasStaticInteractionOfType(OperationType.Ignite))
+                    if (connection.handler != null && connection.handler.HasCompomponentOfType(OperationType.Ignite, true))
                     {
                         Vector3 dir = (connection.transform.position - current.transform.position).normalized;
                         Vector3 center = Vector3.Lerp(current.transform.position, connection.transform.position, 0.5f);

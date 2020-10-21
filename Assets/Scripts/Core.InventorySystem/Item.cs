@@ -64,7 +64,7 @@ namespace Core.InventorySystem
 
         //============================== Interaction System ============================================================
 
-        public virtual List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory CurrentInventory = null)
+        public virtual List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory CurrentInventory = null, bool ignoreInventory = false)
         {
             //Operaciones dinamicas son aquellas que dependen del inventario actual.
             List<Tuple<OperationType, IInteractionComponent>> _myOperations = new List<Tuple<OperationType, IInteractionComponent>>();

@@ -20,7 +20,7 @@ public class Gem : MonoBehaviour, IInteractionComponent
         GemaView.transform.Rotate(new Vector3(0, SpeedRot, 0));
     }
 
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
         return new List<Tuple<OperationType, IInteractionComponent>>()
         {

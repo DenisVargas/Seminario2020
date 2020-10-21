@@ -60,7 +60,7 @@ namespace Core.Interaction
             return ip;
         }
 
-        private List<Tuple<OperationType, IInteractionComponent>> GetInteractionsAbviable(Inventory inventory = null)
+        private List<Tuple<OperationType, IInteractionComponent>> GetInteractionsAbviable(Inventory inventory = null, bool ignoreInventory = true)
         {
             interactionComponents = new List<Tuple<OperationType, IInteractionComponent>>();
 
@@ -69,7 +69,7 @@ namespace Core.Interaction
 
             foreach (var comp in icomp)
             {
-                var pairs = comp.GetAllOperations(inventory);
+                var pairs = comp.GetAllOperations(inventory, ignoreInventory);
                 foreach (var pair in pairs)
                 {
                     if (!interactionComponents.Contains(pair))
@@ -99,9 +99,9 @@ namespace Core.Interaction
         /// </summary>
         /// <param name="operation">El tipo de operación relacionada al componente que estamos buscando.</param>
         /// <returns>False si no hay ningún componente que cumpla con dicho requerimiento.</returns>
-        public bool HasStaticInteractionOfType(OperationType operation)
+        public bool HasCompomponentOfType(OperationType operation, bool ignoreInventory = true)
         {
-            var aviableInteractions = GetInteractionsAbviable();
+            var aviableInteractions = GetInteractionsAbviable(null, ignoreInventory);
 
             foreach (var pair in aviableInteractions)
             {

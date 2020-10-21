@@ -30,7 +30,7 @@ public class BurnPoint : MonoBehaviour, IInteractionComponent
             orientation = direction
         };
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory)
+    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
         List < Tuple < OperationType, IInteractionComponent >> operations = new List<Tuple<OperationType, IInteractionComponent>>();
 

@@ -12,7 +12,7 @@ namespace Core.Interaction
         T GetComponent<T>();
 
         InteractionParameters getInteractionParameters(Vector3 requesterPosition);
-        List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory);
+        List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory);
         void InputConfirmed(OperationType operation, params object[] optionalParams);
         void ExecuteOperation(OperationType operation, params object[] optionalParams);
         void CancelOperation(OperationType operation, params object[] optionalParams);

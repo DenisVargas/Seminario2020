@@ -85,6 +85,7 @@ public class CameraBehaviourEditor : Editor
 
         //EditorGUILayout.PropertyField(serializedObject.FindProperty("_target"));
         //EditorGUILayout.PropertyField(serializedObject.FindProperty("freeCamera"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OperativeCamera"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("locked"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("groundMask"));
 

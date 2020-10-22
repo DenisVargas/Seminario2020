@@ -22,7 +22,8 @@ public class MouseContextTracker : MonoBehaviour
 {
     Camera _viewCamera;
     PathFindSolver _solver;
-    [SerializeField] LayerMask mouseDetectionMask = ~0;
+    [SerializeField] LayerMask _interactableMask = ~0;
+    [SerializeField] LayerMask _groundMask = ~0;
     [SerializeField] IInteractable lastFinded = null;
 
     [Header("Cursor Rendering")]
@@ -33,7 +34,6 @@ public class MouseContextTracker : MonoBehaviour
     int current = 0;
 
 #if UNITY_EDITOR
-    [SerializeField] List<Collider> hited = new List<Collider>();
     [SerializeField] Transform HITPOSITION = null;
     [SerializeField] Transform HITNODE = null;
 #endif
@@ -73,65 +73,59 @@ public class MouseContextTracker : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Retorna el contexto actual del mouse.
+    /// </summary>
+    /// <returns></returns>
     public MouseContext GetCurrentMouseContext()
     {
         MouseContext _context = new MouseContext();
         int validHits = 0;
 
         //Calculo la posición del mouse en el espacio.
-        RaycastHit[] hits;
+        RaycastHit groundHit;
+        RaycastHit interactableHit;
         Ray mousePositionInWorld = _viewCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x,
                                                           Input.mousePosition.y,
                                                           _viewCamera.transform.forward.z));
-        hits = Physics.RaycastAll(mousePositionInWorld, float.MaxValue, mouseDetectionMask, QueryTriggerInteraction.Collide);
 
-
-#if UNITY_EDITOR
-        hited = new List<Collider>();
-        for (int i = 0; i < hits.Length; i++) // Lista debug para el inspector.
+        //Interactable Detection:
+        if (Physics.Raycast(mousePositionInWorld, out interactableHit, float.MaxValue, _interactableMask))
         {
-            hited.Add(hits[i].collider);
-        }
-#endif
-
-        for (int i = 0; i < hits.Length; i++)
-        {
-            var hit = hits[i];
-
-            IInteractable interactableObject = hit.transform.GetComponentInParent<IInteractable>();
+            validHits++;
+            IInteractable interactableObject = interactableHit.transform.GetComponentInParent<IInteractable>();
             if (interactableObject != null && interactableObject.InteractionsAmmount > 0)
             {
                 _context.interactuableHitted = true;
                 _context.InteractionHandler = interactableObject;
-
-                validHits++;
             }
+        }
 
-            Collider collider = hit.collider;
+        //Ground Detection:
+        if (Physics.Raycast(mousePositionInWorld, out groundHit, float.MaxValue, _groundMask))
+        {
+            validHits++;
+            Collider collider = groundHit.collider;
             if (collider.transform.CompareTag("NavigationFloor"))
             {
-                _context.hitPosition = hit.point;
-                _context.closerNode = _solver.getCloserNode(hit.point);
+                _context.hitPosition = groundHit.point;
+                _context.closerNode = _solver.getCloserNode(groundHit.point);
+            }
+        }
 
 #if UNITY_EDITOR
-                if (HITPOSITION)
-                {
-                    HITPOSITION.transform.position = _context.hitPosition;
-                }
-                if (HITNODE)
-                {
-                    HITNODE.transform.position = _context.closerNode.transform.position;
-                }
-#endif
-
-                validHits++;
-            }
-            else continue;
+        if (HITPOSITION)
+        {
+            HITPOSITION.transform.position = _context.hitPosition;
         }
+        if (HITNODE && _context.closerNode != null)
+        {
+            HITNODE.transform.position = _context.closerNode.transform.position;
+        }
+#endif
 
         _context.validHit = validHits > 0; //Validación del hit.
         ThrowMouseEvents(_context.InteractionHandler);
-
         return _context;
     }
 

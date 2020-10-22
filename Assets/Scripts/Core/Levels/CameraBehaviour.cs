@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
-    Transform OperativeCamera;
+    [SerializeField] Transform OperativeCamera;
     [SerializeField] LayerMask groundMask = ~0;
 
     [SerializeField] public Transform _target = null;
@@ -33,7 +33,8 @@ public class CameraBehaviour : MonoBehaviour
         //var BNormal = operativeCamera.transform.forward;
         //ZoomMin = ZoomMax + BNormal * ZoomDist;
 
-        OperativeCamera = Camera.main.transform;
+        if (OperativeCamera == null)
+            OperativeCamera = Camera.main.transform;
         if (_target == null)
         {
             var Player = FindObjectOfType<Controller>();

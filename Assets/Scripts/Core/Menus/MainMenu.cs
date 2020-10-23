@@ -3,9 +3,9 @@ using UnityEngine.Playables;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] PlayableDirector Director;
-    [SerializeField] PlayableAsset MainToCredits;
-    [SerializeField] PlayableAsset CreditsToMain;
+    [SerializeField] PlayableDirector Director   = null;
+    [SerializeField] PlayableAsset MainToCredits = null;
+    [SerializeField] PlayableAsset CreditsToMain = null;
 
     public void ReturnToMain()
     {

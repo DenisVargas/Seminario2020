@@ -15,11 +15,6 @@ public class PatrollState : State
     [SerializeField] float _patrollSpeed   = 5f;
     [SerializeField] float _stopTime       = 1.5f;
 
-#if UNITY_EDITOR
-    [Header("Testing")]
-    [SerializeField] bool debugMessages = false;
-#endif
-
     bool _stoping            = false;
     bool _waitForPosibleRoute = false;
     int _waypointPositionsMoved = 0;
@@ -36,17 +31,10 @@ public class PatrollState : State
     List<Node> alternativeRoute = new List<Node>();
 
     private bool _hasToReevaluatePath = false;
-    private bool _useSecondaryRoute = false;
+    //private bool _useSecondaryRoute = false;
 
     public override void Begin()
     {
-//#if UNITY_EDITOR
-//        if (debugMessages)
-//        {
-//            Debug.Log("=========== Begin ==========");
-//        } 
-//#endif
-
         //Obtengo referencias.
         if (_solver == null)
             _solver = GetComponent<PathFindSolver>();
@@ -98,11 +86,6 @@ public class PatrollState : State
         }
 
         //Comprobación de recalculo de camino.
-
-        //Debug.Log("=========== Excecute==========");
-        //Debug.Log($"Current is {_currentNode.area.ToString()}");
-        //Debug.Log($"Next is {_nextNode.area.ToString()}");
-
         if (_hasToReevaluatePath)
         {
             //Chequear si mi nodo objetivo esta bloqueado. Caso 1.
@@ -196,7 +179,7 @@ public class PatrollState : State
 
         //Calculo alternativeRoute.
         CalculateSecondaryRoute(_currentNode, closerNodeToTarget);
-        _useSecondaryRoute = true;
+        //_useSecondaryRoute = true;
 
         //Reasigno los nodos necesarios para que me pueda mover al closerNodeToTarget.
         //Reasigno CurrentNode y nextNode;
@@ -217,7 +200,7 @@ public class PatrollState : State
 //#endif
         //El objetivo sigue siendo navegable, así que tenemos que recalcular Primary Route.
         //Recalculamos el camino principal, ignorando los nodos bloqueados.
-        _useSecondaryRoute = false;
+        //_useSecondaryRoute = false;
         CalculatePrimaryRoute(_currentNode, _nextWayPointNode, false);
         ClearSecondaryRoute();
         //Reasignamos el camino actual.

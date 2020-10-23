@@ -4,7 +4,7 @@ using IA.PathFinding;
 
 public class box :  destroyable
 {
-    [SerializeField] Damage MyDamage;
+    [SerializeField] Damage MyDamage = new Damage();
     [SerializeField] Node[] AffectedNodes = new Node[0];
 
     //private void OnTriggerEnter(Collider collision)

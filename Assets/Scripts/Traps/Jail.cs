@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Jail : MonoBehaviour
 {
-    [SerializeField] GameObject HitParticle;
+    [SerializeField] GameObject HitParticle = null;
     [SerializeField] Damage _toAplyDamage = new Damage();
     [SerializeField] Collider _hitbox = null;
 

@@ -1,38 +1,30 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 using Core.InventorySystem;
-using System;
 
 namespace Core.Interaction
 {
     public struct InteractionDisplaySettings
     {
-        //Si las operaciones se muestran indefinidamente o no.
-        public bool LimitedDisplay;
-        //El tiempo en el que se expone las operaciones.
-        public float ActiveTime;
+        //Este es el count de interacciones. No admite repeticiones.
+        public int AviableInteractionsAmmount;
+
         //Los tipos de acciones que son soportadas. Se rellena automáticamente.
-        [HideInInspector]
         public List<Tuple<OperationType, IInteractionComponent>> SuportedOperations;
-        public InteractionDisplaySettings(InteractionDisplaySettings toCopy)
-        {
-            LimitedDisplay = toCopy.LimitedDisplay;
-            ActiveTime = toCopy.ActiveTime;
-            SuportedOperations = new List<Tuple<OperationType, IInteractionComponent>>();
-        }
     }
 
     public interface IInteractable
     {
         bool InteractionEnabled { get; set; }
-        int InteractionsAmmount { get; }
+        bool LimitedDisplay { get; } //Si las operaciones se muestran indefinidamente o no.
+        float ActiveTime { get; }    //El tiempo en el que se expone las operaciones.
 
         void OnInteractionMouseOver();
         void OnInteractionMouseExit();
 
         //Contemplar: Añadir componentes --> Activar o desactivar componentes.
-        InteractionDisplaySettings GetInteractionDisplaySettings(params object[] aditionalParameters);
+        InteractionDisplaySettings GetInteractionDisplaySettings(Inventory inventory, bool ignoreInventory, params object[] aditionalParameters);
         IInteractionComponent GetInteractionComponent(OperationType operation, bool isDynamic);
-        bool HasCompomponentOfType(OperationType operation, bool ignoreInventory);
+        bool HasCompomponentOfType(OperationType operation);
     }
 }

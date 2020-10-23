@@ -26,6 +26,9 @@ public class MouseContextTracker : MonoBehaviour
     [SerializeField] LayerMask _groundMask = ~0;
     [SerializeField] IInteractable lastFinded = null;
 
+    IInteractable _cashedInteractable = null;
+    InteractionDisplaySettings _cashedSettings = new InteractionDisplaySettings();
+
     [Header("Cursor Rendering")]
     public Texture2D defaultCursor;
     public Texture2D InteractiveCursor;
@@ -77,7 +80,7 @@ public class MouseContextTracker : MonoBehaviour
     /// Retorna el contexto actual del mouse.
     /// </summary>
     /// <returns></returns>
-    public MouseContext GetCurrentMouseContext()
+    public MouseContext GetCurrentMouseContext(Inventory inventory = null)
     {
         MouseContext _context = new MouseContext();
         int validHits = 0;
@@ -94,11 +97,31 @@ public class MouseContextTracker : MonoBehaviour
         {
             validHits++;
             IInteractable interactableObject = interactableHit.transform.GetComponentInParent<IInteractable>();
-            if (interactableObject != null && interactableObject.InteractionsAmmount > 0)
+            //Este cambio reduce el costo computacional de los siguientes chequeos sobre el mismo objeto.
+            //Sin embargo, si alteramos el inventario, el cambio no se verá reflejado hasta que hayamos movido el mouse.
+            if (interactableObject != null)
             {
-                _context.interactuableHitted = true;
-                _context.InteractionHandler = interactableObject;
+                if (_cashedInteractable != null && _cashedInteractable == interactableObject)
+                {
+                    if (_cashedSettings.AviableInteractionsAmmount > 0)
+                    {
+                        _context.interactuableHitted = true;
+                        _context.InteractionHandler = interactableObject;
+                    }
+                }
+                else
+                {
+                    var displaySettings = interactableObject.GetInteractionDisplaySettings(inventory, false);
+                    _cashedSettings = displaySettings;
+                    _cashedInteractable = interactableObject;
+                    if (displaySettings.AviableInteractionsAmmount > 0)
+                    {
+                        _context.interactuableHitted = true;
+                        _context.InteractionHandler = interactableObject;
+                    }
+                }
             }
+            else _cashedInteractable = null;
         }
 
         //Ground Detection:

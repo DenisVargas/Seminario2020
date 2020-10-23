@@ -221,7 +221,17 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     }
     public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
-        if (inventory != null && inventory.equiped != null && inventory.equiped.ID == 1 || ignoreInventory)
+        if (inventory != null && inventory.equiped != null && inventory.equiped.ID == 1)
+        {
+            Torch torch = (Torch)inventory.equiped;
+            if (torch.isBurning)
+                return new List<Tuple<OperationType, IInteractionComponent>>()
+                {
+                    new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
+                };
+        }
+
+        if (ignoreInventory)
         {
             return new List<Tuple<OperationType, IInteractionComponent>>()
             {

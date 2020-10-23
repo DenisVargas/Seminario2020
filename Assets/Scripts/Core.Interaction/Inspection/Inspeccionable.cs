@@ -12,7 +12,6 @@ namespace Core.Interaction
     public class Inspeccionable : MonoBehaviour, IInteractionComponent
     {
         [SerializeField] InspectionMenu _displayMenu = null;
-        [SerializeField] string IDName = "";
         [SerializeField, TextArea]
         string[] description = { "An irrelevant Object." };
 

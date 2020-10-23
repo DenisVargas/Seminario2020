@@ -259,7 +259,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     void Update()
     {
-        _mouseContext = _mtracker.GetCurrentMouseContext();
+        _mouseContext = _mtracker.GetCurrentMouseContext(_inventory);
         if (!_Aiming)
         {
             if (_mouseContext.interactuableHitted)

@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 5236289573960986284}
   - component: {fileID: 9033255057123992332}
   - component: {fileID: 4582802784419614664}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GroundTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,5 +204,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dde5f357610e514ab48e2fa7367c994, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeActivate:
+    m_PersistentCalls:
+      m_Calls: []
   _anims: {fileID: 9179506860245127526}
   _deactivationTime: 1
+  OnTop: []

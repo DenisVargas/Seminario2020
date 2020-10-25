@@ -51,16 +51,16 @@ public class InspectionMenu : MonoBehaviour
 
     public void OnEnabledFinished_AnimEvent()
     {
-        Debug.Log("Animacion de activación completada");
+        //Debug.Log("Animacion de activación completada");
         AnimStage = 1;
     }
     public void OnDisablingStarted_AnimEvent()
     {
-        Debug.Log("Animacion de desactivación iniciada");
+        //Debug.Log("Animacion de desactivación iniciada");
     }
     public void OnDisablingEnded_AnimEvent()
     {
-        Debug.Log("Animacion de desactivación finalizada");
+        //Debug.Log("Animacion de desactivación finalizada");
         OnSetInspection(false);
     }
 
@@ -103,14 +103,12 @@ public class InspectionMenu : MonoBehaviour
             CurrentRenderedIndex++;
             if (CurrentRenderedIndex >= toRender ) //Termine TODAS las renderizaciones.
             {
-                print("He llegado al final: ------------------------- ");
-
                 if (_buttonText)
                     _buttonText.text = Close_ButtonText;
 
                 while (true)
                 {
-                    print("Esperando que confirme la wea ctm");
+                    //print("Esperando que confirme la wea ctm");
 
                     if (Input.GetKeyDown(KeyCode.Space) || confirmExit)
                     {
@@ -127,7 +125,7 @@ public class InspectionMenu : MonoBehaviour
             //Todavía hay renderizaciones disponibles.
             while(true)
             {
-                print("Esperando confirmacióne para saltar al siguiente!");
+                //print("Esperando confirmacióne para saltar al siguiente!");
 
                 if (Input.GetKeyDown(KeyCode.Space) || confirmExit)
                     break;

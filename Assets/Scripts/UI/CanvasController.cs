@@ -18,29 +18,35 @@ public class CanvasController : MonoBehaviour
     [SerializeField] GameObject ClonHUD  = null;
     [SerializeField] Image FadeImage     = null;
 
+    bool playerHudLocked = false;
+
     private void Awake()
     {
         _MultiCommandMenu.LoadData();
         FadeImage.canvasRenderer.SetAlpha(1);
         StartCoroutine(FadeIn());
 
-
         var inpsectionMenu = FindObjectOfType<InspectionMenu>();
         inpsectionMenu.OnSetInspection += (enableInspection) => 
         {
+            playerHudLocked = enableInspection;
             if (enableInspection)
             {
+                playerHudLocked = true;
                 ThrowHUD.SetActive(false);
                 ClonHUD.SetActive(false);
-            }
-            else
-            {
-                ThrowHUD.SetActive(true);
-                ClonHUD.SetActive(true);
             }
         };
     }
 
+    public void DisplayPlayerUI(bool Clon, bool Throw)
+    {
+        if (!playerHudLocked)
+        {
+            ClonHUD.SetActive(Clon);
+            ThrowHUD.SetActive(Throw);
+        }
+    }
     /// <summary>
     /// Inicia un fade-Out
     /// </summary>
@@ -48,13 +54,7 @@ public class CanvasController : MonoBehaviour
     {
         StartCoroutine(FadeOut(3f));
     }
-    /// <summary>
-    /// Muestra un ícono de target.
-    /// </summary>
-    public void DisplayThrow(bool active)
-    {
-        ThrowHUD.SetActive(active);
-    }
+
     IEnumerator FadeIn()
     {
         FadeImage.canvasRenderer.SetAlpha(1.0f);

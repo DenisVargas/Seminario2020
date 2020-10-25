@@ -18,7 +18,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     public event Action OnPlayerDied = delegate { };
     public event Action OnMovementChange = delegate { };
     public event Action OnInputLocked = delegate { };
-    public event Action<bool> DisplayThrowUI = delegate { };
     public event Action<GameObject> OnEntityDead = delegate { };
 
     public Transform manitodumacaco;
@@ -222,7 +221,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
         OnPlayerDied += _canvasController.DisplayLoose;
-        DisplayThrowUI += _canvasController.DisplayThrow;
         _mv = GetComponent<MouseView>();
         _mtracker = GetComponent<MouseContextTracker>();
         _solver = GetComponent<PathFindSolver>();
@@ -268,6 +266,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 _mtracker.ChangeCursorView(1);
         }
         else _mtracker.ChangeCursorView(3);
+
+        _canvasController.DisplayPlayerUI(true, _inventory.equiped != null && _inventory.equiped.isThroweable);
 
         #region Input
         if (PlayerInputEnabled)
@@ -453,7 +453,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             item.transform.localPosition = Vector3.zero;
             item.ExecuteOperation(OperationType.Take);
             _inventory.EquipItem(item);
-            DisplayThrowUI(_inventory.equiped != null && _inventory.equiped.isThroweable);
+            //DisplayThrowUI(_inventory.equiped != null && _inventory.equiped.isThroweable);
         }
     }
     public Item ReleaseEquipedItemFromHand(bool setToDefaultPosition = false, params object[] options)
@@ -468,7 +468,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             released.ExecuteOperation(OperationType.Drop, options[0]);
         released.SetPhysicsProperties(true, Vector3.zero);
         released.transform.SetParent(null);
-        DisplayThrowUI(_inventory.equiped != null && _inventory.equiped.isThroweable);
+        //DisplayThrowUI(_inventory.equiped != null && _inventory.equiped.isThroweable);
         return released;
     }
 

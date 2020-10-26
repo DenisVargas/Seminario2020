@@ -10,7 +10,7 @@ Material:
   m_Name: CornerT1
   m_Shader: {fileID: 4800000, guid: 6e51695ad4c735249b83523859777b02, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -81,10 +81,11 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 0
+    - _mouseOver: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 0.6320754, g: 0.36272952, b: 0.11031505, a: 0}
-    - _Color2: {r: 0.7169812, g: 0.43821234, b: 0.1251335, a: 0}
-    - _Color3: {r: 0.8867924, g: 0.57751936, b: 0.20496619, a: 0}
+    - _Color1: {r: 0.54901963, g: 0.32941177, b: 0.16862746, a: 0}
+    - _Color2: {r: 0.83137256, g: 0.43821234, b: 0.19215687, a: 0}
+    - _Color3: {r: 0.7921569, g: 0.49803922, b: 0.24313726, a: 0}
     - _Color4: {r: 0.7830189, g: 0.5836802, b: 0.2179156, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

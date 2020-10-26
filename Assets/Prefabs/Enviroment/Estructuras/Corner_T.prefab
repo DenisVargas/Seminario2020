@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3552205525424971443}
   - component: {fileID: 8163105238204300585}
   - component: {fileID: 4849433530194752821}
+  - component: {fileID: 3549168738894084147}
+  - component: {fileID: 854531235800010090}
   m_Layer: 0
   m_Name: Corner_T
   m_TagString: Untagged
@@ -78,3 +80,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &3549168738894084147
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3338699403972373342}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.338274, y: 3.0157273, z: 4.016981}
+  m_Center: {x: -2.3045979, y: 1.2066493e-16, z: 2.0084906}
+--- !u!65 &854531235800010090
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3338699403972373342}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.2370515, y: 5.5088563, z: 4.016981}
+  m_Center: {x: 0.014794052, y: 1.2066493e-16, z: 2.0084906}

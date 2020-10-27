@@ -21,7 +21,18 @@ namespace Utility.ObjectPools.Generic
         Action<T> _init       = delegate { };
         Action<T> _finit      = delegate { };
         Func<T> _factoyMethod = delegate { return default(T); };
-        bool isDinamic        = false;
+        bool _isDinamic        = false;
+
+        public GenericPool(bool isDinamic = false)
+        {
+            _inactiveObjets = new Queue<PoolObject<T>>();
+            _activeObjects = new Dictionary<T, PoolObject<T>>();
+
+            _init = delegate { };
+            _finit = delegate { };
+            _factoyMethod = delegate { return default(T); };
+            _isDinamic = isDinamic;
+        }
 
         public GenericPool(int stockInicial, Func<T> FactoryMethod, Action<T> Initialize, Action<T> Finalize, bool isDinamic = false)
         {
@@ -31,9 +42,34 @@ namespace Utility.ObjectPools.Generic
             _factoyMethod = FactoryMethod;
             _init = Initialize;
             _finit = Finalize;
-            this.isDinamic = isDinamic;
+            _isDinamic = isDinamic;
 
             for (int i = 0; i < stockInicial; i++)
+            {
+                _inactiveObjets.Enqueue(new PoolObject<T>(_factoyMethod()));
+            }
+        }
+
+        public GenericPool<T> SetFactoryMethod(Func<T> factoryMethod)
+        {
+            _factoyMethod = factoryMethod;
+            return this;
+        }
+        public GenericPool<T> SetInitMethod(Action<T> initialize)
+        {
+            _init = initialize;
+            return this;
+        }
+        public GenericPool<T> SetFinitMethod(Action<T> finit)
+        {
+            _finit = finit;
+            return this;
+        }
+        public void AddStock(int stock, bool isDinamic = false)
+        {
+            _isDinamic = isDinamic;
+
+            for (int i = 0; i < stock; i++)
             {
                 _inactiveObjets.Enqueue(new PoolObject<T>(_factoyMethod()));
             }
@@ -49,7 +85,7 @@ namespace Utility.ObjectPools.Generic
                 return poolObject.GetObject;
             }
 
-            if (isDinamic)
+            if (_isDinamic)
             {
                 var poolObject = new PoolObject<T>(_factoyMethod());
                 _init(poolObject.GetObject);
@@ -59,7 +95,6 @@ namespace Utility.ObjectPools.Generic
 
             return default(T);
         }
-
         public void DisablePoolObject(T obj)
         {
             if (_activeObjects.ContainsKey(obj))

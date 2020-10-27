@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3044059096213830317}
   - component: {fileID: 3044059096213830318}
+  - component: {fileID: 641420287607853777}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -45,3 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collection: {fileID: 11400000, guid: 55d407c190fcc83489ba2b1f395d7817, type: 2}
   _recipes: {fileID: 11400000, guid: 04537ee343d4f9d44b3e5eba8841c1ee, type: 2}
+--- !u!114 &641420287607853777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3044059096213830319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80fca9464f56c7644be3aa1869b5849e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultAudioMixerGroup: {fileID: 24300002, guid: d30e83d40f6c3ff40823b70e8847b20b,
+    type: 2}

@@ -289,10 +289,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 {
                     //print("Confirmo el tiro");
                     _Aiming = false;
-                    //_mtracker.ChangeCursorView(1);
-                    _mouseContext = _mtracker.GetCurrentMouseContext();
                     Node targetNode = _mouseContext.closerNode;//El objetivo.
-                    Vector3 origin = manitodumacaco.position;
 
                     //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
                     var command = new cmd_ThrowEquipment(

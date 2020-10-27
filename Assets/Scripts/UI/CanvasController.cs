@@ -1,13 +1,7 @@
-﻿using JetBrains.Annotations;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Core.Interaction;
-using Core.InventorySystem;
 using Core.SaveSystem;
 
 public class CanvasController : MonoBehaviour

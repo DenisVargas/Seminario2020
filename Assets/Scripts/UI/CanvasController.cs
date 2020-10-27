@@ -8,28 +8,33 @@ public class CanvasController : MonoBehaviour
 {
     [Header("Multi-Comand Menu")]
     [SerializeField] CommandMenu _MultiCommandMenu = null;
+    [SerializeField] GameObject PauseMenu = null;
+    [SerializeField] GameObject PlayerHud = null;
     [SerializeField] GameObject ThrowHUD = null;
     [SerializeField] GameObject ClonHUD  = null;
     [SerializeField] Image FadeImage     = null;
 
     bool playerHudLocked = false;
+    public void setPauseMenu(bool state)
+    {
+        //El menú de pausa puede prenderse y/o apagarse desde un script de afuera.
+        PauseMenu.SetActive(state);
+
+        //Condicionales exclusivas.
+    }
 
     private void Awake()
     {
         _MultiCommandMenu.LoadData();
         FadeImage.canvasRenderer.SetAlpha(1);
+        PauseMenu.SetActive(false);
         StartCoroutine(FadeIn());
 
         var inpsectionMenu = FindObjectOfType<InspectionMenu>();
         inpsectionMenu.OnSetInspection += (enableInspection) => 
         {
             playerHudLocked = enableInspection;
-            if (enableInspection)
-            {
-                playerHudLocked = true;
-                ThrowHUD.SetActive(false);
-                ClonHUD.SetActive(false);
-            }
+            PlayerHud.SetActive(enableInspection);
         };
     }
 

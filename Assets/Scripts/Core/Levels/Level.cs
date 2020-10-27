@@ -17,6 +17,21 @@ namespace Core.SaveSystem
         public GameObject prefabPlayer;
         //public NodeGraphBuilder levelGraph = null;
 
+        public static bool isPaused { get; private set; } = false;
+        public static void TooglePauseGame()
+        {
+            //Mecanismo de prender/apagar.
+            isPaused = !isPaused;
+
+            foreach (var grunt in FindObjectsOfType<Grunt>())
+                grunt.enabled = !isPaused;
+
+            foreach (var baboso in FindObjectsOfType<Baboso>())
+                baboso.enabled = !isPaused;
+
+            Time.timeScale = isPaused ? 0 : 1;
+        }
+
         public static CheckPoint AutoSave
         {
             get
@@ -51,6 +66,8 @@ namespace Core.SaveSystem
         public static void RestartCurrentLevel()
         {
             int levelID = FindObjectOfType<Level>().LevelBuildID;
+            isPaused = false;
+            Time.timeScale = 1;
             SceneManager.LoadScene(levelID);
         }
 
@@ -59,6 +76,9 @@ namespace Core.SaveSystem
             //Chequear si tengo datos guardados del estado del nivel antes de iniciar.
             if (AutoSave != null)
                 clearCheckpoint();
+
+            isPaused = false;
+            Time.timeScale = 1;
         }
 
         public static void clearCheckpoint()
@@ -85,6 +105,9 @@ namespace Core.SaveSystem
         {
             Level currentLevel = GetCurrentLevel();
             CheckPoint lastSave = Level.AutoSave;
+
+            isPaused = false;
+            Time.timeScale = 1;
 
             //Busco al player, si no lo encuentro creo uno nuevo.
             Controller player = FindObjectOfType<Controller>();

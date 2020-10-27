@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Core.SaveSystem;
 
@@ -18,6 +16,24 @@ public class CanvasButtonManager : MonoBehaviour
             SceneManager.LoadScene(lastSavedGame.LevelBuildID);
 
         //TODO: Bloquar el deleteo del autosave.
+    }
+
+    //Estas son utilizadas por el menú de pausa.
+    public void UnPause()
+    {
+        Level.TooglePauseGame();
+        var c = FindObjectOfType<CanvasController>();
+        c.setPauseMenu(false);
+    }
+    public void OpenScriptures()
+    {
+        //TODO: Añadir una colección de Escrituras y/o notas que se vayan desbloqueando.
+    }
+    public void ExitToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
     }
 
     public void ExitGame()

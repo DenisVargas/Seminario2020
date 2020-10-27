@@ -257,6 +257,18 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     void Update()
     {
+        //Start Pause
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            print("Pauso la Wea");
+            Level.TooglePauseGame();
+            _canvasController.setPauseMenu(Level.isPaused);
+            return;
+        }
+
+        if (Level.isPaused)
+            return;
+
         _mouseContext = _mtracker.GetCurrentMouseContext(_inventory);
         if (!_Aiming)
         {

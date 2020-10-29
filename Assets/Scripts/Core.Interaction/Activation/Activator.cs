@@ -28,7 +28,7 @@ public class Activator : MonoBehaviour, IInteractionComponent
     }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
-        throw new NotImplementedException();
+        print($"{gameObject.name}:: Input Confirmado!");
     }
     public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
@@ -45,6 +45,8 @@ public class Activator : MonoBehaviour, IInteractionComponent
         var pickNode = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
         Vector3 LookToDirection = (transform.position - pickNode.transform.position).normalized.YComponent(0);
 
-        return new InteractionParameters(pickNode, LookToDirection);
+        var iparams = new InteractionParameters(pickNode, LookToDirection);
+        iparams.AnimatorParameter = 1;
+        return iparams;
     }
 }

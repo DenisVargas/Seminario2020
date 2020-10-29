@@ -164,7 +164,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         get => _anims.GetBool(animHash[1]);
         set => _anims.SetBool(animHash[1], value);
     }
-    bool _a_LeverPull
+    bool _a_Activate
     {
         get => _anims.GetBool(animHash[2]);
         set => _anims.SetBool(animHash[2], value);
@@ -209,6 +209,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         get => _anims.GetBool(animHash[10]);
         set => _anims.SetBool(animHash[10], value);
     }
+    int _a_ActivationType
+    {
+        get => _anims.GetInteger(animHash[11]);
+        set => _anims.SetInteger(animHash[11], value);
+    }
     #endregion
 
     //================================= UnityEngine ========================================
@@ -250,7 +255,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
         //Animaciones.
         _anims = GetComponent<Animator>();
-        animHash = new int[11];
+        animHash = new int[12];
         var animparams = _anims.parameters;
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
@@ -576,16 +581,18 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                         {
                             if (animIndex == 0)
                                 return _a_Walking;
-                            if (animIndex == 1)
-                                return _a_LeverPull;
-                            return false;
+                            else
+                                return _a_Activate;
                         }, //get value de animación.
                         (animIndex, value) => 
                         {
                             if (animIndex == 0)
                                 _a_Walking = value;
-                            if (animIndex == 1)
-                                _a_LeverPull = value;
+                            if (animIndex == 1 || animIndex == 2)
+                            {
+                                _a_ActivationType = animIndex;
+                                _a_Activate = value;
+                            }
                         }, //Set value de animación.
                         MoveToTarget,//Función de movimiento.
                         () => comandos.Dequeue(), //Dispose.
@@ -769,12 +776,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     void AE_BlockInteractions()
     {
         PlayerInputEnabled = false;
+        print("Player input has been Loqued!");
         //Llamo a una función que cierre la ventana de interacción.
         if (_MultiCommandMenu.isActiveAndEnabled)
             _MultiCommandMenu.Close();
     }
     void AE_UnLockInteractions()
     {
+        print("Player input has been unloqued");
         PlayerInputEnabled = true;
     }
 
@@ -784,7 +793,17 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     void AE_PullLeverEnded()
     {
-        _a_LeverPull = false;
+        _a_Activate = false;
+        comandos.Dequeue().Execute();
+    }
+    void AE_PullGroundLeverStarted()
+    {
+        print($"Pull Ground Lever Started:: {gameObject.name} ha iniciado la activación de una palanca");
+    }
+    void AE_PullGroundLeverEnded()
+    {
+        print("========== Pull Ground Lever Ended ===============");
+        _a_Activate = false;
         comandos.Dequeue().Execute();
     }
     void AE_Ignite_Start()

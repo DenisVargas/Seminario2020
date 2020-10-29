@@ -4,19 +4,20 @@ using Core.Interaction;
 using Core.InventorySystem;
 using System;
 using System.Collections.Generic;
+using IA.PathFinding;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider), typeof(InteractionHandler))]
 public class GroundLever : MonoBehaviour, IInteractionComponent
 {
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
     [SerializeField] UnityEvent OnDeActivate = new UnityEvent();
 
-    [SerializeField] Transform _activationPosition = null;
     [SerializeField] Animator _anims = null;
+    [SerializeField] Node _activationPosition = null;
+    [SerializeField] Transform _referenceTransform = null;
 
     Collider _col = null;
 
-    
     public bool isDynamic => false;
 
     private void Awake()
@@ -34,26 +35,27 @@ public class GroundLever : MonoBehaviour, IInteractionComponent
     }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
-        
-    }
-    public void ExecuteOperation(OperationType operation, params object[] optionalParams)
-    {
-        _anims.SetBool("Pressed", true);
+        print("Input Confirmado:: le doy play a la pinche Animación.");
+        _anims.SetBool("activated", true);
         OnActivate.Invoke();
     }
-    public void CancelOperation(OperationType operation, params object[] optionalParams)
-    {
-        
-    }
+    public void ExecuteOperation(OperationType operation, params object[] optionalParams) { }
+    public void CancelOperation(OperationType operation, params object[] optionalParams) { }
 
     public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
     {
         NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
 
-        IA.PathFinding.Node SafePosition = PathFindSolver.getCloserNodeInGraph(_activationPosition.position, graph);
-        Vector3 directionToMe = _activationPosition.forward;
-        //Vector3 directionToMe = (transform.position - SafePosition.transform.position).normalized.YComponent(0);
+        Node SafePosition = PathFindSolver.getCloserNodeInGraph(_activationPosition.transform.position, graph);
 
-        return new InteractionParameters(SafePosition, directionToMe);
+        var iparams = new InteractionParameters(SafePosition, _referenceTransform.forward);
+        iparams.AnimatorParameter = 2;
+        return iparams;
+    }
+
+    void OnLeverPulledCompleted_AnimEvent()
+    {
+        print("OnLeverPullCompleted");
+        _anims.SetBool("activated", false);
     }
 }

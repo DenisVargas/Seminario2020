@@ -11,6 +11,8 @@ public class Cmd_Activate : BaseQueryCommand
     Func<int, bool> getAnimation = delegate { return false; };
     IInteractionComponent CommandTarget;
     OperationType operation = OperationType.Activate;
+    int _animatorParameter = 0;
+    int execution = 0;
 
     public Cmd_Activate(IInteractionComponent CommandTarget, Transform body, PathFindSolver solver, Func<int, bool> getAnimation, Action<int, bool> setAnimation, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath) :
         base(body, solver, moveFunction, dispose, OnChangePath)
@@ -23,6 +25,7 @@ public class Cmd_Activate : BaseQueryCommand
     {
         var intPar = CommandTarget.getInteractionParameters(_body.position);
         _ObjectiveNode = intPar.safeInteractionNode;
+        _animatorParameter = intPar.AnimatorParameter;
         cashed = false;
 
         needsPremovement = CalculatePremovement(_ObjectiveNode);
@@ -30,7 +33,7 @@ public class Cmd_Activate : BaseQueryCommand
     }
     public override void UpdateCommand()
     {
-        if (completed) return;
+        if (completed || execution > 0) return;
 
         if (!isInRange(_ObjectiveNode))
         {
@@ -48,14 +51,18 @@ public class Cmd_Activate : BaseQueryCommand
         {
             //Ejecuto el comando en el target.
             Debug.Log("Llegué al rango.");
+
+            //Ejecuto la animación correspondiente Sobre el Player, confirmo el input al objetivo.
             setAnimation(0, false);
-            setAnimation(1, true);
+            setAnimation(_animatorParameter, true);
+            CommandTarget.InputConfirmed(OperationType.Activate);
+            lookTowards(CommandTarget);
+            execution++;
         }
     }
 
     public override void Execute()
     {
-        lookTowards(CommandTarget);
         CommandTarget.ExecuteOperation(operation);
         completed = true;
     }

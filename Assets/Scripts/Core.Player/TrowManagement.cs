@@ -2,6 +2,7 @@
 
 public class TrowManagement : MonoBehaviour
 {
+    public AnimationCurve curva;
     /// <summary>
     /// Aplica una velocidad a un objeto dado una posición objetivo.
     /// </summary>

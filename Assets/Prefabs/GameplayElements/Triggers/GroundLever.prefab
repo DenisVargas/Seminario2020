@@ -113,7 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _limitedDisplay: 0
   _activeTime: 5
-  _renderer: {fileID: 0}
+  _renderer: {fileID: 4582631822069733378}
   _interactionEnabled: 1
 --- !u!114 &5710760881678609182
 MonoBehaviour:

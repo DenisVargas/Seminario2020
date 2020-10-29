@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GroundLever_Lever
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: cec700537c331f9478efb13c7396330a, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -72,6 +72,10 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - __dirty: 0
+    - _mouseOver: 0
+    - _smoothness: 0
     m_Colors:
     - _Color: {r: 0.5, g: 0.26674348, b: 0.10613209, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
+    - _MainColor: {r: 0.41509432, g: 0.21789654, b: 0.13901745, a: 0}

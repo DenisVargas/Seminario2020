@@ -16,6 +16,7 @@ public class GroundTrigger : MonoBehaviour
 
     Collider _col = null;
     [SerializeField] List<Collider> OnTop = new List<Collider>();
+    [SerializeField] List<int> ignoreLayers = new List<int>();
 
     private void Awake()
     {
@@ -39,8 +40,22 @@ public class GroundTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //print($"{other.gameObject.name} esto lo detecto.");
+        if (ignoreLayers.Contains(other.gameObject.layer))
+            return;
+
+        if (other.gameObject.CompareTag("Box"))
+        {
+            OnTop.Add(other);
+            var destroyable = other.GetComponent<destroyable>();
+            if (destroyable)
+                destroyable.onDestroy += RemoveColliderFromActivationList;
+        }
+
         if (!other.isTrigger)
         {
+            print($"{other.gameObject.name} esto lo detecto, no es trigger.");
+
             OnTop.Add(other);
             _anims.SetBool("Pressed", true);
 
@@ -70,6 +85,10 @@ public class GroundTrigger : MonoBehaviour
             var item = other.GetComponent<Item>();
             if (item != null)
                 item.OnPickDepedency -= RemoveColliderFromActivationList;
+
+            var destroyable = other.GetComponent<destroyable>();
+            if (destroyable)
+                destroyable.onDestroy -= RemoveColliderFromActivationList;
 
             if (OnTop.Count <= 0 )
             {

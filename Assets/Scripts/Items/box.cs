@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using IA.PathFinding;
+using System.Collections;
 
 public class box :  destroyable
 {
@@ -24,6 +25,12 @@ public class box :  destroyable
             getSmashed();
         }
 
+        if (damage.type == DamageType.Fire)
+        {
+            result.ignited = true;
+            Burn();
+        }
+
         return result;
     }
 
@@ -40,6 +47,20 @@ public class box :  destroyable
     void Explode(Vector3 explotionOrigin, float explotionForce)
     {
         print($"{gameObject.name} ha sido destruido por una explosión.");
+    }
+
+    void Burn()
+    {
+        _destroyedObject.SetActive(true);
+        _normalObject.SetActive(false);
+        onDestroy(gameObject);
+        StartCoroutine(delayedDestroy());
+    }
+
+    IEnumerator delayedDestroy()
+    {
+        yield return new WaitForSeconds(4f);
+        Destroy(gameObject);
     }
 }
 

@@ -7,6 +7,8 @@ using IA.PathFinding;
 
 public class destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
 {
+    public Action<GameObject> onDestroy = delegate { };
+
     [Header("Destroyable Parts")]
     [SerializeField] protected GameObject _normalObject;
     [SerializeField] protected GameObject _destroyedObject;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6821322518964237975}
   - component: {fileID: 4966029960977679780}
   - component: {fileID: 2732326046432118612}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Box_1x1x1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,14 +61,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a086f1326a281104cbecd721767d0c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyedObject: {fileID: 6807446758980920037}
-  notDestroyedObject: {fileID: 7994080308221422143}
+  _normalObject: {fileID: 7994080308221422143}
+  _destroyedObject: {fileID: 6807446758980920037}
   MyDamage:
     type: 5
-    Ammount: 0
-    criticalMultiplier: 0
+    Ammount: 1
+    criticalMultiplier: 1
     instaKill: 0
     KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
   AffectedNodes: []
 --- !u!114 &2732326046432118612
 MonoBehaviour:

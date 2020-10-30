@@ -265,7 +265,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         //Start Pause
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            print("Pauso la Wea");
+            //print("Pauso la Wea");
             Level.TooglePauseGame();
             _canvasController.setPauseMenu(Level.isPaused);
             return;
@@ -776,20 +776,20 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     void AE_BlockInteractions()
     {
         PlayerInputEnabled = false;
-        print("Player input has been Loqued!");
+        //print("Player input has been Loqued!");
         //Llamo a una función que cierre la ventana de interacción.
         if (_MultiCommandMenu.isActiveAndEnabled)
             _MultiCommandMenu.Close();
     }
     void AE_UnLockInteractions()
     {
-        print("Player input has been unloqued");
+        //print("Player input has been unloqued");
         PlayerInputEnabled = true;
     }
 
     void AE_PullLeverStarted()
     {
-        print($"Pull Lever Started:: {gameObject.name} ha iniciado la activación de una palanca");
+        //print($"Pull Lever Started:: {gameObject.name} ha iniciado la activación de una palanca");
     }
     void AE_PullLeverEnded()
     {
@@ -798,11 +798,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     void AE_PullGroundLeverStarted()
     {
-        print($"Pull Ground Lever Started:: {gameObject.name} ha iniciado la activación de una palanca");
+        //print($"Pull Ground Lever Started:: {gameObject.name} ha iniciado la activación de una palanca");
     }
     void AE_PullGroundLeverEnded()
     {
-        print("========== Pull Ground Lever Ended ===============");
+        //print("========== Pull Ground Lever Ended ===============");
         _a_Activate = false;
         comandos.Dequeue().Execute();
     }

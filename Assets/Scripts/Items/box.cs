@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
-using Core.DamageSystem;
 using IA.PathFinding;
 
 public class box :  destroyable
 {
-    [SerializeField] Damage MyDamage = new Damage();
-    [SerializeField] Node[] AffectedNodes = new Node[0];
-
     //private void OnTriggerEnter(Collider collision)
     //{
     //    print("Box recieved Damage");
@@ -17,25 +13,33 @@ public class box :  destroyable
     //        damagecomponent.GetHit(GetDamageStats());
     //    }
     //}
-    public override Damage GetDamageStats()
-    {
-        return MyDamage;
-    }
+
     public override HitResult GetHit(Damage damage)
     {
+        HitResult result = new HitResult(true);
+
         if (damage.type == DamageType.blunt)
         {
-            destroyedObject.SetActive(true);
-            notDestroyedObject.SetActive(false);
-            foreach (var node in AffectedNodes)
-                node.ChangeNodeState(NavigationArea.Navegable);
+            result.fatalDamage = true;
+            getSmashed();
         }
-        //if(damage.type == DamageType.e_fire)
-        //{
-        //    // aca pasa algo
-        //}
 
-        return new HitResult() { conected = true, fatalDamage = true };
+        return result;
+    }
+
+    void getSmashed()
+    {
+        print($"{gameObject.name} ha sido aplastado.");
+
+        _destroyedObject.SetActive(true);
+        _normalObject.SetActive(false);
+        foreach (var node in AffectedNodes)
+            node.ChangeNodeState(NavigationArea.Navegable);
+    }
+
+    void Explode(Vector3 explotionOrigin, float explotionForce)
+    {
+        print($"{gameObject.name} ha sido destruido por una explosión.");
     }
 }
 

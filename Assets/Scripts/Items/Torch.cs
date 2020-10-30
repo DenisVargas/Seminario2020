@@ -7,6 +7,7 @@ public class Torch : Item, IDamageable<Damage, HitResult>
 {
     [SerializeField] GameObject _burningComponent = null;
     [SerializeField] Collider _interactionCollider = null;
+    [SerializeField] Damage hitDamage = new Damage();
     [SerializeField] bool _isOn;
 
     bool _toDestroy_FLAG = false;
@@ -60,6 +61,11 @@ public class Torch : Item, IDamageable<Damage, HitResult>
             type = DamageType.Fire
         };
     }
+    /// <summary>
+    /// Este Objeto recive daño.
+    /// </summary>
+    /// <param name="damage">Estructura de Daño recibida.</param>
+    /// <returns>Una estructura con información respecto al resultado de daño recibido.</returns>
     public HitResult GetHit(Damage damage)
     {
         HitResult result = new HitResult()
@@ -79,7 +85,17 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         return result;
     }
 
-    public void FeedDamageResult(HitResult result) { }
+    public void FeedDamageResult(HitResult result)
+    {
+        //if (result.exploded)
+        //    print($" LA WEA EXPLOTO");
+
+        if (result.conected && (result.exploded || result.ignited))
+        {
+            _toDestroy_FLAG = true;
+            StartCoroutine(destroyAtEnd());
+        }
+    }
     public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod) { }
 
     IEnumerator destroyAtEnd()
@@ -100,6 +116,14 @@ public class Torch : Item, IDamageable<Damage, HitResult>
 
             _toDestroy_FLAG = true;
             StartCoroutine(destroyAtEnd());
+            return;
+        }
+
+        var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
+        if (damageable != null)
+        {
+            print($"{gameObject.name} Golpeó a un Damageable: {other.gameObject.name}");
+            FeedDamageResult(damageable.GetHit(hitDamage));
         }
     }
 }

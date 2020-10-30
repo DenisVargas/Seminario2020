@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wood
+  m_Name: InteractablePots
   m_Shader: {fileID: 4800000, guid: cec700537c331f9478efb13c7396330a, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
@@ -61,7 +61,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.05
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
@@ -76,6 +76,6 @@ Material:
     - _mouseOver: 0
     - _smoothness: 0
     m_Colors:
-    - _Color: {r: 0.49056602, g: 0.25223306, b: 0.14578141, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
-    - _MainColor: {r: 0.5490196, g: 0.4509804, b: 0.4117647, a: 0}
+    - _MainColor: {r: 0.26415092, g: 0.11374152, b: 0.05357778, a: 0}

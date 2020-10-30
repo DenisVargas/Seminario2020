@@ -1,50 +1,42 @@
-﻿using Core.DamageSystem;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Core.DamageSystem;
+using IA.PathFinding;
 
 public class destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
 {
-    public GameObject destroyedObject;
-    public GameObject notDestroyedObject;
+    [Header("Destroyable Parts")]
+    [SerializeField] protected GameObject _normalObject;
+    [SerializeField] protected GameObject _destroyedObject;
+    [Header("Optional Parameters")]
+    [SerializeField] protected Damage MyDamage = new Damage();
+    [SerializeField] protected Node[] AffectedNodes = new Node[0];
+
     protected virtual void Awake()
     {
-        destroyedObject.SetActive(false);
-        notDestroyedObject.SetActive(true);
+        _normalObject.SetActive(true);
+        if (_destroyedObject.activeSelf)
+            _destroyedObject.SetActive(false);
     }
 
-    public bool IsAlive => throw new System.NotImplementedException();
+    public bool IsAlive { get; protected set; } = true;
 
-    public void FeedDamageResult(HitResult result)
+    public virtual void FeedDamageResult(HitResult result)
     {
-        throw new System.NotImplementedException();
+        print("Succesfully made Damage");
     }
-
     public virtual Damage GetDamageStats()
     {
-        return new Damage();
+        return MyDamage;
     }
-
     public virtual HitResult GetHit(Damage damage)
     {
-        destroyedObject.SetActive(true);
-        notDestroyedObject.SetActive(false);
-        Debug.Log("me rompi");
-        //if(damage.type == DamageType.blunt)
-        //{
-        //    destroyedObject.SetActive(true);
-        //    notDestroyedObject.SetActive(false);
-        //    Debug.Log("me rompi");
-        //}
-        //if(damage.type == DamageType.e_fire)
-        //{
-        //    // aca pasa algo
-        //}
-
-        return new HitResult() { conected = true, fatalDamage = true };
+        throw new NotImplementedException();
     }
     public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

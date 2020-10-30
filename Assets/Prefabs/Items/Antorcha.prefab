@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _limitedDisplay: 0
+  _activeTime: 5
   _renderer: {fileID: 7789348598247974097}
   _interactionEnabled: 1
 --- !u!114 &8702789833572466323
@@ -118,6 +120,14 @@ MonoBehaviour:
   debugThis: 0
   _burningComponent: {fileID: 1110212495423863185}
   _interactionCollider: {fileID: 2493914976280020308}
+  hitDamage:
+    type: 0
+    Ammount: 1
+    criticalMultiplier: 1
+    instaKill: 0
+    KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: {x: 0, y: 0, z: 0}
   _isOn: 0
 --- !u!1001 &505643807314577668
 PrefabInstance:

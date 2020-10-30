@@ -40,7 +40,7 @@ public class Staineable : MonoBehaviour//, IIgnitableObject
     private void Awake()
     {
         _interactionCollider = GetComponent<Collider>();
-        _interactionCollider.isTrigger = true;
+        //_interactionCollider.isTrigger = true;
         _mainRenderer = GetComponentInChildren<Renderer>();
         NormalMaterial = _mainRenderer.material;
     }

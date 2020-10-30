@@ -11,10 +11,11 @@ public class GroundTrigger : MonoBehaviour
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
     [SerializeField] UnityEvent OnDeActivate = new UnityEvent();
 
-    [SerializeField] Animator _anims = null;
+    [SerializeField] bool invertActivation = false;
     [SerializeField] float _deactivationTime = 0f;
 
     Collider _col = null;
+    [SerializeField] Animator _anims = null;
     [SerializeField] List<Collider> OnTop = new List<Collider>();
     [SerializeField] List<int> ignoreLayers = new List<int>();
 
@@ -33,7 +34,10 @@ public class GroundTrigger : MonoBehaviour
             if (OnTop.Count <= 0 && _anims != null)
             {
                 _anims.SetBool("Pressed", false);
-                OnDeActivate.Invoke();
+                if (invertActivation)
+                    OnDeActivate.Invoke();
+                else
+                    OnActivate.Invoke();
             }
         }
     }
@@ -67,7 +71,10 @@ public class GroundTrigger : MonoBehaviour
             if (item != null)
                 item.OnPickDepedency += RemoveColliderFromActivationList;
 
-            OnActivate.Invoke();
+            if (invertActivation)
+                OnDeActivate.Invoke();
+            else
+                OnActivate.Invoke();
         }
     }
 
@@ -101,6 +108,9 @@ public class GroundTrigger : MonoBehaviour
     IEnumerator releaseActivation()
     {
         yield return new WaitForSeconds(_deactivationTime);
-        OnDeActivate.Invoke();
+        if (invertActivation)
+            OnDeActivate.Invoke();
+        else
+            OnActivate.Invoke();
     }
 }

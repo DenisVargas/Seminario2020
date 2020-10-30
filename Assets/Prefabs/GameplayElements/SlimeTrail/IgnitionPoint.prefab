@@ -125,8 +125,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.0218177, z: 1}
-  m_Center: {x: 0, y: 0.40462565, z: 0}
+  m_Size: {x: 1, y: 6.2715726, z: 1}
+  m_Center: {x: 0, y: 3.029503, z: 0}
 --- !u!114 &6094009159771956726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _limitedDisplay: 0
+  _activeTime: 5
   _renderer: {fileID: 0}
   _interactionEnabled: 1
 --- !u!114 &206088919360502987
@@ -159,6 +161,8 @@ MonoBehaviour:
     criticalMultiplier: 2
     instaKill: 1
     KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
   _chainReactionDelay: 0.5
   fireParticles:
   - {fileID: 4255842031857750274}

@@ -63,6 +63,8 @@ MonoBehaviour:
     criticalMultiplier: 2
     instaKill: 1
     KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
 --- !u!1 &3417713661353778092
 GameObject:
   m_ObjectHideFlags: 0

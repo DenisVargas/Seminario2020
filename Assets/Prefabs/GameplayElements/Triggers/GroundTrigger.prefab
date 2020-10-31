@@ -227,7 +227,9 @@ MonoBehaviour:
   OnDeActivate:
     m_PersistentCalls:
       m_Calls: []
-  _anims: {fileID: 9179506860245127526}
+  _active: 0
+  _invertActivation: 0
   _deactivationTime: 1
+  _anims: {fileID: 9179506860245127526}
   OnTop: []
   ignoreLayers: 0a0000000d000000

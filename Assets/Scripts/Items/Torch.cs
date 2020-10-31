@@ -122,7 +122,7 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
         if (damageable != null)
         {
-            print($"{gameObject.name} Golpeó a un Damageable: {other.gameObject.name}");
+            //print($"{gameObject.name} Golpeó a un Damageable: {other.gameObject.name}");
             FeedDamageResult(damageable.GetHit(hitDamage));
         }
     }

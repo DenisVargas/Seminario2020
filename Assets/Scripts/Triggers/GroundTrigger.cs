@@ -1,5 +1,4 @@
 ﻿using Core.InventorySystem;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,13 +10,33 @@ public class GroundTrigger : MonoBehaviour
     [SerializeField] UnityEvent OnActivate = new UnityEvent();
     [SerializeField] UnityEvent OnDeActivate = new UnityEvent();
 
-    [SerializeField] bool invertActivation = false;
+    [SerializeField] bool _active = false;
+    [SerializeField] bool _invertActivation = false;
     [SerializeField] float _deactivationTime = 0f;
 
     Collider _col = null;
     [SerializeField] Animator _anims = null;
     [SerializeField] List<Collider> OnTop = new List<Collider>();
     [SerializeField] List<int> ignoreLayers = new List<int>();
+
+    public bool Active
+    {
+        get => _active;
+        set
+        {
+            _active = value;
+
+            if (_anims != null)
+                _anims.SetBool("Pressed", _active);
+
+            bool activation = _invertActivation ? !_active : _active;
+
+            if (activation)
+                OnActivate.Invoke();
+            else
+                OnDeActivate.Invoke();
+        }
+    }
 
     private void Awake()
     {
@@ -31,14 +50,8 @@ public class GroundTrigger : MonoBehaviour
         if (toRemove != null && OnTop.Contains(toRemove))
         {
             OnTop.Remove(toRemove);
-            if (OnTop.Count <= 0 && _anims != null)
-            {
-                _anims.SetBool("Pressed", false);
-                if (invertActivation)
-                    OnDeActivate.Invoke();
-                else
-                    OnActivate.Invoke();
-            }
+            if (OnTop.Count <= 0 && Active)
+                Active = false;
         }
     }
 
@@ -50,7 +63,8 @@ public class GroundTrigger : MonoBehaviour
 
         if (other.gameObject.CompareTag("Box"))
         {
-            OnTop.Add(other);
+            if (!OnTop.Contains(other))
+                OnTop.Add(other);
             var destroyable = other.GetComponent<destroyable>();
             if (destroyable)
                 destroyable.onDestroy += RemoveColliderFromActivationList;
@@ -58,9 +72,10 @@ public class GroundTrigger : MonoBehaviour
 
         if (!other.isTrigger)
         {
-            print($"{other.gameObject.name} esto lo detecto, no es trigger.");
+            //print($"{other.gameObject.name} esto lo detecto, no es trigger.");
 
-            OnTop.Add(other);
+            if (!OnTop.Contains(other))
+                OnTop.Add(other);
             _anims.SetBool("Pressed", true);
 
             var LiveEntity = other.GetComponent<ILivingEntity>();
@@ -70,12 +85,10 @@ public class GroundTrigger : MonoBehaviour
             var item = other.GetComponent<Item>();
             if (item != null)
                 item.OnPickDepedency += RemoveColliderFromActivationList;
-
-            if (invertActivation)
-                OnDeActivate.Invoke();
-            else
-                OnActivate.Invoke();
         }
+
+        if (OnTop.Count > 0 && !Active)
+            Active = true;
     }
 
     private void OnTriggerExit(Collider other)
@@ -96,21 +109,15 @@ public class GroundTrigger : MonoBehaviour
             var destroyable = other.GetComponent<destroyable>();
             if (destroyable)
                 destroyable.onDestroy -= RemoveColliderFromActivationList;
-
-            if (OnTop.Count <= 0 )
-            {
-                _anims.SetBool("Pressed", false);
-                StartCoroutine(releaseActivation());
-            }
         }
+
+        if (OnTop.Count <= 0)
+            StartCoroutine(releaseActivation());
     }
 
     IEnumerator releaseActivation()
     {
         yield return new WaitForSeconds(_deactivationTime);
-        if (invertActivation)
-            OnDeActivate.Invoke();
-        else
-            OnActivate.Invoke();
+        Active = false;
     }
 }

@@ -11,12 +11,17 @@ public class PitTrap : MonoBehaviour
 
     [SerializeField] Animator _anims = null;
 
-    bool isActive = false;
+    [SerializeField] bool isActive = false;
     BoxCollider _col;
 
     [SerializeField] List<Collider> OnTop = new List<Collider>();
     [SerializeField] List<IgnitableObject> OnTopBabas = new List<IgnitableObject>();
     [SerializeField] Node[] AffectedNodes = new Node[0];
+
+#if UNITY_EDITOR
+    [Header("================ DEBUG ================")]
+    [SerializeField] bool debugThisTrap = false;
+#endif
 
     private void Awake()
     {
@@ -65,6 +70,12 @@ public class PitTrap : MonoBehaviour
     }
     public void OnEnableTrap()
     {
+#if UNITY_EDITOR
+        if (debugThisTrap)
+            print($"{gameObject.name} se desactiva.");
+#endif
+
+
         _anims.SetBool("Activate", true);
         OnActivate.Invoke();
 
@@ -85,6 +96,11 @@ public class PitTrap : MonoBehaviour
     }
     public void OnDisableTrap()
     {
+#if UNITY_EDITOR
+        if (debugThisTrap)
+            print($"{gameObject.name} se desactiva."); 
+#endif
+
         _anims.SetBool("Activate", false);
         OnDeActivate.Invoke();
 

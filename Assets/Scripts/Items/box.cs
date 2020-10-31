@@ -54,6 +54,7 @@ public class box :  destroyable
         _destroyedObject.SetActive(true);
         _normalObject.SetActive(false);
         onDestroy(gameObject);
+        onDestroy = delegate { };
         StartCoroutine(delayedDestroy());
     }
 

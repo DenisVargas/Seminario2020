@@ -51,7 +51,12 @@ public class DestructibleRock : destroyable
                         //Teniendo el epicentro y mi posición calculo la dirección en opesta a donde aplico la fuerza.
                 }
             }
+
+            foreach (var node in AffectedNodes)
+                node.ChangeNodeState(IA.PathFinding.NavigationArea.Navegable);
         }
+
+        //TODO: Acá seguiría el marcado para eliminar la cosa.
     }
     bool getBurned()
     {

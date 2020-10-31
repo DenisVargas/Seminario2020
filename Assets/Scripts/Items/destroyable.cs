@@ -21,6 +21,9 @@ public class destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
         _normalObject.SetActive(true);
         if (_destroyedObject.activeSelf)
             _destroyedObject.SetActive(false);
+
+        foreach (var node in AffectedNodes)
+            node.ChangeNodeState(NavigationArea.blocked);
     }
 
     public bool IsAlive { get; protected set; } = true;

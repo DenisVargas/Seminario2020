@@ -37,7 +37,7 @@ public class Cmd_Activate : BaseQueryCommand
 
         if (!isInRange(_ObjectiveNode))
         {
-            Debug.Log("Estoy Fuera del rango, me muevo.");
+            //Debug.Log("Estoy Fuera del rango, me muevo.");
             //Se entiende que el índice 0 es walk, mientras que el índice 1 es PullLever.
             if (!getAnimation(0))
                 setAnimation(0, true);
@@ -50,7 +50,7 @@ public class Cmd_Activate : BaseQueryCommand
         else
         {
             //Ejecuto el comando en el target.
-            Debug.Log("Llegué al rango.");
+            //Debug.Log("Llegué al rango.");
 
             //Ejecuto la animación correspondiente Sobre el Player, confirmo el input al objetivo.
             setAnimation(0, false);

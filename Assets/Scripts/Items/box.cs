@@ -42,7 +42,7 @@ public class Box :  Destroyable
 
     void getSmashed()
     {
-        print($"{gameObject.name} ha sido aplastado.");
+        //print($"{gameObject.name} ha sido aplastado.");
 
         ReplaceToDestroyedMesh();
         foreach (var node in AffectedNodes)

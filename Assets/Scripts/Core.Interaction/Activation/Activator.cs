@@ -28,7 +28,7 @@ public class Activator : MonoBehaviour, IInteractionComponent
     }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
-        print($"{gameObject.name}:: Input Confirmado!");
+        //print($"{gameObject.name}:: Input Confirmado!");
     }
     public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {

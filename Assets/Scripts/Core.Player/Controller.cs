@@ -69,7 +69,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     public PlayerData getCurrentPlayerData()
     {
         var equiped = Inventory.equiped;
-        return new PlayerData()
+
+        var data = new PlayerData()
         {
             position = transform.position,
             rotacion = transform.rotation,
@@ -80,6 +81,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             inventory = Inventory.slots.Select(x => x.ID)
                                          .ToList()
         };
+
+        if (equiped.ID == 1 && ((Torch)equiped).isBurning)
+            data.itemIsActive = true;
+
+        return data;
     }
     public void LoadPlayerCheckpoint(PlayerData data)
     {
@@ -96,6 +102,13 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             var instance = Instantiate(ItemDataBase.getRandomItemPrefab(data.EquipedItem));
             instance.transform.localScale = data.itemScale;
             instance.transform.rotation = data.rotacion;
+
+            if (data.EquipedItem == 1 && data.itemIsActive)
+            {
+                var torch = instance.GetComponent<Torch>();
+                torch.isBurning = true;
+            }
+
             AttachItemToHand(instance.GetComponent<Item>());
         }
         Inventory.maxItemsSlots = data.maxItemsSlots;
@@ -120,8 +133,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
         //_rb.useGravity = false;
         _rb.velocity = Vector3.zero;
-        OnEntityDead = delegate { };
+        _rb.useGravity = false;
+        _rb.isKinematic = true;
         _hitbox.enabled = true;
+        _hitbox.isTrigger = false;
+        OnEntityDead = delegate { };
     }
 
     //======================================================================================
@@ -347,6 +363,9 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                     else
                     {
                         Node targetNode = _mouseContext.closerNode;
+                        if (targetNode == null)
+                            return;
+
                         if (Input.GetKey(KeyCode.LeftShift)) //Si presiono shift, muestro donde estoy presionando de forma aditiva.
                         {
                             AddMovementCommand(targetNode);

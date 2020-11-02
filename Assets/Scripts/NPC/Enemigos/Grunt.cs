@@ -70,6 +70,13 @@ public class Grunt : BaseNPC
         pursue.MoveToTarget = MoveToNode;
         pursue.getTarget = getAttackTarget;
         pursue.AttachTo(_states);
+        pursue.TargetIsActiveAndAlive = () =>
+        {
+            if (_attackTarget != null)
+                return _attackTarget.IsAlive && _attackTarget.gameObject.activeSelf;
+
+            return false;
+        };
 
         AttackState attack = GetComponent<AttackState>();
         attack.LookAtAttackTarget = LookAtAttackTarget;
@@ -209,7 +216,7 @@ public class Grunt : BaseNPC
         if (result.conected && result.fatalDamage)
         {
             Core.Debuging.Console.instance.Print($"{gameObject.name} ha conectado un golpe directo y ha matado a su objetivo", DebugLevel.info);
-            _anims.SetBool("TargetFinded", false);
+            _anims.SetBool("targetFinded", false);
             _attackTarget = null;
         }
     }

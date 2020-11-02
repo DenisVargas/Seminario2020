@@ -5,14 +5,21 @@ using IA.PathFinding;
 
 public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
 {
-    public event Action OnRecast = delegate { };
+    event Action OnRecast = delegate { };
+    public void RegisterRecastDependency(Action onEntityDied)
+    {
+        OnRecast += onEntityDied;
+    }
+    public void UnregisterRecastDependency(Action onEntityDied)
+    {
+        OnRecast -= onEntityDied;
+    }
 
     Animator _anims = null;
     PathFindSolver _solver = null;
 
     [SerializeField] float _moveSpeed = 3;
-    [SerializeField] float _maxLifeTime;
-    [SerializeField] float _movementTreshold = 0.1f;
+    [SerializeField] float _maxLifeTime = 20f;
 
     float remainingLifeTime = 0f;
     bool canMove = false;
@@ -40,6 +47,7 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         _anims = GetComponent<Animator>();
         _solver = GetComponent<PathFindSolver>();
+        remainingLifeTime = _maxLifeTime;
     }
 
     // Update is called once per frame
@@ -52,31 +60,29 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
             {
                 if (_Next == _targetNode)
                 {
-                    canMove = false;
                     _a_Walking = false;
+                    _Next = null;
                     return;
                 }
 
                 _current = _Next;
-                _Next = _solver.currentPath.Dequeue();
+                if (_solver.currentPath.Count > 0)
+                    _Next = _solver.currentPath.Dequeue();
             }
         }
 
         if (remainingLifeTime > 0)
+        {
+            //print($"Tiempo de vida restante es {remainingLifeTime}");
             remainingLifeTime -= Time.deltaTime;
+        }
         else
-            RecastClon();
+            UncastClon();
     }
-    public void SetState(float maxLifeTime, float MovementTreshold)
-    {
-        _maxLifeTime = maxLifeTime;
-        remainingLifeTime = maxLifeTime;
-        _movementTreshold = MovementTreshold;
-        canMove = false;
-    }
+
     public void SetMovementDestinyPosition(Node destinyPosition)
     {
-        canMove = true;
+        if (!canMove) return;
         _targetNode = destinyPosition;
 
         //Calculo las posiciones!
@@ -96,7 +102,9 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
             _a_Walking = true;
 
         transform.position += dirToTarget * _moveSpeed * Time.deltaTime;
-        return Vector3.Distance(transform.position, targetNode.transform.position) <= _movementTreshold;
+        float distance = Vector3.Distance(transform.position, targetNode.transform.position);
+        //print($"remaining distance is {distance}");
+        return distance < _solver.ProximityTreshold;
     }
     public void InvokeClon(Node node, Vector3 forward)
     {
@@ -106,8 +114,9 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
         canMove = false;
         gameObject.SetActive(true);
     }
-    public void RecastClon()
+    public void UncastClon()
     {
+        //print("Recast Clon!");
         _solver.currentPath.Clear();
         gameObject.SetActive(false);
         remainingLifeTime = _maxLifeTime;
@@ -136,13 +145,14 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
 
     public HitResult GetHit(Damage damage)
     {
-        HitResult result = new HitResult()
-        {
-            conected = true,
-            fatalDamage = true
-        };
+        HitResult result = new HitResult(true);
 
-        RecastClon(); //Podriamos animarlo pero ALV.
+        if (damage.type == DamageType.blunt || damage.type == DamageType.piercing)
+        {
+            result.fatalDamage = true;
+            UncastClon(); //Podriamos animarlo pero ALV.
+        }
+
         return result;
     }
 

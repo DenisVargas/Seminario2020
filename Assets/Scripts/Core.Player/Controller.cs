@@ -144,9 +144,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     #region Clon
     [Header("Clon")]
     public ClonBehaviour Clon = null;
-    [SerializeField] float _clonLife = 20f;
     [SerializeField] float _clonCooldown = 4f;
-    [SerializeField] float _ClonMovementTreshold = 0.1f;
     bool _canCastAClon = true;
     #endregion
     #region Animaciones
@@ -252,8 +250,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         if (Clon != null)
         {
             Clon.Awake();
-            Clon.SetState(_clonLife, _ClonMovementTreshold);
-            Clon.OnRecast += ClonDeactivate;
+            Clon.RegisterRecastDependency(ClonDeactivate);
         }
 
         //Animaciones.

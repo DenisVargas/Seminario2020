@@ -11,6 +11,7 @@ public class AttackState : State
     public Action StunAttackTarget = delegate { };
     public Action KillAttackTarget = delegate { };
     public Action Think = delegate { };
+    public Action<bool> SetIgnoreEntityDead = delegate { };
 
     //Rigidbody _rb = null;
 
@@ -19,10 +20,9 @@ public class AttackState : State
         //_rb = GetComponent<Rigidbody>(); //Si movemos por rigidbody.
         //_rb.velocity = Vector3.zero;
 
+        SetIgnoreEntityDead(true);
         _anims.SetBool("Attack", true);
-
         LookAtAttackTarget();
-        StunAttackTarget();
     }
 
     public override void End()
@@ -32,7 +32,10 @@ public class AttackState : State
 
     //============================== Animation Events =======================================
 
-    void AV_AttackStart() { }
+    void AV_AttackStart()
+    {
+        StunAttackTarget();
+    }
     void AV_Attack_Hit()
     {
         KillAttackTarget(); //Evento.
@@ -41,6 +44,7 @@ public class AttackState : State
     void AV_Attack_Ended()
     {
         //Evalua si el target fue eliminado y que hacer a continuación.
+        SetIgnoreEntityDead(false);
         Think();
     }
 }

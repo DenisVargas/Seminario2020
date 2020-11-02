@@ -14,6 +14,7 @@ public class PursueState : State
     public Func<Node,float, bool> MoveToTarget = delegate { return false; };
     public Func<bool> checkDistanceToTarget = delegate { return false; };
     public Func<Node> getDestinyNode = delegate { return null; };
+    public Func<bool> TargetIsActiveAndAlive = delegate { return true; };
     public Func<IDamageable<Damage, HitResult>> getTarget = delegate { return null; };
 
     [SerializeField] float _pursueMovementSpeed = 3f;
@@ -56,6 +57,12 @@ public class PursueState : State
 
     public override void Execute()
     {
+        if (!TargetIsActiveAndAlive())
+        {
+            SwitchToState(CommonState.idle);
+            return;
+        }
+
         if (checkDistanceToTarget())
         {
             SwitchToState(CommonState.attack);

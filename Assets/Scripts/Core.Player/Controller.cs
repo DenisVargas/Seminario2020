@@ -291,17 +291,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         {
             if (_Aiming)
             {
-                //print("Bloque 1:");
-                //Cancelo el tiro.
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Alpha2))
                 {
-                    //print("Cancelo Aiming");
-                    //_mtracker.ChangeCursorView(1);
+                    //print("Cancelo el tiro");
                     _Aiming = false;
                     return;
                 }
 
-                //Confirmar el tiro.
+                //Confirmar el tiro, clic izquierdo
                 if (Input.GetMouseButtonDown(0))
                 {
                     //print("Confirmo el tiro");

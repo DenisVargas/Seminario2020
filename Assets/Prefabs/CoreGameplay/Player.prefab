@@ -223,13 +223,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce9f118ab457dd4ea4edcc2c7750237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseDetectionMask:
+  _interactableMask:
     serializedVersion: 2
-    m_Bits: 1073744897
+    m_Bits: 2147485697
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 1024
   defaultCursor: {fileID: 2800000, guid: 1f9f8bba5217d064a8c63720188a3279, type: 3}
   InteractiveCursor: {fileID: 2800000, guid: 4921ee5eb03c8a240926e72d7e383e83, type: 3}
   AimCursor: {fileID: 2800000, guid: 0a100f36224cef445b081e8d34ed7afb, type: 3}
-  hited: []
   HITPOSITION: {fileID: 0}
   HITNODE: {fileID: 0}
 --- !u!114 &4294857582440551377
@@ -270,6 +272,7 @@ MonoBehaviour:
   moveSpeed: 4
   MouseDebug: {fileID: 0}
   _input: 1
+  _hitbox: {fileID: 0}
   _MultiCommandMenu: {fileID: 0}
   _inspectionMenu: {fileID: 0}
   Clon: {fileID: 0}
@@ -306,6 +309,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d4c519554e8f2448bfc91f7af2ad19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curva:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &7754093151426026515
 PrefabInstance:
   m_ObjectHideFlags: 0

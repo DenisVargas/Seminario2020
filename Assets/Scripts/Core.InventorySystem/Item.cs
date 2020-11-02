@@ -13,7 +13,7 @@ namespace Core.InventorySystem
     [System.Serializable, RequireComponent(typeof(InteractionHandler))]
     public class Item : MonoBehaviour, IInteractionComponent
     {
-        public Action<GameObject> OnPickDepedency = delegate { };
+        public Action<Collider> OnPickDepedency = delegate { };
         public Action<Collider> OnSetOwner = delegate { };
         public Action OnThrowItem = delegate { };
 
@@ -32,7 +32,8 @@ namespace Core.InventorySystem
         [SerializeField] Rigidbody _rb = null;
 
 #if UNITY_EDITOR
-        [SerializeField] bool debugThis = false; 
+        [Header("================ DEBUG =====================")]
+        [SerializeField] bool debugThis = false;
 #endif
 
         protected virtual void Awake()
@@ -192,7 +193,7 @@ namespace Core.InventorySystem
             }
 #endif
 
-            OnPickDepedency(gameObject);
+            OnPickDepedency(_physicCollider);
         }
         protected virtual void Drop(params object[] optionalParams)
         {

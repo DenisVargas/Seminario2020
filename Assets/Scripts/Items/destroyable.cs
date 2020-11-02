@@ -14,7 +14,7 @@ struct transformState
 
 public class Destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
 {
-    public Action<GameObject> onDestroy = delegate { };
+    public Action<Collider> onDestroy = delegate { };
 
     [Header("Destroyable Parts")]
     [SerializeField] protected GameObject _normalObject     = null;
@@ -88,7 +88,7 @@ public class Destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
             _normalObject.SetActive(false);
         if (_mainCollider)
             _mainCollider.enabled = false;
-        onDestroy(gameObject);
+        onDestroy(_mainCollider);
         onDestroy = delegate { };
     }
 

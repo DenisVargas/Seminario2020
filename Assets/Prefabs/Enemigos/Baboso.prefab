@@ -4901,6 +4901,7 @@ MonoBehaviour:
   _minDetectionRange: 3
   Weaknesses: []
   resistances: []
+  _mainCollider: {fileID: 5993281819839330285}
   startPatrolling: 1
   _currentState: 0
   burnParticles:
@@ -4983,6 +4984,7 @@ MonoBehaviour:
   stateType: 1
   _desapearEffectDelay: 4
   _timeToDesapear: 2
+  _mainCollider: {fileID: 5993281819839330285}
 --- !u!114 &8251683944114023218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5040,7 +5042,6 @@ MonoBehaviour:
   stateType: 5
   _patrollSpeed: 3
   _stopTime: 1.5
-  debugMessages: 0
 --- !u!114 &8251683944114023230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5085,6 +5086,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _limitedDisplay: 0
+  _activeTime: 5
   _renderer: {fileID: 0}
   _interactionEnabled: 1
 --- !u!114 &2058752778299249203

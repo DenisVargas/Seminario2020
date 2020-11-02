@@ -7,8 +7,6 @@ using Core.SaveSystem;
 
 public class Grunt : BaseNPC
 {
-    private Collider _mainCollider = null;
-
     public float Health
     {
         get => _health;

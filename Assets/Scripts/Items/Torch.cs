@@ -5,6 +5,7 @@ using Core.DamageSystem;
 
 public class Torch : Item, IDamageable<Damage, HitResult>
 {
+    [Header("================ Torch =======================")]
     [SerializeField] GameObject _burningComponent = null;
     [SerializeField] Collider _interactionCollider = null;
     [SerializeField] Damage hitDamage = new Damage();

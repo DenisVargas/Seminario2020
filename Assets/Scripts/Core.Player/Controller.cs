@@ -18,7 +18,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     public event Action OnPlayerDied = delegate { };
     public event Action OnMovementChange = delegate { };
     public event Action OnInputLocked = delegate { };
-    public event Action<GameObject> OnEntityDead = delegate { };
+    public event Action<Collider> OnEntityDead = delegate { };
 
     public Transform manitodumacaco;
     public ParticleSystem BloodStain;
@@ -55,11 +55,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     bool ClonInputEnabled = true;
     Vector3 velocity;
 
-    public void SubscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    public void SubscribeToLifeCicleDependency(Action<Collider> OnEntityDead)
     {
         this.OnEntityDead += OnEntityDead;
     }
-    public void UnsuscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    public void UnsuscribeToLifeCicleDependency(Action<Collider> OnEntityDead)
     {
         this.OnEntityDead -= OnEntityDead;
     }
@@ -127,11 +127,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     //======================================================================================
 
     #region Componentes
+    [SerializeField] Collider _hitbox = null;
     [SerializeField] CommandMenu _MultiCommandMenu = null;
     [SerializeField] InspectionMenu _inspectionMenu = null;
     Rigidbody _rb;
     Camera _viewCamera;
-    Collider _hitbox = null;
     CanvasController _canvasController = null;
     MouseView _mv;
     MouseContextTracker _mtracker;
@@ -153,6 +153,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     Animator _anims;
     int[] animHash = new int[4];
     public float TRWRange;
+    
 
     bool _a_Walking
     {
@@ -222,7 +223,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     {
         //Componentes.
         _rb = GetComponent<Rigidbody>();
-        _hitbox = GetComponent<Collider>();
         _viewCamera = Camera.main;
         _canvasController = FindObjectOfType<CanvasController>();
         OnPlayerDied += _canvasController.DisplayLoose;
@@ -234,6 +234,9 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
         if (_inspectionMenu)
             _inspectionMenu.OnSetInspection += (value) => { PlayerInputEnabled = !value; };
+
+        if (!_hitbox)
+            _hitbox = GetComponent<Collider>();
 
         if (_MultiCommandMenu)
             _MultiCommandMenu.commandCallback = QuerySelectedOperation;
@@ -764,7 +767,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
         comandos.Clear();
 
-        OnEntityDead(gameObject);
+        OnEntityDead(_hitbox);
         OnPlayerDied();
     }
 

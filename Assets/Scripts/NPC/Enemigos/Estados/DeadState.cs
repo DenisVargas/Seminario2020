@@ -6,11 +6,12 @@ using UnityEngine;
 
 public class DeadState : State
 {
-    public Action<GameObject> OnDead = delegate { };
+    public Action<Collider> OnDead = delegate { };
     public Action Reset = delegate { };
 
     [SerializeField] float _desapearEffectDelay = 4f;
     [SerializeField] float _timeToDesapear = 2f;
+    [SerializeField] Collider _mainCollider = null;
 
     Rigidbody _rb = null;
 
@@ -24,7 +25,7 @@ public class DeadState : State
 
         _anims.SetBool("Dead", true);
 
-        OnDead(gameObject);
+        OnDead(_mainCollider);
         StartCoroutine(FallAndDestroyGameObject());
     }
 

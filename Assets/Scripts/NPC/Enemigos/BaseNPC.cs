@@ -7,7 +7,7 @@ using IA.FSM;
 using IA.PathFinding;
 using Core.SaveSystem;
 
-[RequireComponent(typeof(Animator), typeof(LineOfSightComponent), typeof(PathFindSolver))]
+[RequireComponent(typeof(Animator), typeof(LineOfSightComponent), typeof(PathFindSolver)), RequireComponent(typeof(Collider))]
 public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEntity
 {
     //================================ Basic Variables ===============================================
@@ -25,6 +25,7 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     [SerializeField] protected DamageModifier[] resistances;//reducen el daño ingereante.
     protected Damage _currentDamageState = new Damage() { Ammount = 10 };
 
+    [SerializeField] protected Collider _mainCollider = null;
     protected Controller _player                          = null;
     protected ClonBehaviour _playerClone                  = null;
     protected IDamageable<Damage, HitResult> _attackTarget = null;
@@ -46,15 +47,15 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
 
     //================================ ILivingEntity =================================================
 
-    public Action<GameObject> OnEntityDead = delegate { };
+    public Action<Collider> OnEntityDead = delegate { };
 
-    public void SubscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    public void SubscribeToLifeCicleDependency(Action<Collider> OnEntityDead)
     {
         this.OnEntityDead += OnEntityDead;
     }
-    public void UnsuscribeToLifeCicleDependency(Action<GameObject> OnEntityDead)
+    public void UnsuscribeToLifeCicleDependency(Action<Collider> OnEntityDead)
     {
-        this.OnEntityDead += OnEntityDead;
+        this.OnEntityDead -= OnEntityDead;
     }
 
     //================================ Damage System =================================================
@@ -228,6 +229,9 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
         _solver = GetComponent<PathFindSolver>();
         _anims = GetComponent<Animator>();
 
+        if (!_mainCollider)
+            _mainCollider = GetComponent<Collider>();
+
         //Posicionamiento inicial.
         Node _currentCloserNode = _solver.getCloserNode(transform.position);
         transform.position = _currentCloserNode.transform.position;
@@ -251,7 +255,7 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     }
     private void OnDestroy()
     {
-        OnEntityDead(gameObject);
+        OnEntityDead(_mainCollider);
     }
     public virtual void LoadEnemyData(EnemyData enemyData)
     {

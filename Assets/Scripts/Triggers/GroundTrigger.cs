@@ -43,13 +43,11 @@ public class GroundTrigger : MonoBehaviour
         _col = GetComponent<Collider>();
     }
 
-    public void RemoveColliderFromActivationList(GameObject gameObject)
+    public void RemoveColliderFromActivationList(Collider toDeactivate)
     {
-        var toRemove = gameObject.GetComponent<Collider>();
-
-        if (toRemove != null && OnTop.Contains(toRemove))
+        if (OnTop.Contains(toDeactivate))
         {
-            OnTop.Remove(toRemove);
+            OnTop.Remove(toDeactivate);
             if (OnTop.Count <= 0 && Active)
                 Active = false;
         }

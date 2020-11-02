@@ -515,6 +515,7 @@ MonoBehaviour:
   _minDetectionRange: 3
   Weaknesses: []
   resistances: []
+  _mainCollider: {fileID: 3840256945297130291}
   DebugThisGrunt: 0
   DEBUG_MINDETECTIONRANGE: 0
   DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 1, b: 1, a: 1}
@@ -567,6 +568,7 @@ MonoBehaviour:
   stateType: 1
   _desapearEffectDelay: 4
   _timeToDesapear: 2
+  _mainCollider: {fileID: 3840256945297130291}
 --- !u!114 &7780291179722826362
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,7 +17,6 @@ public class Baboso : BaseNPC
     [Header("References")]
     [SerializeField] GameObject[] burnParticles   = new GameObject[2];
 
-    Collider _mainCollider      = null;
     Damage _damageState         = new Damage();
     Trail _trail                = null;
 
@@ -66,7 +65,8 @@ public class Baboso : BaseNPC
         base.Awake();
 
         //Seteo todas las referencias a los componentes.
-        _mainCollider = GetComponent<Collider>();
+        if (!_mainCollider)
+            _mainCollider = GetComponent<Collider>();
         _trail = GetComponentInChildren<Trail>();
 
         #region State Machine: Estados

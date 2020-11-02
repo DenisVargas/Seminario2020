@@ -166,12 +166,9 @@ public class PitTrap : MonoBehaviour
     /// Callback que se llama cuando una unidad muere por algún motivo diferente a esta trampa.
     /// </summary>
     /// <param name="go">GameObject del objeto a considerar.</param>
-    void OnEntityDieForExternSource(GameObject go)
+    void OnEntityDieForExternSource(Collider _coll)
     {
-        Collider mainCol = go.GetComponent<Collider>();
-        if (OnTop.Contains(mainCol))
-        {
-            OnTop.Remove(mainCol);
-        }
+        if (OnTop.Contains(_coll))
+            OnTop.Remove(_coll);
     }
 }

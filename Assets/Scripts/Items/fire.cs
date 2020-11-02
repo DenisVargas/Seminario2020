@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core.DamageSystem;
 
-public class fire : MonoBehaviour
+public class Fire : MonoBehaviour
 {
     public Damage MyDamage;
     // Start is called before the first frame update

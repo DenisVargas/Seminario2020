@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Core.DamageSystem;
 
-public class Jar : destroyable
+public class Jar : Destroyable
 {
     private void OnTriggerEnter(Collider collision)
     {
@@ -21,8 +21,8 @@ public class Jar : destroyable
         if (damage.type == DamageType.hit || damage.type == DamageType.explotion || damage.type == DamageType.blunt)
         {
             //Debug.Log("me rompi");
-            _destroyedObject.SetActive(true);
-            _normalObject.SetActive(false);
+            ReplaceToDestroyedMesh();
+            StartCoroutine(delayedDestroy(_timeToDestroy));
         }
 
         return result;

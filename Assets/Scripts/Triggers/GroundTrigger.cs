@@ -65,7 +65,7 @@ public class GroundTrigger : MonoBehaviour
         {
             if (!OnTop.Contains(other))
                 OnTop.Add(other);
-            var destroyable = other.GetComponent<destroyable>();
+            var destroyable = other.GetComponent<Destroyable>();
             if (destroyable)
                 destroyable.onDestroy += RemoveColliderFromActivationList;
         }
@@ -106,7 +106,7 @@ public class GroundTrigger : MonoBehaviour
             if (item != null)
                 item.OnPickDepedency -= RemoveColliderFromActivationList;
 
-            var destroyable = other.GetComponent<destroyable>();
+            var destroyable = other.GetComponent<Destroyable>();
             if (destroyable)
                 destroyable.onDestroy -= RemoveColliderFromActivationList;
         }

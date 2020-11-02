@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class DestructibleRock : destroyable
+public class DestructibleRock : Destroyable
 {
     public override HitResult GetHit(Damage damage)
     {
@@ -32,7 +32,7 @@ public class DestructibleRock : destroyable
 
     protected void Explode(Vector3 explotionOrigin, float force)
     {
-        print($"{gameObject.name}: Recibió daño por Explosión.");
+        //print($"{gameObject.name}: Recibió daño por Explosión.");
         if (_destroyedObject)
         {
             _normalObject.SetActive(false);
@@ -56,7 +56,7 @@ public class DestructibleRock : destroyable
                 node.ChangeNodeState(IA.PathFinding.NavigationArea.Navegable);
         }
 
-        //TODO: Acá seguiría el marcado para eliminar la cosa.
+        StartCoroutine(delayedDestroy(_timeToDestroy));
     }
     bool getBurned()
     {

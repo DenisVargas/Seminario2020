@@ -2,7 +2,7 @@
 using IA.PathFinding;
 using System.Collections;
 
-public class box :  destroyable
+public class Box :  Destroyable
 {
     //private void OnTriggerEnter(Collider collision)
     //{
@@ -31,6 +31,12 @@ public class box :  destroyable
             Burn();
         }
 
+        if (damage.type == DamageType.explotion)
+        {
+            result.exploded = true;
+            Explode(damage.explotionOrigin, damage.explotionForce);
+        }
+
         return result;
     }
 
@@ -38,30 +44,22 @@ public class box :  destroyable
     {
         print($"{gameObject.name} ha sido aplastado.");
 
-        _destroyedObject.SetActive(true);
-        _normalObject.SetActive(false);
+        ReplaceToDestroyedMesh();
         foreach (var node in AffectedNodes)
             node.ChangeNodeState(NavigationArea.Navegable);
     }
 
     void Explode(Vector3 explotionOrigin, float explotionForce)
     {
-        print($"{gameObject.name} ha sido destruido por una explosión.");
+        //print($"{gameObject.name} ha sido destruido por una explosión.");
+        ReplaceToDestroyedMesh();
+        StartCoroutine(delayedDestroy(_timeToDestroy));
     }
 
     void Burn()
     {
-        _destroyedObject.SetActive(true);
-        _normalObject.SetActive(false);
-        onDestroy(gameObject);
-        onDestroy = delegate { };
-        StartCoroutine(delayedDestroy());
-    }
-
-    IEnumerator delayedDestroy()
-    {
-        yield return new WaitForSeconds(4f);
-        Destroy(gameObject);
+        ReplaceToDestroyedMesh();
+        StartCoroutine(delayedDestroy(_timeToDestroy));
     }
 }
 

@@ -224,7 +224,7 @@ public class Grunt : BaseNPC
     public override Damage GetDamageStats()
     {
         //Retornamos nuestras estadísticas de combate actuales.
-        return _currentDamageState;
+        return _defaultDamage;
     }
     public override void FeedDamageResult(HitResult result)
     {

@@ -20,6 +20,10 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         {
             _isOn = value;
             _burningComponent.SetActive(_isOn);
+            if (_isOn)
+                hitDamage.type = DamageType.Fire;
+            else
+                hitDamage.type = DamageType.hit;
         }
     }
     public bool IsAlive => true;
@@ -56,11 +60,7 @@ public class Torch : Item, IDamageable<Damage, HitResult>
     //Colisiones. Si este objeto colisiona con un igniteable. Ejecuta su comando ignite, y luego se destruye.
     public Damage GetDamageStats()
     {
-        return new Damage()
-        {
-            Ammount = 10f,
-            type = DamageType.Fire
-        };
+        return hitDamage;
     }
     /// <summary>
     /// Este Objeto recive daño.
@@ -105,12 +105,22 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         Destroy(gameObject);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        var col = collision.collider;
+
+        var damageable = col.GetComponent<IDamageable<Damage, HitResult>>();
+        if (damageable != null)
+        {
+            //print($"{gameObject.name} Golpeó a un Damageable: {col.gameObject.name}");
+            FeedDamageResult(damageable.GetHit(hitDamage));
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!isBurning) return;
-
         var igniteable = other.GetComponentInChildren<Slime>();
-        if (igniteable != null)
+        if (igniteable != null && isBurning)
         {
             //print("Colisioné con un igniteable.");
             igniteable.ExecuteOperation(Core.Interaction.OperationType.Ignite);
@@ -118,13 +128,6 @@ public class Torch : Item, IDamageable<Damage, HitResult>
             _toDestroy_FLAG = true;
             StartCoroutine(destroyAtEnd());
             return;
-        }
-
-        var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
-        if (damageable != null)
-        {
-            //print($"{gameObject.name} Golpeó a un Damageable: {other.gameObject.name}");
-            FeedDamageResult(damageable.GetHit(hitDamage));
         }
     }
 }

@@ -5074,9 +5074,9 @@ MonoBehaviour:
   - {fileID: 8678689724907220429}
   - {fileID: 7569742642398819556}
   MyDamage:
-    type: 0
-    Ammount: 0
-    criticalMultiplier: 0
+    type: 5
+    Ammount: 1
+    criticalMultiplier: 1
     instaKill: 0
     KillAnimationType: 0
     explotionOrigin: {x: 0, y: 0, z: 0}

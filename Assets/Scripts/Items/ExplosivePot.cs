@@ -66,4 +66,16 @@ public class ExplosivePot : Destroyable
         IsAlive = false;
         Destroy(gameObject);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        var col = collision.collider;
+        var damagecomponent = col.GetComponent<IDamageable<Damage, HitResult>>();
+        if (damagecomponent != null)
+        {
+            //print($"{gameObject.name} Golpeó a un Damageable: {col.gameObject.name}");
+            damagecomponent.GetHit(GetDamageStats());
+            GetHit(damagecomponent.GetDamageStats());
+        }
+    }
 }

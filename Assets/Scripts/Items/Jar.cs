@@ -3,11 +3,13 @@ using Core.DamageSystem;
 
 public class Jar : Destroyable
 {
-    private void OnTriggerEnter(Collider collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        var damagecomponent = collision.GetComponent<IDamageable<Damage, HitResult>>();
+        var col = collision.collider;
+        var damagecomponent = col.GetComponent<IDamageable<Damage, HitResult>>();
         if (damagecomponent != null)
         {
+            //print($"{gameObject.name} Golpeó a un Damageable: {col.gameObject.name}");
             GetHit(damagecomponent.GetDamageStats());
             damagecomponent.GetHit(GetDamageStats());
         }

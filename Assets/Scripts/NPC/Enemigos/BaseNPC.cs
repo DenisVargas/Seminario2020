@@ -21,7 +21,7 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     [Space(), Header("Modificadores de Daño")]
     [SerializeField] protected DamageModifier[] Weaknesses; //Aumentan el daño ingresante.
     [SerializeField] protected DamageModifier[] resistances;//reducen el daño ingereante.
-    protected Damage _currentDamageState = new Damage() { Ammount = 10 };
+    [SerializeField] protected Damage _defaultDamage = new Damage();
 
     [SerializeField] protected Collider _mainCollider = null;
     protected Controller _player                          = null;

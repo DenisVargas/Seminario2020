@@ -515,6 +515,14 @@ MonoBehaviour:
   _minDetectionRange: 3
   Weaknesses: []
   resistances: []
+  _defaultDamage:
+    type: 5
+    Ammount: 1
+    criticalMultiplier: 1
+    instaKill: 0
+    KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
   _mainCollider: {fileID: 3840256945297130291}
   _lineOfSghtOrigin: {fileID: 317979888359518059}
   debugThisUnit: 0

@@ -143,6 +143,11 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     //======================================================================================
 
     #region Componentes
+    [Header("Line of sight Options")]
+    [SerializeField] bool _useCustomLOSTarget = false;
+    [SerializeField] Transform _lineOfSightTarget = null;
+
+    [Header("Componentes adicionales")]
     [SerializeField] Collider _hitbox = null;
     [SerializeField] CommandMenu _MultiCommandMenu = null;
     [SerializeField] InspectionMenu _inspectionMenu = null;
@@ -230,6 +235,14 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         set => _anims.SetInteger(animHash[11], value);
     }
     #endregion
+
+    public Vector3 getLineOfSightTargetPosition()
+    {
+        if (_useCustomLOSTarget && _lineOfSightTarget != null)
+            return _lineOfSightTarget.position;
+
+        return transform.position;
+    }
 
     //================================= UnityEngine ========================================
 

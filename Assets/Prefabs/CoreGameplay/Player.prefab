@@ -272,13 +272,13 @@ MonoBehaviour:
   moveSpeed: 4
   MouseDebug: {fileID: 0}
   _input: 1
+  _useCustomLOSTarget: 1
+  _lineOfSightTarget: {fileID: 5399780943172462268}
   _hitbox: {fileID: 0}
   _MultiCommandMenu: {fileID: 0}
   _inspectionMenu: {fileID: 0}
   Clon: {fileID: 0}
-  _clonLife: 20
   _clonCooldown: 4
-  _ClonMovementTreshold: 0.1
   TRWRange: 10
 --- !u!114 &4551022286508861444
 MonoBehaviour:
@@ -457,6 +457,12 @@ PrefabInstance:
 --- !u!4 &3379571561354770185 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 293586a2b09919a4aad2e5ced276aff2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7754093151426026515}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5399780943172462268 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -6812835128428037457, guid: 293586a2b09919a4aad2e5ced276aff2,
     type: 3}
   m_PrefabInstance: {fileID: 7754093151426026515}
   m_PrefabAsset: {fileID: 0}

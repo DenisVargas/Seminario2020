@@ -10,20 +10,16 @@ using Core.DamageSystem;
 public class RageState : State
 {
     public Action LookAtTarget = delegate { };
+    public Func<Transform, bool> IsInSight = delegate { return false; };
 
     [SerializeField] LayerMask _targeteables = ~0;
     [SerializeField] float _rageMode_TargetDetectionRange = 5;
     [SerializeField] float _detectionDelay = 0.5f;
 
-    //bool _otherKilleableTargetFounded = false;
-    //bool _otherDestructibleFounded    = false;
     bool _playerFound;
 
     IDamageable<Damage, HitResult> _killeableTarget;
     List<Transform> _targetsfounded = new List<Transform>();
-
-    LineOfSightComponent _sight = null;
-
     int _hitSecuence = 0;
 
     #region DEBUG
@@ -87,7 +83,7 @@ public class RageState : State
             if (Damageable == (IDamageable<Damage, HitResult>)this)
                 continue;
 
-            if (Damageable != null && _sight.IsInSight(item.transform))
+            if (Damageable != null && IsInSight(item.transform))
             {
                 OnSight_Killeables.Add(Damageable);
 

@@ -21,6 +21,10 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
     [SerializeField] float _moveSpeed = 3;
     [SerializeField] float _maxLifeTime = 20f;
 
+    [Header("Line of Sight")]
+    [SerializeField] bool _useCustomLOSTarget     = false;
+    [SerializeField] Transform _lineOfSightTarget = null;
+
     float remainingLifeTime = 0f;
     bool canMove = false;
 
@@ -167,5 +171,13 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         canMove = false; //Bloqueo el camino we.
         //Quizás reproducir una animación.
+    }
+
+    public Vector3 getLineOfSightTargetPosition()
+    {
+        if (_useCustomLOSTarget && _lineOfSightTarget != null)
+            return _lineOfSightTarget.position;
+
+        return transform.position;
     }
 }

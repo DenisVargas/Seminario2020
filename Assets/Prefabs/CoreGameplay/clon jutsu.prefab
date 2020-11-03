@@ -83,7 +83,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 3
   _maxLifeTime: 20
-  _movementTreshold: 0.1
+  _useCustomLOSTarget: 1
+  _lineOfSightTarget: {fileID: 9055796885985914558}
 --- !u!114 &5612415704948803169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,6 +353,12 @@ PrefabInstance:
 --- !u!4 &1848130666753998603 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 293586a2b09919a4aad2e5ced276aff2,
+    type: 3}
+  m_PrefabInstance: {fileID: 6692161863879824401}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9055796885985914558 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -6812835128428037457, guid: 293586a2b09919a4aad2e5ced276aff2,
     type: 3}
   m_PrefabInstance: {fileID: 6692161863879824401}
   m_PrefabAsset: {fileID: 0}

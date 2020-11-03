@@ -7,6 +7,7 @@ using Core.SaveSystem;
 
 public class Grunt : BaseNPC
 {
+    //[Header("================= Grunt ====================")]
     public float Health
     {
         get => _health;
@@ -20,8 +21,7 @@ public class Grunt : BaseNPC
 
     #region DEBUG
 #if UNITY_EDITOR
-    [Space(), Header("DEBUG GIZMOS")]
-    [SerializeField] bool DebugThisGrunt = false;
+    [Space(), Header("==================== GIZMOS ==========================")]
     [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
     [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
     [SerializeField] TMPro.TMP_Text DebugText_View = null;
@@ -63,6 +63,22 @@ public class Grunt : BaseNPC
 
         RageState rage = GetComponent<RageState>();
         rage.AttachTo(_states);
+        rage.IsInSight = (item) =>
+        {
+            Vector3 customLOSTargetDir = Vector3.zero;
+
+            var player = item.GetComponent<Controller>();
+            var clone = item.GetComponent<ClonBehaviour>();
+
+            if (player)
+                customLOSTargetDir = (player.getLineOfSightTargetPosition() - _lineOfSghtOrigin.position).normalized;
+            else if(clone)
+                customLOSTargetDir = (clone.getLineOfSightTargetPosition() - _lineOfSghtOrigin.position).normalized;
+            else
+                customLOSTargetDir = (item.transform.position - _lineOfSghtOrigin.position).normalized;
+
+            return _sight.IsInSight(_lineOfSghtOrigin.position, customLOSTargetDir, item);
+        };
 
         PursueState pursue = GetComponent<PursueState>();
         pursue.checkDistanceToTarget = TargetIsInAttackRange;
@@ -186,7 +202,7 @@ public class Grunt : BaseNPC
         if (damage.type == DamageType.hit)
         {
 #if UNITY_EDITOR
-            if (DebugThisGrunt)
+            if (debugThisUnit)
                 print($"{gameObject.name} Recibió un golpe de tipo {damage.type.ToString()} y es un instakill?: {damage.instaKill}");
 #endif
 

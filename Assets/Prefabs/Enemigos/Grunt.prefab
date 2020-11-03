@@ -485,11 +485,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visibles:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3221225984
   range: 8
   angle: 45
   UseCustomOrientation: 1
   SightSocket: {fileID: 2600450864647600134}
+  debugThisUnit: 0
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   angleColor: {r: 1, g: 1, b: 1, a: 1}
   positionDiference: {x: 0, y: 0, z: 0}
@@ -508,7 +509,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d6b85cc6c798774b841d4109550d7fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkVisionInUpdate: 0
   _health: 100
   _maxHealth: 100
   _attackRange: 2
@@ -516,7 +516,8 @@ MonoBehaviour:
   Weaknesses: []
   resistances: []
   _mainCollider: {fileID: 3840256945297130291}
-  DebugThisGrunt: 0
+  _lineOfSghtOrigin: {fileID: 317979888359518059}
+  debugThisUnit: 0
   DEBUG_MINDETECTIONRANGE: 0
   DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 1, b: 1, a: 1}
   DebugText_View: {fileID: 1546326007849555790}

@@ -4894,7 +4894,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace8e4810fdadff4790a0b7006c4b3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkVisionInUpdate: 0
   _health: 10
   _maxHealth: 100
   _attackRange: 1.5
@@ -4902,6 +4901,8 @@ MonoBehaviour:
   Weaknesses: []
   resistances: []
   _mainCollider: {fileID: 5993281819839330285}
+  _lineOfSghtOrigin: {fileID: 8493161277885471557}
+  debugThisUnit: 0
   startPatrolling: 1
   _currentState: 0
   burnParticles:
@@ -4930,6 +4931,7 @@ MonoBehaviour:
   angle: 45
   UseCustomOrientation: 0
   SightSocket: {fileID: 0}
+  debugThisUnit: 0
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   angleColor: {r: 1, g: 1, b: 1, a: 1}
   positionDiference: {x: 0, y: 0, z: 0}
@@ -19916,6 +19918,12 @@ PrefabInstance:
 --- !u!4 &814780343495606734 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 5766f71294217604ba77de25732d5a76,
+    type: 3}
+  m_PrefabInstance: {fileID: 5635158348268530388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8493161277885471557 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4317227491642585489, guid: 5766f71294217604ba77de25732d5a76,
     type: 3}
   m_PrefabInstance: {fileID: 5635158348268530388}
   m_PrefabAsset: {fileID: 0}

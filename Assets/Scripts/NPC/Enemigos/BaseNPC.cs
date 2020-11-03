@@ -12,8 +12,6 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
 {
     //================================ Basic Variables ===============================================
 
-    public bool checkVisionInUpdate = false;
-
     [Header("Stats")]
     [SerializeField] protected float _health      = 100f;
     [SerializeField] protected float _maxHealth   = 100f;
@@ -32,6 +30,8 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
 
     //=================================== Components =================================================
 
+    [SerializeField]
+    protected Transform _lineOfSghtOrigin = null;
     protected Animator _anims             = null;
     protected Rigidbody _rb               = null;
     protected PathFindSolver _solver      = null;
@@ -44,6 +44,13 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     {
         _states.Feed(input);
     }
+
+    //=================================== DEBUGGING ==================================================
+
+#if UNITY_EDITOR
+    [Header("=================== DEBUG ==========================")]
+    [SerializeField] protected bool debugThisUnit = false;
+#endif
 
     //================================ ILivingEntity =================================================
 
@@ -148,10 +155,12 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     /// <returns>Retorna Verdadero si el jugador o el clon fueron encontrados!</returns>
     protected bool checkForPlayerOrClone()
     {
-        if (checkVisionInUpdate)
+#if UNITY_EDITOR
+        if (debugThisUnit)
         {
-            print("we");
+            print("Checking Vision!");
         }
+#endif
 
         IDamageable<Damage, HitResult> closerTarget = null;
         float distToPlayer = float.MaxValue;
@@ -160,15 +169,16 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
         if (_player != null && _player.IsAlive)
         {
             distToPlayer = (_player.transform.position - transform.position).magnitude;
-            if (_sight.IsInSight(_player.transform) || distToPlayer < _minDetectionRange)
+            Vector3 customLOSTargetDir = (_player.getLineOfSightTargetPosition() - _lineOfSghtOrigin.position).normalized;
+            if (_sight.IsInSight(_lineOfSghtOrigin.position, customLOSTargetDir, _player.transform) || distToPlayer < _minDetectionRange)
                 closerTarget = _player;
         }
 
         if (_playerClone != null && _playerClone.IsAlive && _playerClone.isActiveAndEnabled)
         {
             distToClone = (_playerClone.transform.position - transform.position).magnitude;
-
-            if (_sight.IsInSight(_playerClone.transform) && distToClone < distToPlayer ||
+            Vector3 customLOSTargetDir = (_playerClone.getLineOfSightTargetPosition() - _lineOfSghtOrigin.position).normalized;
+            if (_sight.IsInSight(_lineOfSghtOrigin.position, customLOSTargetDir, _playerClone.transform) && distToClone < distToPlayer ||
                     distToClone < _minDetectionRange)
                 closerTarget = _playerClone;
         }

@@ -15,8 +15,11 @@ namespace IA.LineOfSight
         #region DEBUG
 #if UNITY_EDITOR
         [Space, Header("Debug")]
+        [SerializeField] bool debugThisUnit = false;
         [SerializeField] Color rangeColor = Color.white;
         [SerializeField] Color angleColor = Color.white;
+
+        Ray lastRay = new Ray();
 
         void OnDrawGizmosSelected()
         {
@@ -25,6 +28,9 @@ namespace IA.LineOfSight
             else
                 orientation = transform.forward;
             Vector3 origin = transform.position;
+
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(lastRay);
 
             //Rango
             Gizmos.color = rangeColor;
@@ -65,7 +71,7 @@ namespace IA.LineOfSight
         /// </summary>
         /// <param name="target">Objetivo a comprobar</param>
         /// <returns>Verdadero si el Objetivo específicado está dentro de la línea de visión</returns>
-        public bool IsInSight(Transform target)
+        public bool IsInSight(Vector3 origin, Vector3 direction, Transform target)
         {
             if (target == null)
             {
@@ -73,12 +79,19 @@ namespace IA.LineOfSight
                 return false;
             }
 
+#if UNITY_EDITOR
+            if (debugThisUnit)
+            {
+                Debug.Log("Debugging this unit");
+            }
+#endif
+
             if (UseCustomOrientation && SightSocket != null)
                 orientation = SightSocket.forward.YComponent(0).normalized;
             else
                 orientation = transform.forward;
 
-            positionDiference = (target.position - transform.position);
+            positionDiference = (target.position - origin);
             distanceToTarget = positionDiference.magnitude;
             Vector3 BidimensionalProjection = positionDiference.YComponent(0);
             angleToTarget = Vector3.Angle(orientation, BidimensionalProjection);
@@ -89,7 +102,14 @@ namespace IA.LineOfSight
             if (distanceToTarget > range || angleToTarget > angle) return false;
 
             RaycastHit hitInfo;
-            if (Physics.Raycast(transform.position, dirToTarget, out hitInfo, range + 1, visibles))
+            Ray toThrow = new Ray(origin, direction);
+
+#if UNITY_EDITOR
+            if (debugThisUnit)
+                lastRay = toThrow; 
+#endif
+
+            if (Physics.Raycast(toThrow, out hitInfo, float.MaxValue, visibles))
                 return hitInfo.transform == target;
 
             return false;

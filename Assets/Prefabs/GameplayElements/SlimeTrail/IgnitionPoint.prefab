@@ -155,6 +155,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ae44cd37b81bd48987e5ca0cd3b6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 2
+  ItemName: 
+  Description: 
+  Icon: {fileID: 0}
+  isCombinable: 1
+  isThroweable: 0
+  isConsumable: 0
+  _physicCollider: {fileID: 1371116376436304502}
+  _owner: {fileID: 0}
+  _rb: {fileID: 0}
+  debugThisUnit: 0
   toAplyDamage:
     type: 0
     Ammount: 100
@@ -180,7 +191,6 @@ MonoBehaviour:
   myMesh: {fileID: 8835212789124928482}
   myMaterials:
   - {fileID: 2100000, guid: ddfebf6d51cac4c48a1d0b348365a03c, type: 2}
-  debugThisIgnitableObject: 0
 --- !u!1 &318352553427170999
 GameObject:
   m_ObjectHideFlags: 0

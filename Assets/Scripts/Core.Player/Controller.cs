@@ -82,7 +82,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                                          .ToList()
         };
 
-        if (equiped.ID == 1 && ((Torch)equiped).isBurning)
+        if (equiped != null && equiped.ID == 1 && ((Torch)equiped).isBurning)
             data.itemIsActive = true;
 
         return data;

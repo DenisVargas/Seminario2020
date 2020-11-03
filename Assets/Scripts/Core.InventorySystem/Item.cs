@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Core.InventorySystem
 {
-    //Item es una clase que utilizaremos para identificar  realizar operaciones sobre los objetos que pueden entrar dentro de un inventario.
+//Item es una clase que utilizaremos para identificar  realizar operaciones sobre los objetos que pueden entrar dentro de un inventario.
     //Es una clase especial de Interactuable que admite multiples comandos, y es dinámico:
     //  Dependiendo de los items que estén a mano del jugador, este podría desbloquear mas iteracciones.
     [System.Serializable, RequireComponent(typeof(InteractionHandler))]
@@ -33,7 +33,7 @@ namespace Core.InventorySystem
 
 #if UNITY_EDITOR
         [Header("================ DEBUG =====================")]
-        [SerializeField] bool debugThis = false;
+        [SerializeField] protected bool debugThisUnit = false;
 #endif
 
         protected virtual void Awake()
@@ -63,7 +63,7 @@ namespace Core.InventorySystem
             isConsumable = data.isConsumable;
         }
 
-        //============================== Interaction System ============================================================
+        //============================== Interaction System ===================================================
 
         public virtual List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory CurrentInventory = null, bool ignoreInventory = false)
         {
@@ -154,7 +154,7 @@ namespace Core.InventorySystem
         }
         public virtual void CancelOperation(OperationType operation, params object[] optionalParams) { }
 
-        //==============================================================================================================
+        //=========================================================================================================
 
         public void SetPhysicsProperties(bool state, Vector3 velocity)
         {
@@ -176,18 +176,13 @@ namespace Core.InventorySystem
             }
         }
 
-        //==================================== Operaciones =============================================================
-
-        /*
-         * Notas: la idea de estas operaciones es que sean llamadas desde un operador si es necesario.
-         * Hay opraciones que no requieren una implementación, pues los efectos se hacen externos al item.
-        */
+        //================================ Operaciones ==================================================
 
         protected virtual void OnTake()
         {
 
 #if UNITY_EDITOR
-            if (debugThis)
+            if (debugThisUnit)
             {
                 print($"Take Executed in item {gameObject.name}");
             }

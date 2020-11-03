@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combinations:
   - A: 0
-    B: 3
-    Result: 5
+    B: 2
+    Result: 4

@@ -5,13 +5,15 @@ using System;
 using Core.Interaction;
 using Core.InventorySystem;
 using Core.DamageSystem;
+using IA.PathFinding;
 
 [RequireComponent(typeof(Collider), typeof(InteractionHandler))]
-public class IgnitableObject : MonoBehaviour, IIgnitableObject
+public class Slime : Item, IIgnitableObject
 {
     public Action RemoveFromNode = delegate { };
     public event Action CancelInputs = delegate { };
 
+    [Header("================== Slime Settings ======================")]
     [SerializeField] Damage toAplyDamage = new Damage();
     [SerializeField] float _chainReactionDelay = 0.1f;
     [SerializeField] GameObject[] fireParticles = null;
@@ -36,33 +38,22 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
     public List<Material> myMaterials = new List<Material>();
     Dictionary<int, Material> Materials = new Dictionary<int, Material>();
 
-    bool _freezeInPlace = false;
     float _burningTime = 5f;
-    float _expansionDelayTime = 0.8f;
     float _inputWaitTime = 2f;
 
-#if UNITY_EDITOR
-
-    [SerializeField] bool debugThisIgnitableObject = false;
-
-#endif
-
-
-    private void OnTriggerStay(Collider other)
+    public Slime SetDirection(Vector3 Dir)
     {
-#if UNITY_EDITOR
-        if (debugThisIgnitableObject)
-            Debug.Log($"{gameObject.name} entró en colisión.");
-#endif
-        if (Burning)
-        {
-            var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
-            if (damageable != null)
-                damageable.GetHit(toAplyDamage);
-        }
+        transform.right = Dir;
+        return this;
+    }
+    public Slime SetMaterial(int Key)
+    {
+        myMesh.material = Materials[Key];
+        return this;
     }
 
-    void Awake()
+
+    protected override void Awake()
     {
         for (int i = 0; i < myMaterials.Count; i++)
         {
@@ -89,7 +80,7 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
             if (_remainingLifeTime <= 0)
             {
                 RemoveFromNode();
-                KillIngnitableObject();
+                TurnOffBurningAndDestroy();
                 return;
             }
 
@@ -97,26 +88,23 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         }
     }
 
-    //Esto se llamaba desde Trail.
-    public void OnSpawn(float LifeTime, float IgnitionLifeTime, float InputWaitTime, float ExpansionDelayTime = 0.8f)
+    private void OnTriggerStay(Collider other)
     {
-        //Iniciamos los contadores.
-        _remainingLifeTime = LifeTime;
-        _burningTime = IgnitionLifeTime;
-        _inputWaitTime = InputWaitTime;
-        _expansionDelayTime = ExpansionDelayTime;
-
-        StopAllCoroutines();
+#if UNITY_EDITOR
+        if (debugThisUnit)
+            Debug.Log($"{gameObject.name} entró en colisión.");
+#endif
+        if (Burning)
+        {
+            var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
+            if (damageable != null)
+                damageable.GetHit(toAplyDamage);
+        }
     }
 
-    public void KillIngnitableObject()
+    public void TurnOffBurningAndDestroy()
     {
-        //print($"{gameObject.name} la baba se apaga ignite");
         Burning = false;
-        // Desactivamos la interacción x ignite.
-        // Desactivamos las particulas de fuego
-        //_trapHitBox.IsActive = false;
-        _freezeInPlace = false;
         CancelInputs();
         CancelInputs = delegate { };
         foreach (var item in patches)
@@ -152,7 +140,6 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         var dropParticle = Instantiate(_dropParticle, transform.position, Quaternion.identity);
         Destroy(gameObject);//Esta parte hay que reemplazarlo por una bonita partícula.
     }
-
     /// <summary>
     /// Se llama cuando hacemos clic encima.
     /// </summary>
@@ -173,16 +160,6 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         _remainingLifeTime += _inputWaitTime;
         StartCoroutine(UnlockInNextFrame());
     }
-    public IgnitableObject SetDirection(Vector3 Dir)
-    {
-        transform.right = Dir;
-        return this;
-    }
-    public IgnitableObject SetMaterial(int Key)
-    {
-        myMesh.material = Materials[Key];
-        return this;
-    }
 
     //======================================= Ingnition System ====================================================
 
@@ -191,46 +168,22 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
         get => _burning;
         set => _burning = value;
     }
-    public bool isFreezed
-    {
-        get => _freezeInPlace;
-        set
-        {
-            _freezeInPlace = value;
-            //if (_freezeInPlace)
-            //    FreezeAll();
-        }
-    }
-
-    public bool isDynamic => false;
 
     public void StainObjectWithSlime()
     {
         //Cambio los materiales a los que corresponden con el stain.
     }
-
-    public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
+    public override InteractionParameters getInteractionParameters(Vector3 requesterPosition)
     {
         NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
-
         Vector3 safeInteractionPosition = (transform.position + ((requesterPosition - transform.position).normalized) * _safeInteractionDistance);
-        IA.PathFinding.Node SafePosition = PathFindSolver.getCloserNodeInGraph(safeInteractionPosition, graph);
+        Node SafeNode = PathFindSolver.getCloserNodeInGraph(safeInteractionPosition, graph);
         Vector3 LookToDirection = transform.forward;
 
-        return new InteractionParameters(SafePosition, LookToDirection);
+        return new InteractionParameters(SafeNode, LookToDirection);
     }
-    public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
+    public override List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
     {
-        if (inventory != null && inventory.equiped != null && inventory.equiped.ID == 1)
-        {
-            Torch torch = (Torch)inventory.equiped;
-            if (torch.isBurning)
-                return new List<Tuple<OperationType, IInteractionComponent>>()
-                {
-                    new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
-                };
-        }
-
         if (ignoreInventory)
         {
             return new List<Tuple<OperationType, IInteractionComponent>>()
@@ -239,13 +192,31 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
             };
         }
 
+        if (inventory != null)
+        {
+            if (inventory.equiped != null && inventory.equiped.ID == (int)ItemID.Antorcha)
+            {
+                Torch torch = (Torch)inventory.equiped;
+                if (torch.isBurning)
+                    return new List<Tuple<OperationType, IInteractionComponent>>()
+                    {
+                        new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
+                    };
+            }
+
+            if (inventory.equiped != null && inventory.equiped.ID == (int)ItemID.Jarron)
+            {
+                return new List<Tuple<OperationType, IInteractionComponent>>()
+                {
+                    new Tuple<OperationType, IInteractionComponent>(OperationType.Combine, this)
+                };
+            };
+        }
+
         return new List<Tuple<OperationType, IInteractionComponent>>();
     }
-    public void InputConfirmed(OperationType operation, params object[] optionalParams)
-    {
-        isFreezed = true;
-    }
-    public void ExecuteOperation(OperationType operation, params object[] optionalParams)
+
+    public override void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
         if (!Burning && operation == OperationType.Ignite)
         {
@@ -260,10 +231,10 @@ public class IgnitableObject : MonoBehaviour, IIgnitableObject
 
             Burning = true;
         }
-    }
-    public void CancelOperation(OperationType operation, params object[] optionalParams)
-    {
-        _freezeInPlace = false;
+        if (!Burning && operation == OperationType.Combine)
+        {
+            //Ejecuto combine(?
+        }
     }
 
     //======================================= Corrutines ==========================================================

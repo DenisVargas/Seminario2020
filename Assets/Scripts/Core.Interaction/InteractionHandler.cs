@@ -101,7 +101,7 @@ namespace Core.Interaction
 
             foreach (var pair in aviableInteractions.SuportedOperations)
             {
-                if (pair.Item1 == operation && pair.Item2.isDynamic == false)
+                if (pair.Item1 == operation /*&& pair.Item2.isDynamic == false*/)
                     return true;
             }
 

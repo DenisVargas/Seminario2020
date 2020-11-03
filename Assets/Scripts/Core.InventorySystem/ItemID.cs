@@ -7,7 +7,6 @@
         Antorcha,
         Baba,
         Piedra,
-        JarronExplosivo,
-        JarronPesado
+        JarronBaba
     }
 }

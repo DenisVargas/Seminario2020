@@ -5007,7 +5007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc47aebd681c4c740bd8a31280d47d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 5
+  ID: 4
   ItemName: 
   Description: 
   Icon: {fileID: 0}
@@ -5017,7 +5017,7 @@ MonoBehaviour:
   _physicCollider: {fileID: 6577388921664595059}
   _owner: {fileID: 0}
   _rb: {fileID: 0}
-  debugThis: 0
+  debugThisUnit: 0
 --- !u!114 &6727484321925916080
 MonoBehaviour:
   m_ObjectHideFlags: 0

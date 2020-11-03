@@ -109,7 +109,7 @@ public class Torch : Item, IDamageable<Damage, HitResult>
     {
         if (!isBurning) return;
 
-        var igniteable = other.GetComponentInChildren<IgnitableObject>();
+        var igniteable = other.GetComponentInChildren<Slime>();
         if (igniteable != null)
         {
             //print("Colisioné con un igniteable.");

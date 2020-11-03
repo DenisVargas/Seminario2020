@@ -30,7 +30,7 @@ public class Trail : MonoBehaviour
                 ignition.transform.localPosition = Vector3.zero;
 
                 var ignitionInteractionHandler = ignition.GetComponent<IInteractable>();
-                var igniteObject = ignition.GetComponentInChildren<IgnitableObject>();
+                var igniteObject = ignition.GetComponentInChildren<Slime>();
                 if (igniteObject.RootGameObject == null) igniteObject.RootGameObject = ignition;
                 igniteObject.RemoveFromNode += current.clearHandler;
                 current.handler = ignitionInteractionHandler;
@@ -45,7 +45,7 @@ public class Trail : MonoBehaviour
                         var patch = Instantiate(_slimePatch_Prefab,center, Quaternion.identity);
                         patch.transform.forward = dir;
 
-                        var ignite = connection.GetComponentInChildren<IgnitableObject>();
+                        var ignite = connection.GetComponentInChildren<Slime>();
                         ignite.patches.Add(patch);
                     }
                 }

@@ -5085,7 +5085,7 @@ MonoBehaviour:
   Explotion: {fileID: 4205847769561345686}
   explotionAffects:
     serializedVersion: 2
-    m_Bits: 2147483648
+    m_Bits: 3221225472
   ExplotionForce: 10
   ExplotionRadius: 4
 --- !u!1001 &5619228504319378599

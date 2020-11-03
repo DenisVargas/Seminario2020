@@ -230,6 +230,10 @@ public class Baboso : BaseNPC
             {
                 _states.Feed(CommonState.burning);
             }
+            if (damage.type == DamageType.explotion && _currentState != CommonState.explode)
+            {
+                _states.Feed(CommonState.explode);
+            }
             if (damage.type == DamageType.blunt && _currentState != CommonState.explode)
             {
                 _states.Feed(CommonState.explode);

@@ -135,8 +135,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5676370560699738303}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
+  m_Mass: 10000
+  m_Drag: 0.3
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -164,6 +164,8 @@ MonoBehaviour:
     criticalMultiplier: 1
     instaKill: 0
     KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
   isFlying: 0
   toIgnore: {fileID: 0}
   _hitbox: {fileID: 3456647685098316669}
@@ -181,6 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _limitedDisplay: 0
+  _activeTime: 5
   _renderer: {fileID: 5357538780707443480}
   _interactionEnabled: 1
 --- !u!114 &4903890022063469045
@@ -205,4 +209,4 @@ MonoBehaviour:
   _physicCollider: {fileID: 3456647685098316669}
   _owner: {fileID: 0}
   _rb: {fileID: 1714221187}
-  debugThis: 0
+  debugThisUnit: 0

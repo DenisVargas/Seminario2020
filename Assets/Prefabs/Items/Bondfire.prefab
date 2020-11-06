@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7562770728751720629}
   - component: {fileID: 8105348362659901389}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248085365480517001}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.5630877, y: 0.74892306, z: 0.5529723}
@@ -59,9 +59,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyDamage:
     type: 0
-    Ammount: 100
-    criticalMultiplier: 2
-    instaKill: 1
+    Ammount: 1
+    criticalMultiplier: 1
+    instaKill: 0
     KillAnimationType: 0
     explotionOrigin: {x: 0, y: 0, z: 0}
     explotionForce: 0

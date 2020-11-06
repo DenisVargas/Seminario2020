@@ -3,12 +3,15 @@ using Core.DamageSystem;
 
 public class ExplosivePot : Destroyable
 {
+    public bool exploded = false;
+
     [SerializeField] ParticleSystem Explotion = null;
     [SerializeField] LayerMask explotionAffects = ~0;
     [SerializeField] float ExplotionForce = 10;
     [SerializeField] float ExplotionRadius = 4;
 
 #if UNITY_EDITOR
+    [SerializeField] bool debugThisUnit = false;
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -22,7 +25,12 @@ public class ExplosivePot : Destroyable
         //Recivo daño de una fuente externa.
         var result = new HitResult(true);
 
-        if (damage.type == DamageType.Fire)
+#if UNITY_EDITOR
+        if (debugThisUnit)
+            print("Reciví Daño.");
+#endif
+
+        if (damage.type == DamageType.Fire || damage.type == DamageType.explotion)
         {
             result.exploded = true;
             Explode();
@@ -35,6 +43,7 @@ public class ExplosivePot : Destroyable
     {
         //Exploto y destruyo cosas a mi alrededor.
         print("EXPLOTO A LA CHUCHA");
+        exploded = true;
         var explotionParticle = Instantiate(Explotion, transform.position, Quaternion.identity);
         explotionParticle.gameObject.SetActive(true);
         explotionParticle.Play();
@@ -56,8 +65,17 @@ public class ExplosivePot : Destroyable
             {
                 if (collider == _mainCollider) continue;
 
+                var explosivePot = collider.GetComponent<ExplosivePot>();
+                if (explosivePot)
+                {
+                    if (!explosivePot.exploded)
+                        explosivePot.GetHit(toApplyDamage);
+                    continue;
+                }
+
                 //Chequeo si tiene un componente damageable.
                 var damageable = collider.GetComponent<IDamageable<Damage, HitResult>>();
+
                 if (damageable != null)
                     damageable.GetHit(toApplyDamage);
             }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Core.InventorySystem
@@ -10,7 +7,6 @@ namespace Core.InventorySystem
     public class ItemDataBase : MonoBehaviour
     {
         static ItemDataBase _instance;
-
         public static ItemDataBase Manager
         {
             get
@@ -31,7 +27,7 @@ namespace Core.InventorySystem
         [SerializeField] ItemDataCollection collection = null;
         [SerializeField] Recipes _recipes = null;
 
-        Dictionary<int, ItemData> _dataBase = new Dictionary<int, ItemData>();
+        Dictionary<int, ItemDataObject> _dataBase = new Dictionary<int, ItemDataObject>();
 
         public void Init()
         {
@@ -40,7 +36,7 @@ namespace Core.InventorySystem
             if (_recipes == null)
                 _recipes = ScriptableObject.CreateInstance<Recipes>();
 
-            _dataBase = new Dictionary<int, ItemData>();
+            _dataBase = new Dictionary<int, ItemDataObject>();
 
             foreach (var idata in collection.existingItemData)
             {
@@ -49,78 +45,44 @@ namespace Core.InventorySystem
                     _dataBase.Add(id, idata);
             }
         }
-        public static GameObject getFirstItemPrefab(int ID)
-        {
-            if (_instance._dataBase.ContainsKey(ID))
-            {
-                var data = Manager._dataBase[ID];
-                return data.inGamePrefabs[0];
-            }
-
-            return null;
-        }
-        public static GameObject getRandomItemPrefab(int ID)
-        {
-            if (_instance._dataBase.ContainsKey(ID))
-            {
-                var dataPrefs = _instance._dataBase[ID].inGamePrefabs;
-                if (dataPrefs.Length == 1)
-                    return dataPrefs[0];
-                if (dataPrefs.Length > 1)
-                    return dataPrefs[UnityEngine.Random.Range(0, dataPrefs.Length)];
-            }
-
-            return null;
-        }
         /// <summary>
         /// Retorna la data correspondiente a un Item dado su ID.
         /// </summary>
         /// <param name="itemID">Identificador único del item.</param>
         /// <returns>Null si el item no existe dentro de la base de datos.</returns>
-        public static ItemData getItemData(int itemID)
+        public static ItemData getItemData(ItemID itemID)
         {
-            if (Manager._dataBase.ContainsKey(itemID))
-                return Manager._dataBase[itemID];
+            if (Manager._dataBase.ContainsKey((int)itemID))
+                return Manager._dataBase[(int)itemID].data;
 
-            return null;
-        }
-
-        /// <summary>
-        /// Combina 2 items dados los ID´s y retorna un prefab del Item resultante.
-        /// </summary>
-        /// <param name="a">Identificador del primer Item</param>
-        /// <param name="b">Identificador del segundo Item</param>
-        /// <returns>Null si no hay una combinación válida</returns>
-        public static ItemData Combine(int a, int b)
-        {
-            if (CanCombineItems(a,b))
-            {
-                //Busco entre las combinaciones aquel que coíncida.
-                var foundCombination = Manager._recipes.combinations
-                                       .Where(x => x.checkIn(a, b))
-                                       .First();
-
-                if (foundCombination.Result != -1)
-                {
-                    //obtengo el ID resultante y busco el item que corresponda.
-                    //Retorno el item.
-
-                    return getItemData(foundCombination.Result);
-                }
-            }
-
-            return null;
+            return ItemData.defaultItemData();
         }
         /// <summary>
-        /// Chequea si existe la combinación entre 2 objetos
+        /// Retorna una receta.
         /// </summary>
         /// <param name="a">Identificador del item A</param>
         /// <param name="b">Identificador del item A</param>
-        /// <returns>false si no es posible combinar los items con los ID´s dados</returns>
-        public static bool CanCombineItems(int a, int b)
+        /// <returns>Una receta vacía si no existe una combinación registrada para los objetos dados.</returns>
+        public static Recipe getRecipe(ItemID a, ItemID b)
         {
-            int combinationsPosible = Manager._recipes.combinations.Count(x => x.checkIn(a, b));
-            return combinationsPosible > 0;
+            var recipe = Manager._recipes.combinations.Where(x => x.checkIn(a, b))
+                                                      .DefaultIfEmpty(Recipe.defaultRecipe())
+                                                      .First();
+
+            return recipe;
+        }
+        /// <summary>
+        /// Función de utilidad que permite obtener un Prefab.
+        /// </summary>
+        /// <param name="ID">Identificador único del item.</param>
+        /// <returns>Una referencia a un prefab válido de dicho objeto.</returns>
+        public static GameObject getRandomItemPrefab(ItemID ID)
+        {
+            var manager = Manager;
+            if (manager._dataBase.ContainsKey((int)ID))
+                return manager._dataBase[(int)ID].GetRandomInGamePrefab();
+
+            return null;
         }
     }
 }

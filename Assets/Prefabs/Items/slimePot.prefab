@@ -4923,9 +4923,8 @@ GameObject:
   - component: {fileID: 6577388921664595059}
   - component: {fileID: 3251034249223605650}
   - component: {fileID: 3056718570059588423}
-  - component: {fileID: 7626484008270180163}
-  - component: {fileID: 6727484321925916080}
   - component: {fileID: 7660480461256289226}
+  - component: {fileID: 6727484321925916080}
   m_Layer: 11
   m_Name: slimePot
   m_TagString: Untagged
@@ -4995,7 +4994,7 @@ MonoBehaviour:
   _activeTime: 5
   _renderer: {fileID: 8886193924013795976}
   _interactionEnabled: 1
---- !u!114 &7626484008270180163
+--- !u!114 &7660480461256289226
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5004,20 +5003,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 8132736032666455958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc47aebd681c4c740bd8a31280d47d2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 775463d2e99c1c8498f74f19a960f676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 4
-  ItemName: 
-  Description: 
-  Icon: {fileID: 0}
-  isCombinable: 0
-  isThroweable: 1
-  isConsumable: 0
+  data:
+    Name: 
+    Description: 
+    Icon: {fileID: 0}
+    isCombinable: 0
+    isDropeable: 0
+    isThroweable: 0
+    isConsumable: 0
+  _interactionCollider: {fileID: 6577388921664595059}
   _physicCollider: {fileID: 6577388921664595059}
   _owner: {fileID: 0}
-  _rb: {fileID: 0}
+  _rb: {fileID: 3251034249223605650}
   debugThisUnit: 0
+  exploded: 0
+  explotionAffects:
+    serializedVersion: 2
+    m_Bits: 3221227520
+  MyDamage:
+    type: 5
+    Ammount: 1
+    criticalMultiplier: 1
+    instaKill: 0
+    KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
+  _explotionForce: 10
+  _explotionRadius: 4
+  _timeToDestroy: 4
+  Explotion: {fileID: 4205847769561345686}
+  _normalObject: {fileID: 6806221566517204109}
+  _destroyedObject: {fileID: 8622590214944301567}
+  _mainCollider: {fileID: 6577388921664595059}
+  _destroyedParts:
+  - {fileID: 4555204473153005423}
+  - {fileID: 8147228515781627132}
+  - {fileID: 6799369264675127767}
+  - {fileID: 7406194942564426397}
+  - {fileID: 3963866722311000924}
+  - {fileID: 4505872757354221176}
+  - {fileID: 2325732041047854398}
+  - {fileID: 8104998028008007806}
+  - {fileID: 4296332145962427131}
+  - {fileID: 325182072945010696}
+  - {fileID: 5477709496953841602}
+  - {fileID: 6094720294699948463}
+  - {fileID: 944816104792089665}
+  - {fileID: 8651854025482087953}
+  - {fileID: 3285066688482027127}
+  - {fileID: 1954881326713446906}
+  - {fileID: 8678689724907220429}
+  - {fileID: 7569742642398819556}
+  AffectedNodes: []
 --- !u!114 &6727484321925916080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5038,56 +5079,6 @@ MonoBehaviour:
   _safeInteractionDistance: 2
   DEBUG_safeInteractionDistance: 0
   DEBUG_safeInteractionDistance_Color: {r: 0.20624185, g: 1, b: 0, a: 0.43529412}
---- !u!114 &7660480461256289226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132736032666455958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775463d2e99c1c8498f74f19a960f676, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _normalObject: {fileID: 6806221566517204109}
-  _destroyedObject: {fileID: 8622590214944301567}
-  _mainCollider: {fileID: 6577388921664595059}
-  _timeToDestroy: 4
-  _destroyedParts:
-  - {fileID: 4555204473153005423}
-  - {fileID: 8147228515781627132}
-  - {fileID: 6799369264675127767}
-  - {fileID: 7406194942564426397}
-  - {fileID: 3963866722311000924}
-  - {fileID: 4505872757354221176}
-  - {fileID: 2325732041047854398}
-  - {fileID: 8104998028008007806}
-  - {fileID: 4296332145962427131}
-  - {fileID: 325182072945010696}
-  - {fileID: 5477709496953841602}
-  - {fileID: 6094720294699948463}
-  - {fileID: 944816104792089665}
-  - {fileID: 8651854025482087953}
-  - {fileID: 3285066688482027127}
-  - {fileID: 1954881326713446906}
-  - {fileID: 8678689724907220429}
-  - {fileID: 7569742642398819556}
-  MyDamage:
-    type: 5
-    Ammount: 1
-    criticalMultiplier: 1
-    instaKill: 0
-    KillAnimationType: 0
-    explotionOrigin: {x: 0, y: 0, z: 0}
-    explotionForce: 0
-  AffectedNodes: []
-  Explotion: {fileID: 4205847769561345686}
-  explotionAffects:
-    serializedVersion: 2
-    m_Bits: 3221225472
-  ExplotionForce: 10
-  ExplotionRadius: 4
 --- !u!1001 &5619228504319378599
 PrefabInstance:
   m_ObjectHideFlags: 0

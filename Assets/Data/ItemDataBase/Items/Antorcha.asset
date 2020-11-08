@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Antorcha
   m_EditorClassIdentifier: 
   ID: 1
-  Name: Antorcha
-  Description: Una simple Antorcha.
-  Icon: {fileID: 0}
+  data:
+    Name: Antorcha
+    Description: Es una simple Antorcha.
+    Icon: {fileID: 0}
+    isCombinable: 1
+    isDropeable: 1
+    isThroweable: 1
+    isConsumable: 0
   inGamePrefabs:
   - {fileID: 1660693476968964156, guid: 4bb4eab90d685f24c8c463b979cba2fe, type: 3}
-  isCombinable: 1
-  isDropeable: 1
-  isTrowable: 1
-  isConsumable: 0

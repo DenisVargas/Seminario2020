@@ -194,7 +194,7 @@ public class Slime : Item, IIgnitableObject
 
         if (inventory != null)
         {
-            if (inventory.equiped != null && inventory.equiped.ID == (int)ItemID.Antorcha)
+            if (inventory.equiped != null && inventory.equiped.ID == ItemID.Antorcha)
             {
                 Torch torch = (Torch)inventory.equiped;
                 if (torch.isBurning)

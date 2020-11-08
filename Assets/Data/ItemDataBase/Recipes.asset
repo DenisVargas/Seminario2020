@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: Recipes
   m_EditorClassIdentifier: 
   combinations:
-  - A: 0
-    B: 2
+  - Name: Jarron con Baba
     Result: 4
+    A: 0
+    B: 2
+    combinationMethod: 0
+  - Name: Piedra con Baba
+    Result: 5
+    A: 3
+    B: 4
+    combinationMethod: 1

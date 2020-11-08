@@ -2,11 +2,13 @@
 {
     public enum ItemID : int
     {
-        basura = -1,
+        nulo = -1,
         Jarron = 0,
         Antorcha,
         Baba,
         Piedra,
-        JarronBaba
+        JarronBaba,
+        PiedraBaba,
+        basura
     }
 }

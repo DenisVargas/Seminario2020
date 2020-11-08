@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3044059096213830317}
   - component: {fileID: 3044059096213830318}
   - component: {fileID: 641420287607853777}
+  - component: {fileID: 1320821239618432141}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -60,3 +61,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultAudioMixerGroup: {fileID: 24300002, guid: d30e83d40f6c3ff40823b70e8847b20b,
     type: 2}
+--- !u!114 &1320821239618432141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3044059096213830319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54475c2866fbddf4288817d0fe414c10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugLevelToLoad: 1

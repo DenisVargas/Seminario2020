@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Baba
   m_EditorClassIdentifier: 
   ID: 2
-  Name: Baba Inflamable
-  Description: "\xA1Asqueroso!. Huele a queros\xE9n."
-  Icon: {fileID: 0}
-  inGamePrefab: []
-  isCombinable: 1
-  isDropeable: 1
-  isTrowable: 1
-  isConsumable: 0
+  data:
+    Name: Baba
+    Description: "Una sustancia pegajosa con un fuerte olor a queros\xE9n."
+    Icon: {fileID: 0}
+    isCombinable: 1
+    isDropeable: 0
+    isThroweable: 0
+    isConsumable: 0
+  inGamePrefabs:
+  - {fileID: 0}

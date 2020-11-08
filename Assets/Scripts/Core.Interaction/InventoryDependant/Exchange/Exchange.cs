@@ -8,7 +8,7 @@ namespace Core.Interaction
     [RequireComponent(typeof(InteractionHandler))]
     public class Exchange: MonoBehaviour, IInteractionComponent
     {
-        [SerializeField] ItemData data;
+        [SerializeField] ItemDataObject data;
         public bool isDynamic => false;
 
         public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)

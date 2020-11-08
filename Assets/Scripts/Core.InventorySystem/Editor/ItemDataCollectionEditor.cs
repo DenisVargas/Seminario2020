@@ -26,7 +26,7 @@ public class ItemDataCollectionEditor : Editor
     private static void UpdateDatabase()
     {
         var itemcoll = AssetDatabase.LoadAssetAtPath<ItemDataCollection>("Assets/Data/ItemDataBase/ItemCollection1.asset");
-        var files = CustomEditorUtilities.GetAllAssetsAtRelativePath<ItemData>(_dataPath);
+        var files = CustomEditorUtilities.GetAllAssetsAtRelativePath<ItemDataObject>(_dataPath);
 
         if (itemcoll != null && files != null)
         {

@@ -50,25 +50,30 @@ public class cmd_Combine : BaseQueryCommand
     public override void Execute()
     {
         lookTowards(target);
-        Item equiped = _inventory.UnEquipItem();//Desequipo el objeto equipado.
-        //Tomamos item a y b, guardamos sus indexes.
-        int AID = target.ID;
-        int BID = equiped.ID;
+        Item equiped = _inventory.UnEquipItem();
 
-        ItemData resultData = ItemDataBase.Combine(AID, BID);//Obtengo la data del objeto resultante.
-        if (resultData)
+        var recipe = ItemDataBase.getRecipe(equiped.ID, target.ID);
+        if (recipe.Result != ItemID.nulo)
         {
-            //Destruyo a y b.
-            GameObject.Destroy(equiped.gameObject);
-            GameObject.Destroy(target.gameObject);
-            //Instancio el prefab resultante.
-            GameObject prefab = resultData.GetRandomInGamePrefab();//Obtengo un prefab spawneable.
-            var newItem = GameObject.Instantiate(prefab);
-            var itemSettings = newItem.GetComponent<Item>();
-            itemSettings.SetData(resultData);
-            //Lo equipo en el inventario.
-            AttachToArm(itemSettings);
+            if (recipe.combinationMethod == CombinationMethod.replace)
+            {
+                GameObject.Destroy(equiped.gameObject);
+                GameObject.Destroy(target.gameObject);
+
+                var resultItem = GameObject.Instantiate(ItemDataBase.getRandomItemPrefab(recipe.Result))
+                                           .GetComponent<Item>()
+                                           .SetData(ItemDataBase.getItemData(recipe.Result));
+
+                AttachToArm(resultItem);
+            }
+
+            if (recipe.combinationMethod == CombinationMethod.changeSourceState)
+            {
+                equiped.ExecuteOperation(Core.Interaction.OperationType.Combine);
+                _inventory.EquipItem(equiped);
+            }
         }
+
         completed = true;
     }
     public override void Cancel() { }

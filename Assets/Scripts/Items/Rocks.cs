@@ -1,68 +1,146 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Core.DamageSystem;
 using Core.InventorySystem;
+using Core.Interaction;
 
-public class Rocks : MonoBehaviour
+[RequireComponent(typeof(InteractionHandler))]
+public class Rocks : Item, IDamageable<Damage, HitResult>
 {
-    public LayerMask Hiteables = ~0;
-    public Damage MyDamage;
-    public bool isFlying = false;
+    [Header("================ Rocks ========================")]
+    [SerializeField] LayerMask Hiteables = ~0;
+    [SerializeField] Damage _normalDamage = Damage.defaultDamage();
+    [SerializeField] Damage _burningDamage = Damage.defaultDamage();
 
-    [SerializeField] Collider toIgnore = null;
-    [SerializeField] Collider _hitbox = null;
-    [SerializeField] Item itemComp = null;
+    [Header("Stained State Components")]
+    [SerializeField] Material _stainedMaterial = null;
+    [SerializeField] Renderer _renderer = null;
 
-#if UNITY_EDITOR
-    [SerializeField] bool debugThisRock = false;
-#endif
+    [Header("Burning State Components")]
+    [SerializeField] ParticleSystem _burningParticle = null;
 
-    protected void Awake()
+    [Header("State Labels")]
+    [SerializeField] bool _isFlying = false;
+    public bool IsStained = false;
+    public bool IsBurning = false;
+
+    public bool IsAlive => true;
+
+    //================================== Unity Funcs ================================================
+
+    protected override void Awake()
     {
-        if (itemComp)
-        {
-            //El owner de un item es ignorado cuando ocurre una colisión!
-            itemComp.OnSetOwner += (owner) => { toIgnore = owner; };
-            //Al ejecutarse Throw en un item, el estado pasa a flying.
-            itemComp.OnThrowItem += () => { isFlying = true; };
-        }
+        base.Awake();
+
+        //El owner de un item es ignorado cuando ocurre una colisión!
+        OnSetOwner += (owner) => { _owner = owner; };
+        //Al ejecutarse Throw en un item, el estado pasa a flying.
+        OnThrowItem += () => { _isFlying = true; };
     }
+
+    //================================ Member Funcs =================================================
+
+    public void StainWithSlime()
+    {
+        IsStained = true;
+        _renderer.material = _stainedMaterial;
+    }
+
+    //================================= Damage Dealing ==============================================
 
     private void OnCollisionEnter(Collision collision)
     {
-
 #if UNITY_EDITOR
-        if (debugThisRock)
-            print($"CondComp::Colisioné con algo wey: {collision.gameObject.name}");
+        if (debugThisUnit)
+            print($"{gameObject.name} colisionó con {collision.gameObject.name}");
 #endif
 
-        if (isFlying)
+        if (_isFlying)
         {
-            if (collision.collider == toIgnore) return;
+            if (collision.collider == _owner) return;
 
             var damagecomponent = collision.gameObject.GetComponent<IDamageable<Damage, HitResult>>();
             if (damagecomponent != null)
             {
                 Damage enemyCollisionDamage = new Damage() { type = DamageType.hit };
                 GetHit(enemyCollisionDamage); //Recibo daño por choque.
-                damagecomponent.GetHit(MyDamage); //Causo daño por choque.
+                damagecomponent.GetHit(_normalDamage); //Causo daño por choque.
             } 
         }
     }
+
+    //================================= Interaction Handling ========================================
+
+    public override void ExecuteOperation(OperationType operation, params object[] optionalParams)
+    {
+        switch (operation)
+        {
+            case OperationType.Take:
+                OnTake();
+                break;
+
+            case OperationType.Throw:
+                OnThrow();
+                break;
+
+            case OperationType.inspect:
+                InspectionMenu.main.DisplayText(new string[] { data.Description },
+                                                () => { Debug.Log("Display Completado. "); });
+                break;
+
+            case OperationType.Combine:
+                StainWithSlime();
+                break;
+            case OperationType.Exchange:
+                break;
+
+            case OperationType.Drop:
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    //================================= Damage Dealing ==============================================
+
+    public Damage GetDamageStats()
+    {
+        if (IsBurning)
+            return _burningDamage;
+
+        return _normalDamage;
+    }
     public HitResult GetHit(Damage damage)
     {
-        if (damage.type == DamageType.explotion || damage.type == DamageType.hit)
+        HitResult result = new HitResult(true);
+
+        if (damage.type == DamageType.Fire && IsStained)
         {
-            //destroyedObject.SetActive(true);
-            //destroyedObject.transform.SetParent(null);
-            //notDestroyedObject.SetActive(false);
-            StartCoroutine(DelayedDestroy(2f));
-            _hitbox.enabled = false;
+            result.ignited = true;
+            IsBurning = true;
         }
 
-        return new HitResult() { conected = true, fatalDamage = true };
+        if (damage.type == DamageType.explotion || damage.type == DamageType.hit)
+        {
+            _interactionCollider.enabled = false;
+            result.exploded = true;
+            result.fatalDamage = true;
+        }
+
+        if (result.fatalDamage)
+        {
+            StartCoroutine(DelayedDestroy(2f));
+            return result;
+        }
+
+        return result;
     }
+    public void FeedDamageResult(HitResult result) { }
+    public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod){ }
+
+    //=============================== Corrutines ====================================================
+
     IEnumerator DelayedDestroy(float delay)
     {
         yield return new WaitForSeconds(2f);

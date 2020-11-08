@@ -7,6 +7,23 @@ public class InspectionMenu : MonoBehaviour
 {
     public event Action<bool> OnSetInspection = delegate { };
 
+    static InspectionMenu _instance = null;
+    public static InspectionMenu main
+    {
+        get
+        {
+            if (!_instance)
+            {
+                _instance = FindObjectOfType<InspectionMenu>();
+
+                if (!_instance)
+                    _instance = new GameObject("InspectionMenu").AddComponent<InspectionMenu>();
+            }
+
+            return _instance;
+        }
+    }
+
     [SerializeField] Animator _anim          = null;
     [SerializeField] TMP_Text _mainText      = null;
     [SerializeField] TMP_Text _buttonText    = null;

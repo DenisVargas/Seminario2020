@@ -36,7 +36,7 @@ public class BurnPoint : MonoBehaviour, IInteractionComponent
 
         if (inventory == null) return operations;
 
-        if (inventory.equiped != null && inventory.equiped.ID == 1)
+        if (inventory.equiped != null && inventory.equiped.ID == ItemID.Antorcha)
         {
             Torch torch = (Torch)inventory.equiped;
             if (torch.isBurning == false)

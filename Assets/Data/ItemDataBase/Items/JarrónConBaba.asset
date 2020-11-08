@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: "Jarr\xF3nConBaba"
   m_EditorClassIdentifier: 
   ID: 4
-  Name: Jarron con Baba
-  Description: Un jarron lleno de baba.
-  Icon: {fileID: 0}
+  data:
+    Name: "Jarr\xF3n con Baba"
+    Description: "El jarr\xF3n est\xE1 lleno con una sustancia pegajosa, despide un
+      fuerte olor a queros\xE9n."
+    Icon: {fileID: 0}
+    isCombinable: 0
+    isDropeable: 1
+    isThroweable: 1
+    isConsumable: 0
   inGamePrefabs:
   - {fileID: 8132736032666455958, guid: 110dab6a03331d9478c72b6bd22f7616, type: 3}
-  isCombinable: 0
-  isDropeable: 1
-  isTrowable: 1
-  isConsumable: 0

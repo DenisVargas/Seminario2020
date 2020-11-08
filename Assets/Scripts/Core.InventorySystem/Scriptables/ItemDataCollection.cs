@@ -7,5 +7,5 @@ using Core.InventorySystem;
 [System.Serializable, CreateAssetMenu(fileName = "ItemCollection", menuName = "Item DataBase/ItemCollection", order = 3)]
 public class ItemDataCollection : ScriptableObject
 {
-    public List<ItemData> existingItemData = new List<ItemData>();
+    public List<ItemDataObject> existingItemData = new List<ItemDataObject>();
 }

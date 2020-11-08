@@ -7,7 +7,6 @@ public class Torch : Item, IDamageable<Damage, HitResult>
 {
     [Header("================ Torch =======================")]
     [SerializeField] GameObject _burningComponent = null;
-    [SerializeField] Collider _interactionCollider = null;
     [SerializeField] Damage hitDamage = new Damage();
     [SerializeField] bool _isOn;
 
@@ -57,7 +56,7 @@ public class Torch : Item, IDamageable<Damage, HitResult>
             _interactionCollider.enabled = true;
     }
 
-    //Colisiones. Si este objeto colisiona con un igniteable. Ejecuta su comando ignite, y luego se destruye.
+
     public Damage GetDamageStats()
     {
         return hitDamage;

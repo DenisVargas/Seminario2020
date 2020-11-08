@@ -15,11 +15,11 @@ namespace Core.SaveSystem
         public Quaternion rotacion;
         //Inventario / Equipamiento. Guardado como una lista de ItemID.
         public int maxItemsSlots;
-        public int EquipedItem;
+        public ItemID EquipedItem;
         public bool itemIsActive;
         public Vector3 itemScale;
         public Quaternion itemRotation;
-        public List<int> inventory;
+        public List<ItemID> inventory;
     }
 
     [Serializable]

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Core.InventorySystem
 {
-//Item es una clase que utilizaremos para identificar  realizar operaciones sobre los objetos que pueden entrar dentro de un inventario.
+    //Item es una clase que utilizaremos para identificar  realizar operaciones sobre los objetos que pueden entrar dentro de un inventario.
     //Es una clase especial de Interactuable que admite multiples comandos, y es dinámico:
     //  Dependiendo de los items que estén a mano del jugador, este podría desbloquear mas iteracciones.
     [System.Serializable, RequireComponent(typeof(InteractionHandler))]
@@ -17,19 +17,20 @@ namespace Core.InventorySystem
         public Action<Collider> OnSetOwner = delegate { };
         public Action OnThrowItem = delegate { };
 
-        public int ID = 0;
-        [SerializeField] string ItemName = "";
-        [SerializeField] string Description = "";
-        [SerializeField] Texture2D Icon = null;
-        public bool isCombinable, isThroweable, isConsumable = false;
+        [Tooltip("Identificador único del ítem. Ver ItemDatabase para detalles y para edición.")]
+        public ItemID ID = ItemID.nulo;
+        public ItemData data;
 
         //Operaciones estáticas son aquellas que siempre están disponibles.
         List<OperationType> Operations = new List<OperationType>();
-        public bool isDynamic => true;
 
-        [SerializeField] Collider _physicCollider = null;
-        [SerializeField] Collider _owner = null;
-        [SerializeField] Rigidbody _rb = null;
+        [Header("Main Item Components")]
+        [SerializeField] protected Collider _interactionCollider = null;
+        [SerializeField] protected Collider _physicCollider = null;
+        [SerializeField] protected Collider _owner = null;
+        [SerializeField] protected Rigidbody _rb = null;
+
+        public bool isDynamic => true;
 
 #if UNITY_EDITOR
         [Header("================ DEBUG =====================")]
@@ -50,17 +51,11 @@ namespace Core.InventorySystem
         /// <summary>
         /// Permite setear manualmente la data de este item.
         /// </summary>
-        /// <param name="data"></param>
-        public void SetData(ItemData data)
+        /// <param name="data">Los datos del item.</param>
+        public Item SetData(ItemData data)
         {
-            ID = (int)data.ID;
-            ItemName = data.name;
-            Description = data.Description;
-            Icon = data.Icon;
-
-            isCombinable = data.isCombinable;
-            isThroweable = data.isTrowable;
-            isConsumable = data.isConsumable;
+            this.data = data;
+            return this;
         }
 
         //============================== Interaction System ===================================================
@@ -82,7 +77,8 @@ namespace Core.InventorySystem
                     _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Exchange, this));
 
                     // Es combinable? Añado la operación si el equipado tiene una combinación con este item.
-                    if (isCombinable && ItemDataBase.CanCombineItems(ID, CurrentInventory.equiped.ID))
+                    var recipe = ItemDataBase.getRecipe(ID, CurrentInventory.equiped.ID);
+                    if (data.isCombinable && recipe.Result != ItemID.nulo)
                         _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.Combine, this));
                 }
             }
@@ -92,7 +88,7 @@ namespace Core.InventorySystem
             }
 
             //Es consumible?.
-            if (isConsumable)
+            if (data.isConsumable)
                 _myOperations.Add(new Tuple<OperationType, IInteractionComponent>(OperationType.use, this));
 
             return _myOperations;
@@ -134,7 +130,8 @@ namespace Core.InventorySystem
                     OnThrow();
                     break;
                 case OperationType.inspect:
-                    FindObjectOfType<InspectionMenu>().DisplayText(new string[] { Description }, () => { Debug.Log("Display Completado. "); });
+                    InspectionMenu.main.DisplayText(new string[] { data.Description },
+                                                    () => { Debug.Log("Display Completado. "); });
                     break;
                 case OperationType.Combine:
                     //Esta funcionalidad va por fuera del objeto. El objeto desconoce las combinaciones.

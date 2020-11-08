@@ -74,7 +74,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         {
             position = transform.position,
             rotacion = transform.rotation,
-            EquipedItem = equiped != null ? Inventory.equiped.ID : -1,
+            EquipedItem = equiped != null ? Inventory.equiped.ID : ItemID.nulo,
             itemScale = equiped != null ? equiped.transform.localScale : Vector3.zero,
             itemRotation = equiped != null ? equiped.transform.rotation : Quaternion.identity,
             maxItemsSlots = Inventory.maxItemsSlots,
@@ -82,7 +82,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                                          .ToList()
         };
 
-        if (equiped != null && equiped.ID == 1 && ((Torch)equiped).isBurning)
+        if (equiped != null && equiped.ID == ItemID.Antorcha && ((Torch)equiped).isBurning)
             data.itemIsActive = true;
 
         return data;
@@ -95,7 +95,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         if (Inventory.equiped != null)
             Destroy(Inventory.equiped.gameObject);
         Inventory = new Inventory();
-        if (data.EquipedItem == -1)
+        if (data.EquipedItem == ItemID.nulo)
             Inventory.equiped = null;
         else
         {
@@ -103,7 +103,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             instance.transform.localScale = data.itemScale;
             instance.transform.rotation = data.rotacion;
 
-            if (data.EquipedItem == 1 && data.itemIsActive)
+            if (data.EquipedItem == ItemID.Antorcha && data.itemIsActive)
             {
                 var torch = instance.GetComponent<Torch>();
                 torch.isBurning = true;
@@ -117,7 +117,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         foreach (var item in data.inventory) //Reconstruimos el inventario.
         {
             var itemdata = ItemDataBase.getItemData(item);
-            var toAddItem = itemdata.inGamePrefabs[0].GetComponent<Item>();
+            var toAddItem = ItemDataBase.getRandomItemPrefab(item).GetComponent<Item>();
 
             Inventory.slots.Add(toAddItem);
         }
@@ -172,7 +172,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     Animator _anims;
     int[] animHash = new int[4];
     public float TRWRange;
-    
 
     bool _a_Walking
     {
@@ -313,7 +312,8 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         }
         else _mtracker.ChangeCursorView(3);
 
-        _canvasController.DisplayPlayerUI(true, _inventory.equiped != null && _inventory.equiped.isThroweable);
+        var equiped = _inventory.equiped;
+        _canvasController.DisplayPlayerUI(true, equiped != null && equiped.data.isThroweable);
 
         #region Input
         if (PlayerInputEnabled)
@@ -692,10 +692,10 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
             case OperationType.Combine:
                 _toActivateCommand = new cmd_Combine(
-                        (Item)target, 
-                        _inventory, 
-                        AttachItemToHand, 
-                        (animIndex, value) => 
+                        (Item)target,
+                        _inventory,
+                        AttachItemToHand,
+                        (animIndex, value) =>
                         {
                             if (animIndex == 0)
                                 _a_Walking = value;
@@ -719,7 +719,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 break;
 
             case OperationType.lightOnTorch:
-                if (_inventory.equiped.ID == 1)
+                if (_inventory.equiped.ID == ItemID.Antorcha)
                     _toActivateCommand = new cmd_LightOnTorch
                         (
                             target,

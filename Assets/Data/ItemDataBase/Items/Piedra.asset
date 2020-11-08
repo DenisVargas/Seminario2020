@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Piedra
   m_EditorClassIdentifier: 
   ID: 3
-  Name: "Piedra Peque\xF1a"
-  Description: Una Simple piedra.
-  Icon: {fileID: 0}
+  data:
+    Name: "Piedra Peque\xF1a."
+    Description: "Una peque\xF1a piedra."
+    Icon: {fileID: 0}
+    isCombinable: 1
+    isDropeable: 1
+    isThroweable: 1
+    isConsumable: 0
   inGamePrefabs:
   - {fileID: 3774739486419545082, guid: b5d82213529cedb4586c8908f372c10d, type: 3}
   - {fileID: 5249288195340952799, guid: 9463c38812a9c0c4f8ec4420e962cb14, type: 3}
-  isCombinable: 1
-  isDropeable: 1
-  isTrowable: 1
-  isConsumable: 0

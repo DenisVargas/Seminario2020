@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2493378720920935221}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 276305274807014538}
   m_RootOrder: 0
@@ -91,7 +91,6 @@ GameObject:
   - component: {fileID: 5768058351940220983}
   - component: {fileID: 8221166566093168615}
   - component: {fileID: 8300359778404572487}
-  - component: {fileID: 6330482987752795112}
   m_Layer: 0
   m_Name: Rock2
   m_TagString: Untagged
@@ -122,11 +121,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5249288195340952799}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.1918097, y: 2.9061043, z: 2.9782271}
-  m_Center: {x: -0.12927808, y: -0.277692, z: 0.33945864}
+  m_Size: {x: 0.35402203, y: 0.36397386, z: 0.34989774}
+  m_Center: {x: -0.011036396, y: -0.03721966, z: 0.038788304}
 --- !u!54 &5768058351940220983
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -155,10 +154,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7477d5abf09f6ca43adc3a34e801774d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: -1
+  data:
+    Name: 
+    Description: 
+    Icon: {fileID: 0}
+    isCombinable: 0
+    isDropeable: 0
+    isThroweable: 0
+    isConsumable: 0
+  _interactionCollider: {fileID: 8754757480360584259}
+  _physicCollider: {fileID: 8754757480360584259}
+  _owner: {fileID: 0}
+  _rb: {fileID: 5768058351940220983}
+  debugThisUnit: 0
   Hiteables:
     serializedVersion: 2
     m_Bits: 4294967295
-  MyDamage:
+  _normalDamage:
     type: 5
     Ammount: 1
     criticalMultiplier: 1
@@ -166,11 +179,20 @@ MonoBehaviour:
     KillAnimationType: 0
     explotionOrigin: {x: 0, y: 0, z: 0}
     explotionForce: 0
-  isFlying: 0
-  toIgnore: {fileID: 0}
-  _hitbox: {fileID: 8754757480360584259}
-  itemComp: {fileID: 6330482987752795112}
-  debugThisRock: 0
+  _burningDamage:
+    type: 5
+    Ammount: 1
+    criticalMultiplier: 1
+    instaKill: 0
+    KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
+  _stainedMaterial: {fileID: 2100000, guid: bd200d7dffd8f6f4992d0350dc4ec5a3, type: 2}
+  _renderer: {fileID: 7144411880060007052}
+  _burningParticle: {fileID: 0}
+  _isFlying: 0
+  IsStained: 0
+  IsBurning: 0
 --- !u!114 &8300359778404572487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,26 +209,3 @@ MonoBehaviour:
   _activeTime: 5
   _renderer: {fileID: 7144411880060007052}
   _interactionEnabled: 1
---- !u!114 &6330482987752795112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5249288195340952799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc47aebd681c4c740bd8a31280d47d2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: 3
-  ItemName: 
-  Description: 
-  Icon: {fileID: 0}
-  isCombinable: 0
-  isThroweable: 0
-  isConsumable: 0
-  _physicCollider: {fileID: 8754757480360584259}
-  _owner: {fileID: 0}
-  _rb: {fileID: 5768058351940220983}
-  debugThisUnit: 0

@@ -162,7 +162,8 @@ namespace Core.InventorySystem
                 _rb.velocity = velocity;
                 _rb.isKinematic = !state;
             }
-            _physicCollider.enabled = state;
+            if (_physicCollider)
+                _physicCollider.enabled = state;
         }
         public void SetOwner(Collider Owner)
         {

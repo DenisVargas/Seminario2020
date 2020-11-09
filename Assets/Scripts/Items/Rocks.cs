@@ -13,18 +13,56 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
     [SerializeField] Damage _burningDamage = Damage.defaultDamage();
 
     [Header("Stained State Components")]
-    [SerializeField] Material _stainedMaterial = null;
     [SerializeField] Renderer _renderer = null;
+    [SerializeField] Material _stainedMaterial = null;
+    [SerializeField] Material _defaultMaterial = null;
 
     [Header("Burning State Components")]
     [SerializeField] ParticleSystem _burningParticle = null;
+    [SerializeField] ParticleSystem _ignitionParticle = null;
+    [SerializeField] ParticleSystem _destroyParticle = null;
 
     [Header("State Labels")]
     [SerializeField] bool _isFlying = false;
-    public bool IsStained = false;
-    public bool IsBurning = false;
+    [SerializeField] bool _isStained = false;
+    [SerializeField] bool _isBurning = false;
+    bool _exploded = false;
 
     public bool IsAlive => true;
+    public bool IsStained
+    {
+        get => _isStained;
+        set
+        {
+            _isStained = value;
+            if (_isStained)
+                _renderer.material = _stainedMaterial;
+            else
+                _renderer.material = _defaultMaterial;
+        }
+    }
+    public bool IsBurning
+    {
+        get => _isBurning;
+        set
+        {
+            _isBurning = value;
+            if (_isBurning)
+            {
+                _burningParticle.gameObject.SetActive(true);
+                _burningParticle.Play();
+                _ignitionParticle.gameObject.SetActive(true);
+                _ignitionParticle.Play();
+            }
+            else
+            {
+                _burningParticle.gameObject.SetActive(false);
+                _burningParticle.Stop();
+                _ignitionParticle.gameObject.SetActive(false);
+                _ignitionParticle.Stop();
+            }
+        }
+    }
 
     //================================== Unity Funcs ================================================
 
@@ -39,12 +77,6 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
     }
 
     //================================ Member Funcs =================================================
-
-    public void StainWithSlime()
-    {
-        IsStained = true;
-        _renderer.material = _stainedMaterial;
-    }
 
     //================================= Damage Dealing ==============================================
 
@@ -65,7 +97,7 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
                 Damage enemyCollisionDamage = new Damage() { type = DamageType.hit };
                 GetHit(enemyCollisionDamage); //Recibo daño por choque.
                 damagecomponent.GetHit(_normalDamage); //Causo daño por choque.
-            } 
+            }
         }
     }
 
@@ -89,7 +121,7 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
                 break;
 
             case OperationType.Combine:
-                StainWithSlime();
+                IsStained = true;
                 break;
             case OperationType.Exchange:
                 break;
@@ -106,7 +138,7 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
 
     public Damage GetDamageStats()
     {
-        if (IsBurning)
+        if (_isBurning)
             return _burningDamage;
 
         return _normalDamage;
@@ -114,24 +146,33 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
     public HitResult GetHit(Damage damage)
     {
         HitResult result = new HitResult(true);
-
-        if (damage.type == DamageType.Fire && IsStained)
+        if (!_exploded)
         {
-            result.ignited = true;
-            IsBurning = true;
+            if (damage.type == DamageType.Fire && _isStained)
+            {
+                result.ignited = true;
+                IsBurning = true;
+            }
+
+            if (damage.type == DamageType.explotion || damage.type == DamageType.hit)
+            {
+                _interactionCollider.enabled = false;
+                result.exploded = true;
+                result.fatalDamage = true;
+            }
+
+            if (result.fatalDamage)
+            {
+                Instantiate(_destroyParticle, transform.position + Vector3.up, Quaternion.identity);
+                StartCoroutine(DelayedDestroy(2f));
+                return result;
+            }
         }
-
-        if (damage.type == DamageType.explotion || damage.type == DamageType.hit)
+        else
         {
-            _interactionCollider.enabled = false;
             result.exploded = true;
             result.fatalDamage = true;
-        }
-
-        if (result.fatalDamage)
-        {
-            StartCoroutine(DelayedDestroy(2f));
-            return result;
+            result.ignited = true;
         }
 
         return result;

@@ -39,27 +39,7 @@ public class Slime : Item, IIgnitableObject
     Dictionary<int, Material> Materials = new Dictionary<int, Material>();
 
     float _burningTime = 5f;
-    float _inputWaitTime = 2f;
 
-    public Slime SetDirection(Vector3 Dir)
-    {
-        transform.right = Dir;
-        return this;
-    }
-    public Slime SetMaterial(int Key)
-    {
-        myMesh.material = Materials[Key];
-        return this;
-    }
-
-
-    protected override void Awake()
-    {
-        for (int i = 0; i < myMaterials.Count; i++)
-        {
-            Materials.Add(i, myMaterials[i]);
-        }
-    }
     #region DEBUG
     #if UNITY_EDITOR
     private void OnDrawGizmos()
@@ -73,6 +53,14 @@ public class Slime : Item, IIgnitableObject
     }
     #endif 
     #endregion
+
+    protected override void Awake()
+    {
+        for (int i = 0; i < myMaterials.Count; i++)
+        {
+            Materials.Add(i, myMaterials[i]);
+        }
+    }
     void Update()
     {
         if(Burning)
@@ -140,26 +128,6 @@ public class Slime : Item, IIgnitableObject
         var dropParticle = Instantiate(_dropParticle, transform.position, Quaternion.identity);
         Destroy(gameObject);//Esta parte hay que reemplazarlo por una bonita partícula.
     }
-    /// <summary>
-    /// Se llama cuando hacemos clic encima.
-    /// </summary>
-    /// <param name="toIgnore">Me mando a mismo</param>
-    public void OnInteractionEvent()
-    {
-        //isLocked = true;
-        checkSurroundingIgnitionObjects();
-        foreach (var igniteable in toIgnite)
-        {
-            if (igniteable != (IIgnitableObject)this)// && !igniteable.lockInteraction)
-            {
-                //igniteable.OnInteractionEvent();
-            }
-        }
-
-        //Aumento el tiempo de vida de esta "particula" x el treshold
-        _remainingLifeTime += _inputWaitTime;
-        StartCoroutine(UnlockInNextFrame());
-    }
 
     //======================================= Ingnition System ====================================================
 
@@ -215,7 +183,6 @@ public class Slime : Item, IIgnitableObject
 
         return new List<Tuple<OperationType, IInteractionComponent>>();
     }
-
     public override void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
         if (!Burning && operation == OperationType.Ignite)
@@ -242,6 +209,19 @@ public class Slime : Item, IIgnitableObject
     IEnumerator DelayedOtherIgnition(float Delay)
     {
         //Llamo la función Ignite a todos los de la lista de ignición con los que overlapeo.
+        Queue<GameObject> _toDestroy = new Queue<GameObject>();
+        foreach (var patch in patches)
+        {
+            var patchComp = patch.GetComponent<SlimePatch>();
+            if (patchComp && patchComp.DestroyOnBurning)
+                _toDestroy.Enqueue(patch);
+        }
+        while(_toDestroy.Count > 0)
+        {
+            var item = _toDestroy.Dequeue();
+            patches.Remove(item);
+            Destroy(item);
+        }
         yield return new WaitForSeconds(Delay);
         checkSurroundingIgnitionObjects();
         foreach (var item in toIgnite)
@@ -250,10 +230,5 @@ public class Slime : Item, IIgnitableObject
                 item.ExecuteOperation(OperationType.Ignite);
         }
         toIgnite.Clear();
-    }
-    IEnumerator UnlockInNextFrame()
-    {
-        yield return new WaitForSeconds(0.1f);
-        //Locked = false; //Desbloqueo la "muerte" del objeto.
     }
 }

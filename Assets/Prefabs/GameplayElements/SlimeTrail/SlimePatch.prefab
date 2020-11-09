@@ -87,6 +87,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 206088919360502991}
+  - component: {fileID: 124538929865215823}
   m_Layer: 0
   m_Name: SlimePatch
   m_TagString: Untagged
@@ -111,6 +112,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &124538929865215823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206088919360503028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0f27902e0cb5df4ea3e77a0c936355b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _burnParticle: {fileID: 4164472952756089106}
+  _isBurning: 0
+  DestroyOnBurning: 0
 --- !u!1 &2759721014909509379
 GameObject:
   m_ObjectHideFlags: 0
@@ -5242,6 +5258,12 @@ PrefabInstance:
 --- !u!4 &4259185133127351848 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9,
+    type: 3}
+  m_PrefabInstance: {fileID: 4254699325081965084}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4164472952756089106 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198321560017527566, guid: 89956e675b749204c8e10395ce2b5fb9,
     type: 3}
   m_PrefabInstance: {fileID: 4254699325081965084}
   m_PrefabAsset: {fileID: 0}

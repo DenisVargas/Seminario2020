@@ -19,7 +19,6 @@ public class ExplosivePot : Item, IDamageable<Damage, HitResult>
     [SerializeField] Damage MyDamage = new Damage();
     [SerializeField] float _explotionForce = 10f;
     [SerializeField] float _explotionRadius = 4f;
-    [SerializeField] float _timeToDestroy = 4f;
 
     [Header("Components")]
     [SerializeField] ParticleSystem Explotion = null;

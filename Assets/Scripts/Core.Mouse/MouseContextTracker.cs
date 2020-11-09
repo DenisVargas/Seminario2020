@@ -147,7 +147,7 @@ public class MouseContextTracker : MonoBehaviour
         }
 #endif
 
-        _context.validHit = validHits > 0; //Validación del hit.
+        _context.validHit = validHits > 0;
         ThrowMouseEvents(_context.InteractionHandler);
         return _context;
     }

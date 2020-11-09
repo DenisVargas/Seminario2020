@@ -44,6 +44,7 @@ public class Trail : MonoBehaviour
                         Vector3 center = Vector3.Lerp(current.transform.position, connection.transform.position, 0.5f);
                         var patch = Instantiate(_slimePatch_Prefab,center, Quaternion.identity);
                         patch.transform.forward = dir;
+                        patch.transform.SetParent(igniteObject.transform);
 
                         var ignite = connection.GetComponentInChildren<Slime>();
                         ignite.patches.Add(patch);

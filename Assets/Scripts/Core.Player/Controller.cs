@@ -332,22 +332,25 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 {
                     //print("Confirmo el tiro");
                     _Aiming = false;
-                    Node targetNode = _mouseContext.closerNode;//El objetivo.
+                    _mouseContext = _mtracker.GetCurrentMouseContext();
+                    if (_mouseContext.closerNode)
+                    {
+                        //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
+                        var command = new cmd_ThrowEquipment(
+                            manitodumacaco,
+                            _mouseContext.closerNode,
+                            transform,
+                            1f, 
+                            _tm, 
+                            ReleaseEquipedItemFromHand,
+                            () =>
+                            {
+                                _a_ThrowRock = true;
+                            }
+                        );
+                        comandos.Enqueue(command);
+                    }
 
-                    //En vez de ejecutarlo directamente. Añadimos un TrowCommand.
-                    var command = new cmd_ThrowEquipment(
-                        manitodumacaco,
-                        targetNode,
-                        transform,
-                        1f, 
-                        _tm, 
-                        ReleaseEquipedItemFromHand,
-                        () =>
-                        {
-                            _a_ThrowRock = true;
-                        }
-                    );
-                    comandos.Enqueue(command);
                     return;
                 }
             }

@@ -6,11 +6,18 @@ public class CanvasButtonManager : MonoBehaviour
 {
     public void LoadLevel(int level)
     {
-        SceneManager.LoadScene(level);
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
+
+        AsyncSceneLoadOptions.LevelBuildIndex = level;
+        if (!AsyncSceneLoadOptions.LoadActive)
+            SceneManager.LoadScene(3, LoadSceneMode.Additive);
     }
 
     public void Continue()
     {
+        //Esto tengo que cambiarlo.
+
         var lastSavedGame = Level.AutoSave;
         if (lastSavedGame != null)
             SceneManager.LoadScene(lastSavedGame.LevelBuildID);
@@ -31,9 +38,13 @@ public class CanvasButtonManager : MonoBehaviour
     }
     public void ExitToMainMenu()
     {
-        SceneManager.LoadScene(0);
         if (Time.timeScale == 0)
             Time.timeScale = 1;
+
+        AsyncSceneLoadOptions.LevelBuildIndex = 0;
+        if (!AsyncSceneLoadOptions.LoadActive)
+            SceneManager.LoadScene(3, LoadSceneMode.Additive);
+
     }
 
     public void ExitGame()

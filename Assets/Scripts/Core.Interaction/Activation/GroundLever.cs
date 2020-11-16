@@ -37,7 +37,6 @@ public class GroundLever : MonoBehaviour, IInteractionComponent
     {
         print("Input Confirmado:: le doy play a la pinche Animación.");
         _anims.SetBool("activated", true);
-        OnActivate.Invoke();
     }
     public void ExecuteOperation(OperationType operation, params object[] optionalParams) { }
     public void CancelOperation(OperationType operation, params object[] optionalParams) { }
@@ -57,5 +56,10 @@ public class GroundLever : MonoBehaviour, IInteractionComponent
     {
         print("OnLeverPullCompleted");
         _anims.SetBool("activated", false);
+    }
+
+    void OnLevelActivationCompleted_AnimEvent()
+    {
+        OnActivate.Invoke();
     }
 }

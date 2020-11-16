@@ -100,6 +100,14 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 1
+        functionName: OnLevelActivationCompleted_AnimEvent
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 08e5082455c0ace4a971a0ae7be3505c,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

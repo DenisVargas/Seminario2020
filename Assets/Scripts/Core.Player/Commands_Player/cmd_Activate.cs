@@ -53,8 +53,8 @@ public class Cmd_Activate : BaseQueryCommand
             //Debug.Log("Llegué al rango.");
 
             //Ejecuto la animación correspondiente Sobre el Player, confirmo el input al objetivo.
-            setAnimation(0, false);
             setAnimation(_animatorParameter, true);
+            setAnimation(0, false);
             CommandTarget.InputConfirmed(OperationType.Activate);
             lookTowards(CommandTarget);
             execution++;

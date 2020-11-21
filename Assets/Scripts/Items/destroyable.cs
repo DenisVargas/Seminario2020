@@ -95,6 +95,11 @@ public class Destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
     protected IEnumerator delayedDestroy(float timeToDestroy)
     {
         yield return new WaitForSeconds(timeToDestroy);
+
+        if (AffectedNodes.Length > 0)
+            foreach (var node in AffectedNodes)
+                node.ChangeNodeState(NavigationArea.Navegable);
+
         Destroy(gameObject);
     }
 }

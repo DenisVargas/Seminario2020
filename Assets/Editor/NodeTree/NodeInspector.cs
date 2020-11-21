@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using IA.PathFinding;
+using Core.Interaction;
 
 [CustomEditor(typeof(Node)), CanEditMultipleObjects]
 public class NodeInspector : Editor
 {
     Node inspectedNode;
     List<Node> inspectedNodes;
+
+    GameObject ignitionPrefab;
+    GameObject patchPrefab;
 
     private void OnEnable()
     {
@@ -24,6 +28,11 @@ public class NodeInspector : Editor
             foreach (var ins in targets)
                 inspectedNodes.Add((Node)ins);
         }
+
+        if (!ignitionPrefab)
+            ignitionPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/GameplayElements/SlimeTrail/IgnitionPoint.prefab");
+        if (!patchPrefab)
+            patchPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/GameplayElements/SlimeTrail/SlimePatch.prefab");
     }
 
     public override void OnInspectorGUI()
@@ -118,6 +127,74 @@ public class NodeInspector : Editor
 
                 A.Connections.Add(newNode);
                 B.Connections.Add(newNode);
+            }
+        }
+
+        EditorGUILayout.Space();
+
+        if(GUILayout.Button("Add Ignition Point"))
+        {
+            foreach (var selectedNode in inspectedNodes)
+            {
+                if (!ignitionPrefab) break;
+
+                if (selectedNode.handler == null)
+                {
+                    var newIgnitionPoint = Instantiate(ignitionPrefab, selectedNode.transform);
+                    var ignitionPointHandler = newIgnitionPoint.GetComponent<InteractionHandler>();
+                    selectedNode.handler = ignitionPointHandler;
+                }
+            }
+        }
+
+        if (inspectedNodes.Count == 2)
+        {
+            if (GUILayout.Button("Connect Ignition Points"))
+            {
+                //La función sera agregar un patch en el medio y agregar ambos en el sus respectivas listas de activación.
+
+                //chequear si tienen ignition points. Si no, los agrego.
+                Node A = inspectedNodes[0];
+                Node B = inspectedNodes[1];
+
+                var slimeA = A.GetComponentInChildren<Slime>();
+                if (!slimeA && A.handler == null)
+                {
+                    var newIgnitionPoint = Instantiate(ignitionPrefab, A.transform);
+                    var ignitionPointHandler = newIgnitionPoint.GetComponent<InteractionHandler>();
+                    A.handler = ignitionPointHandler;
+                    slimeA = A.GetComponentInChildren<Slime>();
+                }
+
+                var SlimeB = B.GetComponentInChildren<Slime>();
+                if (!SlimeB && B.handler == null)
+                {
+                    var newIgnitionPoint = Instantiate(ignitionPrefab, B.transform);
+                    var ignitionPointHandler = newIgnitionPoint.GetComponent<InteractionHandler>();
+                    B.handler = ignitionPointHandler;
+                    SlimeB = B.GetComponentInChildren<Slime>();
+                }
+
+                //Chequeo si existe el patch.
+                Vector3 dir = (B.transform.position - A.transform.position).normalized;
+                Vector3 center = Vector3.Lerp(B.transform.position, A.transform.position, 0.5f);
+                center += Vector3.up * 0.1f;
+
+                bool exists = false;
+                foreach (var patch in slimeA.patches)
+                    if(patch.transform.position == center)
+                        exists = true;
+                foreach (var patch in SlimeB.patches)
+                    if (patch.transform.position == center)
+                        exists = true;
+
+                if (!exists)
+                {
+                    var newPatch = Instantiate(patchPrefab, slimeA.transform);
+                    newPatch.transform.forward = dir;
+                    newPatch.transform.position = center;
+                    slimeA.patches.Add(newPatch);
+                }
             }
         }
     }

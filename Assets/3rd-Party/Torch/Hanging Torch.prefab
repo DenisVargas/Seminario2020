@@ -146,6 +146,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch_light
       objectReference: {fileID: 0}
+    - target: {fileID: 3157249844252386527, guid: 192d03e18a5cbda46aeb090ba626a68f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157249844252386527, guid: 192d03e18a5cbda46aeb090ba626a68f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.6313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157249844252386527, guid: 192d03e18a5cbda46aeb090ba626a68f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.41568628
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 192d03e18a5cbda46aeb090ba626a68f, type: 3}
 --- !u!4 &4707118637580382435 stripped

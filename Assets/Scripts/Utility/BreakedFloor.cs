@@ -23,8 +23,13 @@ public class BreakedFloor : MonoBehaviour
             foreach (var item in pieces)
             {
                 item.useGravity = true;
+                item.AddForce(0, Random.Range(0, 100),0,ForceMode.Force);
             }
-          
+            var player = other.GetComponent<Controller>();
+            if (player)
+            player.enabled = false;
+            other.GetComponent<Rigidbody>().isKinematic = false;
+            other.GetComponent<Rigidbody>().useGravity = true;
         }
         Debug.Log("entre a la collision");
         

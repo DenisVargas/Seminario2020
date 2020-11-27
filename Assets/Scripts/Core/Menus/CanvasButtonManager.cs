@@ -9,9 +9,9 @@ public class CanvasButtonManager : MonoBehaviour
         if (Time.timeScale == 0)
             Time.timeScale = 1;
 
-        AsyncSceneLoadOptions.LevelBuildIndex = level;
+        AsyncSceneLoadOptions.LevelBuildIndex = level + 1;
         if (!AsyncSceneLoadOptions.LoadActive)
-            SceneManager.LoadScene(3, LoadSceneMode.Additive);
+            SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
 
     public void Continue()
@@ -43,7 +43,7 @@ public class CanvasButtonManager : MonoBehaviour
 
         AsyncSceneLoadOptions.LevelBuildIndex = 0;
         if (!AsyncSceneLoadOptions.LoadActive)
-            SceneManager.LoadScene(3, LoadSceneMode.Additive);
+            SceneManager.LoadScene(1, LoadSceneMode.Additive);
 
     }
 

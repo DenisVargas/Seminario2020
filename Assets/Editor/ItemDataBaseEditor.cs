@@ -43,12 +43,12 @@ public class ItemDataBaseEditor : EditorWindow
 
     //===================================== Window =========================================
 
-    [MenuItem("GamePlay/Data Editor")]
+    [MenuItem("GamePlay/Item Data Editor")]
     public static void OpenWindow()
     {
         var window = GetWindow(typeof(ItemDataBaseEditor)) as ItemDataBaseEditor;
         var content = new GUIContent();
-        content.text = "Data Editor";
+        content.text = "Item Database Editor";
         window.titleContent = content;
         window.InitializeComponents();
     }

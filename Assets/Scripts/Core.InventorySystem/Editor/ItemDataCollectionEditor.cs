@@ -23,7 +23,7 @@ public class ItemDataCollectionEditor : Editor
     }
 
     [MenuItem("Utility/Update Database")]
-    private static void UpdateDatabase()
+    public static void UpdateDatabase()
     {
         var itemcoll = AssetDatabase.LoadAssetAtPath<ItemDataCollection>("Assets/Data/ItemDataBase/ItemCollection1.asset");
         var files = CustomEditorUtilities.GetAllAssetsAtRelativePath<ItemDataObject>(_dataPath);

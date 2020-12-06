@@ -4,6 +4,8 @@ using UnityEditor;
 using Core.InventorySystem;
 using UnityEditorInternal;
 
+//Motores 2
+
 public class ItemDataBaseEditor : EditorWindow
 {
     //============================== Static Data Paths =====================================
@@ -38,6 +40,7 @@ public class ItemDataBaseEditor : EditorWindow
 
     int selection = 0;
     int pickerID = 0;
+    string newCombName = "New Combination";
     ItemDataObject selectedInPicker;
     Recipes RecipesContainer = null;
 
@@ -60,7 +63,7 @@ public class ItemDataBaseEditor : EditorWindow
 
         var collectionObject = AssetDatabase.LoadAssetAtPath<ItemDataCollection>(ItemCollectionBasePath);
         SerializedObject serializedCollection = new SerializedObject(collectionObject);
-        CollectionData = new ReorderableList(collectionObject.existingItemData, typeof(ItemDataCollection), true, true, true, true);
+        CollectionData = new ReorderableList(collectionObject.existingItemData, typeof(ItemDataCollection), true, true, false, false);
 
         CollectionData.drawHeaderCallback = (Rect rect) =>
         {
@@ -69,11 +72,13 @@ public class ItemDataBaseEditor : EditorWindow
 
         CollectionData.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
         {
+            serializedCollection.Update();
             var element = serializedCollection.FindProperty("existingItemData").GetArrayElementAtIndex(index);
 
             SerializedObject referenced = new SerializedObject(element.objectReferenceValue);
             SerializedProperty data = referenced.FindProperty("data").FindPropertyRelative("Name");
 
+            //TODO: Añadir opciones de edición.
             float maxWidth = EditorGUIUtility.currentViewWidth;
             float maxElementSize = maxWidth / 2;
             float padding = 20f;
@@ -81,10 +86,8 @@ public class ItemDataBaseEditor : EditorWindow
             Rect ButtonRect = new Rect(rect.x + maxElementSize, rect.y, maxElementSize - padding, EditorGUIUtility.singleLineHeight);
 
             EditorGUI.LabelField(rect, data.stringValue);
-            if (GUI.Button(ButtonRect, "edit"))
-            {
-                Debug.Log("ButtonPressed");
-            }
+            if (GUI.Button(ButtonRect, "Select"))
+                Selection.activeObject = referenced.targetObject;
         };
 
         RecipesContainer = AssetDatabase.LoadAssetAtPath<Recipes>(ItemRecipesPath);
@@ -109,7 +112,6 @@ public class ItemDataBaseEditor : EditorWindow
         DrawCombinationEditor();
     }
 
-
     private void CreateNewItemSection()
     {
         //añadir nuevos items.
@@ -129,12 +131,13 @@ public class ItemDataBaseEditor : EditorWindow
             EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.LabelField("Want to add a new ID?");
-        if (GUILayout.Button("Item ID editor"))
-        {
-            Close();
-            var type = typeof(ItemID);
-        }
+        //Esto requiere procesamiento de un script... #para mas adelante.
+        //EditorGUILayout.LabelField("Want to add a new ID?");
+        //if (GUILayout.Button("Item ID editor"))
+        //{
+        //    Close();
+        //    var type = typeof(ItemID);
+        //}
 
         EditorGUILayout.LabelField("Item Description");
 
@@ -154,6 +157,32 @@ public class ItemDataBaseEditor : EditorWindow
         if (GUILayout.Button("Add New Item"))
         {
             Debug.Log("Clickeado Add");
+            var newScriptable = ScriptableObject.CreateInstance<ItemDataObject>();
+            ItemData newData = ItemData.defaultItemData();
+            newData.Name = itemName;
+            newData.Description = itemDescription;
+            newData.Icon = Icon;
+            newData.isCombinable = isCombinable;
+            newData.isDropeable = isDropeable;
+            newData.isThroweable = isThroweable;
+            newData.isConsumable = isConsumable;
+
+            newScriptable.ID = id;
+            newScriptable.data = newData;
+
+            AssetDatabase.CreateAsset(newScriptable, $"{ItemsPath}/{itemName}.asset");
+            Selection.activeObject = newScriptable;
+
+            itemName = defaultItemName;
+            itemDescription = defaultItemDescription;
+            Icon = null;
+            isCombinable = false;
+            isDropeable = false;
+            isThroweable = false;
+            isConsumable = false;
+
+            AssetDatabase.SaveAssets();
+            Repaint();
         }
         GUI.color = Color.white;
         EditorGUILayout.Space();
@@ -164,6 +193,15 @@ public class ItemDataBaseEditor : EditorWindow
         if (GUILayout.Button("Load and Update Item Data Collection"))
         {
             ItemDataCollectionEditor.UpdateDatabase();
+            Repaint();
+            return;
+        }
+
+        if (GUILayout.Button("Select Database Container"))
+        {
+            var newSelection = AssetDatabase.LoadAssetAtPath<ItemDataCollection>(ItemCollectionBasePath);
+            if (newSelection)
+                Selection.activeObject = newSelection;
         }
 
         Rect lastRect = EditorGUILayout.GetControlRect();
@@ -261,10 +299,14 @@ public class ItemDataBaseEditor : EditorWindow
             selectedInPicker = null;
         }
 
+        EditorGUILayout.LabelField("Combination Name");
+        newCombName = EditorGUILayout.TextField(newCombName);
+
         if (GUILayout.Button("Add Combination"))
         {
             Recipe _comb = new Recipe()
             {
+                Name = newCombName,
                 A = a == null ? ItemID.nulo : a.ID,
                 B = b == null ? ItemID.nulo : b.ID,
                 Result = result == null ? ItemID.nulo : result.ID
@@ -277,6 +319,7 @@ public class ItemDataBaseEditor : EditorWindow
             EditorUtility.SetDirty(RecipesContainer);
             RecipesContainer.combinations.Add(_comb);
 
+            newCombName = "New Combination";
             a = null;
             b = null;
             result = null;

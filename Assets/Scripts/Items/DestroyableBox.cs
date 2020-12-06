@@ -2,7 +2,7 @@
 using IA.PathFinding;
 using System.Collections;
 
-public class Box :  Destroyable
+public class DestroyableBox :  Destroyable
 {
     //private void OnTriggerEnter(Collider collision)
     //{

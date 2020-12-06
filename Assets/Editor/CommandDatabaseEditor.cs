@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEditor;
 using Core.Interaction;
 
+//Motores 2
+
 public class CommandDatabaseEditor : EditorWindow
 {
     string defaultFolderPath = "Assets/Data/Commands";
@@ -17,7 +19,6 @@ public class CommandDatabaseEditor : EditorWindow
     public OperationType Operation = OperationType.Activate;
     public Sprite Icon;
     public string CommandName = "new Command";
-
 
     [MenuItem("GamePlay/Command Data Editor")]
     public static void OpenWindow()

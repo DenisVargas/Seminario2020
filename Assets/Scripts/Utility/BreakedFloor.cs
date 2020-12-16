@@ -5,17 +5,10 @@ using UnityEngine;
 public class BreakedFloor : MonoBehaviour
 {
     public List<Rigidbody> pieces = new List<Rigidbody>();
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] CanvasButtonManager _sceneLoadingManager = null;
+    [SerializeField] int _levelToLoad = 0;
+    [SerializeField] float _loadingDelay = 2f;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
@@ -27,11 +20,22 @@ public class BreakedFloor : MonoBehaviour
             }
             var player = other.GetComponent<Controller>();
             if (player)
-            player.enabled = false;
-            other.GetComponent<Rigidbody>().isKinematic = false;
-            other.GetComponent<Rigidbody>().useGravity = true;
+                player.FallInTrap();
+
+            AsyncSceneLoadOptions.LevelBuildIndex = 1;
+            AsyncSceneLoadOptions.LoadActive = false;
+
+            StartCoroutine(DelayedLoadLevel());
         }
-        Debug.Log("entre a la collision");
-        
+    }
+
+    IEnumerator DelayedLoadLevel()
+    {
+        yield return new WaitForSeconds(_loadingDelay);
+
+        if (_sceneLoadingManager != null)
+            _sceneLoadingManager.LoadLevel(_levelToLoad);
+        else
+            Debug.LogError($"{gameObject.name}::La referencia al Loading Manager no esta seteada Salame!");
     }
 }

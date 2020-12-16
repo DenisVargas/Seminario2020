@@ -11,7 +11,7 @@ public class CanvasButtonManager : MonoBehaviour
 
         AsyncSceneLoadOptions.LevelBuildIndex = level + 1;
         if (!AsyncSceneLoadOptions.LoadActive)
-            SceneManager.LoadScene(1, LoadSceneMode.Additive);
+            SceneManager.LoadScene("LoadMenu", LoadSceneMode.Additive);
     }
 
     public void Continue()
@@ -43,8 +43,7 @@ public class CanvasButtonManager : MonoBehaviour
 
         AsyncSceneLoadOptions.LevelBuildIndex = 0;
         if (!AsyncSceneLoadOptions.LoadActive)
-            SceneManager.LoadScene(1, LoadSceneMode.Additive);
-
+            SceneManager.LoadScene("LoadMenu", LoadSceneMode.Additive);
     }
 
     public void ExitGame()

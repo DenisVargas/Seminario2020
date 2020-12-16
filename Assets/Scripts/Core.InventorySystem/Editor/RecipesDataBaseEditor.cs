@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using Core.InventorySystem;
 
+//Motores 2
+
 [CustomEditor(typeof(Recipes))]
 public class RecipesDataBaseEditor : Editor
 {

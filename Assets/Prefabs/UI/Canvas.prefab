@@ -4141,53 +4141,6 @@ PrefabInstance:
       propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 295f8627af3b21b41b375025226b7ef6,
-        type: 2}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 01ad261b9bdc9744098accd035cab857,
-        type: 2}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8864ece257002b34fbaab2c30e7e8675,
-        type: 2}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 703a7e10e796edc49a6f33d1f0db7bfa,
-        type: 2}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: c6ce8c480e0a8dd4898c9c61f796b553,
-        type: 2}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9841fc45afde21f46b9568dda9f9bd5f,
-        type: 2}
-    - target: {fileID: 4311034634319012248, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
-        type: 3}
-      propertyPath: presetDataBase.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: 0075e84d1fa58ae49a1b9111d6a7a4f5,
-        type: 2}
     - target: {fileID: 4311034634319012250, guid: 81e5e6f7bae441b4cb6aada0728ce0d5,
         type: 3}
       propertyPath: m_Enabled

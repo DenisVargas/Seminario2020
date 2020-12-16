@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
+//Motores 2.
+
 public class QuickSceneSet : EditorWindow
 {
-    const string playerPrefabPath = "Assets/Prefabs/Player.prefab";
-    const string playerClonePrefabPath = "Assets/Prefabs/clon jutsu.prefab";
-    const string CameraPrefabPath = "Assets/Prefabs/Top Down Camera.prefab";
-    const string CanvasPrefabPath = "Assets/Prefabs/UI/Canvas.prefab";
+    string playerPrefabPath = "Assets/Prefabs/CoreGameplay/Player.prefab";
+    string playerClonePrefabPath = "Assets/Prefabs/CoreGameplay/clon jutsu.prefab";
+    string CameraPrefabPath = "Assets/Prefabs/CoreGameplay/Top Down Camera.prefab";
+    string CanvasPrefabPath = "Assets/Prefabs/UI/Canvas.prefab";
+    string ManagersPrefabPath = "Assets/Prefabs/CoreGameplay/Managers.prefab";
+
+    int toolbarIndex = 0;
+    readonly string[] tabs = { "Operations", "Settings" };
 
     [MenuItem("GamePlay/QuickSceneInitializer")]
     public static void OpenWindow()
@@ -19,6 +22,34 @@ public class QuickSceneSet : EditorWindow
     }
 
     private void OnGUI()
+    {
+        toolbarIndex = GUILayout.Toolbar(toolbarIndex, tabs);
+        switch (toolbarIndex)
+        {
+            case 0:
+                DrawMainOperationsTab();
+                break;
+            case 1:
+                DrawSettingsTab();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void DrawSettingsTab()
+    {
+        EditorGUILayout.LabelField("Settings!");
+        EditorGUILayout.LabelField("Prefab Paths:");
+        playerPrefabPath = EditorGUILayout.TextField("Player:", playerPrefabPath);
+        playerClonePrefabPath = EditorGUILayout.TextField("Clone:", playerClonePrefabPath);
+        CameraPrefabPath = EditorGUILayout.TextField("Camera:", CameraPrefabPath);
+        CanvasPrefabPath = EditorGUILayout.TextField("Canvas:", CanvasPrefabPath);
+        ManagersPrefabPath = EditorGUILayout.TextField("Managers:", ManagersPrefabPath);
+    }
+
+    private void DrawMainOperationsTab()
     {
         GUIContent buttonContent = new GUIContent("Clear Scene", "Deletes all gameobjects in the current Scene\nBe carefull!!");
         if (GUILayout.Button(buttonContent))
@@ -30,11 +61,13 @@ public class QuickSceneSet : EditorWindow
             }
             SceneView.RepaintAll(); //Por si las dudas.
         }
-        if(GUILayout.Button("Check or Add Default GameObjects"))
+        if (GUILayout.Button("Check or Add Default GameObjects"))
         {
             CheckAndRemoveDefaultSceneObjects();
 
             CheckOrAddDefaultGameObject("======== Core ========");
+            GameObject ManagersIntstance = (GameObject)AssetDatabase.LoadAssetAtPath(ManagersPrefabPath, typeof(GameObject));
+            var managerObject = Instantiate(ManagersIntstance, Vector3.zero, Quaternion.identity);
             CheckOrAddDefaultGameObject("======== CCC =========");
             SetCCC();
             CheckOrAddDefaultGameObject("====== Enemigos ======");

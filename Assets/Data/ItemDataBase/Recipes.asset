@@ -23,3 +23,8 @@ MonoBehaviour:
     A: 3
     B: 4
     combinationMethod: 1
+  - Name: SuperCombinacion
+    Result: 3
+    A: 2
+    B: 4
+    combinationMethod: 0

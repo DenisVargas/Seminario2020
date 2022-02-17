@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WAterfall
+  m_Shader: {fileID: 4800000, guid: 6af490355ae6a1445ad720bd3f73e105, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 0
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 1c0f28bc6d4a1df4c9e2c9aafa790657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _flow2:
+        m_Texture: {fileID: 2800000, guid: bb8b3ab835b3f43409dfcf1693c0145f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _flow3:
+        m_Texture: {fileID: 2800000, guid: dce81b7825bb28c4cb1d5f8faeed2421, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _flow4:
+        m_Texture: {fileID: 2800000, guid: 6ae96c417257d304aae0de0d7e31692d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _waterflow:
+        m_Texture: {fileID: 2800000, guid: 1c0f28bc6d4a1df4c9e2c9aafa790657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _waterflow1:
+        m_Texture: {fileID: 2800000, guid: 1c0f28bc6d4a1df4c9e2c9aafa790657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _waternormal:
+        m_Texture: {fileID: 2800000, guid: 4f4dc1ce2b0f9b444a0a89625508fbfb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Cutoff: 0.5
+    - _MaxNew: 0.471
+    - _TransAmbient: 0.2
+    - _TransDirect: 1
+    - _TransNormalDistortion: 0.1
+    - _TransScattering: 2
+    - _TransShadow: 0.9
+    - _Translucency: 1
+    - __dirty: 0
+    - _maskmotion: 0.15
+    - _minNew: 0.30378148
+    - _motion: 0.97
+    - _motionMask: 0.8
+    - _noiseScale: 1
+    - _voronoiscale: 0.43
+    m_Colors:
+    - _PannerSpeed: {r: 0, g: 1, b: 0, a: 0}

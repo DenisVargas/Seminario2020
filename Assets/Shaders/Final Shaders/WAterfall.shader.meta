@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 6af490355ae6a1445ad720bd3f73e105
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _waterflow: {fileID: 2800000, guid: 1c0f28bc6d4a1df4c9e2c9aafa790657, type: 3}
+  - _TextureSample0: {fileID: 2800000, guid: 1c0f28bc6d4a1df4c9e2c9aafa790657, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -27,7 +27,7 @@ Material:
     - _Cutoff: 0.5
     - __dirty: 0
     m_Colors:
-    - _HigherEmissionColor: {r: 0.48061424, g: 1, b: 0.3443396, a: 0}
+    - _HigherEmissionColor: {r: 0.0692012, g: 0.3301887, b: 0, a: 0}
     - _HigherEmissionColor1: {r: 0.18106908, g: 0.9056604, b: 0, a: 0}
     - _LowerEmissionColor: {r: 0.025453199, g: 0.4056604, b: 0, a: 0}
     - _LowerEmissionColor1: {r: 0.099322796, g: 1, b: 0, a: 0}

@@ -222,7 +222,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 1, b: 0, a: 1}
+      maxColor: {r: 0, g: 0.4433962, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4900,6 +4900,14 @@ MonoBehaviour:
   _minDetectionRange: 3
   Weaknesses: []
   resistances: []
+  _defaultDamage:
+    type: 0
+    Ammount: 0
+    criticalMultiplier: 0
+    instaKill: 0
+    KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
   _mainCollider: {fileID: 5993281819839330285}
   _lineOfSghtOrigin: {fileID: 8493161277885471557}
   debugThisUnit: 0
@@ -20017,7 +20025,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 27bbf78b68d2d6a4d8553605d9b8c8fb,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27bbf78b68d2d6a4d8553605d9b8c8fb, type: 3}

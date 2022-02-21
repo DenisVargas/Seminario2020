@@ -2,7 +2,9 @@ fileFormatVersion: 2
 guid: 0176135ce798fce4d992833281cc1dfa
 ShaderImporter:
   externalObjects: {}
-  defaultTextures: []
+  defaultTextures:
+  - _colormask: {fileID: 2800000, guid: caceba2ef439b0a4fb007a58ef021a1a, type: 3}
+  - _vikingTexture2: {fileID: 2800000, guid: 2f35993f40f150c459b2e93f0189fafe, type: 3}
   nonModifiableTextures: []
   userData: 
   assetBundleName: 

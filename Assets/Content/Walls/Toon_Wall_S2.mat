@@ -10,7 +10,7 @@ Material:
   m_Name: Toon_Wall_S2
   m_Shader: {fileID: 4800000, guid: 6e51695ad4c735249b83523859777b02, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -81,6 +81,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 0
+    - _mouseOver: 0
     m_Colors:
     - _Color: {r: 0.7075472, g: 0.45733008, b: 0.27033645, a: 1}
     - _Color1: {r: 0.6981132, g: 0.5057295, b: 0.2206301, a: 0}

@@ -490,9 +490,11 @@ MonoBehaviour:
   angle: 45
   UseCustomOrientation: 1
   SightSocket: {fileID: 2600450864647600134}
+  UseCustomRayOrigin: 1
+  CustomRayOrigin: {fileID: 2600450864647600134}
   debugThisUnit: 0
-  rangeColor: {r: 1, g: 1, b: 1, a: 1}
-  angleColor: {r: 1, g: 1, b: 1, a: 1}
+  rangeColor: {r: 1, g: 0.97981787, b: 0, a: 1}
+  angleColor: {r: 1, g: 0.052272934, b: 0, a: 1}
   positionDiference: {x: 0, y: 0, z: 0}
   dirToTarget: {x: 0, y: 0, z: 0}
   angleToTarget: 0
@@ -526,6 +528,10 @@ MonoBehaviour:
   _mainCollider: {fileID: 3840256945297130291}
   _lineOfSghtOrigin: {fileID: 317979888359518059}
   debugThisUnit: 0
+  _trailPrefab: {fileID: 8560746031202306123, guid: 8a53d3736f4f60b4eaca0e51afdbc226,
+    type: 3}
+  _trail: {fileID: 0}
+  DEBUG_CurrentState: None/Error
   DEBUG_MINDETECTIONRANGE: 0
   DEBUG_MINDETECTIONRANGE_COLOR: {r: 0, g: 1, b: 1, a: 1}
   DebugText_View: {fileID: 1546326007849555790}
@@ -661,11 +667,10 @@ MonoBehaviour:
   stateType: 14
   _targeteables:
     serializedVersion: 2
-    m_Bits: 4294967295
-  _rageMode_TargetDetectionRange: 5
-  _detectionDelay: 0.5
+    m_Bits: 3221225984
+  _MinDetectionRange: 2
   debugThisState: 0
-  DEBUG_RageMode_Ranges: 1
+  DEBUG_RageMode_Ranges: 0
   DEBUG_RM_TrgDetectRange_GIZMOCOLOR: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1001 &1078013808036097407
 PrefabInstance:

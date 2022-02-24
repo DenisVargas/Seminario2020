@@ -11,8 +11,7 @@ using Core.SaveSystem;
 public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, ILivingEntity
 {
     //================================ Basic Variables ===============================================
-
-    [Header("Stats")]
+    [Header("============= Common Stats ===============================")]
     [SerializeField] protected float _health      = 100f;
     [SerializeField] protected float _maxHealth   = 100f;
     [SerializeField] protected float _attackRange = 2f;
@@ -24,9 +23,9 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     [SerializeField] protected Damage _defaultDamage = new Damage();
 
     [SerializeField] protected Collider _mainCollider = null;
-    protected Controller _player                          = null;
-    protected ClonBehaviour _playerClone                  = null;
-    protected IDamageable<Damage, HitResult> _attackTarget = null;
+    [SerializeField] protected Controller _player                          = null;
+    [SerializeField] protected ClonBehaviour _playerClone                  = null;
+    [SerializeField] protected IDamageable<Damage, HitResult> _attackTarget = null;
 
     //=================================== Components =================================================
 
@@ -48,7 +47,7 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     //=================================== DEBUGGING ==================================================
 
 #if UNITY_EDITOR
-    [Header("=================== DEBUG ==========================")]
+    [Header("------------------- DEBUG --------------------------")]
     [SerializeField] protected bool debugThisUnit = false;
 #endif
 

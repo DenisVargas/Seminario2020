@@ -20,6 +20,9 @@ public class PursueState : State
     [SerializeField] float _pursueMovementSpeed = 3f;
     [SerializeField] float _minDistanceToAttack = 3f;
 
+    IDamageable<Damage, HitResult> _player = null;
+    IDamageable<Damage, HitResult> _clon = null;
+
     PathFindSolver _solver = null;
     Node _current = null;
     Node _next = null;
@@ -31,6 +34,13 @@ public class PursueState : State
         Gizmos.DrawWireSphere(transform.position, _minDistanceToAttack);
     }
 
+    public PursueState Set(Controller player, ClonBehaviour clon)
+    {
+        this._player = player;
+        this._clon = clon;
+        return this;
+    }
+
     public override void Begin()
     {
         _anims.SetBool("Walking", true);
@@ -40,10 +50,10 @@ public class PursueState : State
         var target = getTarget();
         if (target != null)
         {
-            var player = target.GetComponent<Controller>();
-            if (player != null) //Si es el jugador...
+            if (target == _player) //Si es el jugador...
             {
-                player.OnMovementChange += RecalculateValidPathToTarget; //guardo el evento de movimiento
+                var c = target.GetComponent<Controller>();
+                c.OnMovementChange += RecalculateValidPathToTarget; //guardo el evento de recalculado.
             }
         }
 

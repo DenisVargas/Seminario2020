@@ -7,8 +7,12 @@ namespace IA.LineOfSight
         public LayerMask visibles = ~0;
         public float range = 1f;
         public float angle = 45f;
+
         public bool UseCustomOrientation = false;
         public Transform SightSocket = null;
+
+        public bool UseCustomRayOrigin = false;
+        public Transform CustomRayOrigin = null;
 
         Vector3 orientation = Vector3.zero;
 
@@ -23,6 +27,8 @@ namespace IA.LineOfSight
 
         void OnDrawGizmosSelected()
         {
+            if (!debugThisUnit) return;
+
             if (SightSocket && UseCustomOrientation)
                 orientation = SightSocket.forward.YComponent(0).normalized;
             else
@@ -73,18 +79,20 @@ namespace IA.LineOfSight
         /// <returns>Verdadero si el Objetivo específicado está dentro de la línea de visión</returns>
         public bool IsInSight(Vector3 origin, Vector3 direction, Transform target)
         {
-            if (target == null)
-            {
-                Debug.Log("El target es inválido");
-                return false;
-            }
-
 #if UNITY_EDITOR
             if (debugThisUnit)
             {
                 Debug.Log("Debugging this unit");
             }
 #endif
+            if (target == null)
+            {
+#if UNITY_EDITOR
+                if (debugThisUnit)
+                    Debug.Log("El target es inválido");
+#endif
+                return false;
+            }
 
             if (UseCustomOrientation && SightSocket != null)
                 orientation = SightSocket.forward.YComponent(0).normalized;
@@ -102,11 +110,13 @@ namespace IA.LineOfSight
             if (distanceToTarget > range || angleToTarget > angle) return false;
 
             RaycastHit hitInfo;
-            Ray toThrow = new Ray(origin, direction);
+            Ray toThrow = new Ray(UseCustomRayOrigin && CustomRayOrigin != null ? CustomRayOrigin.transform.position : origin, direction);
 
 #if UNITY_EDITOR
             if (debugThisUnit)
-                lastRay = toThrow; 
+            {
+                lastRay = toThrow;
+            }
 #endif
 
             if (Physics.Raycast(toThrow, out hitInfo, float.MaxValue, visibles))

@@ -4,10 +4,13 @@ using IA.FSM;
 using Core.Debuging;
 using IA.PathFinding;
 using Core.SaveSystem;
+using System.Collections.Generic;
 
 public class Grunt : BaseNPC
 {
-    //[Header("================= Grunt ====================")]
+    [Space, Header("==================== GRUNT ========================")]
+    [SerializeField] GameObject _trailPrefab    = null;
+    [SerializeField] Trail      _trail          = null;
     public float Health
     {
         get => _health;
@@ -19,9 +22,12 @@ public class Grunt : BaseNPC
         }
     }
 
+    public Dictionary<CommonState, object> states = new Dictionary<CommonState, object>();
+
     #region DEBUG
 #if UNITY_EDITOR
-    [Space(), Header("==================== GIZMOS ==========================")]
+    [Space(), Header("-------------------------- GIZMOS --------------------------")]
+    [SerializeField] string DEBUG_CurrentState = "None/Error";
     [SerializeField] bool DEBUG_MINDETECTIONRANGE = true;
     [SerializeField] Color DEBUG_MINDETECTIONRANGE_COLOR = Color.cyan;
     [SerializeField] TMPro.TMP_Text DebugText_View = null;
@@ -54,33 +60,23 @@ public class Grunt : BaseNPC
         IdleState idle = GetComponent<IdleState>();
         idle.checkForPlayerAndClone = checkForPlayerOrClone;
         idle.AttachTo(_states, true);
+        states.Add(CommonState.idle, idle);
 
         BurningState burning = GetComponent<BurningState>();
         burning.AttachTo(_states);
+        states.Add(CommonState.burning, burning);
 
         FallTrapState falling = GetComponent<FallTrapState>();
         falling.AttachTo(_states);
+        states.Add(CommonState.fallTrap, falling);
 
         RageState rage = GetComponent<RageState>();
-        rage.AttachTo(_states);
-        rage.IsInSight = (item) =>
-        {
-            Vector3 customLOSTargetDir = Vector3.zero;
+        rage.Set(this, _sight).AttachTo(_states);
+        rage.SetAttackTarget = target => _attackTarget = target;
+        rage.LookAtTarget = LookAtAttackTarget;
+        states.Add(CommonState.rage, rage);
 
-            var player = item.GetComponent<Controller>();
-            var clone = item.GetComponent<ClonBehaviour>();
-
-            if (player)
-                customLOSTargetDir = (player.getLineOfSightTargetPosition() - _lineOfSghtOrigin.position).normalized;
-            else if(clone)
-                customLOSTargetDir = (clone.getLineOfSightTargetPosition() - _lineOfSghtOrigin.position).normalized;
-            else
-                customLOSTargetDir = (item.transform.position - _lineOfSghtOrigin.position).normalized;
-
-            return _sight.IsInSight(_lineOfSghtOrigin.position, customLOSTargetDir, item);
-        };
-
-        PursueState pursue = GetComponent<PursueState>();
+        PursueState pursue = GetComponent<PursueState>().Set(_player, _playerClone);
         pursue.checkDistanceToTarget = TargetIsInAttackRange;
         pursue.getDestinyNode = getCloserNodeToAttackTarget;
         pursue.MoveToTarget = MoveToNode;
@@ -93,6 +89,7 @@ public class Grunt : BaseNPC
 
             return false;
         };
+        states.Add(CommonState.pursue, pursue);
 
         AttackState attack = GetComponent<AttackState>();
         attack.LookAtAttackTarget = LookAtAttackTarget;
@@ -100,11 +97,13 @@ public class Grunt : BaseNPC
         attack.KillAttackTarget = KillAttackTarget;
         attack.Think = EvaluateSituation;
         attack.AttachTo(_states);
+        states.Add(CommonState.attack, attack);
 
         DeadState dead = GetComponent<DeadState>();
         dead.OnDead = OnEntityDead;
         dead.Reset = ResetSetUp;
         dead.AttachTo(_states);
+        states.Add(CommonState.dead, dead);
 
         #endregion
         #region Set de Transiciones.
@@ -138,14 +137,16 @@ public class Grunt : BaseNPC
     }
     protected override void Update()
     {
-        base.Update();
+        base.Update(); //_states.Update();
 
         #if UNITY_EDITOR
             debugText = "";
             debugText += $"Estado: {_states.CurrentStateType.ToString()}\n";
             debugText += $"Jugador encontrado: {_player != null}\n";
             debugText += $"Clon encontrado: {_playerClone != null}\n";
-            DebugText_View.text = debugText; 
+            DebugText_View.text = debugText;
+
+            DEBUG_CurrentState = $"Estado: {_states.CurrentStateType.ToString()}";
         #endif
     }
 
@@ -166,6 +167,34 @@ public class Grunt : BaseNPC
         transform.position = enemyData.position;
         transform.forward = enemyData.forward;
         _states.SetState(CommonState.idle);
+    }
+
+    //=================================== Public Memeber Funcs ==============================
+
+    public void AddTrail()
+    {
+        if(_trail == null)
+        {
+            var tgo = Instantiate(_trailPrefab, gameObject.transform);
+            _trail = tgo.GetComponent<Trail>();
+        }
+        _trail.gameObject.SetActive(true);
+
+        var patroll = states[CommonState.patroll] as PatrollState;
+        patroll.OnUpdateCurrentNode += _trail.OnCloserNodeChanged;
+        var pursue = states[CommonState.pursue] as PursueState;
+        pursue.OnUpdateCurrentNode += _trail.OnCloserNodeChanged;
+    }
+    public void RemoveTrail()
+    {
+        if (_trail == null) return;
+
+        _trail.gameObject.SetActive(false);
+
+        var patroll = states[CommonState.patroll] as PatrollState;
+        patroll.OnUpdateCurrentNode -= _trail.OnCloserNodeChanged;
+        var pursue = states[CommonState.pursue] as PursueState;
+        pursue.OnUpdateCurrentNode -= _trail.OnCloserNodeChanged;
     }
 
     //=================================== Private Memeber Funcs =============================
@@ -194,7 +223,6 @@ public class Grunt : BaseNPC
     public override HitResult GetHit(Damage damage)
     {
         HitResult result = new HitResult() { fatalDamage = true, conected = true };
-        
 
         if (_states.currentState.StateType == CommonState.dead)
             return new HitResult { conected = false, fatalDamage = false };
@@ -242,37 +270,52 @@ public class Grunt : BaseNPC
 
     void AV_HitReact_End()
     {
+        print("Hit Reaction Ended");
         _anims.SetBool("GetHited", false);
     }
     void AV_TurnArround_Start()
     {
-        //Core.Debuging.Console.instance.Print($"{gameObject.name}::Evento De Animacion::TurnArround_Start", DebugLevel.info);
-        //print($"{gameObject.name}::Evento De Animacion::TurnArround_Start");
-        //_hitSecuence = 2;
+#if UNITY_EDITOR
+        if(debugThisUnit)
+            print("Turn Around Started"); 
+#endif
+        if (_states.CurrentStateType == CommonState.rage)
+            (_states.currentState as RageState).SetAnimationStage(1);
     }
     void AV_TurnArround_End()
     {
-        //_hitSecuence = 3;
-        //if (_playerFound || _otherKilleableTargetFounded || _otherDestructibleFounded)
-        //    _a_targetFinded = true;
+#if UNITY_EDITOR
+        if (debugThisUnit)
+            print("Turn Around Ended");
+#endif
+        if (_states.CurrentStateType == CommonState.rage)
+        {
+            var rage = _states.currentState as RageState;
+            rage.SetAnimationStage(2);
+        }
     }
     void AV_Angry_Start()
     {
-
+#if UNITY_EDITOR
+        if (debugThisUnit)
+            print("Angry Start");
+#endif
+        if (_states.CurrentStateType == CommonState.rage)
+        {
+            var rage = _states.currentState as RageState;
+            rage.SetAnimationStage(3);
+        }
     }
     void AV_Angry_End()
     {
-        //if (_otherKilleableTargetFounded || _otherDestructibleFounded)
-        //{
-        //    Core.Debuging.Console.instance.Print($"{gameObject.name} ha encontrado a un target válido.", DebugLevel.info);
-        //    _killeableTarget = _targetsfounded[0].GetComponent<IDamageable<Damage, HitResult>>();
-        //    _a_walk = true;
-        //    //state.Feed(BoboState.pursue);
-        //}
-        //else
-        //{
-        //    Core.Debuging.Console.instance.Print($"{gameObject.name} no ha encontrado a un target válido.", DebugLevel.error);
-        //    //state.Feed(BoboState.idle);
-        //}
+#if UNITY_EDITOR
+        if (debugThisUnit)
+            print("Angry Ended");
+#endif
+        if (_states.CurrentStateType == CommonState.rage)
+        {
+            var rage = _states.currentState as RageState;
+            rage.SetAnimationStage(4);
+        }
     }
 }

@@ -322,7 +322,6 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             {
                 if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Alpha2))
                 {
-                    //print("Cancelo el tiro");
                     _Aiming = false;
                     return;
                 }

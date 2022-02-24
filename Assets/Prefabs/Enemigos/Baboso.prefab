@@ -4938,7 +4938,7 @@ MonoBehaviour:
   range: 1
   angle: 45
   UseCustomOrientation: 0
-  SightSocket: {fileID: 0}
+  SightSocket: {fileID: 8493161277885471557}
   debugThisUnit: 0
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   angleColor: {r: 1, g: 1, b: 1, a: 1}

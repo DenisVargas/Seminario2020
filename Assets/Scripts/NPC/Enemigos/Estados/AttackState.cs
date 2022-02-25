@@ -30,21 +30,29 @@ public class AttackState : State
         _anims.SetBool("Attack", false);
     }
 
-    //============================== Animation Events =======================================
+    //============================== Animation ==============================================
 
-    void AV_AttackStart()
+    public void setAttackStage(int stage)
     {
-        StunAttackTarget();
-    }
-    void AV_Attack_Hit()
-    {
-        KillAttackTarget(); //Evento.
-        _anims.SetBool("Attack", false); //Animación
-    }
-    void AV_Attack_Ended()
-    {
-        //Evalua si el target fue eliminado y que hacer a continuación.
-        SetIgnoreEntityDead(false);
-        Think();
+        switch (stage)
+        {
+            case 1:
+                StunAttackTarget();
+                break;
+
+            case 2:
+                KillAttackTarget(); //Evento.
+                _anims.SetBool("Attack", false); //Animación
+                break;
+
+            case 3:
+                //Evalua si el target fue eliminado y que hacer a continuación.
+                SetIgnoreEntityDead(false);
+                Think();
+                break;
+
+            default:
+                break;
+        }
     }
 }

@@ -27,10 +27,6 @@ Material:
         m_Texture: {fileID: 2800000, guid: 99886758b340ec3489fd041100f00f8c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _flow2:
-        m_Texture: {fileID: 2800000, guid: bb8b3ab835b3f43409dfcf1693c0145f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _images:
         m_Texture: {fileID: 2800000, guid: 09d0f3a5305f44d43b3ebb55298e1e4f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -43,15 +39,7 @@ Material:
         m_Texture: {fileID: 2800000, guid: 99886758b340ec3489fd041100f00f8c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _slimetexture1:
-        m_Texture: {fileID: 2800000, guid: 99886758b340ec3489fd041100f00f8c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _slugColorMask:
-        m_Texture: {fileID: 2800000, guid: 737fb77f8d120064b94788a684d22b22, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _slugColorMask1:
         m_Texture: {fileID: 2800000, guid: 737fb77f8d120064b94788a684d22b22, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -65,12 +53,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - __dirty: 0
-    - _frecuencia: 38.5
-    - _intensidad: 10
-    - _intensitywalk: 7.47
-    - _pi: 10
+    - _frecuencia: 35
+    - _intensidad: 0.05
     - _speed: 3
-    - _timescale: 8.5
     m_Colors:
-    - _Skincolor: {r: 0.10436797, g: 1, b: 0, a: 0}
-    - _babaeffect: {r: 0.18, g: 0.13, b: 0, a: 0}
+    - _Skincolor: {r: 0.0676592, g: 0.9622642, b: 0, a: 0}

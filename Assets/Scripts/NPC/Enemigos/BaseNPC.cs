@@ -140,14 +140,6 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
             _attackTarget.GetStun(transform.position, 1);
     }
     /// <summary>
-    /// Instakillea al objetivo de ataque, si este no es nulo y esta vivo.
-    /// </summary>
-    protected void KillAttackTarget()
-    {
-        if (_attackTarget != null && _attackTarget.IsAlive)
-            FeedDamageResult(_attackTarget.GetHit(new Damage() { instaKill = true, type = DamageType.piercing, KillAnimationType = 1 }));
-    }
-    /// <summary>
     /// Chequea si el jugador y su clon estan en rango de visión.
     /// Si se cumple la condición, setea el más cercano como target de Ataque.
     /// </summary>

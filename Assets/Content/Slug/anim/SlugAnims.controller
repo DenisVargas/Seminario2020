@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: d5b0b3cbf0ab75a4fa4a68a90d1076a3,
+  m_Motion: {fileID: 1827226128182048838, guid: a423bb9aa7d168b429183e80469b7a44,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -75,7 +75,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: 7486079bc11739f4d9ef1bcb79d91985,
+  m_Motion: {fileID: 1827226128182048838, guid: 3551aeb3ed54ef34a8bc5f97810bc7ed,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -104,7 +104,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: 47689f982770dbf428f9c44e4f9d0101,
+  m_Motion: {fileID: 1827226128182048838, guid: 4ede7777b0214704390d5130dd299818,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -213,7 +213,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: 2bf9741348955fb4591b2b9dfaaefb82,
+  m_Motion: {fileID: 1827226128182048838, guid: 4ede7777b0214704390d5130dd299818,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -290,7 +290,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: cfae35cce69ca6a4e91b239506ad2f96,
+  m_Motion: {fileID: 1827226128182048838, guid: 4ede7777b0214704390d5130dd299818,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -311,25 +311,25 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Dead
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Burning
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Attack
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer

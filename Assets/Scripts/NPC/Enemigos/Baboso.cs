@@ -95,8 +95,31 @@ public class Baboso : BaseNPC
         AttackState attack = GetComponent<AttackState>();
         attack.LookAtAttackTarget = LookAtAttackTarget;
         attack.StunAttackTarget = StunTarget;
-        attack.KillAttackTarget = KillAttackTarget;
-        attack.Think = () => { };
+        attack.KillAttackTarget = () =>
+        {
+            if (_attackTarget != null && _attackTarget.IsAlive)
+                FeedDamageResult(_attackTarget.GetHit(_defaultDamage));
+        };
+        attack.Think = () => {
+            if (_attackTarget != null)
+            {
+                if (_attackTarget.IsAlive)
+                {
+                    if (Vector3.Distance(transform.position, _attackTarget.transform.position) < _attackRange)
+                        _states.Feed(CommonState.attack);
+                    else
+                        _states.Feed(CommonState.pursue);
+                }
+                else
+                {
+                    _attackTarget = null;
+                    if (startPatrolling)
+                        _states.Feed(CommonState.patroll);
+                    else
+                        _states.Feed(CommonState.idle);
+                }
+            }
+        };
         attack.AttachTo(_states);
 
         FallTrapState falling = GetComponent<FallTrapState>();
@@ -261,33 +284,28 @@ public class Baboso : BaseNPC
 
     void AV_Attack_Start()
     {
-        if (_attackTarget != null)
-            transform.forward = (_attackTarget.transform.position - transform.position).normalized;
+        //Look at target.
+        if(_states.CurrentStateType == CommonState.attack)
+        {
+            var attackState = (AttackState) _states.currentState;
+            attackState.setAttackStage(1);
+        }
     }
-    void AV_Attack_Land()
-    {
-        if (_attackTarget != null)
-            KillAttackTarget();
+    void AV_Attack_Land() {
+        //Perform a kill target.
+        if (_states.CurrentStateType == CommonState.attack)
+        {
+            var attackState = (AttackState)_states.currentState;
+            attackState.setAttackStage(2);
+        }
     }
     void AV_Attack_End()
     {
-        if (_attackTarget != null)
+        //Think.
+        if (_states.CurrentStateType == CommonState.attack)
         {
-            if (_attackTarget.IsAlive)
-            {
-                if (Vector3.Distance(transform.position, _attackTarget.transform.position) < _attackRange)
-                    _states.Feed(CommonState.attack);
-                else
-                    _states.Feed(CommonState.pursue);
-            }
-            else
-            {
-                _attackTarget = null;
-                if (startPatrolling)
-                    _states.Feed(CommonState.patroll);
-                else
-                    _states.Feed(CommonState.idle);
-            }
+            var attackState = (AttackState)_states.currentState;
+            attackState.setAttackStage(3);
         }
     }
     void AV_Burning_End()

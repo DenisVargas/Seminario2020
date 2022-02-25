@@ -198,9 +198,10 @@ public class Grunt : BaseNPC
         if (_trail == null) return;
 
         _trail.gameObject.SetActive(false);
+        _trail.Emit = false;
 
-        var patroll = states[CommonState.patroll] as PatrollState;
-        patroll.OnUpdateCurrentNode -= _trail.OnCloserNodeChanged;
+        //var patroll = states[CommonState.patroll] as PatrollState;
+        //patroll.OnUpdateCurrentNode -= _trail.OnCloserNodeChanged;
         var pursue = states[CommonState.pursue] as PursueState;
         pursue.OnUpdateCurrentNode -= _trail.OnCloserNodeChanged;
     }

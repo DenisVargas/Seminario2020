@@ -4909,6 +4909,8 @@ MonoBehaviour:
     explotionOrigin: {x: 0, y: 0, z: 0}
     explotionForce: 0
   _mainCollider: {fileID: 5993281819839330285}
+  _player: {fileID: 0}
+  _playerClone: {fileID: 0}
   _lineOfSghtOrigin: {fileID: 8493161277885471557}
   debugThisUnit: 0
   startPatrolling: 1
@@ -4939,6 +4941,8 @@ MonoBehaviour:
   angle: 45
   UseCustomOrientation: 0
   SightSocket: {fileID: 8493161277885471557}
+  UseCustomRayOrigin: 0
+  CustomRayOrigin: {fileID: 0}
   debugThisUnit: 0
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   angleColor: {r: 1, g: 1, b: 1, a: 1}
@@ -5081,7 +5085,7 @@ MonoBehaviour:
   ExplotionParticle: {fileID: 2063363807469886274}
   _StaineableMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1073741825
   _explodeRange: 5
   DEBUG_ExplodeRangeColor: {r: 1, g: 0.52990127, b: 0, a: 1}
 --- !u!114 &5252996617626958907

@@ -39,6 +39,12 @@ public class ExplodeState : State
             {
                 staineable.StainWithSlime();
             }
+
+            var grunt = col.GetComponent<Grunt>();
+            if(grunt != null)
+            {
+                grunt.AddTrail();
+            }
         }
 
         SwitchToState(CommonState.dead);

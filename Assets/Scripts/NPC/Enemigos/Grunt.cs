@@ -22,7 +22,7 @@ public class Grunt : BaseNPC
         }
     }
 
-    public Dictionary<CommonState, object> states = new Dictionary<CommonState, object>();
+    public Dictionary<CommonState, State> states = new Dictionary<CommonState, State>();
 
     #region DEBUG
 #if UNITY_EDITOR
@@ -94,7 +94,12 @@ public class Grunt : BaseNPC
         AttackState attack = GetComponent<AttackState>();
         attack.LookAtAttackTarget = LookAtAttackTarget;
         attack.StunAttackTarget = StunTarget;
-        attack.KillAttackTarget = KillAttackTarget;
+        attack.KillAttackTarget = () => { 
+            if(_attackTarget != null && _attackTarget.IsAlive)
+            {
+                    FeedDamageResult(_attackTarget.GetHit(new Damage() { instaKill = true, type = DamageType.blunt, KillAnimationType = 1 }));
+            }
+        };
         attack.Think = EvaluateSituation;
         attack.AttachTo(_states);
         states.Add(CommonState.attack, attack);
@@ -177,13 +182,16 @@ public class Grunt : BaseNPC
         {
             var tgo = Instantiate(_trailPrefab, gameObject.transform);
             _trail = tgo.GetComponent<Trail>();
+            _trail.Emit = true;
         }
         _trail.gameObject.SetActive(true);
 
-        var patroll = states[CommonState.patroll] as PatrollState;
-        patroll.OnUpdateCurrentNode += _trail.OnCloserNodeChanged;
-        var pursue = states[CommonState.pursue] as PursueState;
+        //State patroll = states[CommonState.patroll];
+        ////patroll.OnUpdateCurrentNode += _trail.OnCloserNodeChanged;
+        PursueState pursue = (PursueState)states[CommonState.pursue];
         pursue.OnUpdateCurrentNode += _trail.OnCloserNodeChanged;
+
+        //AutoStain.
     }
     public void RemoveTrail()
     {

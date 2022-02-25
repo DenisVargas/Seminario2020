@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 85cfba5a58bb377408e70ea43b9b5afb
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _slugColorMask2: {fileID: 2800000, guid: e9a11b3863156304d845956ef0242edb, type: 3}
+  - _images_NORM: {fileID: 2800000, guid: ba47bae6ac75ca64a8f09333a4b86184, type: 3}
+  - _Teeth: {fileID: 2800000, guid: 1c048beda85e64a47a6cad1aae0379b0, type: 3}
+  - _slugColorMask: {fileID: 2800000, guid: 737fb77f8d120064b94788a684d22b22, type: 3}
+  - _slimetexture: {fileID: 2800000, guid: 99886758b340ec3489fd041100f00f8c, type: 3}
+  - _images: {fileID: 2800000, guid: 09d0f3a5305f44d43b3ebb55298e1e4f, type: 3}
+  - _TextureSample0: {fileID: 2800000, guid: 99886758b340ec3489fd041100f00f8c, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

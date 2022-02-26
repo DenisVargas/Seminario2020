@@ -4914,9 +4914,6 @@ MonoBehaviour:
   debugThisUnit: 0
   startPatrolling: 1
   _currentState: 0
-  burnParticles:
-  - {fileID: 7412281337090766946}
-  - {fileID: 3674265384410545395}
   DEBUG_ATACKRANGE: 0
   DEBUG_AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
   DEBUG_MINDETECTIONRANGE: 0
@@ -5068,6 +5065,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateType: 10
+  _burnParticles:
+  - {fileID: 3674265384410545395}
+  - {fileID: 7412281337090766946}
 --- !u!114 &7953084887562519665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19689,7 +19689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.227
+      value: -0.088
       objectReference: {fileID: 0}
     - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19982,7 +19982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.227
+      value: -0.088
       objectReference: {fileID: 0}
     - target: {fileID: 4521404770085940, guid: 89956e675b749204c8e10395ce2b5fb9, type: 3}
       propertyPath: m_LocalPosition.y

@@ -14,9 +14,6 @@ public class Baboso : BaseNPC
     [SerializeField] bool startPatrolling      = false;
     [SerializeField] CommonState _currentState = CommonState.none;
 
-    [Header("References")]
-    [SerializeField] GameObject[] burnParticles   = new GameObject[2];
-
     Damage _damageState         = new Damage();
     Trail _trail                = null;
 
@@ -128,9 +125,6 @@ public class Baboso : BaseNPC
         BurningState burning = GetComponent<BurningState>();
         burning.OnBurning = () =>
         {
-            StartCoroutine(Burn());
-
-            //Dejamos de emitir baba.
             _trail.Emit = false;
         };
         burning.AttachTo(_states);
@@ -310,14 +304,11 @@ public class Baboso : BaseNPC
     }
     void AV_Burning_End()
     {
-        _states.Feed(CommonState.dead);
         //Debug.LogWarning("AnimEvent: BurningEnd");
-    }
-
-    IEnumerator Burn()
-    {
-        burnParticles[0].SetActive(true);
-        yield return new WaitForSeconds(0.1f);
-        burnParticles[1].SetActive(true);
+        if (_states.CurrentStateType == CommonState.burning)
+        {
+            var burning = (BurningState)_states.currentState;
+            burning.SetBurningStage(1);
+        }
     }
 }

@@ -9,8 +9,15 @@ using System.Collections.Generic;
 public class Grunt : BaseNPC
 {
     [Space, Header("==================== GRUNT ========================")]
+    [SerializeField] bool _stained = false;
     [SerializeField] GameObject _trailPrefab    = null;
     [SerializeField] Trail      _trail          = null;
+    [Header("Body Renderers")]
+    [SerializeField] SkinnedMeshRenderer _body = null;
+    [SerializeField] SkinnedMeshRenderer _mask = null;
+    [SerializeField] SkinnedMeshRenderer _hair = null;
+    [SerializeField] SkinnedMeshRenderer _clothes = null;
+
     public float Health
     {
         get => _health;
@@ -63,6 +70,9 @@ public class Grunt : BaseNPC
         states.Add(CommonState.idle, idle);
 
         BurningState burning = GetComponent<BurningState>();
+        burning.OnBurning = () => {
+            _trail.Emit = false;
+        };
         burning.AttachTo(_states);
         states.Add(CommonState.burning, burning);
 
@@ -97,7 +107,7 @@ public class Grunt : BaseNPC
         attack.KillAttackTarget = () => { 
             if(_attackTarget != null && _attackTarget.IsAlive)
             {
-                    FeedDamageResult(_attackTarget.GetHit(new Damage() { instaKill = true, type = DamageType.blunt, KillAnimationType = 1 }));
+                FeedDamageResult(_attackTarget.GetHit(new Damage() { instaKill = true, type = DamageType.blunt, KillAnimationType = 1 }));
             }
         };
         attack.Think = EvaluateSituation;
@@ -115,16 +125,19 @@ public class Grunt : BaseNPC
         idle.AddTransition(dead)
             .AddTransition(rage)
             .AddTransition(pursue)
+            .AddTransition(burning)
             .AddTransition(falling);
 
         pursue.AddTransition(dead)
               .AddTransition(attack)
+              .AddTransition(burning)
               .AddTransition(falling);
 
         attack.AddTransition(dead)
               .AddTransition(attack)
               .AddTransition(idle)
               .AddTransition(falling)
+              .AddTransition(burning)
               .AddTransition(pursue);
 
         falling.AddTransition(dead);
@@ -135,6 +148,7 @@ public class Grunt : BaseNPC
         rage.AddTransition(dead)
             .AddTransition(idle)
             .AddTransition(pursue)
+            .AddTransition(burning)
             .AddTransition(falling);
 
         dead.AddTransition(idle);
@@ -152,7 +166,7 @@ public class Grunt : BaseNPC
             DebugText_View.text = debugText;
 
             DEBUG_CurrentState = $"Estado: {_states.CurrentStateType.ToString()}";
-        #endif
+#endif
     }
 
     //========================================== Sistema de Guardado ==========================================
@@ -178,6 +192,7 @@ public class Grunt : BaseNPC
 
     public void AddTrail()
     {
+        _stained = true;
         if(_trail == null)
         {
             var tgo = Instantiate(_trailPrefab, gameObject.transform);
@@ -186,24 +201,38 @@ public class Grunt : BaseNPC
         }
         _trail.gameObject.SetActive(true);
 
-        //State patroll = states[CommonState.patroll];
-        ////patroll.OnUpdateCurrentNode += _trail.OnCloserNodeChanged;
         PursueState pursue = (PursueState)states[CommonState.pursue];
         pursue.OnUpdateCurrentNode += _trail.OnCloserNodeChanged;
 
         //AutoStain.
+        if (_body)
+            _body.material.SetFloat("_stained", 1);
+        if (_clothes)
+            _clothes.material.SetFloat("_stained", 1);
+        if (_hair)
+            _hair.material.SetFloat("_stained", 1);
+        if (_mask)
+            _mask.material.SetFloat("_stained", 1);
     }
     public void RemoveTrail()
     {
+        _stained = true;
         if (_trail == null) return;
 
         _trail.gameObject.SetActive(false);
         _trail.Emit = false;
 
-        //var patroll = states[CommonState.patroll] as PatrollState;
-        //patroll.OnUpdateCurrentNode -= _trail.OnCloserNodeChanged;
         var pursue = states[CommonState.pursue] as PursueState;
         pursue.OnUpdateCurrentNode -= _trail.OnCloserNodeChanged;
+
+        if (_body)
+            _body.material.SetFloat("_stained", 0);
+        if(_clothes)
+            _clothes.material.SetFloat("_stained", 0);
+        if(_hair)
+            _hair.material.SetFloat("_stained", 0);
+        if(_mask)
+            _mask.material.SetFloat("_stained", 0);
     }
 
     //=================================== Private Memeber Funcs =============================
@@ -244,6 +273,14 @@ public class Grunt : BaseNPC
 #endif
 
             _states.Feed(CommonState.rage);
+        }
+        if (damage.type == DamageType.Fire && _stained)
+        {
+            _states.Feed(CommonState.burning);
+            Health -= damage.Ammount;
+            result.fatalDamage = true;
+            result.conected = true;
+            return result;
         }
 
         if (damage.instaKill) Health = 0;
@@ -325,6 +362,42 @@ public class Grunt : BaseNPC
         {
             var rage = _states.currentState as RageState;
             rage.SetAnimationStage(4);
+        }
+    }
+
+    void AV_AttackStart()
+    {
+        if(_states.CurrentStateType == CommonState.attack)
+        {
+            var at = (AttackState)_states.currentState;
+            at.setAttackStage(1);
+        }
+    }
+    void AV_Attack_Hit()
+    {
+        if (_states.CurrentStateType == CommonState.attack)
+        {
+            var at = (AttackState)_states.currentState;
+            at.setAttackStage(2);
+        }
+    }
+
+    void AV_Attack_Ended()
+    {
+        if (_states.CurrentStateType == CommonState.attack)
+        {
+            var at = (AttackState)_states.currentState;
+            at.setAttackStage(3);
+        }
+    }
+
+    void AV_Burning_End()
+    {
+        //Debug.LogWarning("AnimEvent: BurningEnd");
+        if (_states.CurrentStateType == CommonState.burning)
+        {
+            var burning = (BurningState)_states.currentState;
+            burning.SetBurningStage(1);
         }
     }
 }

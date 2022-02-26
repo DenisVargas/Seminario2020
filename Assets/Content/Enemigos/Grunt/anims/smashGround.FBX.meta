@@ -62,7 +62,7 @@ ModelImporter:
       - time: 0.003115265
         functionName: AV_AttackStart
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 51dbdafbfc5c92e47b7f3bddc2f47660,
+        objectReferenceParameter: {fileID: 11500000, guid: 4d6b85cc6c798774b841d4109550d7fd,
           type: 3}
         floatParameter: 0
         intParameter: 0
@@ -70,7 +70,7 @@ ModelImporter:
       - time: 0.47040498
         functionName: AV_Attack_Hit
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 51dbdafbfc5c92e47b7f3bddc2f47660,
+        objectReferenceParameter: {fileID: 11500000, guid: 4d6b85cc6c798774b841d4109550d7fd,
           type: 3}
         floatParameter: 0
         intParameter: 0
@@ -78,7 +78,7 @@ ModelImporter:
       - time: 1
         functionName: AV_Attack_Ended
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 51dbdafbfc5c92e47b7f3bddc2f47660,
+        objectReferenceParameter: {fileID: 11500000, guid: 4d6b85cc6c798774b841d4109550d7fd,
           type: 3}
         floatParameter: 0
         intParameter: 0

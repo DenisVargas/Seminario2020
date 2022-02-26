@@ -1,16 +1,21 @@
 ﻿using IA.FSM;
 using System;
+using System.Collections;
+using UnityEngine;
 
 public class BurningState : State
 {
     public Action OnBurning = delegate { };
+
+    [Header("Burning Particles")]
+    [SerializeField] GameObject[] _burnParticles = new GameObject[2];
 
     public override void Begin()
     {
         //Seteo la animación.
         //print($"{gameObject.name} está entrando a Burning");
         _anims.SetBool("Burning", true);
-
+        StartCoroutine(Burn());
         OnBurning();
     }
 
@@ -52,5 +57,20 @@ public class BurningState : State
     public override void End()
     {
         //print($"{gameObject.name} está saliendo de Burning");
+    }
+
+    public void SetBurningStage(int stage)
+    {
+        if(stage == 1)
+        {
+            SwitchToState(CommonState.dead);
+        }
+    }
+
+    IEnumerator Burn()
+    {
+        _burnParticles[0].SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        _burnParticles[1].SetActive(true);
     }
 }

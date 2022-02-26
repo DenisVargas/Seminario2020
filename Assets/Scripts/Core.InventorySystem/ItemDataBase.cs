@@ -29,6 +29,18 @@ namespace Core.InventorySystem
 
         Dictionary<int, ItemDataObject> _dataBase = new Dictionary<int, ItemDataObject>();
 
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+                Destroy(gameObject);
+            else
+            {
+                _instance = this;
+                Init();
+                DontDestroyOnLoad(_instance.gameObject);
+            }
+        }
+
         public void Init()
         {
             if (collection == null)

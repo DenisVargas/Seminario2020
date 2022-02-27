@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 3056718570059588423}
   - component: {fileID: 8622523160070865441}
   - component: {fileID: 2896786364757055268}
-  m_Layer: 31
+  m_Layer: 11
   m_Name: Pot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,16 +239,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  ItemName: 
-  Description: 
-  Icon: {fileID: 0}
-  isCombinable: 0
-  isThroweable: 0
-  isConsumable: 0
+  data:
+    Name: 
+    Description: 
+    Icon: {fileID: 0}
+    isCombinable: 0
+    isDropeable: 0
+    isThroweable: 0
+    isConsumable: 0
+  _interactionCollider: {fileID: 0}
   _physicCollider: {fileID: 6577388921664595059}
   _owner: {fileID: 0}
   _rb: {fileID: 0}
-  debugThis: 0
+  debugThisUnit: 0
 --- !u!1 &8533157546496340820
 GameObject:
   m_ObjectHideFlags: 0

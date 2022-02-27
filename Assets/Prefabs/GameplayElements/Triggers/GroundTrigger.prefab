@@ -88,7 +88,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3503224337732715576}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 02b5d60637baf9d4593b08dc42aafb70, type: 3}
   m_Controller: {fileID: 9100000, guid: 1750648c4ece24c4cb665c6ada0f894d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -233,3 +233,4 @@ MonoBehaviour:
   _anims: {fileID: 9179506860245127526}
   OnTop: []
   ignoreLayers: 0a0000000d000000
+  debugThis: 0

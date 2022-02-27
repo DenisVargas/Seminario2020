@@ -16,6 +16,7 @@ namespace Core.InventorySystem
         public Action<Collider> OnPickDepedency = delegate { };
         public Action<Collider> OnSetOwner = delegate { };
         public Action OnThrowItem = delegate { };
+        public Action OnDestroyItem = delegate { };
 
         [Tooltip("Identificador único del ítem. Ver ItemDatabase para detalles y para edición.")]
         public ItemID ID = ItemID.nulo;
@@ -46,6 +47,11 @@ namespace Core.InventorySystem
 
             Operations.Add(OperationType.inspect);
             Operations.Add(OperationType.Drop);
+        }
+
+        private void OnDestroy()
+        {
+            OnDestroyItem();
         }
 
         /// <summary>

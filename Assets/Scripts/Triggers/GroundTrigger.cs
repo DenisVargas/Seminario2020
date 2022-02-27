@@ -75,6 +75,8 @@ public class GroundTrigger : MonoBehaviour
         if (ignoreLayers.Contains(other.gameObject.layer))
             return;
 
+        if (other.gameObject.CompareTag("debris")) return;
+
         if (other.gameObject.CompareTag("Box"))
         {
             if (!OnTop.Contains(other))
@@ -103,6 +105,7 @@ public class GroundTrigger : MonoBehaviour
             if(item.ID == ItemID.Jarron || item.ID == ItemID.JarronBaba || item.ID == ItemID.Piedra || item.ID == ItemID.PiedraBaba)
             {
                 item.OnPickDepedency += RemoveColliderFromActivationList;
+                item.OnDestroyItem += () => { RemoveColliderFromActivationList(other); };
                 if (!OnTop.Contains(other))
                     OnTop.Add(other);
                 _anims.SetBool("Pressed", true);

@@ -5034,7 +5034,6 @@ MonoBehaviour:
     explotionForce: 0
   _explotionForce: 10
   _explotionRadius: 4
-  _timeToDestroy: 4
   Explotion: {fileID: 4205847769561345686}
   _normalObject: {fileID: 6806221566517204109}
   _destroyedObject: {fileID: 8622590214944301567}
@@ -5172,6 +5171,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6166973791329150873}
     m_Modifications:
+    - target: {fileID: 31773388376983578, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 306401750028143912, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
     - target: {fileID: 370465681386183850, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5236,6 +5245,91 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 370465681386183861, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593268356923497171, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 2927871204019510900, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 3457527910518832773, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 3974495002088338025, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 5127326698894173901, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452378459430928868, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 6057674991739987573, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174242764033995916, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 6740857590121828024, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 7315450779441319700, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 7977778643068007849, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 8264147393366673306, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 8285087852963620402, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 8836929163499373751, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 8885836519672531289, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064696650110806129, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3,
+        type: 3}
+      propertyPath: m_TagString
+      value: debris
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3, type: 3}

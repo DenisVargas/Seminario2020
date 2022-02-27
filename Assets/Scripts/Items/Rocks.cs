@@ -101,6 +101,27 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+#if UNITY_EDITOR
+        if (debugThisUnit)
+            print($"{gameObject.name} colisionó con {other.gameObject.name}");
+#endif
+
+        if (_isFlying)
+        {
+            if (other == _owner) return;
+
+            var damagecomponent = other.gameObject.GetComponent<IDamageable<Damage, HitResult>>();
+            if (damagecomponent != null)
+            {
+                Damage enemyCollisionDamage = new Damage() { type = DamageType.hit };
+                GetHit(enemyCollisionDamage); //Recibo daño por choque.
+                damagecomponent.GetHit(_normalDamage); //Causo daño por choque.
+            }
+        }
+    }
+
     //================================= Interaction Handling ========================================
 
     public override void ExecuteOperation(OperationType operation, params object[] optionalParams)

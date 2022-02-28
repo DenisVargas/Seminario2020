@@ -162,14 +162,24 @@ public class Slime : Item, IIgnitableObject
 
         if (inventory != null)
         {
-            if (inventory.equiped != null && inventory.equiped.ID == ItemID.Antorcha)
+            if (inventory.equiped != null)
             {
-                Torch torch = (Torch)inventory.equiped;
-                if (torch.isBurning)
+                if(inventory.equiped.ID == ItemID.Antorcha)
+                {
+                    Torch torch = (Torch)inventory.equiped;
+                    if (torch.isBurning)
+                        return new List<Tuple<OperationType, IInteractionComponent>>()
+                        {
+                            new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
+                        };
+                }
+                if(inventory.equiped.ID == ItemID.Piedra)
+                {
                     return new List<Tuple<OperationType, IInteractionComponent>>()
                     {
-                        new Tuple<OperationType, IInteractionComponent>(OperationType.Ignite, this)
+                        new Tuple<OperationType, IInteractionComponent>(OperationType.Combine, this)
                     };
+                }
             }
 
             if (inventory.equiped != null && inventory.equiped.ID == (int)ItemID.Jarron)

@@ -21,5 +21,10 @@ MonoBehaviour:
   - Name: Piedra con Baba
     Result: 5
     A: 3
+    B: 2
+    combinationMethod: 1
+  - Name: Piedra con Baba
+    Result: 5
+    A: 3
     B: 4
     combinationMethod: 1

@@ -87,30 +87,29 @@ public class Rocks : Item, IDamageable<Damage, HitResult>
             print($"{gameObject.name} colisionó con {collision.gameObject.name}");
 #endif
 
-        if (_isFlying)
-        {
-            if (collision.collider == _owner) return;
+        if (collision.collider == _owner) return;
 
-            var damagecomponent = collision.gameObject.GetComponent<IDamageable<Damage, HitResult>>();
-            if (damagecomponent != null)
-            {
-                Damage enemyCollisionDamage = new Damage() { type = DamageType.hit };
-                GetHit(enemyCollisionDamage); //Recibo daño por choque.
-                damagecomponent.GetHit(_normalDamage); //Causo daño por choque.
-            }
-        }
+        OnColliderHitedThis(collision.collider);
     }
-
     private void OnTriggerEnter(Collider other)
     {
 #if UNITY_EDITOR
         if (debugThisUnit)
             print($"{gameObject.name} colisionó con {other.gameObject.name}");
 #endif
+        if (other == _owner) return;
+        OnColliderHitedThis(other);
+    }
 
+    private void OnColliderHitedThis(Collider other)
+    {
         if (_isFlying)
         {
-            if (other == _owner) return;
+            var item = other.GetComponentInParent<Item>();
+            if(item != null)
+            {
+                if (item.ID == ItemID.Antorcha) return;
+            }
 
             var damagecomponent = other.gameObject.GetComponent<IDamageable<Damage, HitResult>>();
             if (damagecomponent != null)

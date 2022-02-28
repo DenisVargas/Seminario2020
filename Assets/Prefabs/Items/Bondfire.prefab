@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 866561763531807144}
   - component: {fileID: 7562770728751720629}
+  - component: {fileID: 5720898349749437662}
   m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
@@ -44,6 +45,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5630877, y: 3.398717, z: 0.5529723}
   m_Center: {x: 0.67247796, y: 2.1272912, z: -0.22351384}
+--- !u!114 &5720898349749437662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248085365480517001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b53ecc1e31eca4d92af3e256006668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyDamage:
+    type: 0
+    Ammount: 0
+    criticalMultiplier: 0
+    instaKill: 0
+    KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
 --- !u!1 &3417713661353778092
 GameObject:
   m_ObjectHideFlags: 0

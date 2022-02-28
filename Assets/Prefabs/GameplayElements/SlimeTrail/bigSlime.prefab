@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4342020457891997228}
+  - component: {fileID: 196527546647742714}
+  - component: {fileID: 2269126356801946237}
+  - component: {fileID: 5622467891393854331}
   m_Layer: 0
   m_Name: bigSlime
   m_TagString: Untagged
@@ -33,6 +36,83 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &196527546647742714
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4536744731024749366}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9703228, y: 1, z: 1.8933647}
+  m_Center: {x: 0.03847921, y: 0, z: -0.03722346}
+--- !u!114 &2269126356801946237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4536744731024749366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac4fb239eb0c06468ddaa8a6ae6b6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _limitedDisplay: 0
+  _activeTime: 5
+  _renderer: {fileID: 0}
+  _interactionEnabled: 1
+--- !u!114 &5622467891393854331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4536744731024749366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ae44cd37b81bd48987e5ca0cd3b6ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 2
+  data:
+    Name: 
+    Description: 
+    Icon: {fileID: 0}
+    isCombinable: 0
+    isDropeable: 0
+    isThroweable: 0
+    isConsumable: 0
+  _interactionCollider: {fileID: 0}
+  _physicCollider: {fileID: 196527546647742714}
+  _owner: {fileID: 0}
+  _rb: {fileID: 0}
+  debugThisUnit: 0
+  toAplyDamage:
+    type: 0
+    Ammount: 0
+    criticalMultiplier: 0
+    instaKill: 0
+    KillAnimationType: 0
+    explotionOrigin: {x: 0, y: 0, z: 0}
+    explotionForce: 0
+  _chainReactionDelay: 0.1
+  fireParticles: []
+  _dropParticle: {fileID: 0}
+  _root: {fileID: 0}
+  efectTargets:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  _ignitableSearchRadius: 5
+  _safeInteractionDistance: 3
+  _remainingLifeTime: 0
+  _burning: 0
+  patches: []
+  myMesh: {fileID: 0}
+  myMaterials: []
 --- !u!1 &7516191094817378950
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4d2cca4269c09174e83f8db1daa6839a, type: 2}
+  - {fileID: 2100000, guid: b058ecac5e1ccc54c99421cb3edc4004, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

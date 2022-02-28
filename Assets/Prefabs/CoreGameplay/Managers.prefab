@@ -73,4 +73,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54475c2866fbddf4288817d0fe414c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLevelToLoad: 1
+  debugLevelToLoad: 3

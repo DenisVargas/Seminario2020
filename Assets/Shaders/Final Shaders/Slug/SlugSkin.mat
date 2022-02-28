@@ -54,7 +54,7 @@ Material:
     m_Floats:
     - __dirty: 0
     - _frecuencia: 35
-    - _intensidad: 0.05
+    - _intensidad: 0.02
     - _speed: 3
     m_Colors:
     - _Skincolor: {r: 0.0676592, g: 0.9622642, b: 0, a: 0}

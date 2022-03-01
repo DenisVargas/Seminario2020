@@ -9,11 +9,11 @@ namespace Core.Interaction
         public Vector3 orientation;
         public int AnimatorParameter;
 
-        public InteractionParameters(Node safeInteractionNode, Vector3 orientation)
+        public InteractionParameters(Node safeInteractionNode, Vector3 orientation, int animatorParameter = 0)
         {
             this.safeInteractionNode = safeInteractionNode;
             this.orientation = orientation;
-            AnimatorParameter = 0;
+            AnimatorParameter = animatorParameter;
         }
     }
 }

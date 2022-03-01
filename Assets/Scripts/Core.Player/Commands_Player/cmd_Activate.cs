@@ -14,6 +14,10 @@ public class Cmd_Activate : BaseQueryCommand
     int _animatorParameter = 0;
     int execution = 0;
 
+#if UNITY_EDITOR
+    [SerializeField] bool debugThis; 
+#endif
+
     public Cmd_Activate(IInteractionComponent CommandTarget, Transform body, PathFindSolver solver, Func<int, bool> getAnimation, Action<int, bool> setAnimation, Func<Node, bool> moveFunction, Action dispose, Action OnChangePath) :
         base(body, solver, moveFunction, dispose, OnChangePath)
     {
@@ -37,6 +41,12 @@ public class Cmd_Activate : BaseQueryCommand
 
         if (!isInRange(_ObjectiveNode))
         {
+
+#if UNITY_EDITOR
+            if (debugThis)
+                Debug.Log("Is Not in range"); 
+#endif
+
             //Debug.Log("Estoy Fuera del rango, me muevo.");
             //Se entiende que el índice 0 es walk, mientras que el índice 1 es PullLever.
             if (!getAnimation(0))
@@ -50,7 +60,11 @@ public class Cmd_Activate : BaseQueryCommand
         else
         {
             //Ejecuto el comando en el target.
-            //Debug.Log("Llegué al rango.");
+
+#if UNITY_EDITOR
+            if (debugThis)
+                Debug.Log("Llegué al rango.");
+#endif
 
             //Ejecuto la animación correspondiente Sobre el Player, confirmo el input al objetivo.
             setAnimation(_animatorParameter, true);

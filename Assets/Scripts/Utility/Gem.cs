@@ -14,6 +14,10 @@ public class Gem : MonoBehaviour, IInteractionComponent
 
     public bool isDynamic => false;
 
+#if UNITY_EDITOR
+    [SerializeField] bool debugThis = false; 
+#endif
+
     // Update is called once per frame
     void Update()
     {
@@ -29,11 +33,15 @@ public class Gem : MonoBehaviour, IInteractionComponent
     }
     public void InputConfirmed(OperationType operation, params object[] optionalParams)
     {
-        Debug.Log($"{gameObject.name}: input Confirmado.");
+#if UNITY_EDITOR
+        if (debugThis)
+            Debug.Log($"{gameObject.name}: input Confirmado."); 
+#endif
     }
     public void ExecuteOperation(OperationType operation, params object[] optionalParams)
     {
-        Core.SaveSystem.Level.RestartCurrentLevel();
+        if(operation == OperationType.Activate)
+            Core.SaveSystem.Level.RestartCurrentLevel();
     }
     public void CancelOperation(OperationType operation, params object[] optionalParams)
     {
@@ -50,6 +58,6 @@ public class Gem : MonoBehaviour, IInteractionComponent
         Node SafePosition = ActivationNode;
         Vector3 directionToMe = ( transform.position - SafePosition.transform.position).normalized.YComponent(0);
 
-        return new InteractionParameters(SafePosition, directionToMe);
+        return new InteractionParameters(SafePosition, directionToMe, 1);
     }
 }

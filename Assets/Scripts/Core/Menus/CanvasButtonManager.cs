@@ -42,8 +42,10 @@ public class CanvasButtonManager : MonoBehaviour
             Time.timeScale = 1;
 
         AsyncSceneLoadOptions.LevelBuildIndex = 0;
-        if (!AsyncSceneLoadOptions.LoadActive)
-            SceneManager.LoadScene("LoadMenu", LoadSceneMode.Additive);
+
+        Level.clearCheckpoint();
+        Level.TooglePauseGame();
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
     public void ExitGame()

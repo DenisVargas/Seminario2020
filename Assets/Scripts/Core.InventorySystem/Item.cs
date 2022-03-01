@@ -46,6 +46,8 @@ namespace Core.InventorySystem
 
             SetData(ItemDataBase.getItemData(ID));
 
+            OnThrowItem += () => { _physicCollider.enabled = true; _physicCollider.isTrigger = false; };
+
             Operations.Add(OperationType.inspect);
             Operations.Add(OperationType.Drop);
         }

@@ -58,7 +58,8 @@ public class cmd_Combine : BaseQueryCommand
             if (recipe.combinationMethod == CombinationMethod.replace)
             {
                 GameObject.Destroy(equiped.gameObject);
-                GameObject.Destroy(target.gameObject);
+                if(target.destroyAfterPick)
+                    GameObject.Destroy(target.gameObject);
 
                 var resultItem = GameObject.Instantiate(ItemDataBase.getRandomItemPrefab(recipe.Result))
                                            .GetComponent<Item>()

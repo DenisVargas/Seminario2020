@@ -1175,38 +1175,38 @@ Transform:
   - {fileID: 159890402}
   - {fileID: 1050138753}
   - {fileID: 1946648730}
-  - {fileID: 1739908900}
   - {fileID: 974856269}
   - {fileID: 300533996}
   - {fileID: 432259375}
+  - {fileID: 816461937}
   - {fileID: 149617916}
   - {fileID: 1796572647}
   - {fileID: 1600162362}
   - {fileID: 1964514608}
+  - {fileID: 1013426150}
   - {fileID: 1662334549}
+  - {fileID: 1461636114}
   - {fileID: 797071283}
   - {fileID: 134580044}
-  - {fileID: 1461636114}
-  - {fileID: 1207506147}
-  - {fileID: 1349922387}
   - {fileID: 2146795927}
-  - {fileID: 816461937}
+  - {fileID: 1207506147}
   - {fileID: 1456152055}
-  - {fileID: 338869451}
+  - {fileID: 1349922387}
   - {fileID: 165364601}
-  - {fileID: 2109182352}
+  - {fileID: 338869451}
+  - {fileID: 925223254}
   - {fileID: 1873601837}
-  - {fileID: 1013426150}
   - {fileID: 1861659392}
   - {fileID: 1165382891}
+  - {fileID: 2109182352}
   - {fileID: 805990649}
   - {fileID: 1598322408}
-  - {fileID: 925223254}
   - {fileID: 496314271}
-  - {fileID: 2061292977}
   - {fileID: 1714829587}
   - {fileID: 1966085852}
+  - {fileID: 1739908900}
   - {fileID: 668462441}
+  - {fileID: 2061292977}
   - {fileID: 775254651}
   - {fileID: 795222350}
   - {fileID: 758006816}
@@ -3701,7 +3701,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623841922}
-  m_LocalRotation: {x: 0.015553296, y: -0.875907, z: 0.05525379, w: 0.27038035}
+  m_LocalRotation: {x: 0.017058821, y: -0.96069294, z: 0.060602233, w: 0.27038035}
   m_LocalPosition: {x: 0.5242376, y: 1.658, z: 3.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -5831,7 +5831,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071680789}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 058cba836c1846c3aa1c5fd2e28aea77, type: 3}
   m_Name: 
@@ -6979,7 +6979,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1230034657}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 058cba836c1846c3aa1c5fd2e28aea77, type: 3}
   m_Name: 
@@ -8365,7 +8365,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Demonic Redemtion
+  m_text: Demonic Redemption
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5d3b2a95627112a42accc0e2f6d4337a, type: 2}
   m_sharedMaterial: {fileID: -6172366406436691551, guid: 5d3b2a95627112a42accc0e2f6d4337a,
@@ -8432,10 +8432,10 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -28.721308, w: 0}
   m_textInfo:
     textComponent: {fileID: 1526063769}
-    characterCount: 17
+    characterCount: 18
     spriteCount: 0
     spaceCount: 1
     wordCount: 2

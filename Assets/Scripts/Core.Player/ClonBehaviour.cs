@@ -151,7 +151,7 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
     {
         HitResult result = new HitResult(true);
 
-        if (damage.type == DamageType.blunt || damage.type == DamageType.piercing)
+        if (damage.instaKill)
         {
             result.fatalDamage = true;
             UncastClon(); //Podriamos animarlo pero ALV.

@@ -3,6 +3,11 @@
 [RequireComponent(typeof(BoxCollider))]
 public class DestructibleRock : Destroyable
 {
+
+#if UNITY_EDITOR
+    [SerializeField] bool debugThisRock = false; 
+#endif
+
     public override HitResult GetHit(Damage damage)
     {
         HitResult result = new HitResult(true);
@@ -15,11 +20,16 @@ public class DestructibleRock : Destroyable
             return result;
         }
 
-        //if (damage.type == DamageType.blunt)
-        //{
-        //    getSmashed()
-        //    fatalDamageCount++;
-        //}
+        if (damage.type == DamageType.blunt)
+        {
+#if UNITY_EDITOR
+            if (debugThisRock)
+                print($"{gameObject.name} has recieved a Blunt Damage"); 
+#endif
+
+            getSmashed();
+            //fatalDamageCount++;
+        }
 
         //if (damage.type == DamageType.Fire)
         //{
@@ -66,6 +76,32 @@ public class DestructibleRock : Destroyable
     bool getSmashed()
     {
         print($"{gameObject.name} fue Aplastado.");
+
+        if (_destroyedObject)
+        {
+            _normalObject.SetActive(false);
+            _destroyedObject.SetActive(true);
+
+            //var transforms = _destroyedObject.transform.GetComponentsInChildren<Transform>();
+            //foreach (var transform in transforms)
+            //{
+            //    if (transform == this.transform) continue;
+            //    //print($"{transform.name} es un elmento hijo");
+
+            //    //var rb = transform.GetComponent<Rigidbody>();
+            //    //if (rb != null)
+            //    //{
+            //    //    //Les aplico fuerza.
+            //    //    //Teniendo el epicentro y mi posición calculo la dirección en opesta a donde aplico la fuerza.
+            //    //}
+            //}
+
+            foreach (var node in AffectedNodes)
+                node.ChangeNodeState(IA.PathFinding.NavigationArea.Navegable);
+        }
+
+        StartCoroutine(delayedDestroy(_timeToDestroy));
+
         return false;
     }
 }

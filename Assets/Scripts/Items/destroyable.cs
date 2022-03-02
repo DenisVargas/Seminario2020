@@ -77,7 +77,7 @@ public class Destroyable : MonoBehaviour, IDamageable<Damage, HitResult>
     }
     public void GetStun(Vector3 AgressorPosition, int PosibleKillingMethod)
     {
-        throw new NotImplementedException();
+        print("This destructivle is gettin stunned");
     }
 
     protected void ReplaceToDestroyedMesh()

@@ -20,6 +20,7 @@ public class RageState : State
     bool _playerFound = false;
     bool _otherUnitFound = false;
     bool _destructibleFound = false;
+    bool targetSetted = false;
 
     IDamageable<Damage, HitResult> self = null;
     IDamageable<Damage, HitResult> _closerTargetFounded = null;
@@ -62,10 +63,11 @@ public class RageState : State
             CheckNearVisible();
         //if(_Phase == 2 && _otherTargetFounded)
         //    LookAtTarget();
-        if(_Phase == 3 && !_playerFound && !_otherUnitFound && _destructibleFound)
+        if(_Phase == 3 && !_playerFound && !_otherUnitFound && _destructibleFound && !targetSetted)
         {
-            LookAtTarget();
             SetAttackTarget(_closerTargetFounded);
+            targetSetted = true;
+            LookAtTarget();
         }
         if (_Phase == 4 && (_playerFound || _otherUnitFound || _destructibleFound))
             SwitchToState(CommonState.pursue);

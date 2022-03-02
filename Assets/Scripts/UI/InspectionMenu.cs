@@ -62,7 +62,7 @@ public class InspectionMenu : MonoBehaviour
         {
             _anim.SetBool("Enabled", true);
             _mainDisplay = StartCoroutine(DelayedShow(text, OnFinish));
-            OnSetInspection(true);
+            OnSetInspection(false);
         }
     }
 
@@ -78,7 +78,7 @@ public class InspectionMenu : MonoBehaviour
     public void OnDisablingEnded_AnimEvent()
     {
         //Debug.Log("Animacion de desactivación finalizada");
-        OnSetInspection(false);
+        OnSetInspection(true);
     }
 
     IEnumerator DelayedShow(string[] text, Action OnFinish)

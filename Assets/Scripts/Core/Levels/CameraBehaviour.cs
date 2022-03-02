@@ -63,6 +63,8 @@ public class CameraBehaviour : MonoBehaviour
             locked = false;
         if (Input.GetKeyDown(KeyCode.I))
             freeCamera = false;
+        if (Input.GetKeyDown(KeyCode.I))
+            freeCamera = true;
 
         //Vector3 position = transform.position;
         //position.y = Target.transform.position.y;
@@ -185,8 +187,7 @@ public class CameraBehaviour : MonoBehaviour
     /// <param name="inspectionEnabled">Estado actual del panel de inspección.</param>
     void OnInspection(bool inspectionEnabled)
     {
-        if (inspectionEnabled && _target != null)
-            freeCamera = false;
-        else freeCamera = true;
+        if (_target != null)
+            freeCamera = inspectionEnabled;
     }
 }

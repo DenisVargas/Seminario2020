@@ -259,7 +259,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         _inspectionMenu = FindObjectOfType<InspectionMenu>();
 
         if (_inspectionMenu)
-            _inspectionMenu.OnSetInspection += (value) => { PlayerInputEnabled = !value; };
+            _inspectionMenu.OnSetInspection += (value) => { PlayerInputEnabled = value; };
 
         if (!_hitbox)
             _hitbox = GetComponent<Collider>();

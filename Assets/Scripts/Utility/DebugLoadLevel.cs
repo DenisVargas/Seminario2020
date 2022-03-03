@@ -11,6 +11,7 @@ public class DebugLoadLevel : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             SceneManager.LoadScene(debugLevelToLoad);
+            Time.timeScale = 1;
         }
     }
 }

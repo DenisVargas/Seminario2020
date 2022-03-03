@@ -18,9 +18,9 @@ public class CanvasButtonManager : MonoBehaviour
     {
         //Esto tengo que cambiarlo.
 
-        var lastSavedGame = Level.AutoSave;
-        if (lastSavedGame != null)
-            SceneManager.LoadScene(lastSavedGame.LevelBuildID);
+        //var lastSavedGame = Level.AutoSave;
+        //if (lastSavedGame != null)
+        //    SceneManager.LoadScene(lastSavedGame.LevelBuildID);
 
         //TODO: Bloquar el deleteo del autosave.
     }
@@ -28,9 +28,13 @@ public class CanvasButtonManager : MonoBehaviour
     //Estas son utilizadas por el menú de pausa.
     public void UnPause()
     {
-        Level.TooglePauseGame();
-        var c = FindObjectOfType<CanvasController>();
-        c.setPauseMenu(false);
+        var Level = FindObjectOfType<Level>();
+        if (Level)
+        {
+            Level.TooglePauseGame();
+            var c = FindObjectOfType<CanvasController>();
+            c.setPauseMenu(false);
+        }
     }
     public void OpenScriptures()
     {
@@ -38,8 +42,7 @@ public class CanvasButtonManager : MonoBehaviour
     }
     public void ExitToMainMenu()
     {
-        if (Time.timeScale == 0)
-            Time.timeScale = 1;
+        UnPause();
 
         AsyncSceneLoadOptions.LevelBuildIndex = 0;
 

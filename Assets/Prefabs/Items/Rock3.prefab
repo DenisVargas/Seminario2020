@@ -181,6 +181,7 @@ MonoBehaviour:
     isDropeable: 0
     isThroweable: 0
     isConsumable: 0
+  destroyAfterPick: 1
   _interactionCollider: {fileID: 1091899317149486146}
   _physicCollider: {fileID: 1091899317149486146}
   _owner: {fileID: 0}

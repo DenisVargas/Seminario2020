@@ -33,6 +33,7 @@ public class MainMenu : MonoBehaviour
 
     public void OnEnterGame_SecuenceComplete()
     {
+        Debug.Log("Enter game, secuence complete");
         _sceneLoadingManager.LoadLevel(1);
     }
 

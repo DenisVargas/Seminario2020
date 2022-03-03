@@ -36,7 +36,10 @@ public class AsyncLoading : MonoBehaviour
                     _loadingCompleteAdvice.SetActive(true);
 
                 if (Input.anyKeyDown)
+                {
                     op.allowSceneActivation = true;
+                    AsyncSceneLoadOptions.LoadActive = false;
+                }
             }
 
             yield return null;

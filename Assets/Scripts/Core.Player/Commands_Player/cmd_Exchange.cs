@@ -53,9 +53,11 @@ public class cmd_Exchange : BaseQueryCommand
     public override void Execute()
     {
         lookTowards(target);
+
         //Acá lo que hacemos es liberar el objeto equipado.
-        releaseEquipedItemFromHand(true, new object[1] { target.transform.position });
+        Item released = releaseEquipedItemFromHand(true, new object[1] { target.transform.position });
         //Hacer el proceso contrario con el segundo item.
+        target.ExecuteOperation(Core.Interaction.OperationType.Take);
         attachItemToHand(target);
         completed = true;
     }

@@ -1,4 +1,5 @@
 ﻿using Core.InventorySystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,14 +60,25 @@ public class GroundTrigger : MonoBehaviour
             OnTriggerEnter(collider);
     }
 
-    public void RemoveColliderFromActivationList(Collider toDeactivate)
+    public void RemoveColliderFromActivationList(Collider physicsCollider)
     {
-        if (OnTop.Contains(toDeactivate))
+        if (OnTop.Contains(physicsCollider))
         {
-            OnTop.Remove(toDeactivate);
+            OnTop.Remove(physicsCollider);
             if (OnTop.Count <= 0 && Active)
                 Active = false;
+            return;
         }
+    }
+    public void RemoveColliderFromActivationList(Collider physicsCollider, Collider interactionCollider)
+    {
+        if (OnTop.Contains(physicsCollider))
+            OnTop.Remove(physicsCollider);
+        if (OnTop.Contains(interactionCollider))
+            OnTop.Remove(interactionCollider);
+
+        if (OnTop.Count <= 0 && Active)
+            Active = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -102,14 +114,14 @@ public class GroundTrigger : MonoBehaviour
         var item = other.GetComponent<Item>();
         if (item != null)
         {
-            if(item.ID == ItemID.Jarron || item.ID == ItemID.JarronBaba || item.ID == ItemID.Piedra || item.ID == ItemID.PiedraBaba)
-            {
-                item.OnPickDepedency += RemoveColliderFromActivationList;
-                item.OnDestroyItem += () => { RemoveColliderFromActivationList(other); };
-                if (!OnTop.Contains(other))
-                    OnTop.Add(other);
-                _anims.SetBool("Pressed", true);
-            }
+            if (item.ID == ItemID.nulo || item.ID == ItemID.basura || item.ID == ItemID.Baba)
+                return;
+
+            item.OnPickDepedency += RemoveColliderFromActivationList;
+            item.OnDestroyItem += RemoveColliderFromActivationList;
+            if (!OnTop.Contains(other))
+                OnTop.Add(other);
+            _anims.SetBool("Pressed", true);
         }
 
         if (OnTop.Count > 0 && !Active)
@@ -127,7 +139,10 @@ public class GroundTrigger : MonoBehaviour
 
         var item = other.GetComponent<Item>();
         if (item != null)
+        {
+            item.OnDestroyItem -= RemoveColliderFromActivationList;
             item.OnPickDepedency -= RemoveColliderFromActivationList;
+        }
 
         var destroyable = other.GetComponent<Destroyable>();
         if (destroyable)

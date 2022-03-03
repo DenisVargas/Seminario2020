@@ -13,10 +13,10 @@ namespace Core.InventorySystem
     [System.Serializable, RequireComponent(typeof(InteractionHandler))]
     public class Item : MonoBehaviour, IInteractionComponent
     {
-        public Action<Collider> OnPickDepedency = delegate { };
+        public Action<Collider, Collider> OnPickDepedency = delegate { };
         public Action<Collider> OnSetOwner = delegate { };
         public Action OnThrowItem = delegate { };
-        public Action OnDestroyItem = delegate { };
+        public Action<Collider, Collider> OnDestroyItem = delegate { };
 
         [Tooltip("Identificador único del ítem. Ver ItemDatabase para detalles y para edición.")]
         public ItemID ID = ItemID.nulo;
@@ -54,7 +54,7 @@ namespace Core.InventorySystem
 
         private void OnDestroy()
         {
-            OnDestroyItem();
+            OnDestroyItem(_physicCollider, _interactionCollider);
         }
 
         /// <summary>
@@ -147,6 +147,7 @@ namespace Core.InventorySystem
                     break;
                 case OperationType.Exchange:
                     //Esta Operación se hace en el player.
+                    //OnTake();
                     break;
                 case OperationType.Drop:
                     Drop(optionalParams); //Estándar fijo.
@@ -195,7 +196,7 @@ namespace Core.InventorySystem
             }
 #endif
 
-            OnPickDepedency(_physicCollider);
+            OnPickDepedency(_physicCollider, _interactionCollider);
         }
         protected virtual void Drop(params object[] optionalParams)
         {

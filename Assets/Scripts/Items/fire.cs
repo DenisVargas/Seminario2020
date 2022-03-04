@@ -23,9 +23,11 @@ public class fire : MonoBehaviour
     //}
     private void OnTriggerStay(Collider other)
     {
+        var torch = other.GetComponent<Torch>();
+        if (torch && torch.isEquiped) return;
+
         var damageable = other.GetComponent<IDamageable<Damage, HitResult>>();
         if (damageable != null)
             damageable.GetHit(MyDamage);
     }
-
 }

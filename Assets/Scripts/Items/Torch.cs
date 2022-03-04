@@ -48,12 +48,16 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         base.OnTake();
         if (_interactionCollider)
             _interactionCollider.enabled = false;
+        if (_physicCollider)
+            _physicCollider.enabled = false;
     }
     protected override void Drop(params object[] optionalParams)
     {
         base.Drop(optionalParams);
         if (_interactionCollider)
             _interactionCollider.enabled = true;
+        if (_physicCollider)
+            _physicCollider.enabled = true;
     }
 
 

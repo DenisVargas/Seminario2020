@@ -50,6 +50,7 @@ public class cmd_Take : BaseQueryCommand
     }
     public override void Execute()
     {
+        target.ExecuteOperation(OperationType.Take);
         equipItem(target);
         completed = true;
     }

@@ -497,6 +497,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
             item.transform.SetParent(manitodumacaco);
             item.transform.localPosition = Vector3.zero;
             item.transform.up = manitodumacaco.up;
+            item.isEquiped = true;
             _inventory.EquipItem(item);
             //DisplayThrowUI(_inventory.equiped != null && _inventory.equiped.isThroweable);
         }

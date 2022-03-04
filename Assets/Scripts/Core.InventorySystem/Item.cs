@@ -33,6 +33,7 @@ namespace Core.InventorySystem
         [SerializeField] protected Rigidbody _rb = null;
 
         public bool isDynamic => true;
+        public bool isEquiped { get; set; } = false;
 
 #if UNITY_EDITOR
         [Header("================ DEBUG =====================")]
@@ -195,7 +196,7 @@ namespace Core.InventorySystem
                 print($"Take Executed in item {gameObject.name}");
             }
 #endif
-
+            isEquiped = true;
             OnPickDepedency(_physicCollider, _interactionCollider);
         }
         protected virtual void Drop(params object[] optionalParams)
@@ -203,6 +204,7 @@ namespace Core.InventorySystem
             //print($"Drop Executed in item {gameObject.name}");
 
             //TODO::Rehabilitar interacción.
+            isEquiped = false;
             //TODO::Caller:: Posicionar el objeto si es necesario.
             if (optionalParams != null && optionalParams.Length > 0) 
                 transform.position = (Vector3)optionalParams[0];
@@ -210,6 +212,7 @@ namespace Core.InventorySystem
         protected virtual void OnThrow()
         {
             //print($"Throw Executed in item {gameObject.name}");
+            isEquiped = false;
             OnThrowItem();
         }
         protected virtual void Use(params object[] optionalParams)

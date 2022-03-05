@@ -71,6 +71,7 @@ public class RageState : State
         }
         if (_Phase == 4 && (_playerFound || _otherUnitFound || _destructibleFound))
             SwitchToState(CommonState.pursue);
+        else _anims.SetBool("SmashFloor", true);
     }
 
     public override void End()
@@ -80,6 +81,7 @@ public class RageState : State
             print($"RageState::End: Current Phase is: {_Phase}\nPlayer Founded: {_playerFound} | Other Target Founded:{_otherUnitFound} | Destructible Target Founded:{_destructibleFound}\n"); 
 #endif
         _anims.SetBool("GetHited", false);
+        _anims.SetBool("SmashFloor", false);
         _Phase = 0;
         _playerFound = false;
         _otherUnitFound = false;

@@ -375,6 +375,10 @@ public class Grunt : BaseNPC
 
     void AV_Attack_Ended()
     {
+        if (_states.CurrentStateType == CommonState.rage)
+        {
+            _states.Feed(CommonState.idle);
+        }
         if (_states.CurrentStateType == CommonState.attack)
         {
             var at = (AttackState)_states.currentState;

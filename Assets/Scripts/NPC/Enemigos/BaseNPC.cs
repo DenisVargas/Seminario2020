@@ -17,6 +17,9 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
     [SerializeField] protected float _attackRange = 2f;
     [SerializeField] protected float _minDetectionRange = 3f;
 
+    [Header("Scene Data")]
+    public int sceneID = -1;
+
     [Space(), Header("Modificadores de Daño")]
     [SerializeField] protected DamageModifier[] Weaknesses; //Aumentan el daño ingresante.
     [SerializeField] protected DamageModifier[] resistances;//reducen el daño ingereante.

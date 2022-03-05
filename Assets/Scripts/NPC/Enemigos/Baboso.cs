@@ -78,7 +78,8 @@ public class Baboso : BaseNPC
         patroll.AttachTo(_states);
 
         DeadState dead = GetComponent<DeadState>();
-        dead.OnDead = OnEntityDead;
+        dead.OnDead += OnEntityDead;
+        dead.OnDead += (c) => { Level.RegisterEnemyDead(base.sceneID); };
         dead.Reset = ResetSetUp;
         dead.AttachTo(_states);
 
@@ -180,6 +181,8 @@ public class Baboso : BaseNPC
             .AddTransition(patroll);
 
         #endregion
+
+        Level.RegisterEnemy(this);
     }
     private void Start()
     {
@@ -197,33 +200,11 @@ public class Baboso : BaseNPC
         _currentState = _states.CurrentStateType;
     }
 
-    //========================================== Sistema de Guardado ==========================================
+    //=================================== Save System =========================================================
 
     public override EnemyData getEnemyData()
     {
-        var myData = new EnemyData();
-        myData.position = transform.position;
-        myData.forward = transform.forward;
-        myData.enemyType = EnemyType.baboso;
-        NodeWaypoint waypoints = GetComponent<NodeWaypoint>();
-        myData.WaypointIDs = waypoints.points.Select(x => x.ID).ToArray();
-
-        return myData;
-    }
-
-    public override void LoadEnemyData(EnemyData enemyData)
-    {
-        //Override Completo. Reconstruyo mis waypoints, reposiciono el enemigo y reseteo su estado inicial.
-        NodeGraphBuilder graph = FindObjectOfType<NodeGraphBuilder>();
-        NodeWaypoint waypoints = GetComponent<NodeWaypoint>();
-
-        waypoints.points = new List<IA.PathFinding.Node>();
-        foreach (var ID in enemyData.WaypointIDs)
-            waypoints.points.Add(graph.getNode(ID));
-
-        transform.position = enemyData.position;
-        transform.forward = enemyData.forward;
-        _states.SetState(startPatrolling ? CommonState.patroll : CommonState.idle);
+        return new EnemyData() { enemyType = EnemyType.baboso, sceneID = sceneID, hasBeenKilled = false };
     }
 
     //========================================== Sistema de Daño ==============================================

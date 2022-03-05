@@ -77,12 +77,12 @@ public class CanvasController : MonoBehaviour
             FadeImage.canvasRenderer.SetAlpha(i * 0.1f);
             if(i==10)
             {
-                if (Level.currentLevelHasChekpoint())
+                if (Level.checkpointActivated)
                 {
-                    Level.LoadGameData();
+                    Level.LevelFailed();
                     StartCoroutine(FadeIn());
                 }
-                else SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                else Level.RestartCurrentLevel();
             }
         }
     }

@@ -115,7 +115,8 @@ public class Grunt : BaseNPC
         states.Add(CommonState.attack, attack);
 
         DeadState dead = GetComponent<DeadState>();
-        dead.OnDead = OnEntityDead;
+        dead.OnDead += OnEntityDead;
+        dead.OnDead += (c) => { Level.RegisterEnemyDead(base.sceneID); };
         dead.Reset = ResetSetUp;
         dead.AttachTo(_states);
         states.Add(CommonState.dead, dead);
@@ -153,6 +154,8 @@ public class Grunt : BaseNPC
 
         dead.AddTransition(idle);
         #endregion
+
+        Level.RegisterEnemy(this);
     }
     protected override void Update()
     {
@@ -167,25 +170,6 @@ public class Grunt : BaseNPC
 
             DEBUG_CurrentState = $"Estado: {_states.CurrentStateType.ToString()}";
 #endif
-    }
-
-    //========================================== Sistema de Guardado ==========================================
-
-    public override EnemyData getEnemyData()
-    {
-        var myData = new EnemyData();
-        myData.enemyType = EnemyType.Grunt;
-        myData.position = transform.position;
-        myData.forward = transform.forward;
-        myData.WaypointIDs = new int[0];
-        return myData;
-    }
-    public override void LoadEnemyData(EnemyData enemyData)
-    {
-        //base.LoadEnemyData(enemyData);
-        transform.position = enemyData.position;
-        transform.forward = enemyData.forward;
-        _states.SetState(CommonState.idle);
     }
 
     //=================================== Public Memeber Funcs ==============================
@@ -254,6 +238,13 @@ public class Grunt : BaseNPC
         {
             _states.Feed(CommonState.idle);
         }
+    }
+
+    //=================================== Save System =======================================
+
+    public override EnemyData getEnemyData()
+    {
+        return new EnemyData() { enemyType = EnemyType.Grunt, sceneID = sceneID, hasBeenKilled = false };
     }
 
     //==================================== Damage System ====================================

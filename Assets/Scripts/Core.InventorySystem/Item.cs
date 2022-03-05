@@ -21,6 +21,7 @@ namespace Core.InventorySystem
         [Tooltip("Identificador único del ítem. Ver ItemDatabase para detalles y para edición.")]
         public ItemID ID = ItemID.nulo;
         public ItemData data;
+        public bool canRespawn = false;
         public bool destroyAfterPick = true;
 
         //Operaciones estáticas son aquellas que siempre están disponibles.

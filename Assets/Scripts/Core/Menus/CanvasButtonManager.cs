@@ -46,7 +46,7 @@ public class CanvasButtonManager : MonoBehaviour
 
         AsyncSceneLoadOptions.LevelBuildIndex = 0;
 
-        Level.clearCheckpoint();
+        Level.ClearCheckpoint();
         Level.TooglePauseGame();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }

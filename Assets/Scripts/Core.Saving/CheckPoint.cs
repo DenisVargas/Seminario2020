@@ -32,10 +32,15 @@ namespace Core.SaveSystem
     [Serializable]
     public struct EnemyData
     {
-        public Vector3 position;
-        public Vector3 forward;
+        public int sceneID;
         public EnemyType enemyType;
-        public int[] WaypointIDs;
+        public bool hasBeenKilled;
+    }
+
+    [Serializable]
+    public struct ItemData
+    {
+        
     }
 
     [Serializable]

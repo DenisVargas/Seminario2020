@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using System.IO;
 
 public class QuickSceneSet : EditorWindow
 {
@@ -40,6 +41,46 @@ public class QuickSceneSet : EditorWindow
             CheckOrAddDefaultGameObject("====== Enemigos ======");
             CheckOrAddDefaultGameObject("======= Lights =======");
             CheckOrAddDefaultGameObject("======= Level ========");
+        }
+        if (GUILayout.Button("Reassign Scene EnemyIDs"))
+        {
+            var Grunts = FindObjectsOfType<Grunt>();
+            var Babosus = FindObjectsOfType<Baboso>();
+
+            int id = 0;
+            foreach (var grunt in Grunts)
+            {
+                Undo.RecordObject(grunt, "Reasign Scene ID");
+                grunt.sceneID = id;
+                id++;
+            }
+            foreach (var baboso in Babosus)
+            {
+                Undo.RecordObject(baboso, "Reasign Scene ID");
+                baboso.sceneID = id;
+                id++;
+            }
+
+            Debug.Log("Done assigning IDs to all enemies");
+
+            if(Grunts.Length > 0)
+                Selection.activeObject = Grunts[0];
+        }
+        if(GUILayout.Button("Clear Save Data"))
+        {
+            string root = Application.persistentDataPath + "/Data/Saves/";
+            string file = root + "slot1.sv";
+
+            if (Directory.Exists(root))
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                    Debug.Log("El archivo de guardado ha sido eliminado.");
+                }
+                else Debug.Log("El archivo de guardado no existe");
+            }
+            else Debug.Log("El directorio no exite");
         }
     }
 

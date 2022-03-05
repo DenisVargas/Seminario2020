@@ -15,22 +15,18 @@ namespace Core.SaveSystem
         public GameObject prefabBaboso;
         public GameObject prefabGrunt;
         public GameObject prefabPlayer;
-        //public NodeGraphBuilder levelGraph = null;
+        public static bool loadLastCheckpoint = false;
+        public static bool checkpointActivated = false;
+
+        public Dictionary<int, EnemyData> enemyStateRegister = new Dictionary<int, EnemyData>();
+        public Dictionary<int, GameObject> enemyReferenceRegister = new Dictionary<int, GameObject>();
+
+#if UNITY_EDITOR
+        [Header("================= Debugging ======================")]
+        [SerializeField] bool debugThis = false; 
+#endif
 
         public static bool isPaused { get; private set; } = false;
-        public static void TooglePauseGame()
-        {
-            //Mecanismo de prender/apagar.
-            isPaused = !isPaused;
-
-            foreach (var grunt in FindObjectsOfType<Grunt>())
-                grunt.enabled = !isPaused;
-
-            foreach (var baboso in FindObjectsOfType<Baboso>())
-                baboso.enabled = !isPaused;
-
-            Time.timeScale = isPaused ? 0 : 1;
-        }
 
         public static CheckPoint AutoSave
         {
@@ -73,38 +69,56 @@ namespace Core.SaveSystem
 
         private void Awake()
         {
-            //Chequear si tengo datos guardados del estado del nivel antes de iniciar.
-            if (AutoSave != null)
-                clearCheckpoint();
+            BaseNPC[] enemies = FindObjectsOfType<BaseNPC>();
+            foreach (BaseNPC enemy in enemies)
+            {
+                int enemyID = enemy.sceneID;
+                if(!enemyReferenceRegister.ContainsKey(enemyID))
+                    enemyReferenceRegister.Add(enemyID, enemy.gameObject);
+                if (!enemyStateRegister.ContainsKey(enemyID))
+                    enemyStateRegister.Add(enemyID, enemy.getEnemyData());
+            }
 
             isPaused = false;
             Time.timeScale = 1;
         }
-
-        public static void clearCheckpoint()
+        private void Start()
         {
-            string root = Application.persistentDataPath + "/Data/Saves/";
-            string file = root + "slot1.sv";
-
-            if (Directory.Exists(root))
-                if (File.Exists(file))
-                    File.Delete(file);
+            if (loadLastCheckpoint)
+            {
+                print("Debo cargar la data del nivel");
+                LoadGameData();
+            }
         }
 
-        public static bool currentLevelHasChekpoint()
+        public static void TooglePauseGame()
+        {
+            //Mecanismo de prender/apagar.
+            isPaused = !isPaused;
+
+            foreach (Grunt grunt in FindObjectsOfType<Grunt>())
+                grunt.enabled = !isPaused;
+
+            foreach (Baboso baboso in FindObjectsOfType<Baboso>())
+                baboso.enabled = !isPaused;
+
+            Time.timeScale = isPaused ? 0 : 1;
+        }
+        public static bool CurrentLevelHasChekpoint()
         {
             Level current = FindObjectOfType<Level>();
-            var save = Level.AutoSave;
+            CheckPoint save = Level.AutoSave;
             if (save != null && save.levelID == current.LevelID)
                 return true;
 
             return false;
         }
-
         public static void LoadGameData()
         {
             Level currentLevel = GetCurrentLevel();
             CheckPoint lastSave = Level.AutoSave;
+
+            if (lastSave.levelID != currentLevel.LevelID && lastSave.LevelBuildID != currentLevel.LevelBuildID) return;
 
             isPaused = false;
             Time.timeScale = 1;
@@ -113,50 +127,45 @@ namespace Core.SaveSystem
             Controller player = FindObjectOfType<Controller>();
             if (player == null)
             {
-                var instantiatedPlayer = Instantiate(currentLevel.prefabPlayer);
+                GameObject instantiatedPlayer = Instantiate(currentLevel.prefabPlayer);
                 player = instantiatedPlayer.GetComponent<Controller>();
             }
             player.LoadPlayerCheckpoint(lastSave.playerData); //Con esto esta cargador la data del player.
 
-            var loadedGrunts = FindObjectsOfType<Grunt>(); //Encuentro todos los grunts que ya están cargados.
-            int findedGrunts = loadedGrunts.Length;
-            for (int i = 0; i < findedGrunts; i++)
-                Destroy(loadedGrunts[i].gameObject);
-            var loadedBabosos = FindObjectsOfType<Baboso>();//Encuentro todos los babosos que ya están en escena.
-            int findedBabosos = loadedBabosos.Length;
-            for (int i = 0; i < findedBabosos; i++)
-                Destroy(loadedBabosos[i].gameObject);
+            currentLevel.enemyStateRegister.Clear();
+            List<EnemyData> lastRegister = lastSave.Enemies;
+            Dictionary<int, EnemyData> loadedRegister = new Dictionary<int, EnemyData>();
+            foreach (var item in lastRegister)
+                loadedRegister.Add(item.sceneID, item);
 
-            int enemiesNeeded = lastSave.Enemies.Count;
-            for (int i = 0; i < enemiesNeeded; i++)
+            List<int> toDelete = new List<int>();
+
+            foreach (var pair in loadedRegister)
             {
-                BaseNPC npc = null;
-
-                switch (lastSave.Enemies[i].enemyType)
+                int enemyID = pair.Value.sceneID;
+                EnemyData registeredData = pair.Value;
+                if (registeredData.hasBeenKilled)
                 {
-                    case EnemyType.baboso:
-                        var babosoGo = Instantiate(currentLevel.prefabBaboso);
-                        npc = babosoGo.GetComponent<Baboso>();
-                        break;
-
-                    case EnemyType.Grunt:
-                        var gruntGo = Instantiate(currentLevel.prefabGrunt);
-                        npc = gruntGo.GetComponent<Grunt>();
-
-                        break;
-                    default:
-                        break;
+                    toDelete.Add(enemyID);
+                    continue;
                 }
 
-                if (npc != null)
-                    npc.LoadEnemyData(lastSave.Enemies[i]);
+                currentLevel.enemyStateRegister.Add(enemyID, lastRegister[enemyID]);
+            }
+
+            for (int i = 0; i < toDelete.Count; i++)
+            {
+                GameObject go = currentLevel.enemyReferenceRegister[toDelete[i]];
+                currentLevel.enemyReferenceRegister.Remove(toDelete[i]);
+                Destroy(go);
             }
 
             //Loads the camera settings.
-            var camera = FindObjectOfType<CameraBehaviour>();
+            CameraBehaviour camera = FindObjectOfType<CameraBehaviour>();
             camera.transform.position = lastSave.CameraPosition;
             camera.transform.rotation = lastSave.CameraRotation;
         }
+
         /// <summary>
         /// Devuelve una referencia al nivel actual.
         /// </summary>
@@ -170,25 +179,100 @@ namespace Core.SaveSystem
         /// <returns>True si el snapshot se creo Satisfactoriamente!</returns>
         public static bool SetCheckPoint()
         {
-            //Debug.Log("Seteo un CheckPoint");
-            var currentLevel = FindObjectOfType<Level>();
+            Debug.Log("Seteo un CheckPoint");
+            Level currentLevel = FindObjectOfType<Level>();
 
-            var newSave = new CheckPoint();
+            //Player
+            CheckPoint newSave = new CheckPoint();
             newSave.levelID = currentLevel.LevelID;
             newSave.LevelBuildID = currentLevel.LevelBuildID;
             newSave.playerData = FindObjectOfType<Controller>().getCurrentPlayerData();
+
+            //Enemies
             List<EnemyData> enemiesInScene = new List<EnemyData>();
-            var enemies = FindObjectsOfType<BaseNPC>();
-            foreach (var enemy in enemies)
-                enemiesInScene.Add(enemy.getEnemyData());
+            foreach (KeyValuePair<int, EnemyData> register in currentLevel.enemyStateRegister)
+                enemiesInScene.Add(register.Value);
             newSave.Enemies = enemiesInScene;
 
-            var camara = FindObjectOfType<CameraBehaviour>();
+            //Camara
+            CameraBehaviour camara = FindObjectOfType<CameraBehaviour>();
             newSave.CameraPosition = camara.transform.position;
             newSave.CameraRotation = camara.transform.rotation;
 
             Level.AutoSave = newSave;
+            checkpointActivated = true;
             return false;
+        }
+        public static void ClearCheckpoint()
+        {
+            string root = Application.persistentDataPath + "/Data/Saves/";
+            string file = root + "slot1.sv";
+
+            if (Directory.Exists(root))
+                if (File.Exists(file))
+                    File.Delete(file);
+
+            checkpointActivated = false;
+            loadLastCheckpoint = false;
+        }
+
+        public static void RegisterEnemy(BaseNPC enemy)
+        {
+            Level level = GetCurrentLevel();
+            EnemyData enemyData = enemy.getEnemyData();
+            if (level.enemyStateRegister.ContainsKey(enemyData.sceneID))
+            {
+                level.enemyStateRegister[enemy.sceneID] = enemyData;
+#if UNITY_EDITOR
+                if (level.debugThis)
+                    Debug.Log($"{enemyData.enemyType} with id {enemy.sceneID} has updated his Data"); 
+#endif
+            }
+            else
+            {
+                level.enemyStateRegister.Add(enemy.sceneID, enemyData);
+#if UNITY_EDITOR
+                if (level.debugThis)
+                    Debug.Log($"{enemyData.enemyType} has been registered with id: {enemy.sceneID}");
+#endif
+            }
+
+            if (!level.enemyReferenceRegister.ContainsKey(enemyData.sceneID))
+            {
+                level.enemyReferenceRegister.Add(enemyData.sceneID, enemy.gameObject);
+#if UNITY_EDITOR
+                if (level.debugThis)
+                    Debug.Log($"{enemyData.enemyType} with id {enemy.sceneID} has registered a new reference"); 
+#endif
+            }
+        }
+        public static void RegisterEnemyDead(int levelID)
+        {
+            Level level = GetCurrentLevel();
+            if (level.enemyStateRegister.ContainsKey(levelID))
+            {
+                EnemyData currentState = level.enemyStateRegister[levelID];
+                currentState.hasBeenKilled = true;
+                level.enemyStateRegister[levelID] = currentState;
+            }
+#if UNITY_EDITOR
+            else
+            {
+                if(level.debugThis)
+                    Debug.Log($"There is no register for an enemy with sceneID {levelID}");
+            }
+#endif
+        }
+
+        public static void LevelFailed()
+        {
+            loadLastCheckpoint = true;
+            Level current = GetCurrentLevel();
+            SceneManager.LoadScene(current.LevelBuildID);
+        }
+        public static void LevelCompleted()
+        {
+            ClearCheckpoint();
         }
     }
 }

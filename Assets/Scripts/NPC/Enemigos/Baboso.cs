@@ -84,6 +84,7 @@ public class Baboso : BaseNPC
         dead.AttachTo(_states);
 
         PursueState pursue = GetComponent<PursueState>();
+        pursue.Set(_player, _playerClone, base.sceneID);
         pursue.OnUpdateCurrentNode = _trail.OnCloserNodeChanged;
         pursue.checkDistanceToTarget = TargetIsInAttackRange;
         pursue.getDestinyNode = getCloserNodeToAttackTarget;

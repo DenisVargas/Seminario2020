@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.IO;
+using Core.InventorySystem;
 
 public class QuickSceneSet : EditorWindow
 {
@@ -65,6 +66,27 @@ public class QuickSceneSet : EditorWindow
 
             if(Grunts.Length > 0)
                 Selection.activeObject = Grunts[0];
+        }
+        if(GUILayout.Button("Reassign Scene ItemIDs"))
+        {
+            var items = FindObjectsOfType<Item>();
+            int sceneID = 0;
+            Item lastAssigned = null;
+            foreach (var item in items)
+            {
+                if (item.canRespawn)
+                {
+                    Undo.RecordObject(item, "Reasign Respawning ID");
+                    item.respawnID = sceneID;
+                    sceneID++;
+                    lastAssigned = item;
+                }
+                Debug.Log("Respawn IDs reasigned");
+            }
+            if(lastAssigned != null)
+            {
+                Selection.activeObject = lastAssigned;
+            }
         }
         if(GUILayout.Button("Clear Save Data"))
         {

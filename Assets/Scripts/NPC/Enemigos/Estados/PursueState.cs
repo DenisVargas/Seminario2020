@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Core.DamageSystem;
+using Core.SaveSystem;
 
 [RequireComponent(typeof(PathFindSolver))]
 public class PursueState : State
@@ -17,12 +18,12 @@ public class PursueState : State
     public Func<bool> TargetIsActiveAndAlive = delegate { return true; };
     public Func<IDamageable<Damage, HitResult>> getTarget = delegate { return null; };
 
+    [SerializeField] int _pursuerID = -1;
     [SerializeField] float _pursueMovementSpeed = 3f;
     [SerializeField] float _minDistanceToAttack = 3f;
 
     IDamageable<Damage, HitResult> _player = null;
     IDamageable<Damage, HitResult> _clon = null;
-
     PathFindSolver _solver = null;
     Node _current = null;
     Node _next = null;
@@ -34,10 +35,11 @@ public class PursueState : State
         Gizmos.DrawWireSphere(transform.position, _minDistanceToAttack);
     }
 
-    public PursueState Set(Controller player, ClonBehaviour clon)
+    public PursueState Set(Controller player, ClonBehaviour clon, int pursuerID)
     {
         this._player = player;
         this._clon = clon;
+        this._pursuerID = pursuerID;
         return this;
     }
 
@@ -63,6 +65,8 @@ public class PursueState : State
             _current = _solver.getCloserNode(transform.position);
             RecalculateValidPathToTarget();
         }
+
+        Level.registerPursuer(_pursuerID);
     }
 
     public override void Execute()
@@ -106,6 +110,8 @@ public class PursueState : State
                 player.OnMovementChange -= RecalculateValidPathToTarget; //guardo el evento de movimiento
             }
         }
+
+        Level.unregisterPursuer(_pursuerID);
     }
 
     void RecalculateValidPathToTarget()

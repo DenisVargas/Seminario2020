@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class AudioManger : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-
-      public Sound[] AllSounds;
-
+    public Sound[] AllSounds;
     public static AudioManger instance;
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         if (instance)
             Destroy(gameObject);
-        instance = this;
-       
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
 
         foreach( Sound s in AllSounds)
         {
@@ -26,10 +24,7 @@ public class AudioManger : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
-
         }
-        
-
     }
     private void Start()
     {
@@ -38,12 +33,10 @@ public class AudioManger : MonoBehaviour
 
     public void Play(String name)
     {
-
         Sound s = Array.Find(AllSounds, Sound => Sound.name == name);
 
         if (s != null)
             s.source.Play();
-
     }
 
     public void PlayAt(String name,float time)
@@ -55,9 +48,4 @@ public class AudioManger : MonoBehaviour
             s.source.PlayScheduled(time);
 
     }
-
-
-
-
-
 }

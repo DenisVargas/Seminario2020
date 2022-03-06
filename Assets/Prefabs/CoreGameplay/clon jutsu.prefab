@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa3146a78d9aba14098a28cdec064280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 3
+  _moveSpeed: 5
   _maxLifeTime: 20
   _useCustomLOSTarget: 1
   _lineOfSightTarget: {fileID: 9055796885985914558}

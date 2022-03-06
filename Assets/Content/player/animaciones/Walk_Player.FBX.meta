@@ -39,7 +39,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 0
       firstFrame: 0
-      lastFrame: 54
+      lastFrame: 53
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -58,7 +58,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.99706453
+        functionName: PlaySteps
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e0c4344761709dc47bcbe80e710a660c,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.4388454
+        functionName: PlaySteps
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e0c4344761709dc47bcbe80e710a660c,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

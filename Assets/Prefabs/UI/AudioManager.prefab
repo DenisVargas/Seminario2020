@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8166376501458568677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8166376501458568698}
+  - component: {fileID: 8166376501458568699}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8166376501458568698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8166376501458568677}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.027473, y: -13.281649, z: -6.146246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8166376501458568699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8166376501458568677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0afaf6ec3fd7ba744a7589cee871ad3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllSounds:
+  - name: BackgroundMusic
+    clip: {fileID: 8300000, guid: 38126097547e82b459580f2011efc23b, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    Delay: 0
+    source: {fileID: 0}
+  - name: Onbutton
+    clip: {fileID: 8300000, guid: 224a7df98c0d3d843a5563faf9205f2a, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}
+  - name: buttonPress
+    clip: {fileID: 8300000, guid: 1ad0bf290b6de7742bfa067ce61b02e0, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}
+  - name: playerSteps
+    clip: {fileID: 8300000, guid: 215eec6f1d2ee384d98a98e6b7e30c26, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}
+  - name: playerDeath
+    clip: {fileID: 8300000, guid: 3b5d80413a7ec004aab340618e0d1d16, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}
+  - name: GruntSteps
+    clip: {fileID: 8300000, guid: 36df1a4f4fbbf2c4ebe1fa0df05df243, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}
+  - name: GruntScream
+    clip: {fileID: 8300000, guid: bbb2377f42ae29243917d1c789fa8f22, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}
+  - name: GruntSmash
+    clip: {fileID: 8300000, guid: 040730f178217c1448cb234e6ed460ba, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}

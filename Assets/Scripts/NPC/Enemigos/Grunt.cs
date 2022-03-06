@@ -336,7 +336,9 @@ public class Grunt : BaseNPC
 #if UNITY_EDITOR
         if (debugThisUnit)
             print("Angry Start");
+
 #endif
+        AudioManger.instance.Play("GruntScream");
         if (_states.CurrentStateType == CommonState.rage)
         {
             var rage = _states.currentState as RageState;
@@ -394,5 +396,14 @@ public class Grunt : BaseNPC
             var burning = (BurningState)_states.currentState;
             burning.SetBurningStage(1);
         }
+    }
+
+    void PlayGruntSteps()
+    {
+        AudioManger.instance.Play("GruntSteps");
+    }
+    void PlayGruntSmash()
+    {
+        AudioManger.instance.Play("GruntSmash");
     }
 }

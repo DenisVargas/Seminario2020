@@ -17,6 +17,7 @@ public class PitTrap : MonoBehaviour
     [SerializeField] List<Collider> OnTop = new List<Collider>();
     [SerializeField] List<Slime> OnTopBabas = new List<Slime>();
     [SerializeField] Node[] AffectedNodes = new Node[0];
+    AudioSource MySound;
 
 #if UNITY_EDITOR
     [Header("================ DEBUG ================")]
@@ -27,6 +28,7 @@ public class PitTrap : MonoBehaviour
     {
         _col = GetComponent<BoxCollider>();
         _col.isTrigger = true;
+        MySound = GetComponent<AudioSource>();
     }
     private void Update()
     {
@@ -74,7 +76,10 @@ public class PitTrap : MonoBehaviour
         if (debugThisTrap)
             print($"{gameObject.name} se desactiva.");
 #endif
+        if (MySound.isPlaying)
+            MySound.Stop();
 
+        MySound.Play();
 
         _anims.SetBool("Activate", true);
         OnActivate.Invoke();
@@ -98,9 +103,12 @@ public class PitTrap : MonoBehaviour
     {
 #if UNITY_EDITOR
         if (debugThisTrap)
-            print($"{gameObject.name} se desactiva."); 
+            print($"{gameObject.name} se desactiva.");
 #endif
+        if (MySound.isPlaying)
+            MySound.Stop();
 
+        MySound.Play();
         _anims.SetBool("Activate", false);
         OnDeActivate.Invoke();
 

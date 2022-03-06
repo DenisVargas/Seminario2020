@@ -5015,6 +5015,8 @@ MonoBehaviour:
     isDropeable: 0
     isThroweable: 0
     isConsumable: 0
+  canRespawn: 0
+  destroyAfterPick: 1
   _interactionCollider: {fileID: 6577388921664595059}
   _physicCollider: {fileID: 6577388921664595059}
   _owner: {fileID: 0}
@@ -5331,7 +5333,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: debris
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1554488772385179713, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2e271dec76d8b9f4a90ed1f6b52f45b3, type: 3}
 --- !u!4 &6799369264675127767 stripped
 Transform:

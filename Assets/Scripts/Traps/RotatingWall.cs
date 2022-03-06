@@ -7,12 +7,16 @@ public class RotatingWall : MonoBehaviour
     [SerializeField] Node[] AffectedNodesA = null;
     [SerializeField] Node[] AffectedNodesB = null;
 
+    AudioSource _mySound;
+
     public bool Active = false;
 
     private void Awake()
     {
         if (anims == null)
             anims = GetComponent<Animator>();
+
+        _mySound = GetComponent<AudioSource>();
 
         //Bloqueo uno de los caminos dependiendo del estado inicial.
         if (Active)
@@ -35,6 +39,11 @@ public class RotatingWall : MonoBehaviour
     {
         //Activo/Desactivo la wall. Animación.
         Active = !Active;
+        if (_mySound.isPlaying)
+            _mySound.Stop();
+
+        _mySound.Play();
+
         anims.SetBool("Activated", Active);
     }
     /// <summary>

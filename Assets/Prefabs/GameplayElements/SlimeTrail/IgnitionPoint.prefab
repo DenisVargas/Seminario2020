@@ -164,6 +164,8 @@ MonoBehaviour:
     isDropeable: 0
     isThroweable: 0
     isConsumable: 0
+  canRespawn: 0
+  destroyAfterPick: 1
   _interactionCollider: {fileID: 0}
   _physicCollider: {fileID: 1371116376436304502}
   _owner: {fileID: 0}
@@ -5243,6 +5245,11 @@ PrefabInstance:
     - target: {fileID: 199049106770456860, guid: 89956e675b749204c8e10395ce2b5fb9,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160946612729443899, guid: 89956e675b749204c8e10395ce2b5fb9,
+        type: 3}
+      propertyPath: m_PlayOnAwake
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

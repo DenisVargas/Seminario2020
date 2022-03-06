@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     public void ReturnToMain()
     {
         Director.Stop();
+        AudioManger.instance.Play("buttonPress");
         Director.playableAsset = CreditsToMain;
         Director.Play();
     }
@@ -20,6 +21,7 @@ public class MainMenu : MonoBehaviour
     public void GoToCredits()
     {
         Director.Stop();
+        AudioManger.instance.Play("buttonPress");
         Director.playableAsset = MainToCredits;
         Director.Play();
     }
@@ -27,6 +29,7 @@ public class MainMenu : MonoBehaviour
     public void StartNewGame()
     {
         Director.Stop();
+        AudioManger.instance.Play("buttonPress");
         Director.playableAsset = MainToGame;
         Director.Play();
     }
@@ -40,6 +43,7 @@ public class MainMenu : MonoBehaviour
     public void StartExitingFromGame()
     {
         Director.Stop();
+        AudioManger.instance.Play("buttonPress");
         Director.playableAsset = MainToExit;
         Director.Play();
     }

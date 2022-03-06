@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Core.Interaction;
 using System;
 using System.Linq;
+using Core.SaveSystem;
 
 namespace Core.InventorySystem
 {
@@ -21,8 +22,14 @@ namespace Core.InventorySystem
         [Tooltip("Identificador único del ítem. Ver ItemDatabase para detalles y para edición.")]
         public ItemID ID = ItemID.nulo;
         public ItemData data;
-        public bool canRespawn = false;
         public bool destroyAfterPick = true;
+
+        [Header("Respawning")]
+        public int respawnID = -1;
+        public bool canRespawn = false;
+        public float timeToRespawnSeconds = 10f;
+        Vector3 _initialPosition = Vector3.zero;
+        Quaternion _initialRotation = Quaternion.identity;
 
         //Operaciones estáticas son aquellas que siempre están disponibles.
         List<OperationType> Operations = new List<OperationType>();
@@ -47,6 +54,13 @@ namespace Core.InventorySystem
                 _rb = GetComponent<Rigidbody>();
 
             SetData(ItemDataBase.getItemData(ID));
+
+            _initialPosition = transform.position;
+            _initialRotation = transform.rotation;
+            if (canRespawn)
+            {
+                Level.registerRespawneableItem(this);
+            }
 
             OnThrowItem += () => { _physicCollider.enabled = true; _physicCollider.isTrigger = false; };
 
@@ -186,11 +200,23 @@ namespace Core.InventorySystem
             }
         }
 
+        //=================================== Respawning ==========================================================
+
+        public virtual void ResetState()
+        {
+            isEquiped = false;
+        }
+        public virtual void Respawn() 
+        {
+            transform.position = _initialPosition;
+            transform.rotation = _initialRotation;
+            ResetState();
+        }
+
         //================================ Operaciones ==================================================
 
         protected virtual void OnTake()
         {
-
 #if UNITY_EDITOR
             if (debugThisUnit)
             {

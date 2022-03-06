@@ -4,6 +4,8 @@ using UnityEngine;
 using Utility.ObjectPools.Generic; //Quizá este objeto podría utilizarse para generar pools de enemigos.
 using UnityEngine.SceneManagement;
 using Core.Serialization;
+using Core.InventorySystem;
+using System.Collections;
 
 namespace Core.SaveSystem
 {
@@ -18,8 +20,13 @@ namespace Core.SaveSystem
         public static bool loadLastCheckpoint = false;
         public static bool checkpointActivated = false;
 
+        [SerializeField] List<int> pursuers = new List<int>();
+        public bool blockCheckpoint { get; set; } = false;
+
         public Dictionary<int, EnemyData> enemyStateRegister = new Dictionary<int, EnemyData>();
         public Dictionary<int, GameObject> enemyReferenceRegister = new Dictionary<int, GameObject>();
+        public Dictionary<int, Item> respawneableItems = new Dictionary<int, Item>();
+        Dictionary<int, bool> currentRespawning = new Dictionary<int, bool>();
 
 #if UNITY_EDITOR
         [Header("================= Debugging ======================")]
@@ -89,6 +96,10 @@ namespace Core.SaveSystem
                 print("Debo cargar la data del nivel");
                 LoadGameData();
             }
+        }
+        private void OnDestroy()
+        {
+            StopAllCoroutines();
         }
 
         public static void TooglePauseGame()
@@ -160,6 +171,8 @@ namespace Core.SaveSystem
                 Destroy(go);
             }
 
+            //Items. si es necesario.
+
             //Loads the camera settings.
             CameraBehaviour camera = FindObjectOfType<CameraBehaviour>();
             camera.transform.position = lastSave.CameraPosition;
@@ -179,8 +192,14 @@ namespace Core.SaveSystem
         /// <returns>True si el snapshot se creo Satisfactoriamente!</returns>
         public static bool SetCheckPoint()
         {
+
             Debug.Log("Seteo un CheckPoint");
             Level currentLevel = FindObjectOfType<Level>();
+            if (currentLevel.blockCheckpoint)
+            {
+                Debug.Log("Checkpoint setting is blocked");
+                return false;
+            }
 
             //Player
             CheckPoint newSave = new CheckPoint();
@@ -201,7 +220,7 @@ namespace Core.SaveSystem
 
             Level.AutoSave = newSave;
             checkpointActivated = true;
-            return false;
+            return true;
         }
         public static void ClearCheckpoint()
         {
@@ -273,6 +292,67 @@ namespace Core.SaveSystem
         public static void LevelCompleted()
         {
             ClearCheckpoint();
+        }
+
+        public static void registerPursuer(int id)
+        {
+            Level currentLevel = GetCurrentLevel();
+            if (currentLevel.enemyStateRegister.ContainsKey(id) && !currentLevel.pursuers.Contains(id))
+            {
+                currentLevel.pursuers.Add(id);
+
+                if (currentLevel.pursuers.Count > 0)
+                {
+                    currentLevel.blockCheckpoint = true;
+                }
+            }
+        }
+        public static void unregisterPursuer(int id)
+        {
+            Level currentLevel = GetCurrentLevel();
+            if (currentLevel.enemyStateRegister.ContainsKey(id) && currentLevel.pursuers.Contains(id))
+            {
+                currentLevel.pursuers.Remove(id);
+
+                if (currentLevel.pursuers.Count == 0)
+                {
+                    currentLevel.blockCheckpoint = false;
+                }
+            }
+        }
+
+        public static void registerRespawneableItem(Item respawneable) 
+        {
+            var level = GetCurrentLevel();
+            int id = respawneable.respawnID;
+            if (!level.respawneableItems.ContainsKey(id))
+            {
+                level.respawneableItems.Add(id, respawneable);
+            }
+        }
+        public static void SetItemRespawn(int id, float timetoRespawn)
+        {
+            var level = GetCurrentLevel();
+            if (level.respawneableItems.ContainsKey(id) && !level.currentRespawning.ContainsKey(id))
+            {
+                level.StartCoroutine(level.respawnItem(id, timetoRespawn));
+            }
+        }
+
+        IEnumerator respawnItem(int id, float time)
+        {
+            //añado al diccionario de currently spawning
+            if (respawneableItems.ContainsKey(id))
+            {
+                //Debug.Log($"Item with id {id} ha iniciado su respawn. Tiempo es {time} segundos");
+                respawneableItems[id].gameObject.SetActive(false);
+                currentRespawning.Add(id, true);
+                yield return new WaitForSeconds(time);
+                //UnityEditor.EditorApplication.isPaused = true;
+                currentRespawning.Remove(id);
+                respawneableItems[id].Respawn();
+                respawneableItems[id].gameObject.SetActive(true);
+            }
         }
     }
 }

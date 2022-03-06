@@ -86,7 +86,7 @@ public class Grunt : BaseNPC
         rage.LookAtTarget = LookAtAttackTarget;
         states.Add(CommonState.rage, rage);
 
-        PursueState pursue = GetComponent<PursueState>().Set(_player, _playerClone);
+        PursueState pursue = GetComponent<PursueState>().Set(_player, _playerClone, base.sceneID);
         pursue.checkDistanceToTarget = TargetIsInAttackRange;
         pursue.getDestinyNode = getCloserNodeToAttackTarget;
         pursue.MoveToTarget = MoveToNode;

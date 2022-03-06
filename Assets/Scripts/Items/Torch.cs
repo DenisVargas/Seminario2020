@@ -2,13 +2,15 @@
 using UnityEngine;
 using Core.InventorySystem;
 using Core.DamageSystem;
+using Core.SaveSystem;
 
 public class Torch : Item, IDamageable<Damage, HitResult>
 {
     [Header("================ Torch =======================")]
     [SerializeField] GameObject _burningComponent = null;
     [SerializeField] Damage hitDamage = new Damage();
-    [SerializeField] bool _isOn;
+    [SerializeField] bool _isOn = false;
+    [SerializeField] bool _startedOn = false;
 
     bool _toDestroy_FLAG = false;
 
@@ -31,8 +33,11 @@ public class Torch : Item, IDamageable<Damage, HitResult>
     {
         base.Awake();
 
-        if (_isOn == false)
+        if (!_isOn)
+        {
+            _startedOn = false;
             isBurning = false;
+        }
     }
 
     protected override void Use(params object[] optionalParams)
@@ -59,7 +64,12 @@ public class Torch : Item, IDamageable<Damage, HitResult>
         if (_physicCollider)
             _physicCollider.enabled = true;
     }
-
+    public override void ResetState()
+    {
+        base.ResetState();
+        if (_startedOn)
+            _isOn = true;
+    }
 
     public Damage GetDamageStats()
     {
@@ -105,7 +115,12 @@ public class Torch : Item, IDamageable<Damage, HitResult>
     IEnumerator destroyAtEnd()
     {
         yield return new WaitForEndOfFrame();
-        Destroy(gameObject);
+        if (canRespawn)
+        {
+            Level.SetItemRespawn(respawnID, timeToRespawnSeconds);
+        }
+        else
+            Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -100,3 +100,10 @@ MonoBehaviour:
     loop: 0
     Delay: 0
     source: {fileID: 0}
+  - name: trapSmash
+    clip: {fileID: 8300000, guid: 55e7ce942bf73044e854be9109c702e1, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    Delay: 0
+    source: {fileID: 0}

@@ -50,6 +50,7 @@ public class Jail : MonoBehaviour
     public void AV_FallEnded()
     {
         HitParticle.SetActive(true);
+        AudioManger.instance.Play("trapSmash");
         if (_hitbox != null)
             _hitbox.enabled = true;
         if (autoDeactivate)

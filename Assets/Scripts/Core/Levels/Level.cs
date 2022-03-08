@@ -66,11 +66,10 @@ namespace Core.SaveSystem
             }
         }
 
-        public static void RestartCurrentLevel()
+        public static void ResetLevel()
         {
+            loadLastCheckpoint = true;
             int levelID = FindObjectOfType<Level>().LevelBuildID;
-            isPaused = false;
-            Time.timeScale = 1;
             SceneManager.LoadScene(levelID);
         }
 
@@ -192,7 +191,6 @@ namespace Core.SaveSystem
         /// <returns>True si el snapshot se creo Satisfactoriamente!</returns>
         public static bool SetCheckPoint()
         {
-
             Debug.Log("Seteo un CheckPoint");
             Level currentLevel = FindObjectOfType<Level>();
             if (currentLevel.blockCheckpoint)

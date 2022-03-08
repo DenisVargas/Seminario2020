@@ -84,7 +84,7 @@ public class CanvasController : MonoBehaviour
                     Level.LevelFailed();
                     StartCoroutine(FadeIn());
                 }
-                else Level.RestartCurrentLevel();
+                else Level.ResetLevel();
             }
         }
     }

@@ -25,6 +25,11 @@ public class CanvasButtonManager : MonoBehaviour
         //TODO: Bloquar el deleteo del autosave.
     }
 
+    public void ResetUntilLastCheckPoint()
+    {
+        Level.ResetLevel();
+    }
+
     //Estas son utilizadas por el menú de pausa.
     public void UnPause()
     {

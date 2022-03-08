@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using IA.PathFinding;
+using System.Linq;
 
 [CustomEditor(typeof(NodeGraphBuilder))]
 public class NGBInspector : Editor
 {
     NodeGraphBuilder ins;
+    public static float distance = 0;
 
     private void OnEnable()
     {
@@ -29,5 +31,23 @@ public class NGBInspector : Editor
                 child.ID = Count;
             }
         }
+
+        distance = EditorGUILayout.FloatField("Maximun Distance", distance);
+
+        if(GUILayout.Button("Connect nodes using Distance"))
+        {
+            var nodes = FindObjectsOfType<Node>();
+            Undo.RecordObjects(nodes, "Added node connections");
+            foreach (var node in nodes)
+            {
+                var closerNodes = nodes.Where((n) => (n != node && Vector3.Distance(node.transform.position, n.transform.position) < distance && !node.Connections.Contains(n)));
+                node.Connections.AddRange(closerNodes);
+            }
+        }
+    }
+
+    IEnumerator testRoutine()
+    {
+        yield return null;
     }
 }

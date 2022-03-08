@@ -108,18 +108,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 1
-  ItemName: 
-  Description: 
-  Icon: {fileID: 0}
-  isCombinable: 0
-  isThroweable: 0
-  isConsumable: 0
+  data:
+    Name: 
+    Description: 
+    Icon: {fileID: 0}
+    isCombinable: 0
+    isDropeable: 0
+    isThroweable: 0
+    isConsumable: 0
+  destroyAfterPick: 1
+  respawnID: -1
+  canRespawn: 0
+  timeToRespawnSeconds: 10
+  _interactionCollider: {fileID: 2493914976280020308}
   _physicCollider: {fileID: 8614256874735383781}
   _owner: {fileID: 0}
   _rb: {fileID: 8255644011357120305}
-  debugThis: 0
+  debugThisUnit: 0
   _burningComponent: {fileID: 1110212495423863185}
-  _interactionCollider: {fileID: 2493914976280020308}
   hitDamage:
     type: 0
     Ammount: 1
@@ -127,8 +133,9 @@ MonoBehaviour:
     instaKill: 0
     KillAnimationType: 0
     explotionOrigin: {x: 0, y: 0, z: 0}
-    explotionForce: {x: 0, y: 0, z: 0}
+    explotionForce: 0
   _isOn: 0
+  _startedOn: 0
 --- !u!1001 &505643807314577668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -284,6 +291,11 @@ PrefabInstance:
     - target: {fileID: 4521404770085940, guid: a8f8d724fa97b7f4d9fea76152c16ac9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6478923895231202322, guid: a8f8d724fa97b7f4d9fea76152c16ac9,
+        type: 3}
+      propertyPath: m_Range
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8f8d724fa97b7f4d9fea76152c16ac9, type: 3}

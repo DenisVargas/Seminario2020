@@ -67,7 +67,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.92191124
+      - time: 1
         functionName: AV_Angry_End
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 4d6b85cc6c798774b841d4109550d7fd,

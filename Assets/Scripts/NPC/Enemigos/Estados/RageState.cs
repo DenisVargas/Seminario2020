@@ -16,14 +16,14 @@ public class RageState : State
     [SerializeField] LayerMask _targeteables = ~0;
     [SerializeField] float _MinDetectionRange = 5;
 
-    int _Phase = 0;
     bool _playerFound = false;
-    bool _otherUnitFound = false;
+    bool _enemyFound = false;
     bool _destructibleFound = false;
-    bool targetSetted = false;
+    bool _targetSetted = false;
+
+    bool _turningArround_Animation = false;
 
     IDamageable<Damage, HitResult> self = null;
-    IDamageable<Damage, HitResult> _closerTargetFounded = null;
 
     HashSet<IDamageable<Damage, HitResult>> _posibleTargets = new HashSet<IDamageable<Damage, HitResult>>();
 
@@ -49,45 +49,27 @@ public class RageState : State
         if(debugThisState)
             print($"{gameObject.name} entró al estado Rage"); 
 #endif
-        _anims.SetBool("GetHited", true);
+        _anims.SetBool("RageState", true);
     }
 
     public override void Execute()
     {
         base.Execute();
-#if UNITY_EDITOR
-        if (debugThisState)
-            print($"RageState::Execute: Current Phase is: {_Phase}\nPlayer Founded: {_playerFound} | Other Target Founded:{_otherUnitFound} | Destructible Target Founded:{_destructibleFound}\n"); 
-#endif
-        if (_Phase == 1 && !_playerFound && !_otherUnitFound)
-            CheckNearVisible();
-        //if(_Phase == 2 && _otherTargetFounded)
-        //    LookAtTarget();
-        if(_Phase == 3 && !_playerFound && !_otherUnitFound && _destructibleFound && !targetSetted)
+        if (!_targetSetted && _turningArround_Animation && (!_playerFound || !_enemyFound))
         {
-            SetAttackTarget(_closerTargetFounded);
-            targetSetted = true;
-            LookAtTarget();
+            CheckNearVisible();
         }
-        if (_Phase == 4 && (_playerFound || _otherUnitFound || _destructibleFound))
-            SwitchToState(CommonState.pursue);
-        else _anims.SetBool("SmashFloor", true);
     }
 
     public override void End()
     {
-#if UNITY_EDITOR
-        if (debugThisState)
-            print($"RageState::End: Current Phase is: {_Phase}\nPlayer Founded: {_playerFound} | Other Target Founded:{_otherUnitFound} | Destructible Target Founded:{_destructibleFound}\n"); 
-#endif
-        _anims.SetBool("GetHited", false);
-        _anims.SetBool("SmashFloor", false);
-        _Phase = 0;
+        _anims.SetBool("RageState", false);
+        _anims.SetBool("SmashGround", false);
         _playerFound = false;
-        _otherUnitFound = false;
+        _enemyFound = false;
         _destructibleFound = false;
+        _targetSetted = false;
         _posibleTargets.Clear();
-        _closerTargetFounded = null;
     }
 
     public RageState Set(IDamageable<Damage, HitResult> self, LineOfSightComponent los)
@@ -98,15 +80,8 @@ public class RageState : State
     }
     void CheckNearVisible()
     {
-#if UNITY_EDITOR
-        if(debugThisState)
-            Debug.Log("Checking Visibles");
-#endif
-
         var posibleTargets = Physics.OverlapSphere(transform.position, _sight.range, _targeteables);
         List<IDamageable<Damage, HitResult>> Killeables = new List<IDamageable<Damage, HitResult>>();
-        //Si no hay unidades vidas seleccionamos el target destructible mas cercano.
-
         foreach (var detectedCollider in posibleTargets)
         {
             //Chequeo primero por IDamageables.
@@ -119,29 +94,33 @@ public class RageState : State
                 Vector3 customLOSTargetDir = Vector3.zero;
 
                 var clon = Damageable.GetComponent<ClonBehaviour>();
-                if (clon != null)
+                if (clon != null && clon.IsAlive)
                 {
                     customLOSTargetDir = (clon.getLineOfSightTargetPosition() - _sight.CustomRayOrigin.position).normalized;
                     if (_sight.IsInSight(transform.position, customLOSTargetDir, clon.transform))
                     {
+#if UNITY_EDITOR
+                        if (debugThisState)
+                            Debug.Log($"Clon has been founded");
+#endif
                         _playerFound = true;
-                        LookAtTarget();
-                        SetAttackTarget(Damageable);
-                        _anims.SetBool("targetFinded", true);
+                        SetTargetFound(Damageable);
                         return;
                     }
                 }
 
                 var player = Damageable.GetComponent<Controller>();
-                if (player != null)
+                if (player != null && player.IsAlive)
                 {
                     customLOSTargetDir = (player.getLineOfSightTargetPosition() - _sight.CustomRayOrigin.position).normalized;
                     if (_sight.IsInSight(transform.position, customLOSTargetDir, player.transform))
                     {
+#if UNITY_EDITOR
+                        if (debugThisState)
+                            Debug.Log($"Player has been founded");
+#endif
                         _playerFound = true;
-                        LookAtTarget();
-                        SetAttackTarget(Damageable);
-                        _anims.SetBool("targetFinded", true);
+                        SetTargetFound(Damageable);
                         return;
                     }
                 }
@@ -151,49 +130,86 @@ public class RageState : State
                 {
                     //Chequeamos si el destructible es una unidad viva.
                     var alive = Damageable.GetComponent<ILivingEntity>();
-                    if (alive != null)
+                    if (alive != null && Damageable.IsAlive)
                     {
-                        _otherUnitFound = true;
-                        SetAttackTarget(Damageable);
-                        LookAtTarget();
-                        _anims.SetBool("targetFinded", true);
+#if UNITY_EDITOR
+                        if (debugThisState)
+                            Debug.Log($"An enemy {Damageable} has been founded");
+#endif
+                        _enemyFound = true;
+                        SetTargetFound(Damageable);
                         return;
                     }
                     else
                     {
-                        //Si no encuentro objetivos vivos, pero si un objeto destructible para ventilar la frustracion.
                         if (!_posibleTargets.Contains(Damageable))
+                        {
+#if UNITY_EDITOR
+                            if (debugThisState)
+                                Debug.Log($"A new destructible: {Damageable} has been founded");
+#endif
                             _posibleTargets.Add(Damageable);
+                        }
                     }
                 }
             }
         }
+    }
 
-        //Si llegamos a este punto, significa que no encontramos unidades vivas y que puede que haya unidades destructibles, seleccionamos el mas cercano.
-        if (posibleTargets.Length > 0)
+    public void SetTargetFound(IDamageable<Damage, HitResult> Damageable)
+    {
+        _targetSetted = true;
+        _anims.SetBool("RageState", false);
+        _anims.SetBool("targetFinded", true);
+        SetAttackTarget(Damageable);
+        LookAtTarget();
+
+        _posibleTargets.Clear();
+    }
+
+    public void StartTurningAround()
+    {
+        _turningArround_Animation = true;
+    }
+
+    public void StartAngryAnimation()
+    {
+        _turningArround_Animation = false;
+        Debug.Log("Start angry animation");
+
+        if (!_playerFound && !_enemyFound)
         {
-            var targetFound = _posibleTargets.OrderBy(damageable =>
+            if (_posibleTargets.Count > 0)
             {
-                return Vector3.Distance(transform.position, damageable.transform.position);
-            })
-            .FirstOrDefault();
+                var targetFound = _posibleTargets.Where((damageable) => {
+                    if (damageable != null)
+                        return damageable.IsAlive;
+                    return false;
+                })
+                .OrderBy(damageable =>
+                {
+                    return Vector3.Distance(transform.position, damageable.transform.position);
+                })
+                .FirstOrDefault();
 
-            if(targetFound != null)
-            {
-                _closerTargetFounded = targetFound;
-                _destructibleFound = true;
-                Debug.Log("a Target has been found");
+                if (targetFound != null)
+                {
+#if UNITY_EDITOR
+                    if (debugThisState)
+                        Debug.Log("a Target has been found");
+#endif
+                    _destructibleFound = true;
+                    SetTargetFound(targetFound);
+                    return;
+                }
             }
+            else _anims.SetBool("SmashGround", true);
         }
     }
 
-    public void SetAnimationStage(int current)
+    public void EndOfAngryAnimation()
     {
-#if UNITY_EDITOR
-        if (debugThisState)
-            print($"Current animation secuence state is {current}"); 
-#endif
-        //0 = turnAround Start. 1. Turn Arround End. 2. Inicio animacion de reclamo. 3.Fin de animacion de reclamo.
-        _Phase = current;
+        if((_playerFound || _enemyFound || _destructibleFound) && _targetSetted)
+            SwitchToState(CommonState.pursue);
     }
 }

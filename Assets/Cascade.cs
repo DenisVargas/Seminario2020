@@ -5,7 +5,7 @@ public class Cascade : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Cascade");
+        //Debug.Log("Cascade");
         if(other.tag == "Player")
         {
             Controller pl = other.GetComponentInParent<Controller>();

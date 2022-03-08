@@ -308,7 +308,7 @@ public class Grunt : BaseNPC
     void AV_HitReact_End()
     {
         print("Hit Reaction Ended");
-        _anims.SetBool("GetHited", false);
+        //_anims.SetBool("GetHited", false);
     }
     void AV_TurnArround_Start()
     {
@@ -317,19 +317,19 @@ public class Grunt : BaseNPC
             print("Turn Around Started"); 
 #endif
         if (_states.CurrentStateType == CommonState.rage)
-            (_states.currentState as RageState).SetAnimationStage(1);
+            (_states.currentState as RageState).StartTurningAround();
     }
     void AV_TurnArround_End()
     {
-#if UNITY_EDITOR
-        if (debugThisUnit)
-            print("Turn Around Ended");
-#endif
-        if (_states.CurrentStateType == CommonState.rage)
-        {
-            var rage = _states.currentState as RageState;
-            rage.SetAnimationStage(2);
-        }
+//#if UNITY_EDITOR
+//        if (debugThisUnit)
+//            print("Turn Around Ended");
+//#endif
+//        if (_states.CurrentStateType == CommonState.rage)
+//        {
+//            var rage = _states.currentState as RageState;
+//            rage.SetAnimationStage(2);
+//        }
     }
     void AV_Angry_Start()
     {
@@ -342,7 +342,7 @@ public class Grunt : BaseNPC
         if (_states.CurrentStateType == CommonState.rage)
         {
             var rage = _states.currentState as RageState;
-            rage.SetAnimationStage(3);
+            rage.StartAngryAnimation();
         }
     }
     void AV_Angry_End()
@@ -354,7 +354,7 @@ public class Grunt : BaseNPC
         if (_states.CurrentStateType == CommonState.rage)
         {
             var rage = _states.currentState as RageState;
-            rage.SetAnimationStage(4);
+            rage.EndOfAngryAnimation();
         }
     }
 

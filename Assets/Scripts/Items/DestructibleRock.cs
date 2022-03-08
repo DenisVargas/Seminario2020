@@ -14,6 +14,7 @@ public class DestructibleRock : Destroyable
 
         if (damage.type == DamageType.explotion)
         {
+            result.conected = true;
             result.exploded = true;
             result.fatalDamage = true;
             Explode(damage.explotionOrigin, damage.explotionForce);
@@ -28,6 +29,8 @@ public class DestructibleRock : Destroyable
 #endif
 
             getSmashed();
+            result.conected = true;
+            result.fatalDamage = true;
             //fatalDamageCount++;
         }
 
@@ -70,12 +73,12 @@ public class DestructibleRock : Destroyable
     }
     bool getBurned()
     {
-        print($"{gameObject.name} recibió un golpecito de fuego.");
+        //print($"{gameObject.name} recibió un golpecito de fuego.");
         return false;
     }
-    bool getSmashed()
+    void getSmashed()
     {
-        print($"{gameObject.name} fue Aplastado.");
+        //print($"{gameObject.name} fue Aplastado.");
 
         if (_destroyedObject)
         {
@@ -101,7 +104,5 @@ public class DestructibleRock : Destroyable
         }
 
         StartCoroutine(delayedDestroy(_timeToDestroy));
-
-        return false;
     }
 }

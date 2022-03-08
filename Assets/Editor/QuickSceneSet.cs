@@ -40,10 +40,8 @@ public class QuickSceneSet : EditorWindow
 
             var CoreParent = CheckOrAddDefaultGameObject("======== Core ========");
             EditorUtility.SetDirty(CoreParent);
-                AddManagersAndLevelInfo(CoreParent);
+                AddManagersAndLevelInfo();
                 SetCCC(CoreParent);
-            var UIParent = CheckOrAddDefaultGameObject("========= UI =========");
-                AddUI(UIParent);
             CheckOrAddDefaultGameObject("====== Enemigos ======");
             CheckOrAddDefaultGameObject("======= Lights =======");
             CheckOrAddDefaultGameObject("======= Level ========");
@@ -116,9 +114,14 @@ public class QuickSceneSet : EditorWindow
     /// </summary>
     private void SetCCC(GameObject parentObject = null)
     {
+        GameObject mainCanvas = (GameObject)AssetDatabase.LoadAssetAtPath(CanvasPrefabPath, typeof(GameObject));
+        var instancedMainCanvas = Instantiate(mainCanvas, Vector3.zero, Quaternion.identity);
+        instancedMainCanvas.name = "========= UI =========";
+
         GameObject playerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(playerPrefabPath, typeof(GameObject));
         var instantiatedPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
         Controller controller = instantiatedPlayer.GetComponent<Controller>();
+        controller.CommandMenu = instancedMainCanvas.GetComponent<CommandMenu>();
 
         GameObject clonPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(playerClonePrefabPath, typeof(GameObject));
         var instantiatedClone = Instantiate(clonPrefab, Vector3.zero, Quaternion.identity);
@@ -129,6 +132,7 @@ public class QuickSceneSet : EditorWindow
         GameObject CameraPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(CameraPrefabPath, typeof(GameObject));
         var instanciatedCamera = Instantiate(CameraPrefab, Vector3.zero, Quaternion.identity);
 
+
         if (parentObject)
         {
             instantiatedPlayer.transform.SetParent(parentObject.transform);
@@ -136,16 +140,7 @@ public class QuickSceneSet : EditorWindow
             instanciatedCamera.transform.SetParent(parentObject.transform);
         }
     }
-
-    void AddUI(GameObject parentObject = null)
-    {
-        GameObject mainCanvas = (GameObject)AssetDatabase.LoadAssetAtPath(CanvasPrefabPath, typeof(GameObject));
-        var instancedMainCanvas = Instantiate(mainCanvas, Vector3.zero, Quaternion.identity);
-
-        if (parentObject)
-            instancedMainCanvas.transform.SetParent(parentObject.transform);
-    }
-    void AddManagersAndLevelInfo(GameObject parentObject)
+    void AddManagersAndLevelInfo(GameObject parentObject = null)
     {
         GameObject LevelInfoPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(LevelInfo, typeof(GameObject));
         var instantiatedLevelInfo = Instantiate(LevelInfoPrefab, Vector3.zero, Quaternion.identity);

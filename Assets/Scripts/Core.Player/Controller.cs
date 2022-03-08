@@ -235,6 +235,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     }
     #endregion
 
+    public CommandMenu CommandMenu { get => _MultiCommandMenu; set => _MultiCommandMenu = value; }
     public Vector3 getLineOfSightTargetPosition()
     {
         if (_useCustomLOSTarget && _lineOfSightTarget != null)
@@ -263,6 +264,13 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
 
         if (!_hitbox)
             _hitbox = GetComponent<Collider>();
+
+        if (_MultiCommandMenu == null)
+        {
+            _MultiCommandMenu = FindObjectOfType<CanvasController>().CommandsMenu;
+            if(_MultiCommandMenu == null)
+                Debug.LogError("No existe una instancia del Multicommand menu en escena!");
+        }
 
         if (_MultiCommandMenu)
             _MultiCommandMenu.commandCallback = QuerySelectedOperation;

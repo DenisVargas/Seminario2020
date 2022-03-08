@@ -15,6 +15,8 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Image FadeImage     = null;
 
     bool playerHudLocked = false;
+
+    public CommandMenu CommandsMenu { get => _MultiCommandMenu; }
     public void setPauseMenu(bool state)
     {
         //El menú de pausa puede prenderse y/o apagarse desde un script de afuera.

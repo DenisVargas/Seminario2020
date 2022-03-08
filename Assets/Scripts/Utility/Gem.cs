@@ -11,6 +11,7 @@ public class Gem : MonoBehaviour, IInteractionComponent
     [SerializeField] int SpeedRot        = 2;
     [SerializeField] Node ActivationNode = null;
     [SerializeField] Transform GemaView  = null;
+    [SerializeField] int SceneToLoad = 0;
 
     public bool isDynamic => false;
 
@@ -43,7 +44,7 @@ public class Gem : MonoBehaviour, IInteractionComponent
         if(operation == OperationType.Activate)
         {
             //Core.SaveSystem.Level.RestartCurrentLevel();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(4);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneToLoad);
         }
     }
     public void CancelOperation(OperationType operation, params object[] optionalParams)

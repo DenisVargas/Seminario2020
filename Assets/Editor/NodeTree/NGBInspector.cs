@@ -37,6 +37,8 @@ public class NGBInspector : Editor
         if(GUILayout.Button("Connect nodes using Distance"))
         {
             var nodes = FindObjectsOfType<Node>();
+            //https://answers.unity.com/questions/1719405/modifying-and-saving-scriptable-objects-setdirty-v.html
+            //https://docs.unity3d.com/ScriptReference/EditorUtility.SetDirty.html
             Undo.RecordObjects(nodes, "Added node connections");
             foreach (var node in nodes)
             {

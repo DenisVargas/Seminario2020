@@ -9,10 +9,12 @@ using Core.InventorySystem;
 
 public class QuickSceneSet : EditorWindow
 {
-    const string playerPrefabPath = "Assets/Prefabs/Player.prefab";
-    const string playerClonePrefabPath = "Assets/Prefabs/clon jutsu.prefab";
-    const string CameraPrefabPath = "Assets/Prefabs/Top Down Camera.prefab";
+    const string playerPrefabPath = "Assets/Prefabs/CoreGameplay/Player.prefab";
+    const string playerClonePrefabPath = "Assets/Prefabs/CoreGameplay/clon jutsu.prefab";
+    const string CameraPrefabPath = "Assets/Prefabs/CoreGameplay/Top Down Camera.prefab";
     const string CanvasPrefabPath = "Assets/Prefabs/UI/Canvas.prefab";
+    const string Managers = "Assets/Prefabs/CoreGameplay/Managers.prefab";
+    const string LevelInfo = "Assets/Prefabs/CoreGameplay/LevelInfo.prefab";
 
     [MenuItem("GamePlay/QuickSceneInitializer")]
     public static void OpenWindow()
@@ -36,9 +38,12 @@ public class QuickSceneSet : EditorWindow
         {
             CheckAndRemoveDefaultSceneObjects();
 
-            CheckOrAddDefaultGameObject("======== Core ========");
-            CheckOrAddDefaultGameObject("======== CCC =========");
-            SetCCC();
+            var CoreParent = CheckOrAddDefaultGameObject("======== Core ========");
+            EditorUtility.SetDirty(CoreParent);
+                AddManagersAndLevelInfo(CoreParent);
+                SetCCC(CoreParent);
+            var UIParent = CheckOrAddDefaultGameObject("========= UI =========");
+                AddUI(UIParent);
             CheckOrAddDefaultGameObject("====== Enemigos ======");
             CheckOrAddDefaultGameObject("======= Lights =======");
             CheckOrAddDefaultGameObject("======= Level ========");
@@ -109,7 +114,7 @@ public class QuickSceneSet : EditorWindow
     /// <summary>
     /// Inicializa el jugador, el Clon, la cámara y el canvas!
     /// </summary>
-    private void SetCCC()
+    private void SetCCC(GameObject parentObject = null)
     {
         GameObject playerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(playerPrefabPath, typeof(GameObject));
         var instantiatedPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
@@ -122,10 +127,37 @@ public class QuickSceneSet : EditorWindow
         controller.Clon = clon;
 
         GameObject CameraPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(CameraPrefabPath, typeof(GameObject));
-        Instantiate(CameraPrefab, Vector3.zero, Quaternion.identity);
+        var instanciatedCamera = Instantiate(CameraPrefab, Vector3.zero, Quaternion.identity);
 
+        if (parentObject)
+        {
+            instantiatedPlayer.transform.SetParent(parentObject.transform);
+            instantiatedClone.transform.SetParent(parentObject.transform);
+            instanciatedCamera.transform.SetParent(parentObject.transform);
+        }
+    }
+
+    void AddUI(GameObject parentObject = null)
+    {
         GameObject mainCanvas = (GameObject)AssetDatabase.LoadAssetAtPath(CanvasPrefabPath, typeof(GameObject));
-        Instantiate(mainCanvas, Vector3.zero, Quaternion.identity);
+        var instancedMainCanvas = Instantiate(mainCanvas, Vector3.zero, Quaternion.identity);
+
+        if (parentObject)
+            instancedMainCanvas.transform.SetParent(parentObject.transform);
+    }
+    void AddManagersAndLevelInfo(GameObject parentObject)
+    {
+        GameObject LevelInfoPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(LevelInfo, typeof(GameObject));
+        var instantiatedLevelInfo = Instantiate(LevelInfoPrefab, Vector3.zero, Quaternion.identity);
+
+        GameObject ManagersPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(Managers, typeof(GameObject));
+        var instantiatedManagers = Instantiate(ManagersPrefab, Vector3.zero, Quaternion.identity);
+
+        if (parentObject)
+        {
+            instantiatedLevelInfo.transform.SetParent(parentObject.transform);
+            instantiatedManagers.transform.SetParent(parentObject.transform);
+        }
     }
     private void CheckAndRemoveDefaultSceneObjects()
     {
@@ -137,7 +169,7 @@ public class QuickSceneSet : EditorWindow
         if (DirectionalLight)
             DestroyImmediate(DirectionalLight);
     }
-    public void CheckOrAddDefaultGameObject(string name)
+    public GameObject CheckOrAddDefaultGameObject(string name)
     {
         GameObject item = GameObject.Find(name);
         if (item == null)
@@ -145,5 +177,6 @@ public class QuickSceneSet : EditorWindow
             item = new GameObject();
             item.name = name;
         }
+        return item;
     }
 }

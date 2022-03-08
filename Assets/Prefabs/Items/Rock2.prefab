@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 5768058351940220983}
   - component: {fileID: 8221166566093168615}
   - component: {fileID: 8300359778404572487}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,6 +165,10 @@ MonoBehaviour:
     isDropeable: 0
     isThroweable: 0
     isConsumable: 0
+  destroyAfterPick: 1
+  respawnID: -1
+  canRespawn: 0
+  timeToRespawnSeconds: 10
   _interactionCollider: {fileID: 8754757480360584259}
   _physicCollider: {fileID: 8754757480360584259}
   _owner: {fileID: 0}

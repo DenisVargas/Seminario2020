@@ -488,7 +488,7 @@ MonoBehaviour:
   visibles:
     serializedVersion: 2
     m_Bits: 3221225984
-  range: 8
+  range: 10
   angle: 45
   UseCustomOrientation: 1
   SightSocket: {fileID: 2600450864647600134}
@@ -517,6 +517,7 @@ MonoBehaviour:
   _maxHealth: 100
   _attackRange: 2
   _minDetectionRange: 3
+  sceneID: -1
   Weaknesses: []
   resistances: []
   _defaultDamage:
@@ -648,6 +649,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateType: 4
+  _pursuerID: -1
   _pursueMovementSpeed: 3
   _minDistanceToAttack: 3
 --- !u!114 &7780291179722826364

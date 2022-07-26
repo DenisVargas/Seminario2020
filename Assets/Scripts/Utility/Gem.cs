@@ -43,7 +43,7 @@ public class Gem : MonoBehaviour, IInteractionComponent
         if(operation == OperationType.Activate)
         {
             //Core.SaveSystem.Level.RestartCurrentLevel();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(4);
         }
     }
     public void CancelOperation(OperationType operation, params object[] optionalParams)

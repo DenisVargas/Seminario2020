@@ -52,7 +52,20 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 OnInputLocked();
         }
     }
-    bool ClonInputEnabled = true;
+    private bool _clonInputEnabled = true;
+    bool ClonInputEnabled
+    {
+        get => _clonInputEnabled;
+        set
+        {
+            _clonInputEnabled = value;
+            if (_canvasController)
+            {
+                _canvasController.DisplayClonUI(_clonInputEnabled);
+            }
+        }
+        //Desactivo o activo la UI.
+    }
     Vector3 velocity;
 
     public void SubscribeToLifeCicleDependency(Action<Collider> OnEntityDead)
@@ -172,6 +185,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
     Animator _anims;
     int[] animHash = new int[4];
     public float TRWRange;
+    
 
     bool _a_Walking
     {
@@ -288,6 +302,12 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         for (int i = 0; i < animHash.Length; i++)
             animHash[i] = animparams[i].nameHash;
     }
+    private void Start()
+    {
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "lvl1")
+            ClonInputEnabled = false;
+        else ClonInputEnabled = true;
+    }
     void Update()
     {
         //Start Pause
@@ -313,7 +333,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         else _mtracker.ChangeCursorView(3);
 
         var equiped = _inventory.equiped;
-        _canvasController.DisplayPlayerUI(true, equiped != null && equiped.data.isThroweable);
+        _canvasController.DisplayPlayerUI(equiped != null && equiped.data.isThroweable);
 
         #region Input
         if (PlayerInputEnabled)
@@ -407,7 +427,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
                 PlayerInputEnabled = false;
                 ClonSpawn();
             }
-        }   
+        }
         #endregion
 
         if (comandos.Count > 0)

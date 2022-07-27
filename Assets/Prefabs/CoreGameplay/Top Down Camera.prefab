@@ -376,6 +376,6 @@ MonoBehaviour:
   freeCamera: 1
   locked: 0
   mousePanBorderThickness: 20
-  navigationLimits: {x: 100, y: 0, z: 100}
+  limits: {fileID: 0}
   panSpeed: 20
   rotationSpeed: 20

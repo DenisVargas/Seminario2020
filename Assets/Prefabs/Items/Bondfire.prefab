@@ -320,8 +320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _displayMenu: {fileID: 0}
   description:
-  - "Es una hoguera peque\xF1a, parece que puedo alcanzar facilmente el fuego. \nPodr\xEDa
-    resultarme \xFAtil."
+  - Uhm? A fire source, this could be usefull!
 --- !u!114 &4813594023713640220
 MonoBehaviour:
   m_ObjectHideFlags: 0

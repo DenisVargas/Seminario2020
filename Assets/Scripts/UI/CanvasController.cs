@@ -40,12 +40,18 @@ public class CanvasController : MonoBehaviour
         };
     }
 
-    public void DisplayPlayerUI(bool Clon, bool Throw)
+    public void DisplayPlayerUI(bool Throw)
     {
-        if (!playerHudLocked)
+        if (!playerHudLocked && ThrowHUD != null)
         {
-            ClonHUD.SetActive(Clon);
             ThrowHUD.SetActive(Throw);
+        }
+    }
+    public void DisplayClonUI(bool on)
+    {
+        if(ClonHUD != null)
+        {
+            ClonHUD.SetActive(on);
         }
     }
     /// <summary>

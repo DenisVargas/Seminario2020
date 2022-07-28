@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/lvl3.unity.meta
 guid: b851ca6a595da0d42b7b7e6754175f18
+========
+guid: ac7ef430359e1414fb4816bb7ca05ca4
+>>>>>>>> master:Assets/Scenes/EndGame.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

@@ -14,7 +14,8 @@ public class CameraBehaviour : MonoBehaviour
 
     //[SerializeField] float zoomVelocity = 10f;
     [SerializeField] float mousePanBorderThickness = 10f;
-    [SerializeField] Vector3 navigationLimits = new Vector3(10f, 0f,10f);
+    //[SerializeField] Vector3 navigationLimits = new Vector3(10f, 0f,10f);
+    [SerializeField] CuadLimiter limits = null;
 
     //Velocidades
     [SerializeField] float panSpeed = 20f;
@@ -48,6 +49,9 @@ public class CameraBehaviour : MonoBehaviour
         }
         else
             transform.position = _target.transform.position;
+
+        limits = FindObjectOfType<CuadLimiter>();
+        Debug.Log($"Se ha encontrado la wea {limits.gameObject.name}");
 
         var inspectionMenu = FindObjectOfType<InspectionMenu>();
         if (inspectionMenu)
@@ -89,7 +93,8 @@ public class CameraBehaviour : MonoBehaviour
                 inputPos += -transform.right;
 
             inputPos *= panSpeed * Time.deltaTime;
-            transform.position = ClampToPanLimits(transform.position + inputPos, navigationLimits);
+            //transform.position = ClampToPanLimits(transform.position + inputPos, navigationLimits);
+            transform.position = limits.ClampToLimits(transform.position + inputPos);
         }
         else if(_target != null)
         {
@@ -98,7 +103,8 @@ public class CameraBehaviour : MonoBehaviour
             //else if (MainGameControl.LastObjectSelected)
             //    targetLock = MainGameControl.LastObjectSelected.transform.position;
 
-            transform.position = ClampToPanLimits(_target.position, navigationLimits);
+            //transform.position = ClampToPanLimits(_target.position, navigationLimits);
+            transform.position = limits.ClampToLimits(_target.position);
         }
         #endregion
 
@@ -140,13 +146,13 @@ public class CameraBehaviour : MonoBehaviour
         #endregion
     }
 
-    private Vector3 ClampToPanLimits(Vector3 position, Vector3 panLimits)
-    {
-        //La z es mi valor forward, mientras que mi x es mi right.
-        return new Vector3(Mathf.Clamp(position.x, -panLimits.x, panLimits.x),
-                           Mathf.Clamp(position.y, -panLimits.y, panLimits.y),
-                           Mathf.Clamp(position.z, -panLimits.z, panLimits.z));
-    }
+    //private Vector3 ClampToPanLimits(Vector3 position, Vector3 panLimits)
+    //{
+    //    //La z es mi valor forward, mientras que mi x es mi right.
+    //    return new Vector3(Mathf.Clamp(position.x, -panLimits.x, panLimits.x),
+    //                       Mathf.Clamp(position.y, -panLimits.y, panLimits.y),
+    //                       Mathf.Clamp(position.z, -panLimits.z, panLimits.z));
+    //}
 
 
     /// <summary>
@@ -155,7 +161,7 @@ public class CameraBehaviour : MonoBehaviour
     /// <param name="targetPosition"></param>
     public void CenterCameraToTarget(Vector3 targetPosition)
     {
-        transform.position = ClampToPanLimits(targetPosition, navigationLimits);
+        transform.position = limits.ClampToLimits(targetPosition);
     }
     public void AdjustY()
     {

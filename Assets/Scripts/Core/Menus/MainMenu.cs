@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core.SaveSystem;
+using UnityEngine;
 using UnityEngine.Playables;
 
 public class MainMenu : MonoBehaviour
@@ -12,6 +13,9 @@ public class MainMenu : MonoBehaviour
 
     public void ReturnToMain()
     {
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
+
         Director.Stop();
         AudioManger.instance.Play("buttonPress");
         Director.playableAsset = CreditsToMain;
@@ -20,6 +24,9 @@ public class MainMenu : MonoBehaviour
 
     public void GoToCredits()
     {
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
+
         Director.Stop();
         AudioManger.instance.Play("buttonPress");
         Director.playableAsset = MainToCredits;
@@ -28,6 +35,9 @@ public class MainMenu : MonoBehaviour
 
     public void StartNewGame()
     {
+        if(Time.timeScale == 0)
+            Time.timeScale = 1;
+
         Director.Stop();
         AudioManger.instance.Play("buttonPress");
         Director.playableAsset = MainToGame;

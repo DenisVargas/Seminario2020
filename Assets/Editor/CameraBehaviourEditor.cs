@@ -95,7 +95,7 @@ public class CameraBehaviourEditor : Editor
 
         EditorGUILayout.LabelField("Limits and Borders", BoldText);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mousePanBorderThickness"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("navigationLimits"));
+        //EditorGUILayout.PropertyField(serializedObject.FindProperty("navigationLimits"));
         EditorGUILayout.Space();
 
         //TODO: Encuentra una forma de hacer la edición de los límites, personalizados.

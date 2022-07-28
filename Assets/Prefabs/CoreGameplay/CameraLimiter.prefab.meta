@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Prefabs/Enviroment/Props/cell with bones.prefab.meta
-guid: c2b0e07959fb81d4c8c5d8e7720bbd9f
-========
 guid: aa5f3d4d5b09c5540bf5b25c1b3c34a5
->>>>>>>> master:Assets/Prefabs/CoreGameplay/CameraLimiter.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

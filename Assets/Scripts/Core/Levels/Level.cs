@@ -69,6 +69,8 @@ namespace Core.SaveSystem
         public static void ResetLevel()
         {
             loadLastCheckpoint = true;
+            isPaused = false;
+            Time.timeScale = 1;
             int levelID = FindObjectOfType<Level>().LevelBuildID;
             SceneManager.LoadScene(levelID);
         }
@@ -91,10 +93,7 @@ namespace Core.SaveSystem
         private void Start()
         {
             if (loadLastCheckpoint)
-            {
-                print("Debo cargar la data del nivel");
                 LoadGameData();
-            }
         }
         private void OnDestroy()
         {

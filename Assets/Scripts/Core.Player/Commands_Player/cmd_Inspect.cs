@@ -44,6 +44,7 @@ public class cmd_Inspect : BaseQueryCommand
     public override void Execute()
     {
         _target.ExecuteOperation(OperationType.inspect);
+        lookTowards(_target);
         _setAnim(false);
         dispose();
     }

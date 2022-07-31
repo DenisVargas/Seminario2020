@@ -44,6 +44,7 @@ public class cmd_Ignite : BaseQueryCommand
         {
             setAnimation(0, false);
             setAnimation(1, true);
+            lookTowards(target);
         }
     }
     public override void Execute()

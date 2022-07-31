@@ -48,12 +48,11 @@ public class cmd_Exchange : BaseQueryCommand
         {
             setAnimation(0, false);
             setAnimation(1, true);
+            lookTowards(target);
         }
     }
     public override void Execute()
     {
-        lookTowards(target);
-
         //Acá lo que hacemos es liberar el objeto equipado.
         Item released = releaseEquipedItemFromHand(true, new object[1] { target.transform.position });
         //Hacer el proceso contrario con el segundo item.

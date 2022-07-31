@@ -3,6 +3,8 @@ using System.Collections;
 using Core.InventorySystem;
 using System;
 using System.Collections.Generic;
+using IA.PathFinding;
+using System.Linq;
 
 namespace Core.Interaction
 {
@@ -15,21 +17,48 @@ namespace Core.Interaction
         [SerializeField, TextArea]
         string[] description = { "An irrelevant Object." };
 
+        [Header("Affected Area")]
+        public bool blocksNodesUnderneath = true;
+        public Node blockedNode = null;
+        public bool UseStablishedInteractionPoints = true;
+        public List<Node> interactionPoints = new List<Node>();
+
         public bool isDynamic => false;
 
         private void Awake()
         {
             if (_displayMenu == null)
                 _displayMenu = FindObjectOfType<InspectionMenu>();
+            if(blockedNode != null && blocksNodesUnderneath)
+                blockedNode.area = NavigationArea.blocked;
         }
 
         public InteractionParameters getInteractionParameters(Vector3 requesterPosition)
         {
-            var graph = FindObjectOfType<NodeGraphBuilder>();
-            var pickNode = PathFindSolver.getCloserNodeInGraph(transform.position, graph);
-            Vector3 LookToDirection = (transform.position - pickNode.transform.position).normalized.YComponent(0);
+            if (UseStablishedInteractionPoints && interactionPoints.Count > 0)
+            {
+                Node closerNodeToPlayer = null;
+                float minDistance = float.MaxValue;
 
-            return new InteractionParameters(pickNode, LookToDirection);
+                foreach (var nodo in interactionPoints)
+                {
+                    float delta = Vector3.Distance(nodo.transform.position, requesterPosition);
+                    if (delta < minDistance)
+                    {
+                        minDistance = delta;
+                        closerNodeToPlayer = nodo;
+                    }
+                }
+
+                Vector3 lookDir = (transform.position - closerNodeToPlayer.transform.position).normalized.YComponent(0);
+                return new InteractionParameters(closerNodeToPlayer, lookDir);
+            }
+
+            var graph = FindObjectOfType<NodeGraphBuilder>();
+            Node interactionNode = PathFindSolver.getCloserWalkableNodeInGraph(transform.position, graph);
+            Vector3 LookToDirection = (transform.position - interactionNode.transform.position).normalized.YComponent(0);
+
+            return new InteractionParameters(interactionNode, LookToDirection);
         }
         public List<Tuple<OperationType, IInteractionComponent>> GetAllOperations(Inventory inventory, bool ignoreInventory)
         {

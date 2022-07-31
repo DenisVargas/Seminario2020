@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(CameraBehaviour))]
+//[CustomEditor(typeof(CameraBehaviour))]
 public class CameraBehaviourEditor : Editor
 {
     CameraBehaviour ins;
@@ -85,7 +85,7 @@ public class CameraBehaviourEditor : Editor
 
         //EditorGUILayout.PropertyField(serializedObject.FindProperty("_target"));
         //EditorGUILayout.PropertyField(serializedObject.FindProperty("freeCamera"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("OperativeCamera"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("RayCaster"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("locked"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("groundMask"));
 

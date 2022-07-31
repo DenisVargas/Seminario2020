@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
-    [SerializeField] Transform OperativeCamera;
+    [SerializeField] Transform RayCaster;
     [SerializeField] LayerMask groundMask = ~0;
 
     [SerializeField] public Transform _target = null;
@@ -21,12 +21,44 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField] float panSpeed = 20f;
     [SerializeField] float rotationSpeed = 20f;
 
-    float LastYComponent = 0f;
+    bool isLerping = false;
+    float targetYComponent = 0f;
+    float lastValidYComponent = 0f;
+    float smoothTreshold = 0.2f;
+    float smoothTime = 1f;
 
     //Zoom.
     //Vector3 zoomMin, zoomMax;
     //float zoomSpeed;
     //float zoomDist;
+
+    #region DEBUG
+#if UNITY_EDITOR
+    [Header("Debugging")]
+    public GameObject pointDetection;
+    public GameObject LastPosition;
+    public bool debug_CameraGroundDetection = false;
+
+    private void OnDrawGizmos()
+    {
+        if (debug_CameraGroundDetection)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(RayCaster.position + new Vector3(0, 12, 0), Vector3.down * 100);
+            var result = CheckFloor(RayCaster.position + new Vector3(0, 12, 0), Vector3.down);
+            if (result.isValid)
+            {
+                pointDetection.transform.position = result.Point;
+                pointDetection.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
+            }
+            else
+            {
+                pointDetection.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
+            }
+        }
+    }  
+#endif
+    #endregion
 
     void Awake()
     {
@@ -34,8 +66,8 @@ public class CameraBehaviour : MonoBehaviour
         //var BNormal = operativeCamera.transform.forward;
         //ZoomMin = ZoomMax + BNormal * ZoomDist;
 
-        if (OperativeCamera == null)
-            OperativeCamera = Camera.main.transform;
+        if (RayCaster == null)
+            RayCaster = Camera.main.transform;
         if (_target == null)
         {
             var Player = FindObjectOfType<Controller>();
@@ -50,8 +82,16 @@ public class CameraBehaviour : MonoBehaviour
         else
             transform.position = _target.transform.position;
 
+        //Inicializamos la variable lastValidYComponent
+        var CameraInitialPositioning = CheckFloor(_target.transform.position + new Vector3(0, 15, 0), Vector3.down);
+        if (CameraInitialPositioning.isValid)
+        {
+            transform.position = CameraInitialPositioning.Point;
+            lastValidYComponent = CameraInitialPositioning.Point.y;
+        }
+        else lastValidYComponent = _target.transform.position.y; //Fallback.
+
         limits = FindObjectOfType<CuadLimiter>();
-        Debug.Log($"Se ha encontrado la wea {limits.gameObject.name}");
 
         var inspectionMenu = FindObjectOfType<InspectionMenu>();
         if (inspectionMenu)
@@ -69,11 +109,6 @@ public class CameraBehaviour : MonoBehaviour
             freeCamera = false;
         if (Input.GetKeyDown(KeyCode.I))
             freeCamera = true;
-
-        //Vector3 position = transform.position;
-        //position.y = Target.transform.position.y;
-        //transform.position = position;
-
         #region Movimiento
 
         if (freeCamera && !locked)
@@ -93,22 +128,12 @@ public class CameraBehaviour : MonoBehaviour
                 inputPos += -transform.right;
 
             inputPos *= panSpeed * Time.deltaTime;
-            //transform.position = ClampToPanLimits(transform.position + inputPos, navigationLimits);
             transform.position = limits.ClampToLimits(transform.position + inputPos);
         }
         else if(_target != null)
-        {
-            //if (MainGameControl.SelectedObjects.Count > 0)
-            //    targetLock = MainGameControl.returnSelectedObjectsRelativePosition(); //Obtengo la posicion relativa de los objetos seleccionados.
-            //else if (MainGameControl.LastObjectSelected)
-            //    targetLock = MainGameControl.LastObjectSelected.transform.position;
-
-            //transform.position = ClampToPanLimits(_target.position, navigationLimits);
             transform.position = limits.ClampToLimits(_target.position);
-        }
-        #endregion
-
         AdjustY();
+        #endregion
 
         #region Rotacion
         if (Input.GetKey(KeyCode.E))
@@ -128,7 +153,6 @@ public class CameraBehaviour : MonoBehaviour
             transform.rotation = Quaternion.Slerp(A, B, rotationSpeed * Time.deltaTime);
         }
         #endregion
-
         #region Zoom
 
         /*
@@ -146,15 +170,6 @@ public class CameraBehaviour : MonoBehaviour
         #endregion
     }
 
-    //private Vector3 ClampToPanLimits(Vector3 position, Vector3 panLimits)
-    //{
-    //    //La z es mi valor forward, mientras que mi x es mi right.
-    //    return new Vector3(Mathf.Clamp(position.x, -panLimits.x, panLimits.x),
-    //                       Mathf.Clamp(position.y, -panLimits.y, panLimits.y),
-    //                       Mathf.Clamp(position.z, -panLimits.z, panLimits.z));
-    //}
-
-
     /// <summary>
     /// Centra la cámara en una posición específica.
     /// </summary>
@@ -163,27 +178,48 @@ public class CameraBehaviour : MonoBehaviour
     {
         transform.position = limits.ClampToLimits(targetPosition);
     }
-    public void AdjustY()
-    {
-        Ray ray = new Ray(OperativeCamera.position, Vector3.down);
-        RaycastHit[] hits = Physics.RaycastAll(ray, Camera.main.farClipPlane, groundMask);
-        bool navigationFloorFinded = false;
 
+    struct SnapPosition
+    {
+        public bool isValid;
+        public Vector3 Point;
+    }
+    SnapPosition CheckFloor(Vector3 from, Vector3 dir)
+    {
+        var snapping = new SnapPosition() { isValid = false };
+
+        Ray ray = new Ray(from, dir);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 100, groundMask);
+
+        float maxY = float.MinValue;
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider.CompareTag("NavigationFloor"))
+            if (hits[i].collider.CompareTag("NavigationFloor") && hits[i].point.y > maxY)
             {
-                navigationFloorFinded = true;
-                transform.position = transform.position.YComponent(hits[i].point.y);
-                LastYComponent = hits[i].point.y;
-                break;
+                snapping.isValid = true;
+                snapping.Point = hits[i].point;
+                maxY = hits[i].point.y;
             }
         }
 
-        if (!navigationFloorFinded)
+        return snapping;
+    }
+
+    public void AdjustY()
+    {
+        //print("Ajusto la Y");
+        var res = CheckFloor(RayCaster.transform.position + new Vector3(0, 12, 0), Vector3.down);
+        //print($"Es valido: {{{res.isValid}}} y es diferente al ultimo registro: {{{transform.position.y == res.Point.y}}}");
+        if (res.isValid == false)
         {
-            transform.position = transform.position.YComponent(LastYComponent);
+            transform.position = transform.position.YComponent(lastValidYComponent);
+            return;
         }
+        if (transform.position.y == res.Point.y) return; //cuando no hay diferencia.
+        //print($"El delta es {Mathf.Abs(transform.position.y - res.Point.y)}");
+        //print($"Esta lerpeando actualmente?: {{{isLerping}}}");
+        transform.position = transform.position.YComponent(res.Point.y);
+        lastValidYComponent = res.Point.y;
     }
 
     /// <summary>

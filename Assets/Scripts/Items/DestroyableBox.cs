@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using IA.PathFinding;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DestroyableBox :  Destroyable
 {
@@ -14,6 +15,8 @@ public class DestroyableBox :  Destroyable
     //        damagecomponent.GetHit(GetDamageStats());
     //    }
     //}
+    [Header("Visual Elements")]
+    public List<GameObject> OnTopVisualElements = new List<GameObject>();
 
     public override HitResult GetHit(Damage damage)
     {
@@ -59,6 +62,11 @@ public class DestroyableBox :  Destroyable
     void Burn()
     {
         ReplaceToDestroyedMesh();
+        if(OnTopVisualElements.Count > 0)
+        {
+            foreach (var item in OnTopVisualElements)
+                Destroy(item);
+        }
         StartCoroutine(delayedDestroy(_timeToDestroy));
     }
 }

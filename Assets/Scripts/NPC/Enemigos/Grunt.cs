@@ -132,6 +132,7 @@ public class Grunt : BaseNPC
         pursue.AddTransition(dead)
               .AddTransition(attack)
               .AddTransition(burning)
+              .AddTransition(idle)
               .AddTransition(falling);
 
         attack.AddTransition(dead)

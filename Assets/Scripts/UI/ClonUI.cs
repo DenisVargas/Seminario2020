@@ -20,8 +20,6 @@ public class ClonUI : MonoBehaviour
     [SerializeField, HideInInspector]
     public TMP_Text _cooldownText = null;
     public float MaxCooldown;
-    [SerializeField, HideInInspector]
-    bool _displayingCooldownText = true;
     float _cooldown;
 
     public float CoolDownDisplay
@@ -32,7 +30,7 @@ public class ClonUI : MonoBehaviour
             _cooldown = Mathf.Clamp(value, 0, MaxCooldown);
             float progress = (MaxCooldown - _cooldown) / MaxCooldown;
             frontImage.fillAmount = progress;
-            print(progress);
+            //print(progress);
             if(_cooldownText == null && CoolDownDisplayHolder != null)
                 _cooldownText = CoolDownDisplayHolder.GetComponentInChildren<TMP_Text>();
 

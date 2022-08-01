@@ -10,8 +10,11 @@ public class MouseView : MonoBehaviour
     GenericPool<GameObject> _MousePositionViews = null;
     public List<GameObject> _spawnedPositions = new List<GameObject>();
 
+    Controller _player;
+
     private void Awake()
     {
+        _player = FindObjectOfType<Controller>();
         _MousePositionViews = new GenericPool<GameObject>
         (
             10,
@@ -29,15 +32,20 @@ public class MouseView : MonoBehaviour
 
     public void SetMousePositionAditive(Vector3 position)
     {
-        var posPreview = GameObject.Instantiate(Prefab_MousePosition, position, Quaternion.identity);
-        var animators = posPreview.GetComponentsInChildren<Animator>();
+        GameObject posPreview = GameObject.Instantiate(Prefab_MousePosition, position, Quaternion.identity);
+        Animator[] animators = posPreview.GetComponentsInChildren<Animator>();
         if (animators != null)
-            foreach (var anim in animators)
+            foreach (Animator anim in animators)
                 anim.SetTrigger("Position");
 
-        var mPos = _MousePositionViews.GetObjectFromPool();
+        GameObject mPos = _MousePositionViews.GetObjectFromPool();
         if (mPos != null)
+        {
             mPos.transform.position = position;
+            MouseAnimHandler handler = mPos.GetComponent<MouseAnimHandler>().SetPlayerReference(_player);
+            handler.OnDisableCommand = DisableMouseDisplay;
+            handler.Enable = true;
+        }
     }
 
     public void SetMousePosition(Vector3 position)
@@ -47,5 +55,10 @@ public class MouseView : MonoBehaviour
             _MousePositionViews.DisablePoolObject(_spawnedPositions[0]);
 
         SetMousePositionAditive(position);
+    }
+
+    public void DisableMouseDisplay(GameObject display)
+    {
+        _MousePositionViews.DisablePoolObject(display);
     }
 }

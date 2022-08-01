@@ -5,6 +5,7 @@ using IA.PathFinding;
 
 public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
 {
+    public ClonUI ClonSkillUI = null;
     event Action OnRecast = delegate { };
     public void RegisterRecastDependency(Action onEntityDied)
     {
@@ -45,13 +46,12 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
 
     public bool IsAlive { get; private set; } = (true);
 
-    // Start is called before the first frame update
-
-    public void Awake()
+    public void Init()
     {
         _anims = GetComponent<Animator>();
         _solver = GetComponent<PathFindSolver>();
         remainingLifeTime = _maxLifeTime;
+        ClonSkillUI = FindObjectOfType<ClonUI>().SetClonReference(this.transform).SetMaxCooldownAs(_maxLifeTime);
     }
 
     // Update is called once per frame
@@ -75,13 +75,16 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
             }
         }
 
-        if (remainingLifeTime > 0)
+        if (IsActive)
         {
-            //print($"Tiempo de vida restante es {remainingLifeTime}");
-            remainingLifeTime -= Time.deltaTime;
+            if (remainingLifeTime > 0)
+            {
+                //print($"Tiempo de vida restante es {remainingLifeTime}");
+                remainingLifeTime -= Time.deltaTime;
+                ClonSkillUI.CoolDownDisplay = remainingLifeTime;
+            }
+            else UncastClon();
         }
-        else
-            UncastClon();
     }
 
     public void SetMovementDestinyPosition(Node destinyPosition)
@@ -117,6 +120,7 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
         IsAlive = true;
         canMove = false;
         gameObject.SetActive(true);
+        ClonSkillUI.EnableClonIndicator(true);
     }
     public void UncastClon()
     {
@@ -126,6 +130,8 @@ public class ClonBehaviour : MonoBehaviour, IDamageable<Damage, HitResult>
         remainingLifeTime = _maxLifeTime;
         canMove = false;
         IsAlive = false;
+        ClonSkillUI.CoolDownDisplay = 0;
+        ClonSkillUI.EnableClonIndicator(false);
 
         _current = null;
         _Next = null;

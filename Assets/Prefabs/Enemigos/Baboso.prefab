@@ -4897,6 +4897,7 @@ MonoBehaviour:
   _maxHealth: 100
   _attackRange: 1.5
   _minDetectionRange: 3
+  sceneID: -1
   Weaknesses: []
   resistances: []
   _defaultDamage:
@@ -4933,15 +4934,15 @@ MonoBehaviour:
   visibles:
     serializedVersion: 2
     m_Bits: 3221225473
-  range: 1
-  angle: 45
+  range: 3
+  angle: 70
   UseCustomOrientation: 0
   SightSocket: {fileID: 0}
   UseCustomRayOrigin: 0
   CustomRayOrigin: {fileID: 0}
-  debugThisUnit: 0
-  rangeColor: {r: 1, g: 1, b: 1, a: 1}
-  angleColor: {r: 1, g: 1, b: 1, a: 1}
+  debugThisUnit: 1
+  rangeColor: {r: 1, g: 0.0141509175, b: 0.0141509175, a: 1}
+  angleColor: {r: 1, g: 0, b: 0, a: 1}
   positionDiference: {x: 0, y: 0, z: 0}
   dirToTarget: {x: 0, y: 0, z: 0}
   angleToTarget: 0
@@ -5008,6 +5009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateType: 4
+  _pursuerID: -1
   _pursueMovementSpeed: 3
   _minDistanceToAttack: 3
 --- !u!114 &8251683944114023217

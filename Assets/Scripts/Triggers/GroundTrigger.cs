@@ -84,6 +84,12 @@ public class GroundTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //print($"{other.gameObject.name} esto lo detecto.");
+
+#if UNITY_EDITOR
+        if (debugThis)
+            print("Colision"); 
+#endif
+
         if (ignoreLayers.Contains(other.gameObject.layer))
             return;
 

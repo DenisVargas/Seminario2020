@@ -299,7 +299,7 @@ public class Controller : MonoBehaviour, IDamageable<Damage, HitResult>, ILiving
         //Clon.
         if (Clon != null)
         {
-            print("La referencia al clon existe");
+            //print("La referencia al clon existe");
             Clon.Init();
             Clon.RegisterRecastDependency(ClonDeactivate);
         }

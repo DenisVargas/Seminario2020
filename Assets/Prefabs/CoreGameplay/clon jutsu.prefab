@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2914020794366004917}
   - component: {fileID: 1206968745}
   - component: {fileID: 5612415704948803169}
+  - component: {fileID: 5240244654120168103}
   m_Layer: 30
   m_Name: clon jutsu
   m_TagString: Untagged
@@ -81,6 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa3146a78d9aba14098a28cdec064280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ClonSkillUI: {fileID: 0}
   _moveSpeed: 5
   _maxLifeTime: 20
   _useCustomLOSTarget: 1
@@ -105,6 +107,18 @@ MonoBehaviour:
   _originNode: {fileID: 0}
   _targetNode: {fileID: 0}
   Debug_DetectionRangeColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &5240244654120168103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609606703466472664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0c4344761709dc47bcbe80e710a660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2204225783091977663
 GameObject:
   m_ObjectHideFlags: 0

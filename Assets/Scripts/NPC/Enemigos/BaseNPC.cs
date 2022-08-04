@@ -211,7 +211,13 @@ public abstract class BaseNPC : MonoBehaviour, IDamageable<Damage, HitResult>, I
         if ((_attackTarget != null && _attackTarget.IsAlive))
         {
             //Calculamos el nodo al que nos queremos mover.
-            Node TargetNode = _solver.getCloserNode(_attackTarget.transform.position);
+            Node TargetNode;
+            var isRock = _attackTarget.GetComponent<DestructibleRock>() != null;
+            if (isRock)
+            {
+                TargetNode = PathFindSolver.getCloserWalkableNodeInGraph(_attackTarget.transform.position, FindObjectOfType<NodeGraphBuilder>());
+            }
+            else TargetNode = _solver.getCloserNode(_attackTarget.transform.position);
             return TargetNode;
         }
         return null;

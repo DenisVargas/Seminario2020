@@ -4,8 +4,10 @@ using UnityEngine;
 public class RotatingWall : MonoBehaviour
 {
     [SerializeField] Animator anims = null;
-    [SerializeField] Node[] AffectedNodesA = null;
-    [SerializeField] Node[] AffectedNodesB = null;
+    [SerializeField, Tooltip("Si la pared esta activa, estos nodos de desactivaran al inicio.")]
+    Node[] AffectedNodesA = null;
+    [SerializeField, Tooltip("Si la pared esta activa, estos nodos de activaran al inicio.")]
+    Node[] AffectedNodesB = null;
 
     AudioSource _mySound;
 

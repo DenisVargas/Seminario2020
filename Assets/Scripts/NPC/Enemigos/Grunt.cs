@@ -115,8 +115,7 @@ public class Grunt : BaseNPC
         states.Add(CommonState.attack, attack);
 
         DeadState dead = GetComponent<DeadState>();
-        dead.OnDead += OnEntityDead;
-        dead.OnDead += (c) => { Level.RegisterEnemyDead(base.sceneID); };
+        dead.OnDead += (c) => { OnEntityDead(c); Level.RegisterEnemyDead(base.sceneID); };
         dead.Reset = ResetSetUp;
         dead.AttachTo(_states);
         states.Add(CommonState.dead, dead);

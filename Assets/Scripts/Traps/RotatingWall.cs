@@ -19,22 +19,12 @@ public class RotatingWall : MonoBehaviour
             anims = GetComponent<Animator>();
 
         _mySound = GetComponent<AudioSource>();
+    }
 
+    private void Start()
+    {
         //Bloqueo uno de los caminos dependiendo del estado inicial.
-        if (Active)
-        {
-            foreach (var node in AffectedNodesA)
-                node.ChangeNodeState(NavigationArea.blocked);
-            foreach (var node in AffectedNodesB)
-                node.ChangeNodeState(NavigationArea.Navegable);
-        }
-        else
-        {
-            foreach (var node in AffectedNodesA)
-                node.ChangeNodeState(NavigationArea.Navegable);
-            foreach (var node in AffectedNodesB)
-                node.ChangeNodeState(NavigationArea.blocked);
-        }
+        ActivationEnded();
     }
 
     public void Activate()
@@ -48,11 +38,21 @@ public class RotatingWall : MonoBehaviour
 
         anims.SetBool("Activated", Active);
     }
+
+#if UNITY_EDITOR
+    public bool _debugThisWall = false;
+#endif
+
     /// <summary>
     /// Se llama al iniciar la animación, se bloquean ambos caminos!
     /// </summary>
-    void OnActivationStart()
+    public void ActivationStarted()
     {
+#if UNITY_EDITOR
+        if (_debugThisWall)
+            print("OnActivation Start");
+#endif
+
         foreach (var node in AffectedNodesA)
             node.ChangeNodeState(NavigationArea.blocked);
         foreach (var node in AffectedNodesB)
@@ -61,22 +61,27 @@ public class RotatingWall : MonoBehaviour
     /// <summary>
     /// Se llama al terminarse la animación, dependiendo del estado final, se desbloquea uno de los 2 caminos!.
     /// </summary>
-    void OnActivationEnd()
+    public void ActivationEnded()
     {
+#if UNITY_EDITOR
+        if (_debugThisWall)
+            print("OnActivation End");
+#endif
+
         //Los affected nodes cambian de estado al activarse la pared.
         if (Active)
         {
             foreach (var node in AffectedNodesA)
-                node.ChangeNodeState(NavigationArea.blocked);
+                if (node.area == NavigationArea.Navegable) node.ChangeNodeState(NavigationArea.blocked);
             foreach (var node in AffectedNodesB)
-                node.ChangeNodeState(NavigationArea.Navegable);
+                if (node.area == NavigationArea.blocked) node.ChangeNodeState(NavigationArea.Navegable);
         }
         else
         {
             foreach (var node in AffectedNodesA)
-                node.ChangeNodeState(NavigationArea.Navegable);
+                if (node.area == NavigationArea.blocked) node.ChangeNodeState(NavigationArea.Navegable);
             foreach (var node in AffectedNodesB)
-                node.ChangeNodeState(NavigationArea.blocked);
+                if (node.area == NavigationArea.Navegable) node.ChangeNodeState(NavigationArea.blocked);
         }
     }
 }

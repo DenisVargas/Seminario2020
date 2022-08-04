@@ -60,7 +60,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: buttonPress
     clip: {fileID: 8300000, guid: 1ad0bf290b6de7742bfa067ce61b02e0, type: 3}
-    volume: 1
+    volume: 0.6
     pitch: 1
     loop: 0
     Delay: 0

@@ -76,6 +76,11 @@ public class Slime : Item, IIgnitableObject
         }
     }
 
+    private void OnDestroy()
+    {
+        RemoveFromNode();
+    }
+
     private void OnTriggerStay(Collider other)
     {
 #if UNITY_EDITOR

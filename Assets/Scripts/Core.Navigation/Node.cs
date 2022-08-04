@@ -30,6 +30,8 @@ namespace IA.PathFinding
 
         #region DEBUG
 #if UNITY_EDITOR
+
+        public bool debugThisNode = false;
         private void OnDrawGizmos()
         {
             //Esto es horrible por si las dudas!
@@ -49,6 +51,11 @@ namespace IA.PathFinding
 
         public void ChangeNodeState(NavigationArea state)
         {
+#if UNITY_EDITOR
+            if (debugThisNode)
+                print("Debugging");
+#endif
+
             area = state;
             OnAreaWeightChanged(this);
         }

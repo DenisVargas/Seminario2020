@@ -4940,7 +4940,7 @@ MonoBehaviour:
   SightSocket: {fileID: 0}
   UseCustomRayOrigin: 0
   CustomRayOrigin: {fileID: 0}
-  debugThisUnit: 1
+  debugThisUnit: 0
   rangeColor: {r: 1, g: 0.0141509175, b: 0.0141509175, a: 1}
   angleColor: {r: 1, g: 0, b: 0, a: 1}
   positionDiference: {x: 0, y: 0, z: 0}
